@@ -1,8 +1,7 @@
 class CreatePeople < ActiveRecord::Migration
   def self.up
     create_table :people do |t|
-      t.enum :rolle :limit => [:G, :M, :P, :S, :F]
-      
+      t.enum :rolle :limit => [:G :M :P :S :F]
       t.timestamps
     end
   end

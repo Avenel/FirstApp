@@ -5,7 +5,6 @@ class Person < ActiveRecord::Base
 
    has_many :telefon
    has_many :partner
-   has_many :teilnahme
-   
+   has_may :teilnahme
 
 end
