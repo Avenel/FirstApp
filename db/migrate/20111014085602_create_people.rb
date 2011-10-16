@@ -1,6 +1,6 @@
 class CreatePeople < ActiveRecord::Migration
   def self.up
-    create_table :people do |t|
+    create_table(:people, :primary_key => :pnr) do |t|
       # Index
       t.integer :pnr, :presence => true, :uniqueness => true, :length => {:maximum => 10 }
       # Rolle
@@ -8,7 +8,7 @@ class CreatePeople < ActiveRecord::Migration
       # Name
       t.string :name, :presence => true, :length =>{:maximum => 20}
       # Vorname
-      t.string :vorname, :presence => true, :length =>{:maximum => 15}
+      t.string :vorname, :presence => true, :length =>{:maximum => 15}, :default => ""
       # Geburtsdatum 
       t.date :geburtsdatum
       # Straße
@@ -29,9 +29,8 @@ class CreatePeople < ActiveRecord::Migration
       t.date :aufnahmedatum
       # Austrittsdatum
       t.date :austrittsdatum 
-
     end
-    
+        
   end
 
   def self.down
