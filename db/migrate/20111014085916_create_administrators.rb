@@ -6,7 +6,7 @@ class CreateAdministrators < ActiveRecord::Migration
       #AdminPW
       t.string :adminPw, :null => false, :limit => 35
       # E-Mail
-      t.string :adminEmail
+      t.string :adminEmail, :default => nil
     end
   end
 

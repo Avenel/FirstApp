@@ -1,7 +1,7 @@
 class CreatePeople < ActiveRecord::Migration
   def self.up
     create_table(:people, :primary_key => :pnr) do |t|
-      # Index
+      # PNR PS
       t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       # Rolle                              
       t.column "rolle", :enum, :limit => [:G, :M, :P, :S, :F] # G: Gesellschafter, M: Mitglied, P: Partner,  S: Student, F: Foerdermitglied

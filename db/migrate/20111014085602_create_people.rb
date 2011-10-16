@@ -1,7 +1,7 @@
 class CreatePeople < ActiveRecord::Migration
   def self.up
     create_table(:people, :primary_key => :pnr) do |t|
-      # Index
+      # PNR PS
       t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       # Rolle                              
       t.column "rolle", :enum, :limit => [:G, :M, :P, :S, :F] # G: Gesellschafter, M: Mitglied, P: Partner,  S: Student, F: Foerdermitglied
@@ -10,25 +10,25 @@ class CreatePeople < ActiveRecord::Migration
       # Vorname
       t.string :vorname, :null => false, :limit => 15, :default => ""
       # Geburtsdatum 
-      t.date :geburtsdatum
+      t.date :geburtsdatum, :default => nil
       # Straße
-      t.string :strasse, :limit => 50
+      t.string :strasse, :limit => 50, :default => nil
       # Hausnummer
-      t.string :hausnr, :limit => 10
+      t.string :hausnr, :limit => 10, :default => nil
       # Postleitzahl
-      t.integer :plz, :limit => 5
+      t.integer :plz, :limit => 5, :default => nil
       # Ort
-      t.string :ort, :limit => 50
+      t.string :ort, :limit => 50, :default => nil
       # Vermerk
-      t.string :vermerk, :limit => 100
+      t.string :vermerk, :limit => 100, :default => nil
       # E-Mail
-      t.string :email
+      t.string :email, :default => nil
       # Antragsdatum
-      t.date :antragsdatum 
+      t.date :antragsdatum , :default => nil
       # Aufnahmedatum
-      t.date :aufnahmedatum
+      t.date :aufnahmedatum, :default => nil
       # Austrittsdatum
-      t.date :austrittsdatum 
+      t.date :austrittsdatum , :default => nil
     end
         
   end
