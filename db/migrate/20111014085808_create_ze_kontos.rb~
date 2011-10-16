@@ -27,8 +27,6 @@ class CreateZeKontos < ActiveRecord::Migration
       t.decimal :kduRate, :null => false, :scale => 2, :precision => 10, :default => 0.00
       # RDURate
       t.decimal :rduRate, :null => false, :scale => 2, :precision => 10, :default => 0.00
-      # ZEStatus
-      t.string :zeStatus, :null => false, :limit > 1, :default => "A"
     end
   end
 

@@ -12,9 +12,7 @@ class CreateBuergschafts < ActiveRecord::Migration
       # SichEndDatum
       t.date :sichEndDatum, :default => nil
       # SichBetrag
-      t.decimal :sichBetrag, :scale => 2, :precision => 10, :default => nil
-      # SichKurzBez
-      t.string :sichKurzBez, :limit => 200, :default => nil    
+      t.decimal :sichBetrag, :scale => 2, :precision => 10, :default => nil    
     end
   end
 
