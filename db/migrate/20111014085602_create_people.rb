@@ -2,25 +2,25 @@ class CreatePeople < ActiveRecord::Migration
   def self.up
     create_table(:people, :primary_key => :pnr) do |t|
       # Index
-      t.integer :pnr, :presence => true, :uniqueness => true, :length => {:maximum => 10 }
+      t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       # Rolle                              
       t.column "rolle", :enum, :limit => [:G, :M, :P, :S, :F] # G: Gesellschafter, M: Mitglied, P: Partner,  S: Student, F: Foerdermitglied
       # Name
-      t.string :name, :presence => true, :length =>{:maximum => 20}
+      t.string :name, :null => false, :limit => 20
       # Vorname
-      t.string :vorname, :presence => true, :length =>{:maximum => 15}, :default => ""
+      t.string :vorname, :null => false, :limit => 15, :default => ""
       # Geburtsdatum 
       t.date :geburtsdatum
       # Straße
-      t.string :strasse, :length => {:maximum => 50}
+      t.string :strasse, :limit => 50
       # Hausnummer
-      t.string :hausnr, :length => {:maximum => 10}
+      t.string :hausnr, :limit => 10
       # Postleitzahl
-      t.integer :plz, :length => {:minimum => 5, :maximum => 5}
+      t.integer :plz, :limit => 5
       # Ort
-      t.string :ort, :length => {:maximum => 50}
+      t.string :ort, :limit => 50
       # Vermerk
-      t.string :vermerk, :length => {:maximum => 100}
+      t.string :vermerk, :limit => 100
       # E-Mail
       t.string :email
       # Antragsdatum

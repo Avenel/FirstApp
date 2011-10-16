@@ -2,9 +2,9 @@ class CreateAdministrators < ActiveRecord::Migration
   def self.up
     create_table (:administrators, :primary_key => :pnr) do |t|
       # Index
-      t.integer :pnr, :presence => true, :uniqueness => true, :length => {:maximum => 10}
+      t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       #AdminPW
-      t.string :adminPw, :presence => true, :length => {:maximum =>35}
+      t.string :adminPw, :null => false, :limit => 35
       # E-Mail
       t.string :adminEmail
     end

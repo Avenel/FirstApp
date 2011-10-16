@@ -2,15 +2,15 @@ class CreateOzbPeople < ActiveRecord::Migration
   def self.up
     create_table (:ozb_people, :primary_key => :mnr) do |t|
       # Mitgliedsnummer PS, FS
-      t.integer :mnr, :presence => true, :uniqueness => true, :length => {:maximum => 10 }
+      t.integer :mnr, :null => false, :uniqueness => true, :limit => 10
       # Personennummer FS
-      t.integer :ueberPnr, :uniqueness => true, :length => {:maximum => 10 }
+      t.integer :ueberPnr, :uniqueness => true, :limit => 10
       # Passwort
-      t.string :passwort, :length => {:maximum => 35 }
+      t.string :passwort, :limit => 35
       # PWAendDatum
       t.date :pwAendDatum
       # Gesperrt
-      t.boolean :gesperrt, :presence => true
+      t.boolean :gesperrt, :null => false
     end
   end
 
