@@ -1,6 +1,5 @@
 class Tan < ActiveRecord::Base
 
    attr_accessible :mnr, :listNr, :tanNr, :tan, :verwendetAm, :status
-   set_primary_keys :mnr, :listNr, :tanNr
 
 end
