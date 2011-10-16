@@ -12,9 +12,9 @@
 
 ActiveRecord::Schema.define(:version => 20111016113940) do
 
-  create_table "administrators", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "administrators", :primary_key => "pnr", :force => true do |t|
+    t.string "adminPw"
+    t.string "adminEmail"
   end
 
   create_table "bankverbindungs", :force => true do |t|
@@ -23,8 +23,13 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
   end
 
   create_table "buchung_onlines", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "mnr",         :limit => 10,                :null => false
+    t.date    "ueberwdatum",                              :null => false
+    t.integer "sollktonr",   :limit => 5,  :default => 0, :null => false
+    t.integer "habenktonr",  :limit => 5,  :default => 0, :null => false
+    t.integer "punkte",      :limit => 10,                :null => false
+    t.integer "tan",         :limit => 5,                 :null => false
+    t.integer "blocknr",     :limit => 2,                 :null => false
   end
 
   create_table "buchungs", :force => true do |t|
