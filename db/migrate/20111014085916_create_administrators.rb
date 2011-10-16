@@ -1,6 +1,6 @@
 class CreateAdministrators < ActiveRecord::Migration
   def self.up
-    create_table (:administrators, :primary_key => :pnr) do |t|
+    create_table(:administrators, :primary_key => :pnr) do |t|
       # Index
       t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       #AdminPW

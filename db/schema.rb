@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(:version => 20111016113940) do
 
   create_table "administrators", :primary_key => "pnr", :force => true do |t|
-    t.string "adminPw"
+    t.string "adminPw",    :limit => 35, :null => false
     t.string "adminEmail"
   end
 
@@ -47,14 +47,17 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
     t.datetime "updated_at"
   end
 
-  create_table "foerdermitglieds", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "foerdermitglieds", :primary_key => "pnr", :force => true do |t|
+    t.string  "region",         :limit => 30
+    t.decimal "foerderbeitrag",               :precision => 2, :scale => 5
   end
 
-  create_table "gesellschafters", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "gesellschafters", :primary_key => "mnr", :force => true do |t|
+    t.string  "faSteuerNr",        :limit => 15
+    t.string  "faLdfNr",           :limit => 20
+    t.string  "wohnsitzFinanzamt", :limit => 50
+    t.integer "notarPnr",          :limit => 10
+    t.date    "beurkDatum"
   end
 
   create_table "kk_verlaufs", :force => true do |t|
@@ -67,9 +70,8 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
     t.datetime "updated_at"
   end
 
-  create_table "mitglieds", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "mitglieds", :primary_key => "mnr", :force => true do |t|
+    t.date "rvDatum"
   end
 
   create_table "ozb_kontos", :force => true do |t|
@@ -77,9 +79,11 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
     t.datetime "updated_at"
   end
 
-  create_table "ozb_people", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "ozb_people", :primary_key => "mnr", :force => true do |t|
+    t.integer "ueberPnr",    :limit => 10
+    t.string  "passwort",    :limit => 35
+    t.date    "pwAendDatum"
+    t.boolean "gesperrt",                  :default => false, :null => false
   end
 
   create_table "partners", :force => true do |t|
@@ -95,9 +99,13 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
     t.datetime "updated_at"
   end
 
-  create_table "students", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "students", :primary_key => "mnr", :force => true do |t|
+    t.string "ausbildBez",    :limit => 30
+    t.string "institutName",  :limit => 30
+    t.string "studienort",    :limit => 30
+    t.date   "studienbeginn"
+    t.date   "studienende"
+    t.string "abschluss"
   end
 
   create_table "tanlistes", :force => true do |t|
