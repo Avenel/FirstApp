@@ -1,10 +1,10 @@
 class CreatePeople < ActiveRecord::Migration
   def self.up
-    create_table(:people, :primary_key => :pnr) do |t|
+    create_table(:people, :primary_key => :pnr,  :force => true) do |t|
       # Index
       t.integer :pnr, :presence => true, :uniqueness => true, :length => {:maximum => 10 }
-      # Rolle
-      t.column "rolle", :enum, :limit => [:G, :M, :P, :S, :F]
+      # Rolle                              
+      t.column "rolle", :enum, :limit => [:G, :M, :P, :S, :F] # G: Gesellschafter, M: Mitglied, P: Partner,  S: Student, F: Foerdermitglied
       # Name
       t.string :name, :presence => true, :length =>{:maximum => 20}
       # Vorname
