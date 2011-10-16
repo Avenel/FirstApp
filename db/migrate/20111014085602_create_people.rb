@@ -3,8 +3,8 @@ class CreatePeople < ActiveRecord::Migration
     create_table(:people, :primary_key => :pnr) do |t|
       # Index
       t.integer :pnr, :presence => true, :uniqueness => true, :length => {:maximum => 10 }
-      # Rolle
-      t.column "rolle", :enum, :limit => [:G, :M, :P, :S, :F]
+      # Rolle                              
+      t.column "rolle", :enum, :limit => [:G, :M, :P, :S, :F] # G: Gesellschafter, M: Mitglied, P: Partner,  S: Student, F: Foerdermitglied
       # Name
       t.string :name, :presence => true, :length =>{:maximum => 20}
       # Vorname
@@ -16,7 +16,7 @@ class CreatePeople < ActiveRecord::Migration
       # Hausnummer
       t.string :hausnr, :length => {:maximum => 10}
       # Postleitzahl
-      t.integer :plz, :length => {:maximum => 5}
+      t.integer :plz, :length => {:minimum => 5, :maximum => 5}
       # Ort
       t.string :ort, :length => {:maximum => 50}
       # Vermerk

@@ -1,6 +1,6 @@
 class CreatePeople < ActiveRecord::Migration
   def self.up
-    create_table(:people, :primary_key => :pnr)) do |t|
+    create_table(:people, :primary_key => :pnr) do |t|
       # Index
       t.integer :pnr, :presence => true, :uniqueness => true, :length => {:maximum => 10 }
       # Rolle
@@ -16,7 +16,7 @@ class CreatePeople < ActiveRecord::Migration
       # Hausnummer
       t.string :hausnr, :length => {:maximum => 10}
       # Postleitzahl
-      t.integer :plz, :length => {:maximum => 5}
+      t.integer :plz, :length => {:minimum => 5, :maximum => 5}
       # Ort
       t.string :ort, :length => {:maximum => 50}
       # Vermerk
