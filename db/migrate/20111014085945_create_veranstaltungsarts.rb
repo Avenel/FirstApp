@@ -4,7 +4,7 @@ class CreateVeranstaltungsarts < ActiveRecord::Migration
       # Veranstaltungsart-id PS
       t.integer :id, :null => false, :uniqueness => true, :limit => 2
       # VABezeichnung
-      t.string :vaBezeichnung, :limit => 30
+      t.string :vaBezeichnung, :limit => 30, :default => nil
       
     end
   end

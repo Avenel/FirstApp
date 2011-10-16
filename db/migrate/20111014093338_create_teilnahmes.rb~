@@ -6,8 +6,7 @@ class CreateTeilnahmes < ActiveRecord::Migration
       # Vnr PS2, FS
       t.integer :vnr, :null => false, :limit => 5
       # Teilnahmeart
-      t.column "teilnArt", :enum, :limit => [:a, :e, :u] # a: anwesend, e: entschuldigt, u: unentschuldigt
-       
+      t.column "teilnArt", :enum, :limit => [:a, :e, :u] # a: anwesend, e: entschuldigt, u: unentschuldigt 
     end
   end
 

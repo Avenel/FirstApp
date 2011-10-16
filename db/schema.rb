@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
 
   create_table "foerdermitglieds", :primary_key => "pnr", :force => true do |t|
     t.string  "region",         :limit => 30
-    t.decimal "foerderbeitrag",               :precision => 2, :scale => 5
+    t.decimal "foerderbeitrag",               :precision => 5, :scale => 2
   end
 
   create_table "gesellschafters", :primary_key => "mnr", :force => true do |t|
@@ -118,24 +118,22 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
     t.datetime "updated_at"
   end
 
-  create_table "teilnahmes", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+# Could not dump table "teilnahmes" because of following StandardError
+#   Unknown type 'enum' for column 'teilnArt'
 
   create_table "telefons", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "veranstaltungs", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "veranstaltungs", :primary_key => "vnr", :force => true do |t|
+    t.integer "vid",                   :null => false
+    t.date    "vaDatum",               :null => false
+    t.string  "vaOrt",   :limit => 30
   end
 
   create_table "veranstaltungsarts", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "vaBezeichnung", :limit => 30
   end
 
   create_table "ze_kontos", :force => true do |t|
