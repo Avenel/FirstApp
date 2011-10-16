@@ -18,8 +18,12 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
   end
 
   create_table "bankverbindungs", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "pnr",       :limit => 10, :null => false
+    t.string  "bankKtoNr", :limit => 10
+    t.integer "blz",       :limit => 10
+    t.string  "bic",       :limit => 10
+    t.string  "iban",      :limit => 20
+    t.string  "bankName",  :limit => 35
   end
 
   create_table "buchung_onlines", :force => true do |t|
@@ -38,13 +42,18 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
   end
 
   create_table "buergschafts", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "pnrB",         :limit => 10,                                 :null => false
+    t.integer "pnrG",         :limit => 10,                                 :null => false
+    t.integer "ktoNr",        :limit => 5,                                  :null => false
+    t.date    "sichAbDatum"
+    t.date    "sichEndDatum"
+    t.decimal "sichBetrag",                  :precision => 10, :scale => 2
+    t.string  "sichKurzBez",  :limit => 200
   end
 
-  create_table "ee_kontos", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "ee_kontos", :primary_key => "ktoNr", :force => true do |t|
+    t.integer "bankId",      :limit => 3
+    t.decimal "kreditlimit",              :precision => 5, :scale => 2, :default => 0.0
   end
 
   create_table "foerdermitglieds", :primary_key => "pnr", :force => true do |t|
@@ -61,22 +70,27 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
   end
 
   create_table "kk_verlaufs", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "ktoNr",      :limit => 5, :null => false
+    t.date    "kklAbDatum",              :null => false
+    t.string  "kkl",        :limit => 1, :null => false
   end
 
-  create_table "kontenklasses", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "kontenklasses", :primary_key => "kkl", :force => true do |t|
+    t.date    "kklAbDatum",                                                :null => false
+    t.decimal "prozent",    :precision => 5, :scale => 2, :default => 0.0, :null => false
   end
 
   create_table "mitglieds", :primary_key => "mnr", :force => true do |t|
     t.date "rvDatum"
   end
 
-  create_table "ozb_kontos", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "ozb_kontos", :primary_key => "ktoNr", :force => true do |t|
+    t.integer "mnr",          :limit => 10,                                                   :null => false
+    t.date    "ktoEinrDatum"
+    t.string  "waehrung",     :limit => 3,                                 :default => "STR"
+    t.decimal "wSaldo",                     :precision => 10, :scale => 2
+    t.integer "pSaldo",       :limit => 11
+    t.date    "saldoDatum"
   end
 
   create_table "ozb_people", :primary_key => "mnr", :force => true do |t|
@@ -86,9 +100,9 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
     t.boolean "gesperrt",                  :default => false, :null => false
   end
 
-  create_table "partners", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "partners", :primary_key => "mnr", :force => true do |t|
+    t.integer "mnrO",         :limit => 10, :null => false
+    t.string  "berechtigung", :limit => 1,  :null => false
   end
 
 # Could not dump table "people" because of following StandardError
@@ -108,22 +122,20 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
     t.string "abschluss"
   end
 
-  create_table "tanlistes", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+# Could not dump table "tanlistes" because of following StandardError
+#   Unknown type 'enum' for column 'status'
 
-  create_table "tans", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+# Could not dump table "tans" because of following StandardError
+#   Unknown type 'enum' for column 'status'
 
 # Could not dump table "teilnahmes" because of following StandardError
 #   Unknown type 'enum' for column 'teilnArt'
 
-  create_table "telefons", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "telefons", :id => false, :force => true do |t|
+    t.integer "pnr",        :limit => 10, :null => false
+    t.integer "lfdNr",      :limit => 2,  :null => false
+    t.string  "telefonNr",  :limit => 15
+    t.string  "telefonTyp", :limit => 6
   end
 
   create_table "veranstaltungs", :primary_key => "vnr", :force => true do |t|
@@ -136,9 +148,20 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
     t.string "vaBezeichnung", :limit => 30
   end
 
-  create_table "ze_kontos", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "ze_kontos", :primary_key => "ktoNr", :force => true do |t|
+    t.integer "eeKtoNr",    :limit => 5,                                                  :null => false
+    t.integer "pgNr",       :limit => 2
+    t.string  "zeNr",       :limit => 10
+    t.date    "zeAbDatum"
+    t.date    "zeEndDatum"
+    t.decimal "zeBetrag",                 :precision => 10, :scale => 2
+    t.integer "laufzeit",   :limit => 4,                                                  :null => false
+    t.string  "zahlModus",  :limit => 1,                                 :default => "M"
+    t.decimal "tilgRate",                 :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal "ansparRate",               :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal "kduRate",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal "rduRate",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string  "zeStatus",   :limit => 1,                                 :default => "A", :null => false
   end
 
 end

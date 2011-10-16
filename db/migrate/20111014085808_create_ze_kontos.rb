@@ -18,7 +18,7 @@ class CreateZeKontos < ActiveRecord::Migration
       # laufzeit
       t.integer :laufzeit, :null => false, :limit => 4
       # zahlModus
-      t.string :zahlModus, :limit => 1, :default => "M"
+      t.string :zahlModus, :limit => 1, :default => 'M'
       # TilgRate
       t.decimal :tilgRate, :null => false, :scale => 2, :precision => 10, :default => 0.00
       # AnsparRate
@@ -28,7 +28,7 @@ class CreateZeKontos < ActiveRecord::Migration
       # RDURate
       t.decimal :rduRate, :null => false, :scale => 2, :precision => 10, :default => 0.00
       # ZEStatus
-      t.string :zeStatus, :null => false, :limit > 1, :default => "A"
+      t.string :zeStatus, :null => false, :limit => 1, :default => 'A'
     end
   end
 
