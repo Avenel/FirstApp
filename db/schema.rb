@@ -37,8 +37,21 @@ ActiveRecord::Schema.define(:version => 20111016113940) do
   end
 
   create_table "buchungs", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "buchjahr",     :limit => 4,                                                  :null => false
+    t.integer "ktonr",        :limit => 5,                                                  :null => false
+    t.string  "bnkreis",      :limit => 2,                                                  :null => false
+    t.integer "belegnr",      :limit => 10,                                                 :null => false
+    t.string  "typ",          :limit => 1,                                                  :null => false
+    t.date    "belegdatum"
+    t.date    "buchdatum"
+    t.string  "buchungstext", :limit => 50,                                                 :null => false
+    t.decimal "sollbetrag",                 :precision => 10, :scale => 2
+    t.decimal "habenbetrag",                :precision => 10, :scale => 2
+    t.integer "sollktonr",    :limit => 5,                                 :default => 0,   :null => false
+    t.integer "habenktonr",   :limit => 5,                                 :default => 0,   :null => false
+    t.decimal "wsaldoacc",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.integer "punkte",       :limit => 10
+    t.integer "psaldoacc",    :limit => 10,                                :default => 0,   :null => false
   end
 
   create_table "buergschafts", :force => true do |t|
