@@ -3,8 +3,11 @@ class Person < ActiveRecord::Base
    attr_accessible   :rolle, :name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
                      :ort, :vermerk, :email, :antragsdatum, :aufnahmedatum, :austrittsdatum
 
+   validates :email, :email => true
+
    has_many :telefon
    has_many :partner
-   has_may :teilnahme
+   has_many :teilnahme
+   
 
 end
