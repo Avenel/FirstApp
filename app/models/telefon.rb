@@ -5,5 +5,5 @@ class Telefon < ActiveRecord::Base
    attr_accessible :pnr, :lfdNr, :telefonNr, :telefonTyp
    set_primary_keys :pnr, :lfdNr
    
-
+   belongs_to :Person
 end

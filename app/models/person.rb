@@ -2,17 +2,16 @@ class Person < ActiveRecord::Base
 
    set_table_name "Person"
 
+   set_primary_key :pnr  
+
    attr_accessible   :pnr, :rolle, :name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
                      :ort, :vermerk, :email, :antragsdatum, :aufnahmedatum, :austrittsdatum
 
-   validates :email, :email => true
+   #validates :email, :EmailValidator => true
 
-   has_many :telefon
+   has_many :telefon, :foreign_key => :pnr
    has_many :partner
-   has_many :teilnahme
-   
-   set_primary_key :pnr  
-
+   has_many :teilnahme   
 end
 
 class EmailValidator < ActiveModel::EachValidator

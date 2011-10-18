@@ -4,14 +4,14 @@ class ApplicationController < ActionController::Base
    def test
       
       @person = Person.new
-      @person.rolle = :G
-      @person.name = "Mustermann"
-      @person.vorname = "Max"
-      @person.save
+      person.rolle = :G
+      person.name = "Mustermann"
+      person.vorname = "Max"
+      person.save
 
 
       tel = Telefon.new
-      tel.pnr = @person.pnr
+      tel.pnr = person.pnr
       tel.lfdNr = 1
       tel.telefonNr = "020122"
       tel.telefonTyp = "handy"
