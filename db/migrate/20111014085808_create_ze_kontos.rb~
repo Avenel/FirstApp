@@ -1,6 +1,6 @@
-class CreateZeKontos < ActiveRecord::Migration
+class CreateZeKonto < ActiveRecord::Migration
   def self.up
-    create_table(:ze_kontos, :primary_key => :ktoNr) do |t|
+    create_table(:ZEKonto, :primary_key => :ktoNr) do |t|
       # Kontonummer PS, FS
       t.integer :ktoNr, :null => false, :uniqueness => true, :limit => 5
       # EEKtoNr FS
@@ -28,7 +28,7 @@ class CreateZeKontos < ActiveRecord::Migration
       # RDURate
       t.decimal :rduRate, :null => false, :scale => 2, :precision => 10, :default => 0.00
       # ZEStatus
-      t.string :zeStatus, :null => false, :limit > 1, :default => 'A'
+      t.string :zeStatus, :null => false, :limit => 1, :default => 'A'
     end
   end
 

@@ -1,6 +1,6 @@
-class CreatePartners < ActiveRecord::Migration
+class CreatePartner < ActiveRecord::Migration
   def self.up
-    create_table(:partners, :primary_key => :mnr) do |t|
+    create_table(:Partner, :primary_key => :mnr) do |t|
       # Mitgliedsnummer PS
       t.integer :mnr, :null => false, :uniqueness => true, :limit => 10
       # MnrO FS

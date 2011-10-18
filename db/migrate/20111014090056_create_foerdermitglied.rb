@@ -1,6 +1,6 @@
-class CreateFoerdermitglieds < ActiveRecord::Migration
+class CreateFoerdermitglied < ActiveRecord::Migration
   def self.up
-    create_table(:foerdermitglieds, :primary_key => :pnr) do |t|
+    create_table(:Foerdermitglied, :primary_key => :pnr) do |t|
       # Personalnummer PS, FS
       t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       # Region

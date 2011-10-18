@@ -1,6 +1,6 @@
-class CreatePeople < ActiveRecord::Migration
+class CreatePerson < ActiveRecord::Migration
   def self.up
-    create_table(:people, :primary_key => :pnr) do |t|
+    create_table(:Person, :primary_key => :pnr) do |t|
       # PNR PS
       t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       # Rolle                              

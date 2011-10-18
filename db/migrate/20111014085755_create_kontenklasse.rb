@@ -1,6 +1,6 @@
-class CreateKontenklasses < ActiveRecord::Migration
+class CreateKontenklasse < ActiveRecord::Migration
   def self.up
-    create_table(:kontenklasses, :primary_key => :kkl) do |t|
+    create_table(:Kontenklasse, :primary_key => :kkl) do |t|
       # Kontoklasse PS
       t.string :kkl, :null => false, :uniqueness => true, :limit => 1
       # KKLAbDatum

@@ -1,6 +1,7 @@
-class CreateOzbKontos < ActiveRecord::Migration
+class CreateOZBKonto
+Konto < ActiveRecord::Migration
   def self.up
-    create_table(:ozb_kontos, :primary_key => :ktoNr) do |t| 
+    create_table(:OZBKonto, :primary_key => :ktoNr) do |t| 
       # KtoNr PS
       t.integer :ktoNr, :null => false, :uniqueness => true, :limit => 5
       # Mitgliedsnummer FS
@@ -19,6 +20,6 @@ class CreateOzbKontos < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :ozb_kontos
+    drop_table :OZBKonto
   end
 end

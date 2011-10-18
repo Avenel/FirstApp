@@ -1,6 +1,6 @@
-class CreateTans < ActiveRecord::Migration
+class CreateTan < ActiveRecord::Migration
   def self.up
-    create_table(:tans, :index => false) do |t|
+    create_table(:Tan, :index => false) do |t|
        # Mitgliedsnummer PS1, FS
        t.integer :mnr, :null => false, :limit => 10    
        # Listennummer PS2, FS

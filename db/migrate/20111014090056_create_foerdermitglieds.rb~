@@ -6,7 +6,7 @@ class CreateFoerdermitglieds < ActiveRecord::Migration
       # Region
       t.string :region, :limit => 30, :default => nil
       # Förderbeitrag
-      t.decimal :foerderbeitrag, :scale => 2, :precision => 5
+      t.decimal :foerderbeitrag, :scale => 2, :precision => 5, :default => nil
     end
   end
 

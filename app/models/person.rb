@@ -1,5 +1,7 @@
 class Person < ActiveRecord::Base
 
+   set_table_name "Person"
+
    attr_accessible   :rolle, :name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
                      :ort, :vermerk, :email, :antragsdatum, :aufnahmedatum, :austrittsdatum
 

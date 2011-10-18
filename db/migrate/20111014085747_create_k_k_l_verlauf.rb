@@ -1,6 +1,6 @@
-class CreateKkVerlaufs < ActiveRecord::Migration
+class CreateKKLVerlauf < ActiveRecord::Migration
   def self.up
-    create_table(:kk_verlaufs, :index => false) do |t|
+    create_table(:KKLVerlauf, :index => false) do |t|
       # Kontonummer PS1, FS
       t.integer :ktoNr, :null => false, :limit => 5
       # KKLAblaufDatum PS2

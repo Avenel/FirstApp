@@ -1,6 +1,6 @@
-class CreateGesellschafters < ActiveRecord::Migration
+class CreateGesellschafter < ActiveRecord::Migration
   def self.up
-    create_table(:gesellschafters, :primary_key => :mnr) do |t|
+    create_table(:Gesellschafter, :primary_key => :mnr) do |t|
       # Mitgliedsnummer PS, FS
       t.integer :mnr, :null => false, :uniqueness => true, :limit => 10
       # Finanzamz Steuernummer 

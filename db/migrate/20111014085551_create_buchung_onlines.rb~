@@ -1,6 +1,6 @@
 class CreateBuchungOnlines < ActiveRecord::Migration
   def self.up
-    create_table (:buchung_onlines, :primary_key => :id) do |t|
+    create_table(:BuchungOnline, :primary_key => :id) do |t|
 			#ID
 			t.integer :id, :uniqueness => true, :limit => 10, :null => false
 			#Mnr

@@ -1,6 +1,6 @@
-class CreateTelefons < ActiveRecord::Migration
+class CreateTelefon < ActiveRecord::Migration
   def self.up
-    create_table(:telefons, :id => false) do |t|
+    create_table(:Telefon, :id => false) do |t|
       # Personalnummer PS1, FS
       t.integer :pnr, :null => false, :limit => 10
       # Laufende Nummer PS2

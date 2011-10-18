@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111014093338) do
+ActiveRecord::Schema.define(:version => 20111016113940) do
 
   create_table "Administrator", :primary_key => "pnr", :force => true do |t|
     t.string "adminPw",    :limit => 35, :null => false
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(:version => 20111014093338) do
     t.string  "bic",       :limit => 10
     t.string  "iban",      :limit => 20
     t.string  "bankName",  :limit => 35
+  end
+
+  create_table "BuchungOnline", :force => true do |t|
+    t.integer "mnr",         :limit => 10,                :null => false
+    t.date    "ueberwdatum",                              :null => false
+    t.integer "sollktonr",   :limit => 5,  :default => 0, :null => false
+    t.integer "habenktonr",  :limit => 5,  :default => 0, :null => false
+    t.integer "punkte",      :limit => 10,                :null => false
+    t.integer "tan",         :limit => 5,                 :null => false
+    t.integer "blocknr",     :limit => 2,                 :null => false
   end
 
   create_table "Buchung", :force => true do |t|
@@ -42,16 +52,6 @@ ActiveRecord::Schema.define(:version => 20111014093338) do
     t.decimal "wSaldoAcc",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.integer "punkte",       :limit => 10
     t.integer "pSaldoAcc",    :limit => 10,                                :default => 0,   :null => false
-  end
-
-  create_table "BuchungOnline", :force => true do |t|
-    t.integer "mnr",         :limit => 10,                :null => false
-    t.date    "ueberwdatum",                              :null => false
-    t.integer "sollktonr",   :limit => 5,  :default => 0, :null => false
-    t.integer "habenktonr",  :limit => 5,  :default => 0, :null => false
-    t.integer "punkte",      :limit => 10,                :null => false
-    t.integer "tan",         :limit => 5,                 :null => false
-    t.integer "blocknr",     :limit => 2,                 :null => false
   end
 
   create_table "Buergschaft", :force => true do |t|
@@ -118,8 +118,13 @@ ActiveRecord::Schema.define(:version => 20111014093338) do
     t.string  "berechtigung", :limit => 1,  :null => false
   end
 
-# Could not dump table "Person" because of following StandardError
+# Could not dump table "people" because of following StandardError
 #   Unknown type 'enum' for column 'rolle'
+
+  create_table "Projektgruppe", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "Student", :primary_key => "mnr", :force => true do |t|
     t.string "ausbildBez",    :limit => 30
@@ -130,13 +135,13 @@ ActiveRecord::Schema.define(:version => 20111014093338) do
     t.string "abschluss"
   end
 
-# Could not dump table "Tan" because of following StandardError
+# Could not dump table "tanlistes" because of following StandardError
 #   Unknown type 'enum' for column 'status'
 
-# Could not dump table "Tanliste" because of following StandardError
+# Could not dump table "tans" because of following StandardError
 #   Unknown type 'enum' for column 'status'
 
-# Could not dump table "Teilnahme" because of following StandardError
+# Could not dump table "teilnahmes" because of following StandardError
 #   Unknown type 'enum' for column 'teilnArt'
 
   create_table "Telefon", :id => false, :force => true do |t|
@@ -170,11 +175,6 @@ ActiveRecord::Schema.define(:version => 20111014093338) do
     t.decimal "kduRate",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.decimal "rduRate",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.string  "zeStatus",   :limit => 1,                                 :default => "A", :null => false
-  end
-
-  create_table "projektgruppes", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
 end

@@ -1,6 +1,6 @@
-class CreateTeilnahmes < ActiveRecord::Migration
+class CreateTeilnahme < ActiveRecord::Migration
   def self.up
-    create_table(:teilnahmes, :id => false) do |t|
+    create_table(:Teilnahme, :id => false) do |t|
       # Pnr PS1, FS
       t.integer :pnr, :null => false, :limit => 10
       # Vnr PS2, FS

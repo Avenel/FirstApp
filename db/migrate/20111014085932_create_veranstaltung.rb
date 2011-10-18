@@ -1,6 +1,6 @@
-class CreateVeranstaltungs < ActiveRecord::Migration
+class CreateVeranstaltung < ActiveRecord::Migration
   def self.up
-    create_table(:veranstaltungs, :primary_key => :vnr) do |t|
+    create_table(:Veranstaltung, :primary_key => :vnr) do |t|
       # VNR PS
       t.integer :vnr, :null => false, :uniqueness => true, :limit => 5
       # Vid FS

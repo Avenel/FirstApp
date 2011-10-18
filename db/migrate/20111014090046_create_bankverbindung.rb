@@ -1,6 +1,6 @@
-class CreateBankverbindungs < ActiveRecord::Migration
+class CreateBankverbindung < ActiveRecord::Migration
   def self.up
-    create_table(:bankverbindungs) do |t|
+    create_table(:Bankverbindung) do |t|
       # Personalnummer FS
       t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       # BankKtoNr

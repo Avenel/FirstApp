@@ -1,6 +1,6 @@
-class CreateBuergschafts < ActiveRecord::Migration
+class CreateBuergschaft < ActiveRecord::Migration
   def self.up
-    create_table(:buergschafts, :index => false) do |t|
+    create_table(:Buergschaft, :index => false) do |t|
       # Personalnummer Bürgschaft PS1, FS
       t.integer :pnrB, :null => false, :uniqueness => true, :limit => 10    
       # Personalnummer Gesellschafter PS2, FS

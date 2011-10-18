@@ -1,6 +1,6 @@
-class CreateBuchungs < ActiveRecord::Migration
+class CreateBuchung < ActiveRecord::Migration
   def self.up
-   create_table :buchungs, :index => false do |t|
+   create_table(:Buchungs, :index => false) do |t|
       # Buchungsjahr PS1
 		t.integer :buchJahr, :null => false, :uniqueness => true, :limit => 4
       # Kontonummer PS2, FS

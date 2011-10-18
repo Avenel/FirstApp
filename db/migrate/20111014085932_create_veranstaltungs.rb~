@@ -8,7 +8,7 @@ class CreateVeranstaltungs < ActiveRecord::Migration
       # vaDatum
       t.date :vaDatum, :null => false
       # vaOrt
-      t.string :vaOrt, :limit => 30
+      t.string :vaOrt, :limit => 30, :default => nil
     end
   end
 

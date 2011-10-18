@@ -1,6 +1,6 @@
-class CreateStudents < ActiveRecord::Migration
+class CreateStudent < ActiveRecord::Migration
   def self.up
-    create_table(:students, :primary_key => :mnr) do |t|
+    create_table(:Student, :primary_key => :mnr) do |t|
       # Mitgliedsnummer PS, FS
       t.integer :mnr, :null => false, :uniqueness => true, :limit => 10
       # AusbildungsBezeichnung

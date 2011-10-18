@@ -1,6 +1,6 @@
-class CreateVeranstaltungsarts < ActiveRecord::Migration
+class CreateVeranstaltungsart < ActiveRecord::Migration
   def self.up
-    create_table(:veranstaltungsarts, :primary_key => :id) do |t|
+    create_table(:Veranstaltungsart, :primary_key => :id) do |t|
       # Veranstaltungsart-id PS
       t.integer :id, :null => false, :uniqueness => true, :limit => 2
       # VABezeichnung
