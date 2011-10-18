@@ -9,9 +9,11 @@ class Person < ActiveRecord::Base
 
    #validates :email, :EmailValidator => true
 
-   has_many :telefon
-   has_many :partner
-   has_many :teilnahme   
+   has_many :administrator, :foreign_key => :pnr
+   has_many :telefon, :foreign_key => :pnr
+   has_many :partner, :foreign_key => :mnr
+   has_many :teilnahme, :foreign_key => :pnr
+   has_many :buergschaft, :foreign_key => :pnr
 end
 
 class EmailValidator < ActiveModel::EachValidator

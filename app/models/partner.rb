@@ -4,4 +4,6 @@ class Partner < ActiveRecord::Base
 
    attr_accessible :mnr, :mnrO, :berechtigung
 
+   belongs_to :person
+
 end

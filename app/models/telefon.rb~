@@ -3,7 +3,7 @@ class Telefon < ActiveRecord::Base
    set_table_name "Telefon"
 
    attr_accessible :pnr, :lfdNr, :telefonNr, :telefonTyp
-   set_primary_keys :pnr, :lfdNr
+   set_primary_key :lfdNr
    
-   belongs_to :Person, :foreign_key => :pnr
+   belongs_to :Person
 end
