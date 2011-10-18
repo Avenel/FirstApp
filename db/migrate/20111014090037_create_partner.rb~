@@ -11,6 +11,6 @@ class CreatePartner < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Partner
+    drop_table :partners
   end
 end

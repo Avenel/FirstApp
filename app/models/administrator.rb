@@ -5,6 +5,9 @@ class Administrator < ActiveRecord::Base
    
    attr_accessible :adminPw, :adminEmail
    
-   validates :adminEmail, :email => true
+   #validates :adminEmail, :email => true
+
+   belongs_to :Person, :foreign_key => :ueberPnr
+   set_primary_key :pnr
 
 end

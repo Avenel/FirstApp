@@ -34,6 +34,6 @@ class CreatePerson < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Person
+    drop_table :people
   end
 end

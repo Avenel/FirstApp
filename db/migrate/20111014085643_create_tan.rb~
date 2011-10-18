@@ -17,6 +17,6 @@ class CreateTan < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Tan
+    drop_table :tans
   end
 end

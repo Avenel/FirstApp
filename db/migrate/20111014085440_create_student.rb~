@@ -19,6 +19,6 @@ class CreateStudent < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Student
+    drop_table :students
   end
 end

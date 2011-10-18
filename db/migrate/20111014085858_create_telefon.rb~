@@ -13,6 +13,6 @@ class CreateTelefon < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Telefon
+    drop_table :telefons
   end
 end

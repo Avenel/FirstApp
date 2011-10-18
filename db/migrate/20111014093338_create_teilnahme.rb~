@@ -12,6 +12,6 @@ class CreateTeilnahme < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Teilnahme
+    drop_table :teilnahmes
   end
 end

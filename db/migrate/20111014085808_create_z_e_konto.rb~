@@ -33,6 +33,6 @@ class CreateZEKonto < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :ZEKonto
+    drop_table :ze_kontos
   end
 end

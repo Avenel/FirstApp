@@ -11,6 +11,6 @@ class CreateAdministrator < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Administrator
+    drop_table :administrators
   end
 end

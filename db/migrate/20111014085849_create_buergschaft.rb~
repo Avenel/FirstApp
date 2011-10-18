@@ -19,6 +19,6 @@ class CreateBuergschaft < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Buergschaft
+    drop_table :buergschafts
   end
 end

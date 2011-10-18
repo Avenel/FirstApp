@@ -35,6 +35,6 @@ class CreateBuchung < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Buchung
+    drop_table :buchungs
   end
 end

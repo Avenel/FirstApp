@@ -21,6 +21,6 @@ class CreateBuchungOnline < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :BuchungOnline
+    drop_table :buchung_onlines
   end
 end

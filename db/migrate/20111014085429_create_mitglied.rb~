@@ -9,6 +9,6 @@ class CreateMitglied < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :Mitglied
+    drop_table :mitglieds
   end
 end

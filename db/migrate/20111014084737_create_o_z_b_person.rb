@@ -1,8 +1,8 @@
 class CreateOZBPerson < ActiveRecord::Migration
   def self.up
-    create_table(:OZBPerson, :primary_key => :mnr) do |t|
+    create_table(:OZBPerson, :primary_key => :id) do |t|
       # Mitgliedsnummer PS, FS
-      t.integer :mnr, :null => false, :uniqueness => true, :limit => 10
+      t.integer :id, :null => false, :uniqueness => true, :limit => 10
       # Personennummer FS
       t.integer :ueberPnr, :uniqueness => true, :limit => 10
       # Passwort

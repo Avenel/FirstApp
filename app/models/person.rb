@@ -2,7 +2,7 @@ class Person < ActiveRecord::Base
 
    set_table_name "Person"
 
-   attr_accessible   :rolle, :name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
+   attr_accessible   :pnr, :rolle, :name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
                      :ort, :vermerk, :email, :antragsdatum, :aufnahmedatum, :austrittsdatum
 
    validates :email, :email => true
@@ -11,6 +11,7 @@ class Person < ActiveRecord::Base
    has_many :partner
    has_many :teilnahme
    
+   set_primary_key :pnr  
 
 end
 
