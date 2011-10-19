@@ -24,7 +24,20 @@
   veranstaltung = Veranstaltung.create( :vid => 1, :vaDatum => Date.new, :vaOrt => "Buxtehude" )
 
   teilname = Teilnahme.create( :pnr => person.pnr, :vnr => veranstaltung.vnr, :teilnArt => :a )
-  
-  buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => 42, :ktoNr => 91234 )
-    
+      
   veranstaltungsart = Veranstaltungsart.create( :vaBezeichnung => "Eierschaukeln" )
+  
+  mitglied = Mitglied.create(:mnr => ozbPerson.mnr )
+
+  student = Student.create( :mnr => ozbPerson.mnr, :studienort => "Karlsruhe" )
+  
+  ozbkonto = OZBKonto.create( :mnr => ozbPerson.mnr, :wSaldo => 520.21 )
+  
+  buchungonline = BuchungOnline.create( :mnr => ozbPerson.mnr, :ueberwdatum => Date.new, :sollktonr => ozbkonto.ktoNr, 
+                                        :habenktonr => 25231, :punkte => 1337, :tan => 52621, :blocknr => 45 )
+  
+  tanliste=  Tanliste.create( :mnr => ozbPerson.mnr, :status => :n )
+  
+  gesellschafter = Gesellschafter.create( :mnr => ozbPerson.mnr, :faSteuerNr => 13512, :faLfdNr => 2134 )
+  
+  buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => gesellschafter.mnr, :ktoNr => 91234 )

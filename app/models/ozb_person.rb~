@@ -11,13 +11,13 @@ class OZBPerson < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :mnr, :ueberPnr, :email, :password, :password_confirmation, :remember_me, :passwort, :pwAendDatum, :gesperrt
     
-  has_one :mitglied, :foreign_key => :mnr  # Done, ungetestet
-  has_one :student, :foreign_key => :mnr # Done, ungetestet
-  has_one :buchungonline, :foreign_key => :mnr # Done, ungetestet
-  has_many :ozbkonto, :foreign_key => :mnr # Done, ungetestet
-  has_many :tanliste, :foreign_key => :mnr # Done, ungetestet
-  has_one :gesellschafter, :foreign_key => :mnr # Done, ungetestet
-  belongs_to :person # Done, ungetestet
+  has_one :Mitglied, :foreign_key => :mnr  # Done, getestet
+  has_one :Student, :foreign_key => :mnr # Done, ungetestet
+  has_one :BuchungOnline, :foreign_key => :mnr # Done, ungetestet
+  has_many :OZBKonto, :foreign_key => :mnr # Done, ungetestet
+  has_many :Tanliste, :foreign_key => :mnr # Done, ungetestet
+  has_one :Gesellschafter, :foreign_key => :mnr # Done, ungetestet
+  belongs_to :Person # Done, getestet
   
   has_many :buergschaft, :foreign_key => :mnrG # Done, ungetestet
 

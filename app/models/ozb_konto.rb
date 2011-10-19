@@ -6,5 +6,5 @@ class OZBKonto < ActiveRecord::Base
 
   attr_accessible :ktoNr, :mnr, :ktoEinrDatum, :waehrung, :wSaldo, :pSaldo, :saldoDatum
 
-  belongs_to :ozbperson
+  belongs_to :OZBPerson
 end

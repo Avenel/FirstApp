@@ -4,6 +4,6 @@ class Mitglied < ActiveRecord::Base
 
   attr_accessible :mnr, :rvDatum
 
-  belongs_to :ozbperson
+  belongs_to :ozb_person
   
 end

@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
 
   create_table "Gesellschafter", :primary_key => "mnr", :force => true do |t|
     t.string  "faSteuerNr",        :limit => 15
-    t.string  "faLdfNr",           :limit => 20
+    t.string  "faLfdNr",           :limit => 20
     t.string  "wohnsitzFinanzamt", :limit => 50
     t.integer "notarPnr",          :limit => 10
     t.date    "beurkDatum"

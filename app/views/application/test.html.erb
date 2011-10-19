@@ -1,2 +1,8 @@
-<%= @person.inspect %>
-<%= @person.OZBPerson %>
+<p><b>Person</b>: <%= @person.inspect %></p>
+<p><b>Mitglied:</b> <%= @person.OZBPerson[-1].Mitglied.inspect %></p>
+<p><b>Student:</b> <%= @person.OZBPerson[-1].Student.inspect %></p>
+<p><b>BuchungOnline:</b> <%= @person.OZBPerson[-1].BuchungOnline.inspect %></p>
+<p><b>OZBKonto:</b> <%= @person.OZBPerson[-1].OZBKonto.inspect %></p>
+<p><b>Tanliste:</b> <%= @person.OZBPerson[-1].Tanliste.inspect %></p>
+<p><b>Gesellschafter:</b> <%= @person.OZBPerson[-1].Gesellschafter.inspect %></p>
+<p><b>Buergschaft:</b> <%= @person.OZBPerson[-1].Buergschaft.inspect %></p>

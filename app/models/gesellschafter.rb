@@ -6,5 +6,5 @@ class Gesellschafter < ActiveRecord::Base
   
   attr_accessible :mnr, :faSteuerNr, :faLfdNr, :wohnsitzFinanzamt, :notarPnr, :beurkDatum
 
-  belongs_to :ozbperson
+  belongs_to :OZBPerson
 end

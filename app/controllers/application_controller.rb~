@@ -3,9 +3,7 @@ class ApplicationController < ActionController::Base
   @@i = 13213
    
   def test
-      
-   
-
+    @person = Person.find(2)
   end
   
 end

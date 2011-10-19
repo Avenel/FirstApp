@@ -6,7 +6,7 @@ class CreateGesellschafter < ActiveRecord::Migration
       # Finanzamz Steuernummer 
       t.string :faSteuerNr, :limit => 15, :default => nil
       # Finanzamt Laufende Nr
-      t.string :faLdfNr, :limit => 20, :default => nil
+      t.string :faLfdNr, :limit => 20, :default => nil
       # WohnsitzFinanzamt
       t.string :wohnsitzFinanzamt, :limit => 50, :default => nil
       # Notar Personalnummer

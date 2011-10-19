@@ -6,5 +6,5 @@ class BuchungOnline < ActiveRecord::Base
 
   attr_accessible :id, :mnr, :ueberwdatum, :sollktonr, :habenktonr, :punkte, :tan, :blocknr
   
-  belongs_to :ozbperson
+  belongs_to :OZBPerson
 end

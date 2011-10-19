@@ -17,6 +17,6 @@ class CreateGesellschafter < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :gesellschafters
+    drop_table :Gesellschafter
   end
 end

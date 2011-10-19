@@ -11,6 +11,6 @@ class CreateTanliste < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :tanlistes
+    drop_table :Tanliste
   end
 end

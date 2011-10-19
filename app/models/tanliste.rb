@@ -5,6 +5,6 @@ class Tanliste < ActiveRecord::Base
   attr_accessible :mnr, :listNr, :status
   set_primary_keys :mnr, :listNr
   
-  belongs_to :ozbperson
+  belongs_to :OZBPerson
 
 end
