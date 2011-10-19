@@ -1,5 +1,10 @@
 class Gesellschafter < ActiveRecord::Base
 
-   attr_accessible :mnr, :faSteuerNr, :faLfdNr, :wohnsitzFinanzamt, :notarPnr, :beurkDatum
+  set_table_name "Gesellschafter"
+  
+  set_primary_key :mnr
+  
+  attr_accessible :mnr, :faSteuerNr, :faLfdNr, :wohnsitzFinanzamt, :notarPnr, :beurkDatum
 
+  belongs_to :ozbperson
 end

@@ -11,10 +11,10 @@ class Person < ActiveRecord::Base
 
    has_many :administrator, :foreign_key => :pnr   # Done, getestet
    has_many :telefon, :foreign_key => :pnr         # Done, getestet
-   has_many :partner, :foreign_key => :mnr         # Done, benötigt noch ne mitgliedsnummer über OZBPerson
+   has_many :partner, :foreign_key => :mnrO         # Done, getestet
    has_many :teilnahme, :foreign_key => :pnr       # Done, getestet
    has_many :buergschaft, :foreign_key => :pnrB    # Done, getestet
-   has_one :ozbperson, :foreign_key => :ueberPnr
+   has_many :OZBPerson, :foreign_key => :ueberPnr # Done, getestet
    
 end
 

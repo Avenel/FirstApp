@@ -1,8 +1,10 @@
 OZB::Application.routes.draw do
 
-  devise_for :OZBPerson
+  devise_for :OZBPerson#, :controllers => { :sessions => "login" }, :path_names => { :sign_in => "login", :sign_out => "logout" }
 
-   match '/test' => 'application#test'
+  match '/test' => 'application#test'
+
+  root :to => "application#test"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
