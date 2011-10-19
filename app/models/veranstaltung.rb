@@ -6,6 +6,6 @@ class Veranstaltung < ActiveRecord::Base
    
    attr_accessible :vnr, :vid, :vaDatum, :vaOrt
 
-   has_many :teilnahme, :foreign_key => :vnr, :inverse_of => :veranstaltung
-
+   has_many :teilnahme, :foreign_key => :vnr, :inverse_of => :veranstaltung # Done, getestet
+   belongs_to :veranstaltungsart, :foreign_key => :vid, :inverse_of => :veranstaltung # Done, getestet
 end

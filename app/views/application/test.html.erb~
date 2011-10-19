@@ -1,2 +1,2 @@
-<%= @person.teilnahme[-1].veranstaltung[-1] %>
+<%= @person.teilnahme[-1].veranstaltung.veranstaltungsart %>
 <%= @veranstaltung.teilnahme %>

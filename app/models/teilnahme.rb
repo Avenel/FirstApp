@@ -5,7 +5,7 @@ class Teilnahme < ActiveRecord::Base
    attr_accessible :pnr, :vnr, :teilnArt
    set_primary_keys :pnr, :vnr
 
-   belongs_to :person
-   belongs_to :veranstaltung, :inverse_of => :teilnahme, :foreign_key => :vnr
+   belongs_to :person # Done, getestet
+   belongs_to :veranstaltung, :inverse_of => :teilnahme, :foreign_key => :vnr # Done, getestet
 
 end

@@ -1,4 +1,4 @@
-class KklVerlauf < ActiveRecord::Base
+class KKLVerlauf < ActiveRecord::Base
 
    set_table_name "KKLVerlauf"
 

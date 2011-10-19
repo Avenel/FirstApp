@@ -1,4 +1,4 @@
-class OZNPerson < ActiveRecord::Base
+class OZBPerson < ActiveRecord::Base
    
    set_table_name "OZBPerson"
    set_primary_key :mnr

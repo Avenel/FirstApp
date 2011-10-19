@@ -1,4 +1,4 @@
-class ZeKonto < ActiveRecord::Base
+class ZEKonto < ActiveRecord::Base
 
    set_table_name "ZEKonto"
 
