@@ -1,8 +1,14 @@
 class CreateOZBPerson < ActiveRecord::Migration
   def self.up
-    create_table(:OZBPerson, :primary_key => :id) do |t|
+    create_table(:OZBPerson, :primary_key => :mnr) do |t|
+    
+      t.database_authenticatable :null => false
+      t.recoverable
+      t.rememberable
+      t.trackable
+      
       # Mitgliedsnummer PS, FS
-      t.integer :id, :null => false, :uniqueness => true, :limit => 10
+      t.integer :mnr, :null => false, :uniqueness => true, :limit => 10
       # Personennummer FS
       t.integer :ueberPnr, :uniqueness => true, :limit => 10
       # Passwort
@@ -12,6 +18,10 @@ class CreateOZBPerson < ActiveRecord::Migration
       # Gesperrt
       t.boolean :gesperrt, :null => false, :default => false
     end
+    
+    add_index :users, :email,                :unique => true
+    add_index :users, :reset_password_token, :unique => true
+    
   end
 
   def self.down

@@ -1,5 +1,9 @@
 OZB::Application.routes.draw do
 
+  devise_for :ozb_people
+
+   match '/test' => 'application#test'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -1,5 +1,7 @@
 OZB::Application.routes.draw do
 
+  devise_for :OZBPerson
+
    match '/test' => 'application#test'
 
   # The priority is based upon order of creation:

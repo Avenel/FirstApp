@@ -1,6 +1,7 @@
 class CreateOZBPerson < ActiveRecord::Migration
   def self.up
     create_table(:OZBPerson, :primary_key => :mnr) do |t|
+          
       # Mitgliedsnummer PS, FS
       t.integer :mnr, :null => false, :uniqueness => true, :limit => 10
       # Personennummer FS
@@ -12,6 +13,7 @@ class CreateOZBPerson < ActiveRecord::Migration
       # Gesperrt
       t.boolean :gesperrt, :null => false, :default => false
     end
+    
   end
 
   def self.down

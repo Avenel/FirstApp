@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111019094830) do
+ActiveRecord::Schema.define(:version => 20111019110025) do
 
   create_table "Administrator", :primary_key => "pnr", :force => true do |t|
     t.string "adminPw",    :limit => 35, :null => false
@@ -106,12 +106,27 @@ ActiveRecord::Schema.define(:version => 20111019094830) do
     t.date    "saldoDatum"
   end
 
-  create_table "OZBPerson", :force => true do |t|
-    t.integer "ueberPnr",    :limit => 10
-    t.string  "passwort",    :limit => 35
-    t.date    "pwAendDatum"
-    t.boolean "gesperrt",                  :default => false, :null => false
+  create_table "OZBPerson", :primary_key => "mnr", :force => true do |t|
+    t.integer  "ueberPnr",               :limit => 10
+    t.string   "passwort",               :limit => 35
+    t.date     "pwAendDatum"
+    t.boolean  "gesperrt",                              :default => false, :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                         :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "OZBPerson", ["email"], :name => "index_OZBPerson_on_email", :unique => true
+  add_index "OZBPerson", ["reset_password_token"], :name => "index_OZBPerson_on_reset_password_token", :unique => true
 
   create_table "Partner", :primary_key => "mnr", :force => true do |t|
     t.integer "mnrO",         :limit => 10, :null => false

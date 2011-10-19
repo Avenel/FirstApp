@@ -9,6 +9,9 @@ gem 'sqlite3'
 
 gem 'composite_primary_keys'
 
+# Login-Manager
+gem 'devise'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
