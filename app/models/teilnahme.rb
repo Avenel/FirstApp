@@ -1,8 +1,11 @@
 class Teilnahme < ActiveRecord::Base
 
-   set_table_name "Tanliste"
+   set_table_name "Teilnahme"
 
    attr_accessible :pnr, :vnr, :teilnArt
    set_primary_keys :pnr, :vnr
+
+   belongs_to :person
+   belongs_to :veranstaltung
 
 end

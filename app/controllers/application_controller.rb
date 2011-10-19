@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
    protect_from_forgery
-  
+   
+   
    def test
       
       @person = Person.new
@@ -12,10 +13,44 @@ class ApplicationController < ActionController::Base
 
       tel = Telefon.new
       tel.pnr = @person.pnr
-      tel.lfdNr = 1
       tel.telefonNr = "020122"
       tel.telefonTyp = "handy"
       tel.save
+      
+      admin = Administrator.new
+      admin.pnr = @person.pnr
+      admin.adminPw = "hello"
+      admin.adminEmail = "sd@asd.com"
+      admin.save
+      
+      
+      partner = Partner.new
+      partner.mnr = @@i
+      partner.mnrO = @@i
+      partner.berechtigung = "A"
+      partner.save
+      
+      veranstaltung = Veranstaltung.new
+      veranstaltung.vid = 1
+      veranstaltung.vaDatum = Date.new
+      veranstaltung.vaOrt = "Buxtehude"
+      veranstaltung.save
+   
+      teilnahme = Teilnahme.new
+      teilnahme.pnr = @person.pnr
+      teilnahme.vnr = veranstaltung.vnr
+      teilnahme.teilnArt = :a
+      teilnahme.save
+            
+      buergschaft = Buergschaft.new
+      buergschaft.pnrB = @person.pnr
+      buergschaft.pnrG = @@i
+      buergschaft.ktoNr = 91324
+      buergschaft.save
+      
+      
+      
+
       
    end
   

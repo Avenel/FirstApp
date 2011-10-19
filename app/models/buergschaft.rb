@@ -4,5 +4,7 @@ class Buergschaft < ActiveRecord::Base
    
    attr_accessible :pnrB, :pnrG, :ktoNr, :sichAbDatum, :sichEndDatum, :sichBetrag, :sichKurzBez
    set_primary_keys :pnrB, :pnrG
+   
+   belongs_to :person
 
 end

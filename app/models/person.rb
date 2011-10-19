@@ -9,11 +9,11 @@ class Person < ActiveRecord::Base
 
    #validates :email, :EmailValidator => true
 
-   has_many :administrator, :foreign_key => :pnr
-   has_many :telefon, :foreign_key => :pnr
-   has_many :partner, :foreign_key => :mnr
-   has_many :teilnahme, :foreign_key => :pnr
-   has_many :buergschaft, :foreign_key => :pnrB
+   has_many :administrator, :foreign_key => :pnr   # Done, getestet
+   has_many :telefon, :foreign_key => :pnr         # Done, getestet
+   has_many :partner, :foreign_key => :mnr         # Done, benötigt noch ne mitgliedsnummer über OZBPerson
+   has_many :teilnahme, :foreign_key => :pnr       # Done, getestet
+   has_many :buergschaft, :foreign_key => :pnrB    # Done, getestet
 end
 
 class EmailValidator < ActiveModel::EachValidator

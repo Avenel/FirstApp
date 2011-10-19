@@ -3,5 +3,7 @@ class Veranstaltungsart < ActiveRecord::Base
    set_table_name "Veranstaltungsart"
 
    attr_accessible :id, :vaBezeichnung
+   
+   has_many :veranstaltung, :foreign_key => :vid
 
 end

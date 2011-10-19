@@ -8,6 +8,4 @@ class Buchung < ActiveRecord::Base
 	
 	set_primary_keys :buchJahr, :ktoNr, :bnKreis, :belegNr, :typ
 	
-	has_one :OzbKonto
-
 end

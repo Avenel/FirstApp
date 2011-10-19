@@ -1,2 +1,6 @@
 <%= @person %>
 <%= @person.telefon[-1].telefonNr %>
+<%= @person.administrator %>
+<%= @person.partner %>
+<%= @person.teilnahme %>
+<%= @person.buergschaft %>

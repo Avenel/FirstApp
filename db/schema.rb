@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(:version => 20111014093338) do
     t.date    "saldoDatum"
   end
 
-  create_table "OZBPerson", :primary_key => "mnr", :force => true do |t|
+  create_table "OZBPerson", :force => true do |t|
     t.integer "ueberPnr",    :limit => 10
     t.string  "passwort",    :limit => 35
     t.date    "pwAendDatum"
@@ -139,9 +139,8 @@ ActiveRecord::Schema.define(:version => 20111014093338) do
 # Could not dump table "Teilnahme" because of following StandardError
 #   Unknown type 'enum' for column 'teilnArt'
 
-  create_table "Telefon", :id => false, :force => true do |t|
+  create_table "Telefon", :primary_key => "lfdNr", :force => true do |t|
     t.integer "pnr",        :limit => 10, :null => false
-    t.integer "lfdNr",      :limit => 2,  :null => false
     t.string  "telefonNr",  :limit => 15
     t.string  "telefonTyp", :limit => 6
   end
