@@ -33,10 +33,15 @@ GEM
     builder (2.1.2)
     composite_primary_keys (3.1.10)
       activerecord (~> 3.0.0, >= 3.0.5)
+<<<<<<< HEAD
     devise (1.4.2)
       bcrypt-ruby (~> 2.1.2)
       orm_adapter (~> 0.0.3)
       warden (~> 1.0.3)
+=======
+    devise (1.1.rc0)
+      warden (~> 0.10.3)
+>>>>>>> ab9f1c4e9e2b300d9fe5918f7321d3525072f771
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
@@ -72,14 +77,23 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.29)
+<<<<<<< HEAD
     warden (1.0.4)
       rack (>= 1.0)
+=======
+    warden (0.10.7)
+      rack (>= 1.0.0)
+>>>>>>> ab9f1c4e9e2b300d9fe5918f7321d3525072f771
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   composite_primary_keys
+<<<<<<< HEAD
   devise
+=======
+  devise (= 1.1.rc0)
+>>>>>>> ab9f1c4e9e2b300d9fe5918f7321d3525072f771
   rails (= 3.0.7)
   sqlite3
