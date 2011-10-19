@@ -1,6 +1,2 @@
-<%= @person %>
-<%= @person.telefon %>
-<%= @person.administrator %>
-<%= @person.partner %>
-<%= @person.teilnahme %>
-<%= @person.buergschaft %>
+<%= @person.teilnahme[-1].veranstaltung.inspect %>
+<%= @veranstaltung.teilnahme %>

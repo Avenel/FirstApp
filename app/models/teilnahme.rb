@@ -6,6 +6,6 @@ class Teilnahme < ActiveRecord::Base
    set_primary_keys :pnr, :vnr
 
    belongs_to :person
-   belongs_to :veranstaltung
+   belongs_to :veranstaltung, :inverse_of => :teilnahme, :foreign_key => :vnr
 
 end
