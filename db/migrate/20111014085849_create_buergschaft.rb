@@ -3,8 +3,8 @@ class CreateBuergschaft < ActiveRecord::Migration
     create_table(:Buergschaft, :index => false) do |t|
       # Personalnummer Bürgschaft PS1, FS
       t.integer :pnrB, :null => false, :uniqueness => true, :limit => 10    
-      # Personalnummer Gesellschafter PS2, FS
-      t.integer :pnrG, :null => false, :uniqueness => true, :limit => 10   
+      # Mitgliedsnummer Gesellschafter PS2, FS
+      t.integer :mnrG, :null => false, :uniqueness => true, :limit => 10   
       # Kontonummer FS
       t.integer :ktoNr, :null => false, :uniqueness => true, :limit => 5
       # SichAbDatum

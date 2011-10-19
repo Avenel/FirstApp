@@ -11,6 +11,6 @@ class OZBPerson < ActiveRecord::Base
    has_one :gesellschafter, :foreign_key => :mnr
    belongs_to :person
    
-   has_many :buergschaft, :foreign_key => 
+   has_many :buergschaft, :foreign_key => :mnrG
 
 end
