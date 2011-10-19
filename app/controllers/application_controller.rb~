@@ -29,21 +29,21 @@ class ApplicationController < ActionController::Base
       #partner.berechtigung = "A"
       #partner.save
       
-      veranstaltung = Veranstaltung.new
-      veranstaltung.vid = 1
-      veranstaltung.vaDatum = Date.new
-      veranstaltung.vaOrt = "Buxtehude"
-      veranstaltung.save
+      @veranstaltung = Veranstaltung.new
+      @veranstaltung.vid = 1
+      @veranstaltung.vaDatum = Date.new
+      @veranstaltung.vaOrt = "Buxtehude"
+      @veranstaltung.save
    
       teilnahme = Teilnahme.new
       teilnahme.pnr = @person.pnr
-      teilnahme.vnr = veranstaltung.vnr
+      teilnahme.vnr = @veranstaltung.vnr
       teilnahme.teilnArt = :a
       teilnahme.save
             
       buergschaft = Buergschaft.new
       buergschaft.pnrB = @person.pnr
-      buergschaft.pnrG = @@i
+      buergschaft.mnrG = @@i
       buergschaft.ktoNr = 91324
       buergschaft.save
       

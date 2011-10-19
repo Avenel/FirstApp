@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(:version => 20111019094830) do
 
   create_table "Buergschaft", :force => true do |t|
     t.integer "pnrB",         :limit => 10,                                 :null => false
-    t.integer "pnrG",         :limit => 10,                                 :null => false
+    t.integer "mnrG",         :limit => 10,                                 :null => false
     t.integer "ktoNr",        :limit => 5,                                  :null => false
     t.date    "sichAbDatum"
     t.date    "sichEndDatum"
