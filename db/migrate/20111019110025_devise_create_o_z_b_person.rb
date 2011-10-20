@@ -15,7 +15,7 @@ class DeviseCreateOZBPerson < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :OZBPerson, :email,                :unique => true
+    add_index :OZBPerson, :mnr,                :unique => true
     add_index :OZBPerson, :reset_password_token, :unique => true
     # add_index :ozb_people, :confirmation_token,   :unique => true
     # add_index :ozb_people, :unlock_token,         :unique => true

@@ -1,5 +1,0 @@
-class Bankverbindung < ActiveRecord::Base
-
-   attr_accessible :pnr, :bankKtoNr, :blz, :bic, :iban, :bankName   
-
-end

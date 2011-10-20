@@ -32,7 +32,7 @@ GEM
     bcrypt-ruby (3.0.1)
     builder (2.1.2)
     composite_primary_keys (3.1.10)
-      activerecord (>= 3.0.5, ~> 3.0.0)
+      activerecord (~> 3.0.0, >= 3.0.5)
     devise (1.4.8)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)

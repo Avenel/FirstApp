@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111019110025) do
+ActiveRecord::Schema.define(:version => 20111019115936) do
 
   create_table "Administrator", :primary_key => "pnr", :force => true do |t|
     t.string "adminPw",    :limit => 35, :null => false
@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
     t.datetime "updated_at"
   end
 
-  add_index "OZBPerson", ["email"], :name => "index_OZBPerson_on_email", :unique => true
+  add_index "OZBPerson", ["mnr"], :name => "index_OZBPerson_on_mnr", :unique => true
   add_index "OZBPerson", ["reset_password_token"], :name => "index_OZBPerson_on_reset_password_token", :unique => true
 
   create_table "Partner", :primary_key => "mnr", :force => true do |t|

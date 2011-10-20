@@ -1,5 +1,0 @@
-class Foerdermitglied < ActiveRecord::Base
-
-   attr_acessible :pnr, :region, :foerderbeitrag
-
-end

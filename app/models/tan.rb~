@@ -1,5 +1,0 @@
-class Tan < ActiveRecord::Base
-
-   attr_accessible :mnr, :listNr, :tanNr, :tan, :verwendetAm, :status
-
-end
