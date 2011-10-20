@@ -17,7 +17,7 @@
   
   ozbPartner = OZBPerson.create( :ueberPnr => 42, :email => "partner@ozb.de", :password => "123456" )
 
-  ozbPerson = OZBPerson.create( :mnr => 1, :ueberPnr => person.pnr, :email => "person@ozb.de", :password => "123456" )
+  ozbPerson = OZBPerson.create( :ueberPnr => person.pnr, :email => "person@ozb.de", :password => "123456" )
 
   partner = Partner.create( :mnr => ozbPartner.mnr, :mnrO => person.pnr, :berechtigung => 'A' )
  

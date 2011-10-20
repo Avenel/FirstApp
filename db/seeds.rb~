@@ -17,16 +17,14 @@
   
   ozbPartner = OZBPerson.create( :ueberPnr => 42, :email => "partner@ozb.de", :password => "123456" )
 
-  ozbPerson = OZBPerson.create( :ueberPnr => person.pnr, :email => "person@ozb.de", :password => "123456" )
+  ozbPerson = OZBPerson.create( :mnr => 1, :ueberPnr => person.pnr, :email => "person@ozb.de", :password => "123456" )
 
   partner = Partner.create( :mnr => ozbPartner.mnr, :mnrO => person.pnr, :berechtigung => 'A' )
  
   veranstaltung = Veranstaltung.create( :vid => 1, :vaDatum => Date.new, :vaOrt => "Buxtehude" )
 
   teilname = Teilnahme.create( :pnr => person.pnr, :vnr => veranstaltung.vnr, :teilnArt => :a )
-  
-  buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => 42, :ktoNr => 91234 )
-    
+      
   veranstaltungsart = Veranstaltungsart.create( :vaBezeichnung => "Eierschaukeln" )
   
   mitglied = Mitglied.create(:mnr => ozbPerson.mnr )
@@ -41,3 +39,5 @@
   tanliste=  Tanliste.create( :mnr => ozbPerson.mnr, :status => :n )
   
   gesellschafter = Gesellschafter.create( :mnr => ozbPerson.mnr, :faSteuerNr => 13512, :faLfdNr => 2134 )
+  
+  buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => gesellschafter.mnr, :ktoNr => 91234 )
