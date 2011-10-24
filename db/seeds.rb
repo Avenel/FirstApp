@@ -31,13 +31,34 @@
 
   student = Student.create( :mnr => ozbPerson.mnr, :studienort => "Karlsruhe" )
   
-  ozbkonto = OZBKonto.create( :mnr => ozbPerson.mnr, :wSaldo => 520.21 )
+  ozbKonto = OZBKonto.create( :mnr => ozbPerson.mnr, :wSaldo => 520.21 )
   
-  buchungonline = BuchungOnline.create( :mnr => ozbPerson.mnr, :ueberwdatum => Date.new, :sollktonr => ozbkonto.ktoNr, 
+  ozbGesellschafterKonto = OZBKonto.create( :mnr => ozbPartner.mnr, :wSaldo => 10000 )  
+
+  buchungonline = BuchungOnline.create( :mnr => ozbPerson.mnr, :ueberwdatum => Date.new, :sollktonr => ozbKonto.ktoNr, 
                                         :habenktonr => 25231, :punkte => 1337, :tan => 52621, :blocknr => 45 )
   
-  tanliste=  Tanliste.create( :mnr => ozbPerson.mnr, :status => :n )
+  tanliste=  Tanliste.create( :mnr => ozbPerson.mnr, :listNr => 1, :status => :n )
   
-  gesellschafter = Gesellschafter.create( :mnr => ozbPerson.mnr, :faSteuerNr => 13512, :faLfdNr => 2134 )
+  tan = Tan.create( :mnr => ozbPerson.mnr, :listNr => 1, :tanNr => 1, :tan => 43123 )
   
-  buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => gesellschafter.mnr, :ktoNr => 91234 )
+  gesellschafter = Gesellschafter.create( :mnr => ozbPerson.mnr, :faSteuerNr => 13512, :faLfdNr => 2134 ) 
+  
+  buchung = Buchung.create( :buchungstext => "Test", :buchJahr => 2010, :buchDatum => Date.new, :ktoNr => ozbKonto.ktoNr, :bnKreis => "A2", :belegNr => 213, :belegDatum => Date.new, :typ => "B" )
+  
+  bankverbindung = Bankverbindung.create( :pnr => person.pnr, :blz => 213123 )
+  
+  eeKonto = EEKonto.create( :ktoNr => ozbKonto.ktoNr, :bankId => bankverbindung.id )
+  
+  projGruppe = Projektgruppe.create()
+  
+  zeKonto = ZEKonto.create( :ktoNr => 1, :eeKtoNr => eeKonto.ktoNr, :laufzeit => 23, :tilgRate => 200, :pgNr => projGruppe.pgNr )
+  
+  buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => gesellschafter.mnr, :ktoNr => zeKonto.ktoNr )
+  
+  kkl = Kontenklasse.create(:kkl => 'A', :kklAbDatum => Date.new)
+
+  kklVerlauf = KKLVerlauf.create( :ktoNr => eeKonto.ktoNr, :kklAbDatum => Date.new, :kkl => kkl.kkl )
+  
+ 
+  

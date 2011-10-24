@@ -5,6 +5,6 @@ class Kontenklasse < ActiveRecord::Base
   attr_accessible :kkl, :kklAbDatum, :prozent
   set_primary_key :kkl
 
-  has_many :KKLVerlauf, :foreign_key => :kkl # Done, ungetestet
+  has_many :KKLVerlauf, :foreign_key => :kkl
 
 end

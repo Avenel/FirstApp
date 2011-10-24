@@ -5,6 +5,6 @@ class Tan < ActiveRecord::Base
   attr_accessible :mnr, :listNr, :tanNr, :tan, :verwendetAm, :status
   set_primary_keys :mnr, :listNr
 
-  belongs_to :Tanliste # Done, getestet
+  belongs_to :Tanliste
 
 end

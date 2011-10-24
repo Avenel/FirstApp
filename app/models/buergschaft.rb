@@ -1,11 +1,12 @@
 class Buergschaft < ActiveRecord::Base
    
-   set_table_name "Buergschaft"   
+  set_table_name "Buergschaft"   
    
-   attr_accessible :pnrB, :mnrG, :ktoNr, :sichAbDatum, :sichEndDatum, :sichBetrag, :sichKurzBez
-   set_primary_keys :pnrB, :mnrG
+  attr_accessible :pnrB, :mnrG, :ktoNr, :sichAbDatum, :sichEndDatum, :sichBetrag, :sichKurzBez
+  set_primary_keys :pnrB, :mnrG
    
-   belongs_to :person
-   belongs_to :OZBPerson
+  belongs_to :person
+  belongs_to :OZBPerson
+  belongs_to :ZEKonto
 
 end

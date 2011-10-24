@@ -15,6 +15,7 @@ class Person < ActiveRecord::Base
    has_many :teilnahme, :foreign_key => :pnr       # Done, getestet
    has_many :buergschaft, :foreign_key => :pnrB    # Done, getestet
    has_many :OZBPerson, :foreign_key => :ueberPnr # Done, getestet
+   has_one :Bankverbindung, :foreign_key => :pnr # Done, getestet
    
 end
 

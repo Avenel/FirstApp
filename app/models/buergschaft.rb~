@@ -6,5 +6,6 @@ class Buergschaft < ActiveRecord::Base
    set_primary_keys :pnrB, :mnrG
    
    belongs_to :person
+   belongs_to :OZBPerson
 
 end

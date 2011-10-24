@@ -9,7 +9,7 @@ class ZEKonto < ActiveRecord::Base
   
   belongs_to :OZBKonto
   belongs_to :EEKonto
-  has_many :Buergschaft, :foreign_key => :ktoNr # Done, getestet
+  has_many :Buergschaft, :foreign_key => :ktoNr # Done, ungetestet
   belongs_to :Projektgruppe, :inverse_of => :ZEKonto, :foreign_key => :pgNr # Done, getestet
   
 end

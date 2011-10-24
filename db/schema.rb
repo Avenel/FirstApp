@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
     t.string  "bankName",  :limit => 35
   end
 
-  create_table "Buchung", :force => true do |t|
+  create_table "Buchung", :id => false, :force => true do |t|
     t.integer "buchJahr",     :limit => 4,                                                  :null => false
     t.integer "ktoNr",        :limit => 5,                                                  :null => false
     t.string  "bnKreis",      :limit => 2,                                                  :null => false
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
     t.date    "beurkDatum"
   end
 
-  create_table "KKLVerlauf", :force => true do |t|
+  create_table "KKLVerlauf", :id => false, :force => true do |t|
     t.integer "ktoNr",      :limit => 5, :null => false
     t.date    "kklAbDatum",              :null => false
     t.string  "kkl",        :limit => 1, :null => false
@@ -136,6 +136,10 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
 # Could not dump table "Person" because of following StandardError
 #   Unknown type 'enum' for column 'rolle'
 
+  create_table "Projektgruppe", :primary_key => "pgNr", :force => true do |t|
+    t.string "projGruppez"
+  end
+
   create_table "Student", :primary_key => "mnr", :force => true do |t|
     t.string "ausbildBez",    :limit => 30
     t.string "institutName",  :limit => 30
@@ -184,11 +188,6 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
     t.decimal "kduRate",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.decimal "rduRate",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.string  "zeStatus",   :limit => 1,                                 :default => "A", :null => false
-  end
-
-  create_table "projektgruppes", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
 end

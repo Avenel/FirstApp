@@ -13,12 +13,12 @@ class OZBPerson < ActiveRecord::Base
     
   has_one :Mitglied, :foreign_key => :mnr  # Done, getestet
   has_one :Student, :foreign_key => :mnr # Done, ungetestet
-  has_one :BuchungOnline, :foreign_key => :mnr # Done, ungetestet
-  has_many :OZBKonto, :foreign_key => :mnr # Done, ungetestet
-  has_many :Tanliste, :foreign_key => :mnr # Done, ungetestet
-  has_one :Gesellschafter, :foreign_key => :mnr # Done, ungetestet
+  has_one :BuchungOnline, :foreign_key => :mnr # Done, getestet
+  has_many :OZBKonto, :foreign_key => :mnr # Done, getestet
+  has_many :Tanliste, :foreign_key => :mnr # Done, getestet
+  has_one :Gesellschafter, :foreign_key => :mnr # Done, getestet
   belongs_to :Person # Done, getestet
   
-  has_many :Buergschaft, :foreign_key => :mnrG # Done, ungetestet
+  has_many :Buergschaft, :foreign_key => :mnrG # Done, getestet
 
 end

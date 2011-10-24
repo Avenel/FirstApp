@@ -7,4 +7,12 @@
   <p><b>Tanliste:</b> <%= @person.OZBPerson[-1].Tanliste.inspect %></p>
   <p><b>Gesellschafter:</b> <%= @person.OZBPerson[-1].Gesellschafter.inspect %></p>
   <p><b>Buergschaft:</b> <%= @person.OZBPerson[-1].Buergschaft.inspect %></p>
+  <p><b>Tan:</b> <%= @person.OZBPerson[-1].Tanliste[-1].Tan.inspect %></p>
+  <p><b>Buchung</b> <%= @person.OZBPerson[-1].OZBKonto[-1].Buchung.inspect %></p>
+  <p><b>KKLVerlauf</b> <%= @person.OZBPerson[-1].OZBKonto[-1].KKLVerlauf.inspect %></p>
+  <p><b>ZEKonto</b> <%= @person.OZBPerson[-1].OZBKonto[-1].EEKonto.ZEKonto.inspect %></p>
+  <p><b>EEKonto</b> <%= @person.OZBPerson[-1].OZBKonto[-1].ZEKonto.inspect %></p>
+  <p><b>Projektgruppe</b> <%= @person.OZBPerson[-1].OZBKonto[-1].ZEKonto.Projektgruppe.inspect %></p>
+  <p><b>Buergschaft</b> <%= @person.OZBPerson[-1].OZBKonto[-1].ZEKonto.Buergschaft.inspect %></p>
+  <p><b>Bankverbindung</b> <%= @person.Bankverbindung.EEKonto.inspect %></p>
 <% end %>

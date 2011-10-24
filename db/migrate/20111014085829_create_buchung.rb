@@ -1,11 +1,11 @@
 class CreateBuchung < ActiveRecord::Migration
   def self.up
-   create_table(:Buchung, :index => false) do |t|
-      # Buchungsjahr PS1
-		t.integer :buchJahr, :null => false, :uniqueness => true, :limit => 4
-      # Kontonummer PS2, FS
-      t.integer :ktoNr, :null => false, :limit => 5
-      # BnKreis PS3
+    create_table(:Buchung, :id => false) do |t|
+    # Buchungsjahr PS1
+    t.integer :buchJahr, :null => false, :limit => 4
+    # Kontonummer PS2, FS
+    t.integer :ktoNr, :null => false, :limit => 5
+    # BnKreis PS3
 		t.string :bnKreis, :null => false, :limit => 2
 		# BelegNr PS4
 		t.integer :belegNr, :null => false, :limit => 10 

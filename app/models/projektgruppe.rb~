@@ -6,6 +6,6 @@ class Projektgruppe < ActiveRecord::Base
   
   attr_accessible :pgNr, :projGruppez
   
-  has_many :ZEKonto, :inverse_of => :Projektgruppe, :foreign_key => :pgNr # Done, getestet
+  has_many :ZEKonto, :inverse_of => :Projektgruppe, :foreign_key => :pgNr # Done, ungetestet
 
 end
