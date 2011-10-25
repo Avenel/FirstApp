@@ -2,7 +2,7 @@ class CreateKontenklasse < ActiveRecord::Migration
   def self.up
     create_table(:Kontenklasse, :primary_key => :kkl) do |t|
       # Kontoklasse PS
-      t.string :kkl, :null => false, :uniqueness => true, :limit => 1
+      t.integer :kkl, :null => false, :uniqueness => true, :limit => 1
       # KKLAbDatum
       t.date :kklAbDatum, :null => false
       # Prozent

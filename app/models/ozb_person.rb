@@ -17,7 +17,7 @@ class OZBPerson < ActiveRecord::Base
   has_many :OZBKonto, :foreign_key => :mnr # Done, getestet
   has_many :Tanliste, :foreign_key => :mnr # Done, getestet
   has_one :Gesellschafter, :foreign_key => :mnr # Done, getestet
-  belongs_to :Person # Done, getestet
+  belongs_to :Person, :foreign_key => :pnr # Done, getestet
   
   has_many :Buergschaft, :foreign_key => :mnrG # Done, getestet
 

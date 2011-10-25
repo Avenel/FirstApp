@@ -56,7 +56,7 @@
   
   buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => gesellschafter.mnr, :ktoNr => zeKonto.ktoNr )
   
-  kkl = Kontenklasse.create(:kkl => 'A', :kklAbDatum => Date.new)
+  kkl = Kontenklasse.create(:kkl => 1, :prozent => 25.0, :kklAbDatum => Date.new)
 
   kklVerlauf = KKLVerlauf.create( :ktoNr => eeKonto.ktoNr, :kklAbDatum => Date.new, :kkl => kkl.kkl )
   
