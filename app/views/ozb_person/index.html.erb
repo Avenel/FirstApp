@@ -1,0 +1,21 @@
+<h1>OZB Personen</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @OZBPersonen.each do |person| %>
+  <tr>
+	<td><%= person.mnr %></td>
+    <td><%= link_to 'Show', 'OZBPerson' %></td>
+	<td><%= link_to 'Edit', edit_OZBPerson_path(person) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'OZB Person hinzufuegen', new_OZBPerson_path %>
