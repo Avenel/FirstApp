@@ -1,8 +1,11 @@
 OZB::Application.routes.draw do
 
+  resources :OZBPerson, :id => "mnr"
+
   devise_for :OZBPerson#, :controllers => { :sessions => "login" }, :path_names => { :sign_in => "login", :sign_out => "logout" }
 
   match '/test' => 'application#test'
+	#match 'OZBPerson/:id' => 'OZBPerson#show'
 
   root :to => "application#test"
 
