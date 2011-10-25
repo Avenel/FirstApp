@@ -1,2 +1,0 @@
-class PersonController < ApplicationController
-end

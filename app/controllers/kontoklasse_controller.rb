@@ -21,10 +21,6 @@ class KontoklasseController < ApplicationController
     rescue
         @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
                                               :kklAbDatum => Date.new )
-        if !params[:oldKKL].nil? then
-          @old_kontoklasse = Kontenklasse.find(params[:oldKKL])
-          @old_kontoklasse.delete
-        end
         @new_kontoklasse.save!
     end
     
@@ -33,8 +29,11 @@ class KontoklasseController < ApplicationController
   end
   
   def delete
-    @kontoklasse = Kontenklasse.find(params[:id])
-    @kontoklasse.delete
+    begin
+      @kontoklasse = Kontenklasse.find(params[:id])
+      @kontoklasse.delete
+    rescue
+    end
     
     @kontoklassen = Kontenklasse.all    
     redirect_to :action => "index"

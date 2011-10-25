@@ -1,15 +1,15 @@
 <h1>Neu anlegen</h1>
-<%= link_to :zurueck, "/kontoklasse" %>
+<%= link_to "zurück", "/kontoklasse" %>
 
-<%= form_tag({:action => "/kontoklasse/save"}, :id=>"newForm") do %>
+<%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
   <p> 
-    <%= label_tag :kontoklasse %>
+    <%= label_tag "Kontoklasse:" %>
     <%= text_field_tag :kkl %>  
   </p>
   
   <p>
-    <%= label_tag :prozent %>  
+    <%= label_tag "Prozent:" %>  
     <%= text_field_tag :prozent %>  
   </p>  
   

@@ -1,8 +1,8 @@
 <h1>Kontoklassen</h1>
-<%= link_to :zurueck, "/" %>
+<%= link_to "zurück", "/" %>
 
 
-<table style="border: 1px solid">
+<table style="border: 1px solid; margin: 50px auto">
   <tr>
     <td>Name</td>
     <td>Prozent</td>
@@ -20,9 +20,6 @@
     </tr>
   
   <% end %>
-  
-    <tr>
-      <td><%= link_to "Neu", "/kontoklasse/new" %></td>
-    </tr>
-
 </table>
+
+<%= link_to "Neue Kontoklasse hinzufügen", "/kontoklasse/new" %>

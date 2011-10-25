@@ -2,4 +2,4 @@
 
 <% edit_link = "/OZBPerson/"+@person.mnr.to_s+"/edit" %>
 <%= link_to 'Edit',  edit_link %> 
-<%= link_to 'Back', "/OZBPerson" %>
+<%= link_to 'Back', OZBPerson_index_path %>

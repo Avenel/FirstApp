@@ -4,7 +4,7 @@
   <title>OZB</title>
   <div id="user_nav" style="text-align:right">
     <% if OZBPerson_signed_in? %>
-      Signed in as <%= current_OZBPerson.mnr %>. Not you?
+      Eingeloggt als <%= current_OZBPerson.mnr %>.
       <%= link_to "Ausloggen", destroy_OZBPerson_session_path, :method => :delete %>
     <% else %>
       <%= link_to "Einloggen", new_OZBPerson_session_path %>
@@ -15,7 +15,8 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
-<div style="text-align:center; margin-top: 50px;s">
+<div style="text-align:center; width: 800px; margin: 0 auto">
+  <%= link_to "Startseite", "/" %>
   <%= yield %>
 </div>
 </body>

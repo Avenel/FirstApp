@@ -1,5 +1,5 @@
 <h1>OZB Personen</h1>
-<%= link_to "zurück", "/" %>
+
 <table style="border: 1px solid; margin: 50px auto">
   <tr>
     <th></th>

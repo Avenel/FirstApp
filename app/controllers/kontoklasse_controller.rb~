@@ -21,8 +21,6 @@ class KontoklasseController < ApplicationController
     rescue
         @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
                                               :kklAbDatum => Date.new )
-        @old_kontoklasse = Kontenklasse.find(params[:oldKKL])
-        @old_kontoklasse.delete
         @new_kontoklasse.save!
     end
     
