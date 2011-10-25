@@ -1,6 +1,6 @@
 OZB::Application.routes.draw do
 
-  devise_for :OZBPerson
+    devise_for :OZBPerson
   resources :OZBPerson, :id => "mnr"
   #, :controllers => { :sessions => "login" }, :path_names => { :sign_in => "login", :sign_out => "logout" }
 
