@@ -13,7 +13,7 @@ class KontoklasseController < ApplicationController
     
     @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
                                             :kklAbDatum => Date.new )
-    @new_kontoklasse.save!
+    @new_kontoklasse.save
     @kontoklasse.delete
   
     @kontoklasse = Kontenklasse.find(params[:kkl])

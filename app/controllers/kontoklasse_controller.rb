@@ -1,5 +1,7 @@
 class KontoklasseController < ApplicationController
 
+	before_filter :authenticate_OZBPerson!
+
   def index
     @kontoklassen = Kontenklasse.all
   end
