@@ -4,8 +4,11 @@ OZB::Application.routes.draw do
 
   match '/test' => 'application#test'
   match '/kontoklasse' => 'kontoklasse#index'
+  match '/kontoklasse/new' => 'kontoklasse#new'
+  match '/kontoklasse/save' => 'kontoklasse#save'
   match '/kontoklasse/:id' => 'kontoklasse#edit', :via => :GET
   match '/kontoklasse/:id' => 'kontoklasse#save', :via => :POST
+  match '/kontoklasse/:id/delete' => 'kontoklasse#delete'
 
   root :to => "index#dashboard"
 

@@ -1,7 +1,12 @@
 class KontoklasseController < ApplicationController
 
+	before_filter :authenticate_OZBPerson!
+
   def index
     @kontoklassen = Kontenklasse.all
+  end
+  
+  def new
   end
   
   def edit
@@ -9,18 +14,28 @@ class KontoklasseController < ApplicationController
   end
   
   def save
-    @kontoklasse = Kontenklasse.find(params[:oldKKL])
+    begin
+      @kontoklasse = Kontenklasse.find(params[:kkl])
+      @kontoklasse.prozent = params[:prozent]
+      @kontoklasse.save!
+    rescue
+        @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
+                                              :kklAbDatum => Date.new )
+        @old_kontoklasse = Kontenklasse.find(params[:oldKKL])
+        @old_kontoklasse.delete
+        @new_kontoklasse.save!
+    end
     
-    @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
-                                            :kklAbDatum => Date.new )
-    @new_kontoklasse.save
-    @kontoklasse.delete
+    @kontoklassen = Kontenklasse.all
+    redirect_to :action => "index"
+  end
   
-    @kontoklasse = Kontenklasse.find(params[:kkl])
+  def delete
+    @kontoklasse = Kontenklasse.find(params[:id])
+    @kontoklasse.delete
     
-    puts params
-    
-    render :edit
+    @kontoklassen = Kontenklasse.all    
+    redirect_to :action => "index"
   end
 
 end

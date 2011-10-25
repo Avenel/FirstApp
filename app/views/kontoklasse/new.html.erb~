@@ -1,0 +1,19 @@
+<h1>Neu anlegen</h1>
+<%= link_to :zurueck, "/kontoklasse" %>
+
+<%= form_tag({:action => "/kontoklasse/save"}, :id=>"newForm") do %>
+
+  <p> 
+    <%= label_tag :kontoklasse %>
+    <%= text_field_tag :kkl %>  
+  </p>
+  
+  <p>
+    <%= label_tag :prozent %>  
+    <%= text_field_tag :prozent %>  
+  </p>  
+  
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('newForm').submit(); return false;" %>	
+
+
+<% end %>

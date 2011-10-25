@@ -6,23 +6,38 @@ class KontoklasseController < ApplicationController
     @kontoklassen = Kontenklasse.all
   end
   
+  def new
+  end
+  
   def edit
     @kontoklasse = Kontenklasse.find(params[:id])
   end
   
   def save
-    @kontoklasse = Kontenklasse.find(params[:oldKKL])
+    begin
+      @kontoklasse = Kontenklasse.find(params[:kkl])
+      @kontoklasse.prozent = params[:prozent]
+      @kontoklasse.save!
+    rescue
+        @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
+                                              :kklAbDatum => Date.new )
+        if !params[:oldKKL].nil? then
+          @old_kontoklasse = Kontenklasse.find(params[:oldKKL])
+          @old_kontoklasse.delete
+        end
+        @new_kontoklasse.save!
+    end
     
-    @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
-                                            :kklAbDatum => Date.new )
-    @new_kontoklasse.save
-    @kontoklasse.delete
+    @kontoklassen = Kontenklasse.all
+    redirect_to :action => "index"
+  end
   
-    @kontoklasse = Kontenklasse.find(params[:kkl])
+  def delete
+    @kontoklasse = Kontenklasse.find(params[:id])
+    @kontoklasse.delete
     
-    puts params
-    
-    render :edit
+    @kontoklassen = Kontenklasse.all    
+    redirect_to :action => "index"
   end
 
 end

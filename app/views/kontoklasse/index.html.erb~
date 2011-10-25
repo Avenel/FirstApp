@@ -14,9 +14,15 @@
       <td><%= kkl.kkl %></td>
       <td><%= kkl.prozent %></td>
       <% edit_link = "/kontoklasse/" + kkl.kkl.to_s %>
-      <td><%= link_to :Edit, edit_link %></a>
+      <% delete_link = "/kontoklasse/" + kkl.kkl.to_s + "/delete" %>
+      <td><%= link_to "Editieren", edit_link %></td>
+      <td><%= link_to "Löschen", delete_link %></td>
     </tr>
   
   <% end %>
+  
+    <tr>
+      <td><%= link_to "Neu", "/kontoklasse/new" %></td>
+    </tr>
 
 </table>
