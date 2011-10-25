@@ -5,9 +5,11 @@ OZB::Application.routes.draw do
   devise_for :OZBPerson#, :controllers => { :sessions => "login" }, :path_names => { :sign_in => "login", :sign_out => "logout" }
 
   match '/test' => 'application#test'
-	#match 'OZBPerson/:id' => 'OZBPerson#show'
+  match '/kontoklasse' => 'kontoklasse#index'
+  match '/kontoklasse/:id' => 'kontoklasse#edit', :via => :GET
+  match '/kontoklasse/:id' => 'kontoklasse#save', :via => :POST
 
-  root :to => "application#test"
+  root :to => "index#dashboard"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

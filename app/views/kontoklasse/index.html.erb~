@@ -1,0 +1,22 @@
+<h1>Kontoklassen</h1>
+<%= link_to :zurueck, "/" %>
+
+
+<table style="border: 1px solid">
+  <tr>
+    <td>Name</td>
+    <td>Prozent</td>
+  </tr>
+
+  <% @kontoklassen.each do |kkl| %>
+  
+    <tr>
+      <td><%= kkl.kkl %></td>
+      <td><%= kkl.prozent %></td>
+      <% edit_link = "/kontoklasse/" + kkl.kkl.to_s %>
+      <td><%= link_to :Edit, edit_link %></a>
+    </tr>
+  
+  <% end %>
+
+</table>

@@ -1,0 +1,2 @@
+class VeranstaltungController < ApplicationController
+end

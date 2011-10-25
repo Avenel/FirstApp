@@ -1,0 +1,2 @@
+module VeranstaltungHelper
+end

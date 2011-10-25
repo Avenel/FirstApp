@@ -54,7 +54,7 @@
   
   zeKonto = ZEKonto.create( :ktoNr => 1, :eeKtoNr => eeKonto.ktoNr, :laufzeit => 23, :tilgRate => 200, :pgNr => projGruppe.pgNr )
   
-  buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => gesellschafter.mnr, :ktoNr => 91234 )
+  buergschaft = Buergschaft.create( :pnrB => person.pnr, :mnrG => gesellschafter.mnr, :ktoNr => zeKonto.ktoNr )
   
   kkl = Kontenklasse.create(:kkl => 'A', :kklAbDatum => Date.new)
 

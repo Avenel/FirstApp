@@ -1,0 +1,21 @@
+<h1>edit</h1>
+<%= link_to :zurueck, "/kontoklasse" %>
+
+<%= form_tag({:action => "save"}, :id=>"editForm") do %>
+
+  <p> 
+    <%= label_tag :kontoklasse %>
+    <%= text_field_tag :kkl, @kontoklasse.kkl %>  
+  </p>
+  
+  <p>
+    <%= label_tag :prozent %>  
+    <%= text_field_tag :prozent, @kontoklasse.prozent %>  
+  </p>  
+  
+  <%= hidden_field_tag :oldKKL, @kontoklasse.kkl
+  
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('editForm').submit(); return false;" %>	
+
+
+<% end %>

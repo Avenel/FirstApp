@@ -2,13 +2,21 @@
 <html>
 <head>
   <title>OZB</title>
+  <div id="user_nav" style="text-align:right">
+    <% if OZBPerson_signed_in? %>
+      Signed in as <%= current_OZBPerson.mnr %>. Not you?
+      <%= link_to "Sign out", destroy_OZBPerson_session_path, :method => :delete %>
+    <% else %>
+      <%= link_to "sign in", new_OZBPerson_session_path %>
+    <% end %>
+  </div>
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
 <body>
-
-<%= @person.telefon %>
-
+<div style="text-align:center">
+  <%= yield %>
+</div>
 </body>
 </html>
