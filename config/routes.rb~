@@ -1,10 +1,13 @@
 OZB::Application.routes.draw do
 
+  resources :OZBPerson, :id => "mnr"
+
   devise_for :OZBPerson#, :controllers => { :sessions => "login" }, :path_names => { :sign_in => "login", :sign_out => "logout" }
 
   match '/test' => 'application#test'
   match '/kontoklasse' => 'kontoklasse#index'
   match '/kontoklasse/new' => 'kontoklasse#new'
+  match '/kontoklasse/save' => 'kontoklasse#save'
   match '/kontoklasse/:id' => 'kontoklasse#edit', :via => :GET
   match '/kontoklasse/:id' => 'kontoklasse#save', :via => :POST
   match '/kontoklasse/:id/delete' => 'kontoklasse#delete'
