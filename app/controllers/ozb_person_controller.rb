@@ -1,9 +1,12 @@
 class OZBPersonController < ApplicationController
 
-  # GET /users
+	@Personas = OZBPerson.paginate(:page => params[:page], :per_page => 30)
+  
+	# GET /users
   # GET /users.xml
   def index
     @OZBPersonen = OZBPerson.all
+		@Personas = OZBPerson.paginate(:page => params[:page], :per_page => 30)
 
     respond_to do |format|
       format.html #index.html.erb
@@ -79,5 +82,7 @@ class OZBPersonController < ApplicationController
       format.xml  { head :ok }
     end
   end
+	
+	
 
 end

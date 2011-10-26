@@ -2,10 +2,12 @@
 <%= link_to "zurück", "/" %>
 <table style="border: 1px solid; margin: 50px auto">
   <tr>
-    <th></th>
+    <th><%= will_paginate @Personas %></th>
     <th></th>
     <th></th>
   </tr>
+
+<%= will_paginate @Personas %>
 
 <% @OZBPersonen.each do |person| %>
   <tr>
