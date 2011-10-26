@@ -6,6 +6,7 @@
   <p> 
     <%= label_tag "Kontoklasse:" %>
     <%= label_tag :kkl, @kontoklasse.kkl %>  
+    <%= hidden_field_tag :kkl, @kontoklasse.kkl %>  
   </p>
   
   <p>

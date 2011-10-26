@@ -17,13 +17,7 @@
 <body>
 <div style="text-align:center; width: 800px; margin: 50px auto">
   <%= link_to "Startseite", "/" %>
-  <%= yield %>
-  
-  <script>
-
-  
-  </script>
-  
+  <%= yield %>  
 </div>
 </body>
 </html>

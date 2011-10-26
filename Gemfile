@@ -14,6 +14,9 @@ gem 'will_paginate'
 # Login-Manager
 gem 'devise'
 
+# Javascript
+gem 'jquery-rails'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
