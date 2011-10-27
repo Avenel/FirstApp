@@ -1,10 +1,10 @@
 class ReportsController < ApplicationController
 
   def ozbKonten
-    @ozbKonten = OZBKonto.all
+    @ozbKonten = OZBKonto.paginate(:per_page => 1, :page => params[:page])  
   end
   
-  def buerschaften
+  def buergschaften
     @buergschaften = Buergschaft.all
   end
   

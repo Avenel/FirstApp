@@ -8,22 +8,23 @@
     <td>Postleitzahl</td>
     <td>Ort</td>
   </tr>
-
-:name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
-                     :ort
-
-  <% @adressen.each do |adresse| %>
+  
+  <% @personen.each do |person| %>
   
     <tr>
-      <td><%= buergschaft.pnrB %></td>
-      <td><%= buergschaft.mnrG %></td>
-      <td><%= buergschaft.ktoNr %></td>
-      <td><%= buergschaft.sichAbDatum %></td>
-      <td><%= buergschaft.sichEndDatum %></td>
-      <td><%= buergschaft.sichBetrag %></td>
-      <td><%= buergschaft.sichKurzBez %></td>
+      <td><%= person.name %></td>
+      <td><%= person.vorname %></td>
+      <td><%= person.strasse %></td>
+      <td><%= person.hausnr %></td>
+      <td><%= person.plz %></td>
+      <td><%= person.ort %></td>
     </tr>
 
   <% end %>
 
 </table>
+
+<!-- Seitennavigation -->
+<div class="paginateBox" >
+  <%= will_paginate @adressen %> 
+</div>

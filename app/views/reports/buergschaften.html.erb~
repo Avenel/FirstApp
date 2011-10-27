@@ -9,19 +9,24 @@
     <td>sichBetrag</td>
     <td>sichKurzBez</td>
   </tr>
-:pnrB, :mnrG, :ktoNr, :sichAbDatum, :sichEndDatum, :sichBetrag, :sichKurzBez
 
   <% @buergschaften.each do |buergschaft| %>
   
     <tr>
+      <td><%= buergschaft.pnrB %></td>
+      <td><%= buergschaft.mnrG %></td>
       <td><%= buergschaft.ktoNr %></td>
-      <td><%= buergschaft.mnr %></td>
-      <td><%= buergschaft.ktoEinrDatum %></td>
-      <td><%= buergschaft.wSaldo %></td>
-      <td><%= buergschaft.pSaldo %></td>
-      <td><%= buergschaft.saldoDatum %></td>
+      <td><%= buergschaft.sichAbDatum %></td>
+      <td><%= buergschaft.sichEndDatum %></td>
+      <td><%= buergschaft.sichBetrag %></td>
+      <td><%= buergschaft.sichKurzBez %></td>
     </tr>
 
   <% end %>
 
 </table>
+
+<!-- Seitennavigation -->
+<div class="paginateBox" >
+  <%= will_paginate @ozbKonten %> 
+</div>
