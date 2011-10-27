@@ -1,17 +1,13 @@
 class OZBPersonController < ApplicationController
 
-	@Personas = OZBPerson.paginate(:page => params[:page], :per_page => 30)
-  
-	# GET /users
-  # GET /users.xml
   def index
-    @OZBPersonen = OZBPerson.all
-		@Personas = OZBPerson.paginate(:page => params[:page], :per_page => 30)
+    #@OZBPersonen = OZBPerson.all
+		@OZBPersonen = OZBPerson.paginate(:page => params[:page], :per_page => 1)
 
-    respond_to do |format|
-      format.html #index.html.erb
-      format.xml  { render :xml => @OZBPersonen }
-    end
+    #respond_to do |format|
+     # format.html #index.html.erb
+      #format.xml  { render :xml => @OZBPersonen }
+    #end
   end
 
 	def show
