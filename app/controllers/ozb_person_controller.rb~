@@ -1,6 +1,6 @@
 class OZBPersonController < ApplicationController
 
- #@@Personas = OZBPerson.paginate(:page => params[:page], :per_page => 30)
+ @@Personas = OZBPerson.paginate(:page => params[:page], :per_page => 30)
   
  # GET /users
   # GET /users.xml

@@ -13,7 +13,21 @@
     <%= text_field_tag :prozent %>  
   </p>  
   
-  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>	
-
-
+  <p>
+    <%= label_tag "AbDatum:" %>
+    <%= text_field_tag :kklAbDatum %>
+  </p>
+  
+  
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
+  
 <% end %>
+
+
+<script>
+  $(function() {
+    $( "#kklAbDatum" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+</script>
