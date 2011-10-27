@@ -8,6 +8,9 @@ gem 'rails', '3.0.7'
 gem 'sqlite3'
 gem 'composite_primary_keys'
 
+#Listendarstellung
+gem 'will_paginate'
+
 # Login-Manager
 gem 'devise'
 

@@ -17,10 +17,11 @@ class KontoklasseController < ApplicationController
     begin
       @kontoklasse = Kontenklasse.find(params[:kkl])
       @kontoklasse.prozent = params[:prozent]
+      @kontoklasse.kklAbDatum = Date.parse(params[:kklAbDatum])
       @kontoklasse.save!
     rescue
         @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
-                                              :kklAbDatum => Date.new )
+                                              :kklAbDatum => Date.parse(params[:kklAbDatum]) )
         @new_kontoklasse.save!
     end
     

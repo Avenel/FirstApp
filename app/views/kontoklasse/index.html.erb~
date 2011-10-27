@@ -13,6 +13,7 @@
     <tr>
       <td><%= kkl.kkl %></td>
       <td><%= kkl.prozent %></td>
+      <td><%= kkl.kklAbDatum %></td>
       <% edit_link = "/kontoklasse/" + kkl.kkl.to_s %>
       <% delete_link = "/kontoklasse/" + kkl.kkl.to_s + "/delete" %>
       <td><%= link_to "Editieren", edit_link %></td>

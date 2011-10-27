@@ -6,6 +6,7 @@
   <p> 
     <%= label_tag "Kontoklasse:" %>
     <%= label_tag :kkl, @kontoklasse.kkl %>  
+    <%= hidden_field_tag :kkl, @kontoklasse.kkl %>  
   </p>
   
   <p>
@@ -13,7 +14,19 @@
     <%= text_field_tag :prozent, @kontoklasse.prozent %>  
   </p>  
   
-  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('editForm').submit(); return false;" %>	
-
+  <p>
+    <%= label_tag "AbDatum:" %>
+    <%= text_field_tag :kklAbDatum %>
+  </p>
+  
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>	
 
 <% end %>
+
+<script>
+  $(function() {
+    $( "#kklAbDatum" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+</script>
