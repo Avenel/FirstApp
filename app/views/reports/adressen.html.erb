@@ -1,0 +1,25 @@
+<table style="margin: 50px auto">
+
+  <tr>
+    <td>Name</td>
+    <td>Vorname</td>
+    <td>Straße</td>
+    <td>Hausnummer</td>
+    <td>Postleitzahl</td>
+    <td>Ort</td>
+  </tr>
+  
+  <% @personen.each do |person| %>
+  
+    <tr>
+      <td><%= person.name %></td>
+      <td><%= person.vorname %></td>
+      <td><%= person.strasse %></td>
+      <td><%= person.hausnr %></td>
+      <td><%= person.plz %></td>
+      <td><%= person.ort %></td>
+    </tr>
+
+  <% end %>
+
+</table>

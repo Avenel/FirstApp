@@ -20,6 +20,14 @@ div.field, div.actions {
   margin-bottom: 10px;
 }
 
+table {
+  border: 1px solid;
+}
+
+table td{
+  border: 1px solid;
+}
+
 #notice {
   color: green;
 }

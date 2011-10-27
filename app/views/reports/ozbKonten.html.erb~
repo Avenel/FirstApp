@@ -1,0 +1,25 @@
+<table style="border: 1px solid; margin: 50px auto">
+
+  <tr>
+    <td>Konto-Nr</td>
+    <td>Mitglieds-Nr</td>
+    <td>Konto-Einrichtungsdatum</td>
+    <td>wSaldo</td>
+    <td>pSaldo</td>
+    <td>Saldo Datum</td>
+  </tr>
+
+  <% @ozbKonten.each do |konto| %>
+  
+    <tr>
+      <td><%= konto.ktoNr %></td>
+      <td><%= konto.mnr %></td>
+      <td><%= konto.ktoEinrDatum %></td>
+      <td><%= konto.wSaldo %></td>
+      <td><%= konto.pSaldo %></td>
+      <td><%= konto.saldoDatum %></td>
+    </tr>
+
+  <% end %>
+
+</table>

@@ -1,0 +1,27 @@
+<table style="margin: 50px auto">
+
+  <tr>
+    <td>Personal-Nr. Buerger</td>
+    <td>Personal-Nr. Gesellschafter</td>
+    <td>Konto-Nr</td>
+    <td>sichAbDatum</td>
+    <td>sichEndDatum</td>
+    <td>sichBetrag</td>
+    <td>sichKurzBez</td>
+  </tr>
+:pnrB, :mnrG, :ktoNr, :sichAbDatum, :sichEndDatum, :sichBetrag, :sichKurzBez
+
+  <% @buergschaften.each do |buergschaft| %>
+  
+    <tr>
+      <td><%= buergschaft.ktoNr %></td>
+      <td><%= buergschaft.mnr %></td>
+      <td><%= buergschaft.ktoEinrDatum %></td>
+      <td><%= buergschaft.wSaldo %></td>
+      <td><%= buergschaft.pSaldo %></td>
+      <td><%= buergschaft.saldoDatum %></td>
+    </tr>
+
+  <% end %>
+
+</table>

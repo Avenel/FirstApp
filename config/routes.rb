@@ -14,6 +14,10 @@ OZB::Application.routes.draw do
   match '/kontoklasse/:id' => 'kontoklasse#save', :via => :POST
   match '/kontoklasse/:id/delete' => 'kontoklasse#delete'
 
+  match '/ozbKonten' => 'reports#ozbKonten'
+  match '/buergschaften' => 'reports#buergschaften'
+  match '/adressen' => 'reports#adressen'
+
   root :to => "index#dashboard"
 
   # The priority is based upon order of creation:

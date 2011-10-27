@@ -6,6 +6,7 @@
   <tr>
     <td>Name</td>
     <td>Prozent</td>
+    <td>AbDatum</td>
   </tr>
 
   <% @kontoklassen.each do |kkl| %>

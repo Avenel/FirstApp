@@ -1,0 +1,29 @@
+<table style="margin: 50px auto">
+
+  <tr>
+    <td>Name</td>
+    <td>Vorname</td>
+    <td>Straße</td>
+    <td>Hausnummer</td>
+    <td>Postleitzahl</td>
+    <td>Ort</td>
+  </tr>
+
+:name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
+                     :ort
+
+  <% @adressen.each do |adresse| %>
+  
+    <tr>
+      <td><%= buergschaft.pnrB %></td>
+      <td><%= buergschaft.mnrG %></td>
+      <td><%= buergschaft.ktoNr %></td>
+      <td><%= buergschaft.sichAbDatum %></td>
+      <td><%= buergschaft.sichEndDatum %></td>
+      <td><%= buergschaft.sichBetrag %></td>
+      <td><%= buergschaft.sichKurzBez %></td>
+    </tr>
+
+  <% end %>
+
+</table>
