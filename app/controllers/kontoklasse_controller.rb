@@ -3,7 +3,7 @@ class KontoklasseController < ApplicationController
 	before_filter :authenticate_OZBPerson!
 
   def index
-    @kontoklassen = Kontenklasse.all
+    @kontoklassen = Kontenklasse.paginate(:page => params[:page], :per_page => 5)
   end
   
   def new
@@ -38,6 +38,11 @@ class KontoklasseController < ApplicationController
     
     @kontoklassen = Kontenklasse.all    
     redirect_to :action => "index"
+  end
+  
+  def verlauf
+    @kkl = params[:kkl]
+    @kontenklassenverlauf = KKLVerlauf.where(:kkl => params[:kkl]).paginate(:page => params[:page], :per_page => 5)
   end
 
 end

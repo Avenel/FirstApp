@@ -2,7 +2,7 @@
 <%= link_to "zurück", "/" %>
 
 
-<table style="border: 1px solid; margin: 50px auto">
+<table style="margin: 50px auto">
   <tr>
     <td>Name</td>
     <td>Prozent</td>
@@ -17,11 +17,14 @@
       <td><%= kkl.kklAbDatum %></td>
       <% edit_link = "/kontoklasse/" + kkl.kkl.to_s %>
       <% delete_link = "/kontoklasse/" + kkl.kkl.to_s + "/delete" %>
+      <% delete_link = "/kontoklasse/verlauf/" + kkl.kkl.to_s %>
       <td><%= link_to "Editieren", edit_link %></td>
       <td><%= link_to "Löschen", delete_link %></td>
+      <td><%= link_to "Verlauf", verlauf_link %></td>
     </tr>
   
   <% end %>
 </table>
 
 <%= link_to "Neue Kontoklasse hinzufügen", "/kontoklasse/new" %>
+

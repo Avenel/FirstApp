@@ -13,10 +13,12 @@ OZB::Application.routes.draw do
   match '/kontoklasse/:id' => 'kontoklasse#edit', :via => :GET
   match '/kontoklasse/:id' => 'kontoklasse#save', :via => :POST
   match '/kontoklasse/:id/delete' => 'kontoklasse#delete'
+  match '/kontoklasse/verlauf/:kkl' => 'kontoklasse#verlauf'
 
   match '/ozbKonten' => 'reports#ozbKonten'
   match '/buergschaften' => 'reports#buergschaften'
   match '/adressen' => 'reports#adressen'
+  
 
   root :to => "index#dashboard"
 
