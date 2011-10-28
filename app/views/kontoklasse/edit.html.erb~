@@ -16,7 +16,7 @@
   
   <p>
     <%= label_tag "AbDatum:" %>
-    <%= text_field_tag :kklAbDatum %>
+    <%= text_field_tag :kklAbDatum, @kontoklasse.kklAbDatum %>
   </p>
   
   <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>	

@@ -1,12 +1,14 @@
 OZB::Application.routes.draw do
-
+  
+  # Devise - Login Management
   devise_for :OZBPerson
+  
+  # OZB Person
   match '/OZBPerson/index' => 'OZBPerson#index'
   match '/OZBPerson/:id' => 'OZBPerson#show'  
   resources :OZBPerson, :id => "mnr"
-  #, :controllers => { :sessions => "login" }, :path_names => { :sign_in => "login", :sign_out => "logout" }
 
-  match '/test' => 'application#test'
+  # Kontoklassen
   match '/kontoklasse' => 'kontoklasse#index'
   match '/kontoklasse/new' => 'kontoklasse#new'
   match '/kontoklasse/save' => 'kontoklasse#save'
@@ -14,12 +16,22 @@ OZB::Application.routes.draw do
   match '/kontoklasse/:id' => 'kontoklasse#save', :via => :POST
   match '/kontoklasse/:id/delete' => 'kontoklasse#delete'
   match '/kontoklasse/verlauf/:kkl' => 'kontoklasse#verlauf'
-
+  
+  # OZBKonten
   match '/ozbKonten' => 'reports#ozbKonten'
-  match '/buergschaften' => 'reports#buergschaften'
+  
+  # Buergschaften
+  match '/buergschaften' => 'buergschaft#index'
+  match '/buergschaften/new' => 'buergschaft#new'
+  match '/buergschaften/save' => 'buergschaft#save'
+  match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#edit', :via => :GET
+  match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#save', :via => :POST
+  match '/buergschaften/:pnrB/:mnrG/delete' => 'buergschaft#delete'
+  
+  # Adressen
   match '/adressen' => 'reports#adressen'
   
-
+  # Root
   root :to => "index#dashboard"
 
   # The priority is based upon order of creation:

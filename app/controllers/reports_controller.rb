@@ -4,10 +4,6 @@ class ReportsController < ApplicationController
     @ozbKonten = OZBKonto.paginate(:per_page => 5, :page => params[:page])  
   end
   
-  def buergschaften
-    @buergschaften = Buergschaft.paginate(:per_page => 5, :page => params[:page])  
-  end
-  
   def rahmenvertraege
   end
   

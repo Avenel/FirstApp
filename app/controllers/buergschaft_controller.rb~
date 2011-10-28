@@ -14,15 +14,15 @@ class BuergschaftController < ApplicationController
   def save
     begin
       @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
-      @buergschaft.sichEndDatum = Date.parse(params[:sichEndDatum])
+      @buergschaft.sichEndDatum = params[:sichEndDatum]
       @buergschaft.sichBetrag = params[:sichBetrag]
       @buergschaft.sichKurzBez = params[:sichKurzBez]
       @buergschaft.ktoNr = params[:ktoNr]
       @buergschaft.save!
     rescue
         @new_buergschaft = Buergschaft.create( :pnrB => params[:pnrB], :mnrG => params[:mnrG],
-                                              :ktoNr => params[:ktoNr], :sichAbDatum => Date.parse(params[:sichAbDatum]),
-                                              :sichEndDatum => Date.parse(params[:sichEndDatum]), :sichBetrag => params[:sichBetrag],
+                                              :ktoNr => params[:ktoNr], :sichAbDatum => params[:sichAbDatum],
+                                              :sichEndDatum => params[:sichEndDatum], :sichBetrag => params[:sichBetrag],
                                               :sichKurzBez => params[:sichKurzBez] )
         @new_buergschaft.save!
     end

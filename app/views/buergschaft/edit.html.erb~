@@ -1,0 +1,54 @@
+<h1>Edtieren</h1>
+<%= link_to "zurück", "/buergschaften" %>
+
+<%= form_tag({:action => "save"}, :id=>"editForm") do %>
+
+  <p> 
+    <%= label_tag "Buergschafter:" %>
+    <%= label_tag :pnrB, @buergschaft.pnrB %>  
+    <%= hidden_field_tag :pnrB, @buergschaft.pnrB %>  
+  </p>
+  
+  <p>
+    <%= label_tag "Gesellschafter:" %>  
+    <%= label_tag :mnrG, @buergschaft.mnrG %>  
+    <%= hidden_field_tag :mnrG, @buergschaft.mnrG %>  
+  </p>  
+  
+  <p>
+    <%= label_tag "sichAbDatum:" %>
+    <%= label_tag :sichAbDatum, @buergschaft.sichAbDatum %>  
+    <%= hidden_field_tag :sichAbDatum, @buergschaft.sichAbDatum %>  
+  </p>
+  
+  <p>
+    <%= label_tag "Konto-Nr.:" %>
+    <%= text_field_tag :ktoNr, @buergschaft.ktoNr %>  
+  </p>
+  
+  <p>
+    <%= label_tag "sichEndDatum:" %>
+    <%= text_field_tag :sichEndDatum, @buergschaft.sichEndDatum %>  
+  </p>
+  
+  <p>
+    <%= label_tag "sichBetrag:" %>
+    <%= text_field_tag :sichBetrag, @buergschaft.sichBetrag %>  
+  </p>
+  
+  <p>
+    <%= label_tag "sichKurzBez:" %>
+    <%= text_field_tag :sichKurzBez, @buergschaft.sichKurzBez %>  
+  </p>
+  
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>	
+
+<% end %>
+
+<script>
+  $(function() {
+    $( "#kklAbDatum" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+</script>

@@ -1,0 +1,37 @@
+<h1>Buergschaften</h1>
+<%= link_to "zurück", "/" %>
+
+:pnrB, :mnrG, :ktoNr, :sichAbDatum, :sichEndDatum, :sichBetrag, :sichKurzBez
+
+<table style="margin: 50px auto">
+  <tr>
+    <td>Buergschafter</td>
+    <td>Gesellschafter</td>
+    <td>Konto-Nr.</td>
+    <td>sichAbDatum</td>
+    <td>sichEndDatum</td>    
+    <td>sichBetrag</td>
+    <td>sichKurzBez</td>
+  </tr>
+
+  <% @buergschaften.each do |buergschaft| %>
+  
+    <tr>
+      <td><%= buergschaft.pnrB %></td>
+      <td><%= buergschaft.mnrG %></td>
+      <td><%= buergschaft.ktoNr %></td>
+      <td><%= buergschaft.sichAbDatum %></td>
+      <td><%= buergschaft.sichEndDatum %></td>      
+      <td><%= buergschaft.sichBetrag %></td>
+      <td><%= buergschaft.sichKurzBez %></td>
+      <% edit_link = "/buergschaften/" + buergschaft.pnrB.to_s + "/" + buergschaft.mnrG.to_s %>
+      <% delete_link = "/buergschaften/" + buergschaft.pnrB.to_s + "/" + buergschaft.mnrG.to_s + "/delete" %>
+      <td><%= link_to "Editieren", edit_link %></td>
+      <td><%= link_to "Löschen", delete_link %></td>
+    </tr>
+  
+  <% end %>
+</table>
+
+<%= link_to "Neue Buergschaft hinzufügen", "/buergschaften/new" %>
+

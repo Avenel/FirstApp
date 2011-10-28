@@ -1,0 +1,57 @@
+<h1>Neu anlegen</h1>
+<%= link_to "zurück", "/buergschaften" %>
+
+<%= form_tag({:action => "save"}, :id=>"newForm") do %>
+
+  <p> 
+    <%= label_tag "Buergschafter:" %>
+    <%= text_field_tag :pnrB %>  
+  </p>
+  
+  <p>
+    <%= label_tag "Gesellschafter:" %>  
+    <%= text_field_tag :mnrG %>  
+  </p>  
+  
+  <p>
+    <%= label_tag "sichAbDatum:" %>
+    <%= text_field_tag :sichAbDatum %>  
+  </p>
+  
+  <p>
+    <%= label_tag "Konto-Nr.:" %>
+    <%= text_field_tag :ktoNr %>  
+  </p>
+  
+  <p>
+    <%= label_tag "sichEndDatum:" %>
+    <%= text_field_tag :sichEndDatum %>  
+  </p>
+  
+  <p>
+    <%= label_tag "sichBetrag:" %>
+    <%= text_field_tag :sichBetrag %>  
+  </p>
+  
+  <p>
+    <%= label_tag "sichKurzBez:" %>
+    <%= text_field_tag :sichKurzBez %>  
+  </p>
+  
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>	
+
+<% end %>
+
+<script>
+  $(function() {
+    $( "#sichEndDatum" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+  
+  $(function() {
+    $( "#sichAbDatum" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+</script>
