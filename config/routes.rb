@@ -3,11 +3,14 @@ OZB::Application.routes.draw do
   # Devise - Login Management
   devise_for :OZBPerson
   
-  # OZB Person
-  match '/OZBPerson/index' => 'OZBPerson#index'
-  match '/OZBPerson/:id' => 'OZBPerson#show'  
-  resources :OZBPerson, :id => "mnr"
-
+  # OZBPerson
+  match '/OZBPerson' => 'OZBPerson#index'
+  match '/OZBPerson/new' => 'OZBPerson#new'
+  match '/OZBPerson/save' => 'OZBPerson#save'
+	match '/OZBPerson/:id' => 'OZBPerson#edit', :via => :GET
+	match '/OZBPerson/:id' => 'OZBPerson#save', :via => :POST  
+  match '/OZBPerson/:id/delete' => 'OZBPerson#delete'
+  
   # Kontoklassen
   match '/kontoklasse' => 'kontoklasse#index'
   match '/kontoklasse/new' => 'kontoklasse#new'
