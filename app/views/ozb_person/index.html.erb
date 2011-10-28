@@ -1,17 +1,25 @@
 <h1>OZB Personen</h1>
 <%= link_to "zurück", "/" %>
 
-<table style="border: 1px solid; margin: 50px auto">
+<table style="margin: 50px auto">
   <tr>
+    <td>Nr.</td>
     <td>Name</td>
   </tr>
   
 <% @OZBPersonen.each do |person| %>
   
     <tr>
-      <td><%= person.mnr %></td>
+      <td><%= person.mnr %></td>	
+			<% current_person = Person.find(person.mnr) %>
+			<td><%= current_person.name + ", " + current_person.vorname %></td>
+			<% edit_link = "/OZBPerson/" + person.mnr.to_s %>
+      <% delete_link = "/OZBPerson/" + person.mnr.to_s + "/delete" %>
+      <td><%= link_to "Editieren", edit_link %></td>
+      <td><%= link_to "Löschen", delete_link %></td>
     </tr>  
 <% end %>
 </table>
-<%= link_to 'OZB Person hinzufuegen', new_OZBPerson_path %>
+
+<%= link_to 'OZB Person hinzufuegen', "/OZBPerson/new" %>
 <%= will_paginate @OZBPersonen %>
