@@ -1,0 +1,2 @@
+module BuergschaftHelper
+end

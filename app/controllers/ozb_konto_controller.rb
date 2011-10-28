@@ -1,0 +1,2 @@
+class OzbKontoController < ApplicationController
+end

@@ -1,0 +1,2 @@
+class TanlisteController < ApplicationController
+end
