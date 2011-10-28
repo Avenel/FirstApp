@@ -1,0 +1,60 @@
+<table>
+  <tr>
+    <%= form_tag({:action => "edit"}, :id=>"searchForm", :method => 'get') do %>
+      <td><%= text_field_tag "ktoNr", "", :id => "ktoNr", :style => "width: 80px;" %></td>
+      <td><%= text_field_tag "mnr", "", :style => "width: 80px;" %></td>
+      <td><%= text_field_tag "name", "", :style => "width: 150px;" %></td>
+      <td><%= text_field_tag "ktoEinrDatum", "", :style => "width: 80px;" %></td>
+      <td><%= link_to_function "Suchen", "", :onclick => "$('#searchForm').submit(); return false;", :id => "searchButton" %></td>
+    <% end %>
+  </tr>
+  <tr>
+    <th>Konto-Nr</th>
+    <th>Mitglieds-Nr</th>
+    <th>Mitglied</th>
+    <th>ktoEinrDatum</th>
+    <th>wSaldo</th>
+    <th>pSaldo</th>
+    <th>Saldo Datum</th>
+  </tr>
+  
+  <% @konten.each do |konto| %>  
+    <tr>
+      <td><%= konto.ktoNr %></td>
+      <td><%= konto.mnr %></td>
+      <% person = Person.where(:pnr => OZBPerson.where(:mnr => konto.mnr).first.ueberPnr).first %>
+      <% if !person.nil? %>
+        <td><%= person.name.to_s + ", "+ person.vorname.to_s %></td>
+      <% else %>
+        <td>Unbekannt</td>
+      <% end %>
+      <td><%= konto.ktoEinrDatum %></td>
+      <td><%= konto.wSaldo %></td>
+      <td><%= konto.pSaldo %></td>
+      <td><%= konto.saldoDatum %></td>
+      <td><%= link_to_function "einfügen", "$('#ktoNr').val('"+konto.ktoNr.to_s+"'); $.fancybox.close() "%></td>
+    </tr>
+  <% end %>
+</table>
+    
+<!-- Seitennavigation -->
+<div class="paginateBox" >
+  <%= will_paginate @konten %> 
+</div>
+
+<script>
+  $(function () {  
+    $('.pagination a').live('click',
+      function () {  
+        $.getScript(this.href);  
+        return false;  
+      }   
+    );  
+  });    
+  
+  // Search form.  
+  $('#searchForm').submit(function () {  
+    $.get(this.action, $(this).serialize(), null, 'script');  
+    return false;  
+  }); 
+</script> 

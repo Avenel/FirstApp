@@ -1,8 +1,6 @@
 <h1>Buergschaften</h1>
 <%= link_to "zurück", "/" %>
 
-:pnrB, :mnrG, :ktoNr, :sichAbDatum, :sichEndDatum, :sichBetrag, :sichKurzBez
-
 <table style="margin: 50px auto">
   <tr>
     <td>Buergschafter</td>
@@ -15,10 +13,11 @@
   </tr>
 
   <% @buergschaften.each do |buergschaft| %>
-  
+  <% buergschafter = Person.where(:pnr => buergschaft.pnrB).first %>
+  <% gesellschafter = Person.where( :pnr => OZBPerson.where(:mnr => buergschaft.mnrG).first.ueberPnr ).first   %>
     <tr>
-      <td><%= buergschaft.pnrB %></td>
-      <td><%= buergschaft.mnrG %></td>
+      <td><%= buergschafter.name.to_s + ", " + buergschafter.vorname.to_s %></td>
+      <td><%= gesellschafter.name.to_s + ", " + gesellschafter.vorname.to_s %></td>
       <td><%= buergschaft.ktoNr %></td>
       <td><%= buergschaft.sichAbDatum %></td>
       <td><%= buergschaft.sichEndDatum %></td>      

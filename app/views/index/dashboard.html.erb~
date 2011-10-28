@@ -10,7 +10,7 @@
   <td><a href='/buergschaften'>Alle Buergschaften einsehen</a></td>
 </tr>
 <tr>
-  <td><a href='/adresse'>Alle Adressen einsehen</a></td>
+  <td><a href='/adressen'>Alle Adressen einsehen</a></td>
 </tr>
 <tr>
   <td><a href='/kontoklasse'>Kontoklassen bearbeiten</a></td>

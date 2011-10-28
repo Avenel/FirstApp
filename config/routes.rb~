@@ -25,8 +25,8 @@ OZB::Application.routes.draw do
   match '/buergschaften/new' => 'buergschaft#new'
   match '/buergschaften/save' => 'buergschaft#save'
   match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#edit', :via => :GET
-  match '/buergschaften/:id' => 'buergschaft#save', :via => :POST
-  match '/buergschaften/:id/delete' => 'buergschaft#delete'
+  match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#save', :via => :POST
+  match '/buergschaften/:pnrB/:mnrG/delete' => 'buergschaft#delete'
   
   # Adressen
   match '/adressen' => 'reports#adressen'
