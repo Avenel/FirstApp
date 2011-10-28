@@ -9,14 +9,15 @@ class OZBPersonController < ApplicationController
 	
 	def save
     begin
-      @kontoklasse = Kontenklasse.find(params[:kkl])
-      @kontoklasse.prozent = params[:prozent]
-      @kontoklasse.kklAbDatum = Date.parse(params[:kklAbDatum])
-      @kontoklasse.save!
+      @current_person = OZBPerson.find(params[:mnr])
+      #@kontoklasse.prozent = params[:prozent]
+      #@kontoklasse.kklAbDatum = Date.parse(params[:kklAbDatum])
+      #@kontoklasse.save!
     rescue
 			#Person erstellen
 			@new_Person = Person.create ( :rolle => params[:rolle], :name => params[:name], :vorname => params[:vorname], :geburtsdatum => params[:gebDatum],
-																		:plz => params[:plz], :ort => params[:ort] )
+																		:strasse => params[:strasse], :plz => params[:plz], :ort => params[:ort], :antragsdatum => params[:antragsdatum],
+																		:aufnahmedatum => params[:aufnahmedatum] )
 			
 			#Login erstellen
 			@new_OZBPerson = OZBPerson.create( :ueberPnr => @new_Person.pnr, :email => params[:email], :password => "ozb-2000" )
@@ -38,7 +39,7 @@ class OZBPersonController < ApplicationController
 			
 			#Fax hinzufuegen
 			if params[:fax].length > 0
-				@new_Fax = Telefon.create( :pnr => @new_Person.pnr, :telefonNr => params[:telefon], :telefonTyp => "Fax" )
+				@new_Fax = Telefon.create( :pnr => @new_Person.pnr, :telefonNr => params[:fax], :telefonTyp => "Fax" )
 				@new_Fax.save!
 			end				
     end 
