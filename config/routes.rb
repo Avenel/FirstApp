@@ -26,6 +26,7 @@ OZB::Application.routes.draw do
   # Buergschaften
   match '/buergschaften' => 'buergschaft#index'
   match '/buergschaften/new' => 'buergschaft#new'
+  match '/buergschaften/new' => 'buergschaft#searchKtoNr'
   match '/buergschaften/save' => 'buergschaft#save'
   match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#edit', :via => :GET
   match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#save', :via => :POST

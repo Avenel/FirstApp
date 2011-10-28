@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
     t.integer "blocknr",     :limit => 2,                 :null => false
   end
 
-  create_table "Buergschaft", :force => true do |t|
+  create_table "Buergschaft", :id => false, :force => true do |t|
     t.integer "pnrB",         :limit => 10,                                 :null => false
     t.integer "mnrG",         :limit => 10,                                 :null => false
     t.integer "ktoNr",        :limit => 5,                                  :null => false

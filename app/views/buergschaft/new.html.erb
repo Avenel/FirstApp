@@ -21,6 +21,7 @@
   <p>
     <%= label_tag "Konto-Nr.:" %>
     <%= text_field_tag :ktoNr %>  
+    <%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %> 
   </p>
   
   <p>
@@ -41,6 +42,20 @@
   <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>	
 
 <% end %>
+
+
+<div style="display:none">
+  <div id="searchKtoNrFrame">
+    <div id="konten"><%= render 'konten' %></div>  
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    $("#searchKtoNr").fancybox();
+  });
+</script>
 
 <script>
   $(function() {

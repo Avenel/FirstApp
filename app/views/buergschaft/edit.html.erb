@@ -9,13 +9,21 @@
 
   <p> 
     <%= label_tag "Buergschafter:" %>
-    <%= label_tag :nameB, buergschafter.name.to_s + "," + buergschafter.vorname.to_s %>  
+    <% if !buergschafter.nil? then %>
+      <%= label_tag :nameB, buergschafter.name.to_s + "," + buergschafter.vorname.to_s %>  
+    <% else %>
+      <%= label_tag :nameB, "nicht gefunden" %>
+    <% end %>
     <%= hidden_field_tag :pnrB, @buergschaft.pnrB %>  
   </p>
   
   <p>
     <%= label_tag "Gesellschafter:" %>  
-    <%= label_tag :nameG, gesellschafter.name.to_s + "," + gesellschafter.vorname.to_s %>  
+    <% if !gesellschafter.nil? then %>
+      <%= label_tag :nameB, gesellschafter.name.to_s + "," + gesellschafter.vorname.to_s %>  
+    <% else %>
+      <%= label_tag :nameG, "nicht gefunden" %>
+    <% end %>
     <%= hidden_field_tag :mnrG, @buergschaft.mnrG %>  
   </p>  
   

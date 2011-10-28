@@ -1,7 +1,7 @@
 <h1>Neu anlegen</h1>
 <%= link_to "zurück", "/buergschaften" %>
 
-<%= form_tag({:action => "new"}, :id=>"newForm") do %>
+<%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
   <p> 
     <%= label_tag "Buergschafter:" %>
@@ -21,6 +21,7 @@
   <p>
     <%= label_tag "Konto-Nr.:" %>
     <%= text_field_tag :ktoNr %>  
+    <%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %> 
   </p>
   
   <p>

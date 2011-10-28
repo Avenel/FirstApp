@@ -5,17 +5,16 @@ class BuergschaftController < ApplicationController
   end
 
   def new
-  end
-  
-  def edit
-    @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]] )
+    if( !params[:pnrB].nil? ) then
+      @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]] )
+    end
     
     if  params[:ktoNr].nil? then
-        @konten = OZBKonto.paginate(:page => params[:page], :per_page => 1) 
+        @konten = OZBKonto.paginate(:page => params[:page], :per_page => 5) 
     else
         if params[:ktoNr].empty? and params[:mnr].empty? and  params[:name].empty? and 
         params[:ktoEinrDatum].empty? then
-          @konten = OZBKonto.paginate(:page => params[:page], :per_page => 1) 
+          @konten = OZBKonto.paginate(:page => params[:page], :per_page => 5) 
         else
           @konten = OZBKonto;
           
@@ -46,7 +45,57 @@ class BuergschaftController < ApplicationController
             @konten = @konten.where(:ktoEinrDatum => params[:ktoEinrDatum])
           end
           
-          @konten = @konten.paginate(:page => params[:page], :per_page => 1)
+          @konten = @konten.paginate(:page => params[:page], :per_page => 5)
+        end
+    end
+  end
+  
+  def searchKtoNr
+   
+  end
+  
+  def edit
+    if( !params[:pnrB].nil? ) then
+      @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]] )
+    end
+    
+    if  params[:ktoNr].nil? then
+        @konten = OZBKonto.paginate(:page => params[:page], :per_page => 5) 
+    else
+        if params[:ktoNr].empty? and params[:mnr].empty? and  params[:name].empty? and 
+        params[:ktoEinrDatum].empty? then
+          @konten = OZBKonto.paginate(:page => params[:page], :per_page => 5) 
+        else
+          @konten = OZBKonto;
+          
+          if( !params[:ktoNr].empty? ) then
+            @konten = @konten.where(:ktoNr => params[:ktoNr])
+          end
+          
+          if( !params[:mnr].empty? ) then
+            @konten = @konten.where(:mnr => params[:mnr])
+          end
+          
+          if( !params[:name].empty? ) then
+            @personen = Person.all
+            
+            @personen.each do |person|
+              name = person.name.to_s.downcase + " " +  person.vorname.to_s.downcase
+              searchName = params[:name].downcase
+              puts name
+              if name.include? searchName then
+                @konten = @konten.where(:mnr => person.OZBPerson.first.mnr)
+                break
+              end
+              
+            end
+          end
+          
+          if( !params[:ktoEinrDatum].empty? ) then
+            @konten = @konten.where(:ktoEinrDatum => params[:ktoEinrDatum])
+          end
+          
+          @konten = @konten.paginate(:page => params[:page], :per_page => 5)
         end
     end
   end
@@ -58,13 +107,14 @@ class BuergschaftController < ApplicationController
       @buergschaft.sichBetrag = params[:sichBetrag]
       @buergschaft.sichKurzBez = params[:sichKurzBez]
       @buergschaft.ktoNr = params[:ktoNr]
-      @buergschaft.save!
+      @buergschaft.save
+      puts @buergschaft.inspect
     rescue
         @new_buergschaft = Buergschaft.create( :pnrB => params[:pnrB], :mnrG => params[:mnrG],
                                               :ktoNr => params[:ktoNr], :sichAbDatum => Date.parse(params[:sichAbDatum]),
                                               :sichEndDatum => Date.parse(params[:sichEndDatum]), :sichBetrag => params[:sichBetrag],
                                               :sichKurzBez => params[:sichKurzBez] )
-        @new_buergschaft.save!
+        @new_buergschaft.save
     end
     
     @buergschaften = Buergschaft.all

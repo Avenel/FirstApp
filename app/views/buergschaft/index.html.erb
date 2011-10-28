@@ -16,8 +16,16 @@
   <% buergschafter = Person.where(:pnr => buergschaft.pnrB).first %>
   <% gesellschafter = Person.where( :pnr => OZBPerson.where(:mnr => buergschaft.mnrG).first.ueberPnr ).first   %>
     <tr>
-      <td><%= buergschafter.name.to_s + ", " + buergschafter.vorname.to_s %></td>
-      <td><%= gesellschafter.name.to_s + ", " + gesellschafter.vorname.to_s %></td>
+      <% if !buergschafter.nil? then %>
+        <td><%= buergschafter.name.to_s + ", " + buergschafter.vorname.to_s %></td>
+      <% else %>
+        <td>nicht gefunden</td>
+      <% end %>
+      <% if !gesellschafter.nil? then %>
+        <td><%= gesellschafter.name.to_s + ", " + gesellschafter.vorname.to_s %></td>
+      <% else %>
+        <td>nicht gefunden</td>
+      <% end %>
       <td><%= buergschaft.ktoNr %></td>
       <td><%= buergschaft.sichAbDatum %></td>
       <td><%= buergschaft.sichEndDatum %></td>      
