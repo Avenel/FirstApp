@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
         end
         
         if( !params[:ktoEinrDatum].empty? ) then
-          @konten = @konten.where(:ktoEinrDatum => params[:ktoEinrDatum])
+          @konten = @konten.where(:ktoEinrDatum => Date.parse(params[:ktoEinrDatum]))
         end
         
         @konten = @konten.paginate(:page => params[:page], :per_page => 5)

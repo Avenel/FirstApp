@@ -57,4 +57,10 @@
     $.get('/application/suche_konten.js', $(this).serialize(), null, 'script');  
     return false;  
   }); 
+  
+  $(function() {
+    $( "#ktoEinrDatum" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
 </script> 
