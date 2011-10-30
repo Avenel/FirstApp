@@ -63,19 +63,61 @@
 
   var insertId = "#pnrB";
 
-    $("#searchBFrame").click(function(){
-      insertId = "#pnrB";
-    });
-    
-    $("#searchGFrame").click(function(){
-      insertId = "#mnrG";
-    });
+  $("#searchBFrame").click(function(){
+    insertId = "#pnrB";
+  });
+  
+  $("#searchGFrame").click(function(){
+    insertId = "#mnrG";
+  });
 
   $(document).ready(function() {
     $("#searchKtoNr").fancybox();
     $("#searchBFrame").fancybox();
     $("#searchGFrame").fancybox();    
   });
+  
+  $(function() {
+    var availableTagsB = [
+      <% tags = String.new %>
+      <% Person.all.each do |person| %>
+        <% if person.rolle.to_str == 'B' then %>
+          <% tags += "'" + person.pnr.to_s + "'" + "," %>
+        <% end %>
+      <% end %>
+      <%= tags.chop %>
+      ];
+    $( "#pnrB" ).autocomplete({
+      source: availableTagsB
+    });
+    
+    var availableTagsG = [
+      <% tags = String.new %>
+      <% Person.all.each do |person| %>
+        <% if person.rolle.to_str == 'G' then %>
+          <% tags += "'" + person.pnr.to_s + "'" + "," %>
+        <% end %>
+      <% end %>
+      <%= tags.chop %>
+      ];
+    $( "#mnrG" ).autocomplete({
+      source: availableTagsG
+    });
+    
+    
+    var availableTagsKonto = [
+      <% tags = String.new %>
+      <% OZBKonto.all.each do |konto| %>
+          <% tags += "'" + konto.ktoNr.to_s + "'" + "," %>
+      <% end %>
+      <%= tags.chop %>
+      ];
+    $( "#ktoNr" ).autocomplete({
+      source: availableTagsKonto
+    });
+    
+  });
+  
 </script>
 
 <script>

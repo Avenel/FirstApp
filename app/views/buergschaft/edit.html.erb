@@ -63,6 +63,21 @@
       dateFormat: 'yy-mm-dd'
     });
   });
+
+  $(function() {
+    var availableTagsKonto = [
+        <% tags = String.new %>
+        <% OZBKonto.all.each do |konto| %>
+            <% tags += "'" + konto.ktoNr.to_s + "'" + "," %>
+        <% end %>
+        <%= tags.chop %>
+      ];
+    
+      $( "#ktoNr" ).autocomplete({
+        source: availableTagsKonto
+      });
+   });
+    
 </script>
 
 
