@@ -6,7 +6,6 @@
 <% gesellschafter = Person.where( :pnr => OZBPerson.where(:mnr => @buergschaft.mnrG).first.ueberPnr ).first %>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
-
   <p> 
     <%= label_tag "Buergschafter:" %>
     <% if !buergschafter.nil? then %>
@@ -69,7 +68,7 @@
 
 <div style="display:none">
   <div id="searchKtoNrFrame">
-    <div id="konten"><%= render 'konten' %></div>  
+    <div id="konten"><%= render 'application/konten' %></div>  
   </div>
 </div>
 

@@ -1,11 +1,11 @@
 <table>
   <tr>
-    <%= form_tag({:action => "searchKtoNr"}, :id=>"searchForm", :method => 'get') do %>
+    <%= form_tag({:action => "searchKtoNr"}, :id=>"searchKtoNrForm", :method => 'get') do %>
       <td><%= text_field_tag "ktoNr", "", :id => "ktoNr", :style => "width: 80px;" %></td>
       <td><%= text_field_tag "mnr", "", :style => "width: 80px;" %></td>
       <td><%= text_field_tag "name", "", :style => "width: 150px;" %></td>
       <td><%= text_field_tag "ktoEinrDatum", "", :style => "width: 80px;" %></td>
-      <td><%= link_to_function "Suchen", "", :onclick => "$('#searchForm').submit(); return false;", :id => "searchButton" %></td>
+      <td><%= link_to_function "Suchen", "", :onclick => "$('#searchKtoNrForm').submit(); return false;", :id => "searchButton" %></td>
     <% end %>
   </tr>
   <tr>
@@ -53,7 +53,7 @@
   });    
   
   // Search form.  
-  $('#searchForm').submit(function () {  
+  $('#searchKtoNrForm').submit(function () {  
     $.get(this.action, $(this).serialize(), null, 'script');  
     return false;  
   }); 

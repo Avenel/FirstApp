@@ -43,6 +43,20 @@
 
 <% end %>
 
+
+<div style="display:none">
+  <div id="searchKtoNrFrame">
+    <div id="konten"><%= render 'konten' %></div>  
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    $("#searchKtoNr").fancybox();
+  });
+</script>
+
 <script>
   $(function() {
     $( "#sichEndDatum" ).datepicker({

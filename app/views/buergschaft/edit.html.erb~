@@ -6,13 +6,12 @@
 <% gesellschafter = Person.where( :pnr => OZBPerson.where(:mnr => @buergschaft.mnrG).first.ueberPnr ).first %>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
-
   <p> 
     <%= label_tag "Buergschafter:" %>
     <% if !buergschafter.nil? then %>
       <%= label_tag :nameB, buergschafter.name.to_s + "," + buergschafter.vorname.to_s %>  
     <% else %>
-      <%= label_tag :nameB %>
+      <%= label_tag :nameB, "nicht gefunden" %>
     <% end %>
     <%= hidden_field_tag :pnrB, @buergschaft.pnrB %>  
   </p>
@@ -22,7 +21,7 @@
     <% if !gesellschafter.nil? then %>
       <%= label_tag :nameB, gesellschafter.name.to_s + "," + gesellschafter.vorname.to_s %>  
     <% else %>
-      <%= label_tag :nameG %>
+      <%= label_tag :nameG, "nicht gefunden" %>
     <% end %>
     <%= hidden_field_tag :mnrG, @buergschaft.mnrG %>  
   </p>  
