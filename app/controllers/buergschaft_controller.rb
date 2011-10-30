@@ -6,6 +6,7 @@ class BuergschaftController < ApplicationController
 
   def new
     searchKtoNr()
+    searchOZBPerson()
   end
   
   def searchKtoNr
@@ -14,6 +15,7 @@ class BuergschaftController < ApplicationController
     end
     super
   end
+  
   
   def searchOZBPerson
     super

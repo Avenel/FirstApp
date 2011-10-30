@@ -54,7 +54,7 @@
   
   // Search form.  
   $('#searchKtoNrForm').submit(function () {  
-    $.get('/application/suche_konten.js', $(this).serialize(), null, 'script');  
+    $.get(this.action, $(this).serialize(), null, 'script');  
     return false;  
   }); 
 </script> 

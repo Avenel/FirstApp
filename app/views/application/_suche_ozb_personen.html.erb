@@ -1,0 +1,59 @@
+<table>
+  <tr>
+    <!-- #Suchkriterien: mnr, pnr, rolle, name, vorname, ktoNr -->
+    <%= form_tag({:action => "searchOZBPerson"}, :id=>"searchOZBPersonForm", :method => 'get') do %>
+      <td><%= text_field_tag "mnr", "", :id => "ktoNr", :style => "width: 80px;" %></td>
+      <td><%= text_field_tag "pnr", "", :style => "width: 80px;" %></td>
+      <td><%= text_field_tag "rolle", "", :style => "width: 150px;" %></td>
+      <td><%= text_field_tag "name", "", :style => "width: 80px;" %></td>
+      <td><%= text_field_tag "ktoNr", "", :style => "width: 80px;" %></td>
+      <td><%= link_to_function "Suchen", "", :onclick => "$('#searchOZBPersonForm').submit(); return false;", :id => "searchButton" %></td>
+    <% end %>
+  </tr>
+  <tr>
+    <th>Mitglieds-Nr.</th>
+    <th>Personen-Nr.</th>
+    <th>Rolle</th>
+    <th>Name</th>
+    <th>Konto-Nr.</th>
+  </tr>
+  
+  <% @personen.each do |person| %>  
+    <tr>
+      <td><%= person.OZBPerson.first.mnr %></td>
+      <td><%= person.pnr %></td>
+      <td><%= person.rolle %></td>
+      <td><%= person.name.to_s + ", "+ person.vorname.to_s %></td>
+      <td><%= person.OZBPerson.first.OZBKonto.first.ktoNr %></td>
+      <td><%= link_to_function "einfügen", "insert("+person.pnr.to_s+")"%></td>
+    </tr>
+  <% end %>
+</table>
+    
+<!-- Seitennavigation -->
+<div class="paginateBox" >
+  <%= will_paginate @personen %> 
+</div>
+
+<script>
+  
+  $(function () {  
+    $('.pagination a').live('click',
+      function () {  
+        $.getScript(this.href);  
+        return false;  
+      }   
+    );  
+  });    
+  
+  // Search form.  
+  $('#searchOZBPersonForm').submit(function () {  
+    $.get("/application/suche_ozb_personen.js", $(this).serialize(), null, 'script');  
+    return false;  
+  }); 
+  
+  function insert(value) {
+    $(insertId).val(value); $.fancybox.close() 
+  } 
+
+</script> 

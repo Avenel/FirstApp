@@ -5,12 +5,14 @@
 
   <p> 
     <%= label_tag "Buergschafter:" %>
-    <%= text_field_tag :pnrB %>  
+    <%= text_field_tag :pnrB %>
+    <%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchBFrame" %>
   </p>
   
   <p>
     <%= label_tag "Gesellschafter:" %>  
     <%= text_field_tag :mnrG %>  
+    <%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchGFrame" %>
   </p>  
   
   <p>
@@ -46,14 +48,33 @@
 
 <div style="display:none">
   <div id="searchKtoNrFrame">
-    <div id="konten"><%= render 'application/konten' %></div>  
+    <div id="konten"><%= render 'application/suche_konten' %></div>  
+  </div>
+</div>
+
+<div style="display:none">
+  <div id="searchOZBPersonFrame">
+    <div id="personen"><%= render 'application/suche_ozb_personen' %></div>  
   </div>
 </div>
 
 
 <script>
+
+  var insertId = "#pnrB";
+
+    $("#searchBFrame").click(function(){
+      insertId = "#pnrB";
+    });
+    
+    $("#searchGFrame").click(function(){
+      insertId = "#mnrG";
+    });
+
   $(document).ready(function() {
     $("#searchKtoNr").fancybox();
+    $("#searchBFrame").fancybox();
+    $("#searchGFrame").fancybox();    
   });
 </script>
 

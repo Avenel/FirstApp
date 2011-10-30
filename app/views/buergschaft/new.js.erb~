@@ -1,1 +1,1 @@
-$('#konten').html('<%= escape_javascript(render("application/konten")) %>');  
+$('#konten').html('<%= escape_javascript(render("application/suche_konten")) %>');

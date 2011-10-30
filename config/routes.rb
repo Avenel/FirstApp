@@ -27,6 +27,7 @@ OZB::Application.routes.draw do
   match '/buergschaften' => 'buergschaft#index'
   match '/buergschaften/new' => 'buergschaft#new'
   match '/buergschaften/new' => 'buergschaft#searchKtoNr'
+  match '/buergschaften/new' => 'buergschaft#searchOZBPerson'
   match '/buergschaften/save' => 'buergschaft#save'
   match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#edit', :via => :GET
   match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#save', :via => :POST
@@ -34,6 +35,10 @@ OZB::Application.routes.draw do
   
   # Adressen
   match '/adressen' => 'reports#adressen'
+  
+  # Application
+  match '/application/suche_ozb_personen.js' => 'application#searchOZBPerson'
+  match '/application/suche_konten.js' => 'application#searchKtoNr'
   
   # Root
   root :to => "index#dashboard"
