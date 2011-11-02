@@ -1,6 +1,6 @@
 Controller: Buergschaft
-  13 Bürgschaften erfassen
-  14 Bürgschaften bearbeiten
+o 13 Bürgschaften erfassen
+o 14 Bürgschaften bearbeiten
 
 Controller: Veranstaltung
   18 Termin für Schulungskurs festhalten

@@ -10,8 +10,8 @@ Controller: Tanliste
   20 TAN–Listen sperren
 
 Controller: Kontoklasse
-  16 Kontenklasse ändern
-  17 Kontenklassenverlauf anzeigen
+o 16 Kontenklasse ändern
+o 17 Kontenklassenverlauf anzeigen
 
 Controller: Report
 o  24 Alle Bürgschaften anzeigen 

@@ -9,15 +9,16 @@
 
  # Personen-Beziehungen: Telefon, Administrator, Partner, Veranstaltung, Teilnahme, Buergschaft
     
-  person = Person.create( :rolle => :G, :name => "Mustermann", :vorname => "Max" )
+  person = Person.create( :rolle => :B, :name => "Mustermann", :vorname => "Max" )
+  person2 = Person.create( :rolle => :G, :name => "Mueller", :vorname => "Hermann" )
      
   tel = Telefon.create( :pnr => person.pnr, :telefonNr => "072458292", :telefonTyp => "Fest" )
   
   admin = Administrator.create( :pnr => person.pnr, :adminPw => "test", :adminEmail => "test@test.de" )
   
-  ozbPartner = OZBPerson.create( :ueberPnr => 42, :email => "partner@ozb.de", :password => "123456" )
+  ozbPartner = OZBPerson.create( :mnr => person2.pnr, :ueberPnr => person2.pnr, :email => "partner@ozb.de", :password => "123456" )
 
-  ozbPerson = OZBPerson.create( :ueberPnr => person.pnr, :email => "person@ozb.de", :password => "123456" )
+  ozbPerson = OZBPerson.create( :mnr => person.pnr, :ueberPnr => person.pnr, :email => "person@ozb.de", :password => "123456" )
 
   partner = Partner.create( :mnr => ozbPartner.mnr, :mnrO => person.pnr, :berechtigung => 'A' )
  
