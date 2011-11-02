@@ -26,7 +26,7 @@
   
   <!-- ZE-Konto:  :ktoNr, :eeKtoNr, :pgNr, :zeNr, :zeAbDatum, :zeEndDatum, :zeBetrag, 
                   :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus -->
-  <h2 style="margin-top:20px;">EE-Konto</h2>
+  <h2 style="margin-top:20px;">ZE-Konto</h2>
   <table style="margin: 10px auto;">
     <tr>
       <td>Konto-Nr.:</td>
@@ -97,14 +97,15 @@
 
   $(document).ready(function() {
     $("#searchKtoNr").fancybox();
-    $("#searchBFrame").fancybox();
-    $("#searchGFrame").fancybox();    
   });
 
 </script>
 
 <script>
   $(function() {
+    $( "#saldoDatum" ).datepicker({
+      dateFormat: 'dd.mm.yy'
+    });
     $( "#zeAbDatum" ).datepicker({
       dateFormat: 'dd.mm.yy'
     });

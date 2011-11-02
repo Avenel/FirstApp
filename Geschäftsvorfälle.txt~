@@ -34,7 +34,7 @@ Controller: OZBPerson
 Controller: OZBKonto
 o  7 Kontendetails anzeigen
 o  8 Einlage/Entnahmekonten einrichten
-   9 E/E-Konto ändern
+o  9 E/E-Konto ändern
    10 Zusatzentnahmekonten einrichten
    11 ZE–Konto bearbeiten
    12 Zahlungseingangskontrolle

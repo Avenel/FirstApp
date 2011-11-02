@@ -1,25 +1,25 @@
 <h1>ZEKonto anlegen</h1>
 <%= link_to "zurück", "/OZBPerson/"+params[:id]+"/Konto" %>
 
-<%= form_tag({:action => "save"}, :id=>"newForm") do %>
+<%= form_tag({:action => "save"}, :id=>"editForm") do %>
 
   <h2 style="margin-top:40px;">OZB-Konto</h2>
   <table style="margin: 10px auto;">
     <tr>
       <td>Konto-Nr.:</td>
-      <td><%= label_tag :ozbKtoNr, @newKtoNr %> <%= hidden_field_tag :ozbKtoNr, @newKtoNr%></td>
+      <td><%= label_tag :ozbKtoNr, @ozb_konto.ktoNr %> <%= hidden_field_tag :ozbKtoNr, @ozb_konto.ktoNr %></td>
     </tr>
     <tr>
       <td>wSaldo:</td>
-      <td><%= text_field_tag :wSaldo %></td>
+      <td><%= label_tag :wSaldo, @ozb_konto.wSaldo %></td>
     </tr>
     <tr>
       <td>pSaldo:</td>
-      <td><%= text_field_tag :pSaldo %></td>
+      <td><%= label_tag :pSaldo, @ozb_konto.pSaldo %></td>
     </tr>
     <tr>
       <td>SaldoDatum:</td>
-      <td><%= text_field_tag :saldoDatum, "", :id => "saldoDatum" %></td>
+      <td><%= label_tag :saldoDatum, @ozb_konto.saldoDatum, :id => "saldoDatum" %></td>
     </tr>
   </table>
   
@@ -30,60 +30,59 @@
   <table style="margin: 10px auto;">
     <tr>
       <td>Konto-Nr.:</td>
-      <td><%= label_tag :zeKtoNr, @newKtoNr %></td>
+      <td><%= label_tag :zeKtoNr, @ze_konto.ktoNr %> <%= hidden_field_tag :zeKtoNr, @ze_konto.ktoNr %></td>
     </tr>
     <tr>
       <td>ZE-Nr.:</td>
-      <td><%= text_field_tag :zeNr %></td>
+      <td><%= text_field_tag :zeNr, @ze_konto.zeNr %></td>
     </tr>
     <tr>
       <td>EE-Konto-Nr.:</td>
-      <td><%= text_field_tag :eeKtoNr, "", :id => "ktoNr" %></td>
-      <td><%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %> </td>
+      <td><%= label_tag :eeKtoNr, @ze_konto.eeKtoNr, :id => "ktoNr" %></td>
     </tr>
     <tr>
       <td>AbDatum:</td>
-      <td><%= text_field_tag :zeAbDatum, "", :id => "zeAbDatum" %></td>
+      <td><%= label_tag :zeAbDatum, @ze_konto.zeAbDatum, :id => "zeAbDatum" %></td>
     </tr>
     <tr>
       <td>EndDatum:</td>
-      <td><%= text_field_tag :zeEndDatum, "", :id => "zeEndDatum" %></td>
+      <td><%= text_field_tag :zeEndDatum, @ze_konto.zeEndDatum, :id => "zeEndDatum" %></td>
     </tr>
     <tr>
       <td>Betrag:</td>
-      <td><%= text_field_tag :zeBetrag %></td>
+      <td><%= label_tag :zeBetrag, @ze_konto.zeBetrag %></td>
     </tr>
     <tr>
       <td>Laufzeit:</td>
-      <td><%= text_field_tag :laufzeit %></td>
+      <td><%= text_field_tag :laufzeit, @ze_konto.laufzeit %></td>
     </tr>
     <tr>
       <td>Zahlmodus:</td>
-      <td><%= text_field_tag :zahlModus %></td>
+      <td><%= text_field_tag :zahlModus, @ze_konto.zahlModus %></td>
     </tr>
     <tr>
       <td>Tilgungs-Rate:</td>
-      <td><%= text_field_tag :tilgRate %></td>
+      <td><%= text_field_tag :tilgRate, @ze_konto.tilgRate %></td>
     </tr>
     <tr>
       <td>Anspar-Rate:</td>
-      <td><%= text_field_tag :ansparRate %></td>
+      <td><%= text_field_tag :ansparRate, @ze_konto.ansparRate %></td>
     </tr>
     <tr>
       <td>Kdu-Rate:</td>
-      <td><%= text_field_tag :kduRate %></td>
+      <td><%= text_field_tag :kduRate, @ze_konto.kduRate %></td>
     </tr>
     <tr>
       <td>Rdu-Rate:</td>
-      <td><%= text_field_tag :rduRate %></td>
+      <td><%= text_field_tag :rduRate, @ze_konto.rduRate %></td>
     </tr>
     <tr>
       <td>Status:</td>
-      <td><%= text_field_tag :zeStatus %></td>
+      <td><%= label_tag :zeStatus, @ze_konto.zeStatus %></td>
     </tr>
   </table>  
   
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>
   
 <% end %>
 

@@ -20,15 +20,7 @@ class OzbKontoController < ApplicationController
     end
     
   end
-  
-  
-  def searchKtoNr
-    if( !params[:ktoNr].nil? ) then
-      @konten = OZBKonten.all
-    end
-    super
-  end
-  
+    
   def new
     searchKtoNr()
     @person = Person.where( :pnr => params[:id] ).first
@@ -95,12 +87,12 @@ class OzbKontoController < ApplicationController
         # Neu anlegen
         # OZB-Konto:  :ktoNr, :mnr, :ktoEinrDatum, :waehrung, :wSaldo, :pSaldo, :saldoDatum
         @ozb_konto = OZBKonto.create( :ktoNr => params[:ozbKtoNr], :mnr => params[:id], :ktoEinrDatum => params[:ktoEinrDatum],
-                                     :waehrung => "EUR", :wSaldo => params[:wSaldo], :pSaldo => params[:pSaldo], :saldoDatum => params[:saldoDatum] )
+                                      :waehrung => "EUR", :wSaldo => params[:wSaldo], :pSaldo => params[:pSaldo], :saldoDatum => params[:saldoDatum] )
         @ozb_konto.save
         
         # Bankverbindung: id, :pnr, :bankKtoNr, :blz, :bic, :iban, :bankName    
-        @bankverbindung = Bankverbindung.create( :pnr => params[:id], :bankKtoNr => params[:bankKtoNr], :blz => params[:blz], :bic => params[:bic], :iban => params[:iban],
-                                                 :bankName => params[:bankName] )
+        @bankverbindung = Bankverbindung.create( :pnr => params[:id], :bankKtoNr => params[:bankKtoNr], :blz => params[:blz], :bic => params[:bic], 
+                                                 :iban => params[:iban], :bankName => params[:bankName] )
         @bankverbindung.save
         
         # EE-Konto:  :ktoNr, :bankId, :kreditlimit
@@ -110,30 +102,75 @@ class OzbKontoController < ApplicationController
       
       redirect_to :action => "index"
     end
+    
+    if params[:typ] == "ZE" then
+    
+      begin
+        # Editieren
+        @ozb_konto = OZBKonto.where( :ktoNr => params[:ozbKtoNr] ).first
+        @ze_konto = ZEKonto.where( :ktoNr => params[:zeKtoNr] ).first
+        @ze_konto.zeEndDatum = params[:zeEndDatum]
+        @ze_konto.zahlModus = params[:zahlModus]
+        @ze_konto.tilgRate = params[:tilgRate]
+        @ze_konto.ansparRate = params[:ansparRate]
+        @ze_konto.kduRate = params[:kduRate]
+        @ze_konto.rduRate = params[:rduRate]
+        @ze_konto.save
+      rescue
+        # Neu anlegen
+        # OZB-Konto:  :ktoNr, :mnr, :ktoEinrDatum, :waehrung, :wSaldo, :pSaldo, :saldoDatum
+        @ozb_konto = OZBKonto.create( :ktoNr => params[:ozbKtoNr], :mnr => params[:id], :ktoEinrDatum => params[:ktoEinrDatum],
+                                      :waehrung => "EUR", :wSaldo => params[:wSaldo], :pSaldo => params[:pSaldo], :saldoDatum => params[:saldoDatum] )
+        @ozb_konto.save
+        
+        #ZE-Konto:  :ktoNr, :eeKtoNr, :pgNr, :zeNr, :zeAbDatum, :zeEndDatum, :zeBetrag, :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus
+        @ze_konto = ZEKonto.create( :ktoNr => params[:ozbKtoNr], :eeKtoNr => params[:eeKtoNr], :pgNr => params[:id], :zeNr => params[:zeNr], 
+                                    :zeAbDatum => Date.parse(params[:zeAbDatum]), :zeEndDatum => Date.parse(params[:zeEndDatum]), 
+                                    :zeBetrag => params[:zeBetrag], :laufzeit => params[:laufzeit], :zahlModus => params[:zahlModus], 
+                                    :tilgRate => params[:tilgRate], :ansparRate => params[:ansparRate], :kduRate => params[:kduRate], 
+                                    :rduRate => params[:rduRate], :zeStatus => params[:zeStatus] )
+        @ze_konto.save
+      end
+      
+      redirect_to :action => "index"    
+    end
   
   end
   
   def edit
-  
+    searchKtoNr()
+    @ozb_konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
     if params[:typ] == "EE" then
-      @ozb_konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
       @ee_konto = @ozb_konto.EEKonto.first
       @bankverbindung = Bankverbindung.where( :id => @ee_konto.bankId ).first
       
       render "edit_ee.html.erb"
     end
+    
+    if params[:typ] == "ZE" then
+      @ze_konto = @ozb_konto.ZEKonto.first
+      
+      render "edit_ze.html.erb"
+    end
   
   end
   
   def delete
-    #begin
+    begin
       @konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
       puts @konto.inspect
       @konto.delete
       redirect_to :action => "index"
-    #rescue
-    #end
+    rescue
+    end
     
+  end
+
+  def searchKtoNr
+    if( !params[:ktoNr].nil? ) then
+      @konten = OZBKonto.all
+    end
+    super
   end
 
 end

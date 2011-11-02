@@ -22,9 +22,9 @@
     <th>Rdu-Rate</th>
     <th>Status</th>
   </tr>
-  
-  <tr>
-    <% @ze_konten.each do |konto| %>
+
+  <% @ze_konten.each do |konto| %>
+    <tr>
       <td><%= konto.ktoNr %></td>
       <td><%= konto.eeKtoNr %></td>
       <td><%= konto.zeNr %></td>
@@ -38,11 +38,13 @@
       <td><%= konto.kduRate %></td>
       <td><%= konto.rduRate %></td>
       <td><%= konto.zeStatus %></td>
-    <% end %>
-  </tr>  
+      <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s %></td>
+      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s+"/delete" %></td>
+    </tr>  
+  <% end %>
 </table>
 <% if @ze_count < 4 then %>
-  <%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"Konto/ZE/new" %>
+  <%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new" %>
 <% end %>
 
 <!-- :ktoNr, :bankId, :kreditlimit,  :id, :bankKtoNr, :blz, :bic, :iban, :bankName    -->
@@ -68,11 +70,11 @@
       <td><%= bankverbindung.blz %></td>
       <td><%= bankverbindung.bankName %></td>
       <td><%= konto.kreditlimit %></td>
-      <td><%= link_to "Editieren", "EE/"+konto.ktoNr.to_s %></td>
-      <td><%= link_to "Löschen", "EE/"+konto.ktoNr.to_s+"/delete" %></td>
+      <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s %></td>
+      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s+"/delete" %></td>
     </tr>
   <% end %>
 </table>
 <% if @ee_count < 3 then %>
-  <%= link_to "Neues EE-Konto hinzufügen", "EE/new" %>
+  <%= link_to "Neues EE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/EE/new" %>
 <% end %>
