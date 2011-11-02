@@ -21,12 +21,20 @@ class OzbKontoController < ApplicationController
     
   end
   
-  def new
   
-    if params[:typ] == "EE" then
-      @person = Person.where( :pnr => params[:id] ).first
-      @ozb_konten = OZBKonto.where( :mnr => params[:id] )
-      
+  def searchKtoNr
+    if( !params[:ktoNr].nil? ) then
+      @konten = OZBKonten.all
+    end
+    super
+  end
+  
+  def new
+    searchKtoNr()
+    @person = Person.where( :pnr => params[:id] ).first
+    @ozb_konten = OZBKonto.where( :mnr => params[:id] )
+
+    if params[:typ] == "EE" then      
       count = 0
       @ozb_konten.each do |konto|
         if konto.EEKonto.count > 0 then
@@ -43,6 +51,24 @@ class OzbKontoController < ApplicationController
       
       render "new_ee.html.erb"
     end
+    
+    if params[:typ] == "ZE" then
+      count = 0
+      @ozb_konten.each do |konto|
+        if konto.ZEKonto.count > 0 then
+          count += 1
+        end
+      end
+     
+      # Neue Kontonummer erzeugen
+      @newKtoNr = (count + 1).to_s
+      (1..(4-@person.pnr.to_s.length)).each do |i|
+        @newKtoNr += "0"
+      end
+      @newKtoNr += @person.pnr.to_s
+    end
+    
+    render "new_ze.html.erb"
   
   end
   

@@ -3,7 +3,14 @@
     <%= form_tag({:action => "searchKtoNr"}, :id=>"searchKtoNrForm", :method => 'get') do %>
       <td><%= text_field_tag "ktoNr", "", :id => "ktoNr", :style => "width: 80px;" %></td>
       <td><%= text_field_tag "mnr", "", :style => "width: 80px;" %></td>
-      <td><%= text_field_tag "name", "", :style => "width: 150px;" %></td>
+      <td>
+        <table style="border:none">
+          <tr>
+            <td><%= text_field_tag "name", "", :style => "width: 80px;" %></td>
+           <td><%= text_field_tag "vorname", "", :style => "width: 80px;" %></td>
+          </tr>
+        </table>
+      </td>
       <td><%= text_field_tag "ktoEinrDatum", "", :style => "width: 80px;" %></td>
       <td><%= link_to_function "Suchen", "", :onclick => "$('#searchKtoNrForm').submit(); return false;", :id => "searchButton" %></td>
     <% end %>
@@ -57,4 +64,10 @@
     $.get('/application/suche_konten.js', $(this).serialize(), null, 'script');  
     return false;  
   }); 
+  
+  $(function() {
+    $( "#ktoEinrDatum" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
 </script> 

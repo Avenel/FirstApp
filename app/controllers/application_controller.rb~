@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   @@i = 13213
    
-   
+   # find_by_sql
   def searchKtoNr      
     if params[:ktoNr].nil? then
         @konten = OZBKonto.paginate(:page => params[:page], :per_page => 5) 
@@ -14,26 +14,31 @@ class ApplicationController < ActionController::Base
         @konten = OZBKonto;
         
         if( !params[:ktoNr].empty? ) then
-          @konten = @konten.where(:ktoNr => params[:ktoNr])
+          @konten = @konten.where("ktoNr like ?", "%" + params[:ktoNr] + "%")
         end
         
         if( !params[:mnr].empty? ) then
-          @konten = @konten.where(:mnr => params[:mnr])
+          @konten = @konten.where("mnr like ?", "%" +  params[:mnr] + "%")
         end
         
-        if( !params[:name].empty? ) then
-          @personen = Person.all
-          
-          @personen.each do |person|
-            name = person.name.to_s.downcase + " " +  person.vorname.to_s.downcase
-            searchName = params[:name].downcase
-            puts name
-            if name.include? searchName then
-              @konten = @konten.where(:mnr => person.OZBPerson.first.mnr)
-              break
+        if( !params[:name].empty? or !params[:vorname].empty? ) then
+          if !params[:name].empty? and params[:vorname].empty? then
+            @personen = Person.where( "(name like ? )", "%" + params[:name] + "%" )
+          else
+            if !params[:vorname].empty? and params[:name].empty? then
+              @personen = Person.where( "(vorname like ? )", "%" + params[:vorname] + "%" )
+            else
+              @personen = Person.where( "(name like ? AND vorname like ?)", "%" + params[:name] + "%", "%" + params[:vorname] + "%" )
             end
-            
           end
+          
+          puts @personen.inspect
+          pnrs = Array.new
+          @personen.each do |person|
+            pnrs.push(person.pnr)
+          end
+          @konten = @konten.where("mnr IN (?)", pnrs)
+
         end
         
         if( !params[:ktoEinrDatum].empty? ) then
@@ -51,38 +56,26 @@ class ApplicationController < ActionController::Base
     if params[:mnr].nil? then
       @personen = Person.paginate(:page => params[:page], :per_page => 5)
     else
-      if params[:mnr].empty? and params[:pnr].empty? and  params[:name].empty? and 
+      if params[:mnr].empty? and params[:name].empty? and 
         params[:ktoNr].empty? and params[:rolle].empty? then
           @personen = Person.paginate(:page => params[:page], :per_page => 5) 
       else
         @personen = Person;
         
         if( !params[:mnr].empty? ) then
-          @personen = @personen.where( :pnr => OZBPerson.where(:mnr => params[:mnr]).first.ueberPnr )
+          @personen = @personen.where( "pnr like ?", "%" +  params[:mnr] + "%" )
         end
-        
-        if( !params[:pnr].empty? ) then
-          @personen = @personen.where(:pnr => params[:pnr])
-        end
-        
-        if( !params[:name].empty? ) then
-          @theOthers = Person.all
-          @theOne = nil
-          @theOthers.each do |person|
-            name = person.name.to_s.downcase + " " +  person.vorname.to_s.downcase
-            searchName = params[:name].downcase
-            if name.include? searchName then
-              @theOne = person
-              break
+                
+        if( !params[:name].empty? or !params[:vorname].empty? ) then
+          if !params[:name].empty? and params[:vorname].empty? then
+            @personen = Person.where( "(name like ? )", "%" + params[:name] + "%" )
+          else
+            if !params[:vorname].empty? and params[:name].empty? then
+              @personen = Person.where( "(vorname like ? )", "%" + params[:vorname] + "%" )
+            else
+              @personen = Person.where( "(name like ? AND vorname like ?)", "%" + params[:name] + "%", "%" + params[:vorname] + "%" )
             end
           end
-
-          if( !@theOne.nil? ) then
-            @personen = @personen.where( :pnr => @theOne.pnr ) 
-          else
-            @personen = @personen.where( :pnr => -1 ) 
-          end
-          
         end
         
         if( !params[:rolle].empty? ) then
@@ -90,7 +83,14 @@ class ApplicationController < ActionController::Base
         end
         
         if( !params[:ktoNr].empty? ) then
-          @personen = @personen.where( :pnr => OZBPerson.where( :mnr => OZBKonto.where( :ktoNr => params[:ktoNr] ).first.mnr ).first.ueberPnr )
+          @konten = OZBKonto.where( "ktoNr LIKE ?", "%" + params[:ktoNr] + "%" )
+          
+          pnrs = Array.new
+          @konten.each do |konto|
+            pnrs.push(konto.mnr)
+          end
+          
+          @personen = @personen.where( " pnr IN (?)", pnrs )
         end
         
         @personen = @personen.paginate(:page => params[:page], :per_page => 5)

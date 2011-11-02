@@ -5,7 +5,14 @@
       <td><%= text_field_tag "mnr", "", :id => "ktoNr", :style => "width: 80px;" %></td>
       <td><%= text_field_tag "pnr", "", :style => "width: 80px;" %></td>
       <td><%= text_field_tag "rolle", "", :style => "width: 150px;" %></td>
-      <td><%= text_field_tag "name", "", :style => "width: 80px;" %></td>
+      <td>
+        <table style="border:none">
+          <tr>
+            <td><%= text_field_tag "name", "", :style => "width: 80px;" %></td>
+           <td><%= text_field_tag "vorname", "", :style => "width: 80px;" %></td>
+          </tr>
+        </table>
+      </td>
       <td><%= text_field_tag "ktoNr", "", :style => "width: 80px;" %></td>
       <td><%= link_to_function "Suchen", "", :onclick => "$('#searchOZBPersonForm').submit(); return false;", :id => "searchButton" %></td>
     <% end %>
