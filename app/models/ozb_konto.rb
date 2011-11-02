@@ -8,9 +8,8 @@ class OZBKonto < ActiveRecord::Base
 
   belongs_to :OZBPerson
     
-  has_many :Buchung, :foreign_key => [:ktoNr] # Done, getestet
-  has_many :KKLVerlauf, :foreign_key => [:ktoNr] # Done, getestet
-  has_many :ZEKonto, :foreign_key => :ktoNr # Done, getestet
-  has_many :EEKonto, :foreign_key => :ktoNr # Done, getestet
-
+  has_many :Buchung, :foreign_key => [:ktoNr], :dependent => :delete_all # Done, getestet
+  has_many :KKLVerlauf, :foreign_key => [:ktoNr], :dependent => :delete_all # Done, getestet
+  has_many :ZEKonto, :foreign_key => :ktoNr, :dependent => :delete_all # Done, getestet
+  has_many :EEKonto, :foreign_key => :ktoNr, :dependent => :delete_all # Done, getestet
 end

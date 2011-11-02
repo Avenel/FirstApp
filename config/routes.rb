@@ -11,6 +11,9 @@ OZB::Application.routes.draw do
 	match '/OZBPerson/:id' => 'OZBPerson#save', :via => :POST  
   match '/OZBPerson/:id/delete' => 'OZBPerson#delete'
   match '/OZBPerson/:id/Konto' => 'OzbKonto#index'
+  match '/OZBPerson/:id/Konto/:typ/new' => 'OzbKonto#new'
+  match '/OZBPerson/:id/Konto/:typ' => 'OzbKonto#save', :via => :POST
+  match '/OZBPerson/:id/Konto/:typ/:ktoNr/delete' => 'OzbKonto#delete'
   
   # Kontoklassen
   match '/kontoklasse' => 'kontoklasse#index'

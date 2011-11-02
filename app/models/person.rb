@@ -9,13 +9,13 @@ class Person < ActiveRecord::Base
 
    #validates :email, :EmailValidator => true
 
-   has_many :administrator, :foreign_key => :pnr   # Done, getestet
-   has_many :telefon, :foreign_key => :pnr         # Done, getestet
-   has_many :partner, :foreign_key => :mnrO         # Done, getestet
-   has_many :teilnahme, :foreign_key => :pnr       # Done, getestet
-   has_many :buergschaft, :foreign_key => :pnrB    # Done, getestet
-   has_many :OZBPerson, :foreign_key => :ueberPnr # Done, getestet
-   has_one :Bankverbindung, :foreign_key => :pnr # Done, getestet
+   has_many :administrator, :foreign_key => :pnr, :dependent => :delete_all  # Done, getestet
+   has_many :telefon, :foreign_key => :pnr, :dependent => :delete_all         # Done, getestet
+   has_many :partner, :foreign_key => :mnrO, :dependent => :delete_all         # Done, getestet
+   has_many :teilnahme, :foreign_key => :pnr, :dependent => :delete_all       # Done, getestet
+   has_many :buergschaft, :foreign_key => :pnrB, :dependent => :delete_all    # Done, getestet
+   has_many :OZBPerson, :foreign_key => :ueberPnr, :dependent => :delete_all # Done, getestet
+   has_one :Bankverbindung, :foreign_key => :pnr, :dependent => :destroy # Done, getestet
    
 end
 

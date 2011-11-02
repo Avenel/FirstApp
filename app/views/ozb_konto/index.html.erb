@@ -1,32 +1,5 @@
 <h2>OZB Konten</h2>
 
-<h3 style="margin-top: 40px;">OZB Konto</h3> 
-<table style="margin: 10px auto;">
-  <tr>
-    <th>Konto-Nr</th>
-    <th>Mitglieds-Nr</th>
-    <th>Mitglied</th>
-    <th>ktoEinrDatum</th>
-    <th>wSaldo</th>
-    <th>pSaldo</th>
-    <th>Saldo Datum</th>
-  </tr>
-  
-  <tr>
-    <td><%= @ozb_konto.ktoNr %></td>
-    <td><%= @ozb_konto.mnr %></td>
-    <% person = Person.where(:pnr => OZBPerson.where(:mnr => @ozb_konto.mnr).first.ueberPnr).first %>
-    <% if !person.nil? %>
-      <td><%= person.name.to_s + ", "+ person.vorname.to_s %></td>
-    <% else %>
-      <td>-</td>
-    <% end %>
-    <td><%= @ozb_konto.ktoEinrDatum %></td>
-    <td><%= @ozb_konto.wSaldo %></td>
-    <td><%= @ozb_konto.pSaldo %></td>
-    <td><%= @ozb_konto.saldoDatum %></td>
-  </tr>
-</table>
 
 
 <!-- :ktoNr, :eeKtoNr,:zeNr, :zeAbDatum, :zeEndDatum, :zeBetrag, 
@@ -66,8 +39,11 @@
       <td><%= konto.rduRate %></td>
       <td><%= konto.zeStatus %></td>
     <% end %>
-  </tr>
+  </tr>  
 </table>
+<% if @ze_count < 4 then %>
+  <%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new" %>
+<% end %>
 
 <!-- :ktoNr, :bankId, :kreditlimit,  :id, :bankKtoNr, :blz, :bic, :iban, :bankName    -->
 
@@ -81,9 +57,9 @@
     <th>Bankname</th>
     <th>Kreditlimit</th>
   </tr>
-  
-  <tr>
-    <% @ee_konten.each do |konto| %>
+ 
+  <% @ee_konten.each do |konto| %>
+    <tr>
       <td><%= konto.ktoNr %></td>
       <td><%= konto.bankId %></td>
       
@@ -91,8 +67,12 @@
       <td><%= bankverbindung.bankKtoNr %></td>
       <td><%= bankverbindung.blz %></td>
       <td><%= bankverbindung.bankName %></td>
-
       <td><%= konto.kreditlimit %></td>
-    <% end %>
-  </tr>
+      <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s %></td>
+      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s+"/delete" %></td>
+    </tr>
+  <% end %>
 </table>
+<% if @ee_count < 3 then %>
+  <%= link_to "Neues EE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/EE/new" %>
+<% end %>

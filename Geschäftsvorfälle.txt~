@@ -32,10 +32,10 @@ Controller: OZBPerson
   15 Aktuell verbrauchte Leihpunkte anzeigen
 
 Controller: OZBKonto
-  7 Kontendetails anzeigen
-  8 Einlage/Entnahmekonten einrichten
-  9 E/E-Konto ändern
-  10 Zusatzentnahmekonten einrichten
-  11 ZE–Konto bearbeiten
-  12 Zahlungseingangskontrolle
-  28 Kontoauszüge ausdrucken und verschicken
+o  7 Kontendetails anzeigen
+   8 Einlage/Entnahmekonten einrichten
+   9 E/E-Konto ändern
+   10 Zusatzentnahmekonten einrichten
+   11 ZE–Konto bearbeiten
+   12 Zahlungseingangskontrolle
+   28 Kontoauszüge ausdrucken und verschicken
