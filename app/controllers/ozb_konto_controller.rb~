@@ -50,21 +50,51 @@ class OzbKontoController < ApplicationController
   
     if params[:typ] == "EE" then
       # Editieren
+      begin
+        @ozb_konto = OZBKonto.where( :ktoNr => params[:ozbKtoNr] ).first
+        @ee_konto = @ozb_konto.EEKonto.first
+        @bankverbindung = Bankverbindung.where( :id => @ee_konto.bankId ).first
+        
+        @ee_konto.kreditlimit = params[:kreditlimit]
+        @ee_konto.save
+        
+        @bankverbindung.bankKtoNr = params[:bankKtoNr]
+        @bankverbindung.bankName = params[:bankName]
+        @bankverbindung.blz = params[:blz]
+        @bankverbindung.bic = params[:bic]
+        @bankverbindung.iban = params[:iban]
+        @bankverbindung.save
+        
+      rescue
+        # Neu anlegen
+        # OZB-Konto:  :ktoNr, :mnr, :ktoEinrDatum, :waehrung, :wSaldo, :pSaldo, :saldoDatum
+        @ozb_konto = OZBKonto.create( :ktoNr => params[:ozbKtoNr], :mnr => params[:id], :ktoEinrDatum => params[:ktoEinrDatum],
+                                     :waehrung => "EUR", :wSaldo => params[:wSaldo], :pSaldo => params[:pSaldo], :saldoDatum => params[:saldoDatum] )
+        @ozb_konto.save
+        
+        # Bankverbindung: id, :pnr, :bankKtoNr, :blz, :bic, :iban, :bankName    
+        @bankverbindung = Bankverbindung.create( :pnr => params[:id], :bankKtoNr => params[:bankKtoNr], :blz => params[:blz], :bic => params[:bic], :iban => params[:iban],
+                                                 :bankName => params[:bankName] )
+        @bankverbindung.save
+        
+        # EE-Konto:  :ktoNr, :bankId, :kreditlimit
+        @eeKonto = EEKonto.create( :ktoNr => params[:ozbKtoNr], :bankId => @bankverbindung.id, :kreditlimit => params[:kreditlimit] )
+        @eeKonto.save
+      end
       
-      # Neu anlegen
-      # OZB-Konto:  :ktoNr, :mnr, :ktoEinrDatum, :waehrung, :wSaldo, :pSaldo, :saldoDatum
-      @ozbKonto = OZBKonto.create( :ktoNr => params[:ozbKtoNr], :mnr => params[:id], :ktoEinrDatum => params[:ktoEinrDatum],
-                                   :waehrung => "EUR", :wSaldo => params[:wSaldo], :pSaldo => params[:pSaldo], :saldoDatum => params[:saldoDatum] )
-
-      # Bankverbindung: id, :pnr, :bankKtoNr, :blz, :bic, :iban, :bankName    
-      @bankverbindung = Bankverbindung.create( :pnr => params[:id], :bankKtoNr => params[:bankKtoNr], :blz => params[:blz], :bic => params[:bic], :iban => params[:iban],
-                                               :bankName => params[:bankName] )
-      @bankverbindung.save
+      redirect_to :action => "index"
+    end
+  
+  end
+  
+  def edit
+  
+    if params[:typ] == "EE" then
+      @ozb_konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
+      @ee_konto = @ozb_konto.EEKonto.first
+      @bankverbindung = Bankverbindung.where( :id => @ee_konto.bankId ).first
       
-      # EE-Konto:  :ktoNr, :bankId, :kreditlimit
-      @eeKonto = EEKonto.create( :ktoNr => params[:ozbKtoNr], :bankId => @bankverbindung.id, :kreditlimit => params[:kreditlimit] )
-      @eeKonto.save
-      
+      render "edit_ee.html.erb"
     end
   
   end
