@@ -10,8 +10,8 @@ Controller: Tanliste
   20 TAN–Listen sperren
 
 Controller: Kontoklasse
-o 16 Kontenklasse ändern
-o 17 Kontenklassenverlauf anzeigen
+  16 Kontenklasse ändern
+  17 Kontenklassenverlauf anzeigen
 
 Controller: Report
 o  24 Alle Bürgschaften anzeigen 
@@ -35,7 +35,7 @@ Controller: OZBKonto
 o  7 Kontendetails anzeigen
 o  8 Einlage/Entnahmekonten einrichten
 o  9 E/E-Konto ändern
-   10 Zusatzentnahmekonten einrichten
-   11 ZE–Konto bearbeiten
+o  10 Zusatzentnahmekonten einrichten
+o  11 ZE–Konto bearbeiten
    12 Zahlungseingangskontrolle
    28 Kontoauszüge ausdrucken und verschicken
