@@ -27,15 +27,15 @@ Controller: OZBPerson
   4 Rolle einer OZB-Person zum Gesellschafter ändern
   5 Alle Personen anzeigen
   6 Details einer Person anzeigen
-  7 Kontendetails anzeigen
   21 Mitgliedsaccount entsperren
   22 Reihenfolge der Telefonnummern ändern
   15 Aktuell verbrauchte Leihpunkte anzeigen
 
 Controller: OZBKonto
-  8 Einlage/Entnahmekonten einrichten
-  9 E/E-Konto ändern
-  10 Zusatzentnahmekonten einrichten
-  11 ZE–Konto bearbeiten
-  12 Zahlungseingangskontrolle
-  28 Kontoauszüge ausdrucken und verschicken
+o  7 Kontendetails anzeigen
+   8 Einlage/Entnahmekonten einrichten
+   9 E/E-Konto ändern
+   10 Zusatzentnahmekonten einrichten
+   11 ZE–Konto bearbeiten
+   12 Zahlungseingangskontrolle
+   28 Kontoauszüge ausdrucken und verschicken

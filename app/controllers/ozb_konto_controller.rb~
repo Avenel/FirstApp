@@ -6,6 +6,9 @@ class OzbKontoController < ApplicationController
     @ee_konten = @ozb_konto.EEKonto
     @ze_konten = @ozb_konto.ZEKonto
     
+    puts @ee_konten
+    puts @ze_konten
+    
   end
 
 end

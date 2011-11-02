@@ -10,6 +10,7 @@ OZB::Application.routes.draw do
 	match '/OZBPerson/:id' => 'OZBPerson#edit', :via => :GET
 	match '/OZBPerson/:id' => 'OZBPerson#save', :via => :POST  
   match '/OZBPerson/:id/delete' => 'OZBPerson#delete'
+  match '/OZBPerson/:id/Konto' => 'OZBKonto#index'
   
   # Kontoklassen
   match '/kontoklasse' => 'kontoklasse#index'

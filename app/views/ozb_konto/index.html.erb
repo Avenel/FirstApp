@@ -1,0 +1,98 @@
+<h2>OZB Konten</h2>
+
+<h3 style="margin-top: 40px;">OZB Konto</h3> 
+<table style="margin: 10px auto;">
+  <tr>
+    <th>Konto-Nr</th>
+    <th>Mitglieds-Nr</th>
+    <th>Mitglied</th>
+    <th>ktoEinrDatum</th>
+    <th>wSaldo</th>
+    <th>pSaldo</th>
+    <th>Saldo Datum</th>
+  </tr>
+  
+  <tr>
+    <td><%= @ozb_konto.ktoNr %></td>
+    <td><%= @ozb_konto.mnr %></td>
+    <% person = Person.where(:pnr => OZBPerson.where(:mnr => @ozb_konto.mnr).first.ueberPnr).first %>
+    <% if !person.nil? %>
+      <td><%= person.name.to_s + ", "+ person.vorname.to_s %></td>
+    <% else %>
+      <td>-</td>
+    <% end %>
+    <td><%= @ozb_konto.ktoEinrDatum %></td>
+    <td><%= @ozb_konto.wSaldo %></td>
+    <td><%= @ozb_konto.pSaldo %></td>
+    <td><%= @ozb_konto.saldoDatum %></td>
+  </tr>
+</table>
+
+
+<!-- :ktoNr, :eeKtoNr,:zeNr, :zeAbDatum, :zeEndDatum, :zeBetrag, 
+     :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus -->
+
+<h3 style="margin-top: 20px;">ZE-Konten</h3> 
+<table style="margin: 10px auto;">
+  <tr>
+    <th>Konto-Nr.</th>
+    <th>EEKonto-Nr.</th>
+    <th>ZE-Nr.</th>
+    <th>AbDatum</th>
+    <th>EndDatum</th>
+    <th>Betrag</th>
+    <th>Laufzeit</th>
+    <th>Zahlmodus</th>
+    <th>Tilgungsrate</th>
+    <th>Ansparrate</th>
+    <th>Kdu-Rate</th>
+    <th>Rdu-Rate</th>
+    <th>Status</th>
+  </tr>
+  
+  <tr>
+    <% @ze_konten.each do |konto| %>
+      <td><%= konto.ktoNr %></td>
+      <td><%= konto.eeKtoNr %></td>
+      <td><%= konto.zeNr %></td>
+      <td><%= konto.zeAbDatum %></td>
+      <td><%= konto.zeEndDatum %></td>
+      <td><%= konto.zeBetrag %></td>
+      <td><%= konto.laufzeit %></td>
+      <td><%= konto.zahlModus %></td>
+      <td><%= konto.tilgRate %></td>
+      <td><%= konto.ansparRate %></td>
+      <td><%= konto.kduRate %></td>
+      <td><%= konto.rduRate %></td>
+      <td><%= konto.zeStatus %></td>
+    <% end %>
+  </tr>
+</table>
+
+<!-- :ktoNr, :bankId, :kreditlimit,  :id, :bankKtoNr, :blz, :bic, :iban, :bankName    -->
+
+<h3 style="margin-top: 20px;">EE-Konten</h3> 
+<table style="margin: 10px auto;">
+  <tr>
+    <th>Konto-Nr.</th>
+    <th>Bank-Id</th>
+    <th>Bank-Konto-Nr.</th>
+    <th>Bankleitzahl</th>
+    <th>Bankname</th>
+    <th>Kreditlimit</th>
+  </tr>
+  
+  <tr>
+    <% @ee_konten.each do |konto| %>
+      <td><%= konto.ktoNr %></td>
+      <td><%= konto.bankId %></td>
+      
+      <% bankverbindung = Bankverbindung.where(:id => konto.bankId).first %>      
+      <td><%= bankverbindung.bankKtoNr %></td>
+      <td><%= bankverbindung.blz %></td>
+      <td><%= bankverbindung.bankName %></td>
+
+      <td><%= konto.kreditlimit %></td>
+    <% end %>
+  </tr>
+</table>
