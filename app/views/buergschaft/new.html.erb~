@@ -3,44 +3,48 @@
 
 <%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
-  <p> 
-    <%= label_tag "Buergschafter:" %>
-    <%= text_field_tag :pnrB %>
-    <%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchBFrame" %>
-  </p>
+  <table style="margin: 10px auto;">
+    <tr>
+      <td><b><%= label_tag "Buergschafter:" %></b></td>
+      <td>
+        <%= text_field_tag :pnrB %>
+        <%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchBFrame" %>
+      </td>
+    </tr>
   
-  <p>
-    <%= label_tag "Gesellschafter:" %>  
-    <%= text_field_tag :mnrG %>  
-    <%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchGFrame" %>
+  <tr>
+      <td><b><%= label_tag "Gesellschafter:" %></b></td>
+      <td><%= text_field_tag :mnrG %></td>
+      <td><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchGFrame" %></td>
   </p>  
   
-  <p>
-    <%= label_tag "sichAbDatum:" %>
-    <%= text_field_tag :sichAbDatum %>  
+  <tr>
+      <td><b><%= label_tag "sichAbDatum:" %></b></td>
+      <td><%= text_field_tag :sichAbDatum %></td>
   </p>
   
-  <p>
-    <%= label_tag "Konto-Nr.:" %>
-    <%= text_field_tag :ktoNr %>  
-    <%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %> 
+  <tr>
+      <td><b><%= label_tag "Konto-Nr.:" %></b></td>
+      <td><%= text_field_tag :ktoNr %></td>
+      <td><%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %></td>
   </p>
   
-  <p>
-    <%= label_tag "sichEndDatum:" %>
-    <%= text_field_tag :sichEndDatum %>  
+  <tr>
+      <td><b><%= label_tag "sichEndDatum:" %></b></td>
+      <td><%= text_field_tag :sichEndDatum %></td>
   </p>
   
-  <p>
-    <%= label_tag "sichBetrag:" %>
-    <%= text_field_tag :sichBetrag %>  
+  <tr>
+      <td><b><%= label_tag "sichBetrag:" %></b></td>
+      <td><%= text_field_tag :sichBetrag %></td>
   </p>
   
-  <p>
-    <%= label_tag "sichKurzBez:" %>
-    <%= text_field_tag :sichKurzBez %>  
+  <tr>
+      <td><b><%= label_tag "sichKurzBez:" %></b></td>
+      <td><%= text_field_tag :sichKurzBez %></td>
   </p>
   
+  </table>
   <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>	
 
 <% end %>

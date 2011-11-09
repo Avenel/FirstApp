@@ -6,53 +6,60 @@
 <% gesellschafter = Person.where( :pnr => OZBPerson.where(:mnr => @buergschaft.mnrG).first.ueberPnr ).first %>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
-  <p> 
-    <%= label_tag "Buergschafter:" %>
-    <% if !buergschafter.nil? then %>
-      <%= label_tag :nameB, buergschafter.name.to_s + "," + buergschafter.vorname.to_s %>  
-    <% else %>
-      <%= label_tag :nameB, "nicht gefunden" %>
-    <% end %>
-    <%= hidden_field_tag :pnrB, @buergschaft.pnrB %>  
-  </p>
+  <table style="margin: 10px auto;">
+    <tr> 
+      <td><b><%= label_tag "Buergschafter:" %></b></td>
+      <td>
+        <% if !buergschafter.nil? then %>
+          <%= label_tag :nameB, buergschafter.name.to_s + "," + buergschafter.vorname.to_s %>  
+        <% else %>
+          <%= label_tag :nameB, "nicht gefunden" %>
+        <% end %>
+        <%= hidden_field_tag :pnrB, @buergschaft.pnrB %>  
+      </td>
+    </tr>
   
-  <p>
-    <%= label_tag "Gesellschafter:" %>  
-    <% if !gesellschafter.nil? then %>
-      <%= label_tag :nameB, gesellschafter.name.to_s + "," + gesellschafter.vorname.to_s %>  
-    <% else %>
-      <%= label_tag :nameG, "nicht gefunden" %>
-    <% end %>
-    <%= hidden_field_tag :mnrG, @buergschaft.mnrG %>  
-  </p>  
+    <tr>
+      <td><b><%= label_tag "Gesellschafter:" %></b></td>
+      <td>
+        <% if !gesellschafter.nil? then %>
+          <%= label_tag :nameB, gesellschafter.name.to_s + "," + gesellschafter.vorname.to_s %>  
+        <% else %>
+          <%= label_tag :nameG, "nicht gefunden" %>
+        <% end %>
+        <%= hidden_field_tag :mnrG, @buergschaft.mnrG %>  
+      </td>
+    </tr>  
   
-  <p>
-    <%= label_tag "sichAbDatum:" %>
-    <%= label_tag :sichAbDatum, @buergschaft.sichAbDatum %>  
-    <%= hidden_field_tag :sichAbDatum, @buergschaft.sichAbDatum %>  
-  </p>
+    <tr>
+      <td><b><%= label_tag "sichAbDatum:" %></b></td>
+      <td>
+        <%= label_tag :sichAbDatum, @buergschaft.sichAbDatum %>  
+        <%= hidden_field_tag :sichAbDatum, @buergschaft.sichAbDatum %>  
+      </td>
+    </tr>
+    
+    <tr>
+      <td><b><%= label_tag "Konto-Nr.:" %></b></td>
+      <td><%= text_field_tag :ktoNr, @buergschaft.ktoNr %>
+      <%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %></td>
+    </tr>
   
-  <p>
-    <%= label_tag "Konto-Nr.:" %>
-    <%= text_field_tag :ktoNr, @buergschaft.ktoNr %>
-    <%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %>  
-  </p>
+    <tr>
+      <td><b><%= label_tag "sichEndDatum:" %></b></td>
+      <td><%= text_field_tag :sichEndDatum, @buergschaft.sichEndDatum %></td>
+    </tr>
   
-  <p>
-    <%= label_tag "sichEndDatum:" %>
-    <%= text_field_tag :sichEndDatum, @buergschaft.sichEndDatum %>  
-  </p>
+    <tr>
+      <td><b><%= label_tag "sichBetrag:" %></b></td>
+      <td><%= text_field_tag :sichBetrag, @buergschaft.sichBetrag %></td>
+    </tr>
   
-  <p>
-    <%= label_tag "sichBetrag:" %>
-    <%= text_field_tag :sichBetrag, @buergschaft.sichBetrag %>  
-  </p>
-  
-  <p>
-    <%= label_tag "sichKurzBez:" %>
-    <%= text_field_tag :sichKurzBez, @buergschaft.sichKurzBez %>  
-  </p>
-  
+    <tr>
+      <td><b><%= label_tag "sichKurzBez:" %></b></td>
+      <td><%= text_field_tag :sichKurzBez, @buergschaft.sichKurzBez %></td>
+    </tr>
+  </table>
   <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>	
 
 <% end %>
@@ -64,20 +71,20 @@
     });
   });
 
-  var availableTagsKonto = [
-      <% tags = String.new %>
-      <% OZBKonto.all.each do |konto| %>
-          <% tags += "'" + konto.ktoNr.to_s + "'" + "," %>
-      <% end %>
-      <%= tags.chop %>
-    ];
-  
-    $( "#ktoNr" ).autocomplete({
-      source: availableTagsKonto
-    });
+  $(function() {
+    var availableTagsKonto = [
+        <% tags = String.new %>
+        <% OZBKonto.all.each do |konto| %>
+            <% tags += "'" + konto.ktoNr.to_s + "'" + "," %>
+        <% end %>
+        <%= tags.chop %>
+      ];
     
-  });
-  
+      $( "#ktoNr" ).autocomplete({
+        source: availableTagsKonto
+      });
+   });
+    
 </script>
 
 

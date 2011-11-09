@@ -3,21 +3,22 @@
 
 <%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
-  <p> 
-    <%= label_tag "Kontoklasse:" %>
-    <%= text_field_tag :kkl %>  
-  </p>
+  <table style="margin: 10px auto;">
+    <tr>
+      <td><b><%= label_tag "Kontoklasse:" %></b></td>
+      <td><%= text_field_tag :kkl %></td>
+    </tr>
   
-  <p>
-    <%= label_tag "Prozent:" %>  
-    <%= text_field_tag :prozent %>  
-  </p>  
-  
-  <p>
-    <%= label_tag "AbDatum:" %>
-    <%= text_field_tag :kklAbDatum %>
-  </p>
-  
+    <tr>
+        <td><b><%= label_tag "Prozent:" %></b></td>
+        <td><%= text_field_tag :prozent %></td>
+    </p>  
+    
+    <tr>
+        <td><b><%= label_tag "AbDatum:" %></b></td>
+        <td><%= text_field_tag :kklAbDatum %></td>
+    </tr>
+  </table>
   
   <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
   
