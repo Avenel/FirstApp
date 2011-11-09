@@ -12,6 +12,7 @@ OZB::Application.routes.draw do
   match '/OZBPerson/:id/delete' => 'OZBPerson#delete'
   match '/OZBPerson/:id/Konto' => 'OzbKonto#index'
   match '/OZBPerson/:id/Konto/:typ/new' => 'OzbKonto#new'
+  match '/buergschaften/Konto/:typ/new' => 'OzbKonto#searchKtoNr'
   match '/OZBPerson/:id/Konto/:typ' => 'OzbKonto#save', :via => :POST
   match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#edit', :via => :GET
   match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#save', :via => :POST
@@ -28,6 +29,10 @@ OZB::Application.routes.draw do
   
   # OZBKonten
   match '/ozbKonten' => 'reports#ozbKonten'
+  
+  # KKL
+  match '/ozbKonten/KKL' => 'OzbKonto#kkl', :via => :GET
+  match '/ozbKonten/KKL' => 'OzbKonto#changeKKL', :via => :POSt
   
   # Buergschaften
   match '/buergschaften' => 'buergschaft#index'

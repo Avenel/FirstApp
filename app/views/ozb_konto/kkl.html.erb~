@@ -1,0 +1,64 @@
+<h1>Kontenklasse ändern</h1>
+<%= link_to "zurück", "/" %>
+
+<%= form_tag({:action => "kkl"}, :id=>"editForm") do %>
+  <table style="margin: 50px auto">
+
+    <tr>
+      <td>Konto-Nr</td>
+      <td>Mitglieds-Nr</td>
+      <td>Konto-Einrichtungsdatum</td>
+      <td>Kontenklasse</td>
+    </tr>
+
+    <% @konten.each do |konto| %>
+    
+      <tr>
+        <td><%= konto.ktoNr %></td>
+        <%= hidden_field_tag "ktoNr[]", konto.ktoNr %>
+        <td><%= konto.mnr %></td>
+        <td><%= konto.ktoEinrDatum %></td>
+        <td><%= select_tag "kkl[]", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl", konto.KKLVerlauf.last.kkl) %></td>
+      </tr>
+
+    <% end %>
+
+  </table>
+  
+  <p>
+    Alle auswählen <%= check_box_tag "checkedAll" %> Klasse: <%= select_tag "kklAuswahl", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl") %>
+  </p>
+  
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>
+<% end %>
+
+<!-- Seitennavigation -->
+<div class="paginateBox" >
+  <%= will_paginate @konten %> 
+</div>
+
+
+<script>
+$(document).ready(function() {
+  $("select#kkl_").change(function () {
+    $(this).css("color", "red");
+  });
+  
+  $("#kklAuswahl").change(function () {
+    if( $("#checkedAll").attr("checked") == "checked" ) {
+      $(this).css("color", "red");
+      $("select#kkl_").val( $("#kklAuswahl").val() );
+    }    
+  });
+  
+  $("#checkedAll").change(function () {
+    if( $("#checkedAll").attr("checked") == "checked" ) {
+      $("select#kkl_").val( $("#kklAuswahl").val() );
+      $("#kklAuswahl").css("color", "red");
+    } 
+    else {
+      $("#kklAuswahl").css("color", "black");
+    }
+  });
+});
+</script>

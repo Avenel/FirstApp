@@ -182,4 +182,19 @@ class OzbKontoController < ApplicationController
     super
   end
 
+  # Kümmert sich um die Änderung der Kontenklasse
+  def kkl
+    @konten = OZBKonto.paginate(:page => params[:page], :per_page => 5)
+  end
+  
+  # Ändert die Kontoklasse aller angewählten Konten
+  def changeKKL
+    i = 0
+    params[:kkl].each do |kkl|
+      @verlauf = KKLVerlauf.create( :ktoNr => params[:ktoNr][i], :kklAbDatum => Time.now, :kkl => kkl )
+      i += 1
+    end
+    redirect_to :action => "kkl"
+  end
+
 end

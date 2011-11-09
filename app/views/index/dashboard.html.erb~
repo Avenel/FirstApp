@@ -13,13 +13,16 @@
     <td><a href='/adressen'>Alle Adressen einsehen</a></td>
   </tr>
   <tr>
-    <td><a href='/kontoklasse'>Kontoklassen bearbeiten</a></td>
+    <td><a href='/kontoklasse'>Kontoklasse bearbeiten</a></td>
   </tr>
   <tr>
     <td><a href='/OZBPerson'>Personen bearbeiten</a></td>
   </tr>
   <tr>
-    <td><a href='OZBPerson/1/Konto'>Konten anlegen</a></td>
+    <td><a href='OZBPerson/1/Konto'>Konto anlegen</a></td>
+  </tr>
+  <tr>
+    <td><a href='OZBPerson/1/Konto'>KKL ändern</a></td>
   </tr>
 </table>
 
