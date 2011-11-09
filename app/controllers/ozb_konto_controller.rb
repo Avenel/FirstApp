@@ -58,9 +58,11 @@ class OzbKontoController < ApplicationController
         @newKtoNr += "0"
       end
       @newKtoNr += @person.pnr.to_s
+      
+      render "new_ze.html.erb"
     end
     
-    render "new_ze.html.erb"
+    
   
   end
   
@@ -86,7 +88,7 @@ class OzbKontoController < ApplicationController
       rescue
         # Neu anlegen
         # OZB-Konto:  :ktoNr, :mnr, :ktoEinrDatum, :waehrung, :wSaldo, :pSaldo, :saldoDatum
-        @ozb_konto = OZBKonto.create( :ktoNr => params[:ozbKtoNr], :mnr => params[:id], :ktoEinrDatum => params[:ktoEinrDatum],
+        @ozb_konto = OZBKonto.create( :ktoNr => params[:ozbKtoNr], :mnr => params[:id], :ktoEinrDatum => Time.now,
                                       :waehrung => "EUR", :wSaldo => params[:wSaldo], :pSaldo => params[:pSaldo], :saldoDatum => params[:saldoDatum] )
         @ozb_konto.save
         
@@ -98,6 +100,10 @@ class OzbKontoController < ApplicationController
         # EE-Konto:  :ktoNr, :bankId, :kreditlimit
         @eeKonto = EEKonto.create( :ktoNr => params[:ozbKtoNr], :bankId => @bankverbindung.id, :kreditlimit => params[:kreditlimit] )
         @eeKonto.save
+        
+        # Neuen Kontenverlauf hinzufügen
+        @verlauf = KKLVerlauf.create( :ktoNr => params[:ozbKtoNr], :kklAbDatum => Time.now, :kkl => params[:kkl] )
+        @verlauf.save
       end
       
       redirect_to :action => "index"
@@ -130,6 +136,10 @@ class OzbKontoController < ApplicationController
                                     :tilgRate => params[:tilgRate], :ansparRate => params[:ansparRate], :kduRate => params[:kduRate], 
                                     :rduRate => params[:rduRate], :zeStatus => params[:zeStatus] )
         @ze_konto.save
+        
+        # Neuen Kontenverlauf hinzufügen
+        @verlauf = KKLVerlauf.create( :ktoNr => params[:ozbKtoNr], :kklAbDatum => Time.now, :kkl => params[:kkl] )
+        @verlauf.save
       end
       
       redirect_to :action => "index"    
@@ -158,8 +168,7 @@ class OzbKontoController < ApplicationController
   def delete
     begin
       @konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
-      puts @konto.inspect
-      @konto.delete
+      @konto.destroy
       redirect_to :action => "index"
     rescue
     end

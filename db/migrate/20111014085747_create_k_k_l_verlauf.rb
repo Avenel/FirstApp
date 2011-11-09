@@ -1,12 +1,12 @@
 class CreateKKLVerlauf < ActiveRecord::Migration
   def self.up
-    create_table(:KKLVerlauf, :id => false) do |t|
-      # Kontonummer PS1, FS
+    create_table(:KKLVerlauf) do |t|
+      # Kontonummer FS
       t.integer :ktoNr, :null => false, :limit => 5
-      # KKLAblaufDatum PS2
+      # KKLAblaufDatum 
       t.date :kklAbDatum, :null => false
       # KKL
-      t.string :kkl, :null => false, :uniqueness => true, :limit => 1
+      t.string :kkl, :null => false, :limit => 1
     end
   end
 

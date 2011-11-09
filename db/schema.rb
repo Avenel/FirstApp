@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -82,7 +83,7 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
     t.date    "beurkDatum"
   end
 
-  create_table "KKLVerlauf", :id => false, :force => true do |t|
+  create_table "KKLVerlauf", :force => true do |t|
     t.integer "ktoNr",      :limit => 5, :null => false
     t.date    "kklAbDatum",              :null => false
     t.string  "kkl",        :limit => 1, :null => false

@@ -13,7 +13,7 @@
   <table style="margin: 10px auto;">
     <tr>
       <td>Konto-Nr.:</td>
-      <td><%= label_tag :ozbKtoNr, @newKtoNr %> <% hidden_field_tag :ozbKtoNr, @newKtoNr%></td>
+      <td><%= label_tag :ozbKtoNr, @newKtoNr %> <%= hidden_field_tag :ozbKtoNr, @newKtoNr%></td>
     </tr>
     <tr>
       <td>wSaldo:</td>
@@ -26,6 +26,10 @@
     <tr>
       <td>SaldoDatum:</td>
       <td><%= text_field_tag :saldoDatum, "", :id => "saldoDatum" %></td>
+    </tr>
+    <tr>
+      <td>KKL:</td>
+      <td><%= text_field_tag :kkl%></td>
     </tr>
   </table>
   
