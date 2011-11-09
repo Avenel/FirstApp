@@ -169,6 +169,8 @@
   		<p>
 			<%= label_tag "Partner:" %>
 			<%= text_field_tag :partner %>  
+			<%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchPartnerFrame" %>
+ 
 		</p>
 		
 		<p>
@@ -199,8 +201,13 @@
 		insertId = "#notarPnr";
 	});
 	
+	$("#searchPartnerFrame").click(function() {
+		insertId = "#partner";
+	});
+	
 	$(document).ready(function() {
 	    $("#searchNotarFrame").fancybox();
+	    $("#searchPartnerFrame").fancybox();
 	});
 	
 	$(function() {
