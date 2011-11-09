@@ -32,6 +32,7 @@ OZB::Application.routes.draw do
   
   # KKL
   match '/ozbKonten/KKL' => 'OzbKonto#kkl', :via => :GET
+  match '/ozbKonten/KKL' => 'OzbKonto#searchKtoNr'
   match '/ozbKonten/KKL' => 'OzbKonto#changeKKL', :via => :POST
   
   # Buergschaften

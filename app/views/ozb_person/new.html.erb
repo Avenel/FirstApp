@@ -129,8 +129,16 @@
 
   		<p>
 			<%= label_tag "Notar:" %>
-			<%= text_field_tag :notarPnr %>  
+			<%= text_field_tag :notarPnr %>
+			<%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchNotarFrame" %>
+ 
 		</p>
+		
+		<div style="display:none">
+		  <div id="searchOZBPersonFrame">
+		    <div id="personen"><%= render 'application/suche_ozb_personen' %></div>  
+		  </div>
+		</div>
 
   		<p>
 			<%= label_tag "Beurkundungsdatum:" %>
@@ -184,6 +192,30 @@
 <% end %>
 
 <script>
+
+	var insertId = "#notarPnr";
+	
+	$("#searchNotarFrame").click(function(){
+		insertId = "#notarPnr";
+	});
+	
+	$(document).ready(function() {
+	    $("#searchNotarFrame").fancybox();
+	});
+	
+	$(function() {
+		var availableTagsB = [
+			<% tags = String.new %>
+			<% Person.all.each do |person| %>
+				<% tags += "'" + person.pnr.to_s + "'" + "," %>
+			<% end %>
+			<%= tags.chop %>
+		];
+		$( "#notarPnr" ).autocomplete({
+		source: availableTagsB
+    	});
+	});
+	
 	$(function() {
 		$( "#antragsdatum" ).datepicker({
 			dateFormat: 'dd.mm.yy'

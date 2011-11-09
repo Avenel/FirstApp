@@ -2,30 +2,25 @@
 <%= link_to "zurück", "/" %>
 
 <%= form_tag({:action => "kkl"}, :id=>"editForm") do %>
-  <table style="margin: 50px auto">
 
-    <tr>
-      <td>Konto-Nr</td>
-      <td>Mitglieds-Nr</td>
-      <td>Konto-Einrichtungsdatum</td>
-      <td>Kontenklasse</td>
-    </tr>
+<div id="searchKtoNrFrame" style="margin: 50px auto; ">
+    <div id="konten" style="float:left;"><%= render 'application/suche_konten' %></div>  
 
+
+  <table style="margin-top: 150px;">
     <% @konten.each do |konto| %>
     
       <tr>
-        <td><%= konto.ktoNr %></td>
         <%= hidden_field_tag "ktoNr[]", konto.ktoNr %>
-        <td><%= konto.mnr %></td>
-        <td><%= konto.ktoEinrDatum %></td>
         <td><%= select_tag "kkl[]", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl", konto.KKLVerlauf.last.kkl) %></td>
       </tr>
 
     <% end %>
 
   </table>
-  
-  <p>
+</div>
+  <br style="clear:both;" />
+  <p style>
     Alle auswählen <%= check_box_tag "checkedAll" %> Klasse: <%= select_tag "kklAuswahl", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl") %>
   </p>
   
@@ -36,7 +31,6 @@
 <div class="paginateBox" >
   <%= will_paginate @konten %> 
 </div>
-
 
 <script>
 $(document).ready(function() {
@@ -54,7 +48,6 @@ $(document).ready(function() {
   $("#checkedAll").change(function () {
     if( $("#checkedAll").attr("checked") == "checked" ) {
       $("select#kkl_").val( $("#kklAuswahl").val() );
-      $("#kklAuswahl").css("color", "red");
     } 
     else {
       $("#kklAuswahl").css("color", "black");
