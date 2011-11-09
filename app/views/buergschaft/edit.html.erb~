@@ -41,8 +41,8 @@
     
     <tr>
       <td><b><%= label_tag "Konto-Nr.:" %></b></td>
-      <td><%= text_field_tag :ktoNr, @buergschaft.ktoNr %>
-      <%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %></td>
+      <td><%= text_field_tag :ktoNr, @buergschaft.ktoNr %></td>
+      <td><%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %></td>
     </tr>
   
     <tr>
@@ -98,5 +98,6 @@
 <script>
   $(document).ready(function() {
     $("#searchKtoNr").fancybox();
+    $("td.insertRow").css("display", "block");
   });
 </script>

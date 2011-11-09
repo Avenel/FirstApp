@@ -1,42 +1,21 @@
 <h1>Kontenklasse ändern</h1>
 <%= link_to "zurück", "/" %>
 
-<%= form_tag({:action => "kkl"}, :id=>"editForm") do %>
-
 <div id="searchKtoNrFrame" style="margin: 50px auto; ">
-    <div id="konten" style="float:left;"><%= render 'application/suche_konten' %></div>  
-
-
-  <table style="margin-top: 150px;">
-    <% @konten.each do |konto| %>
-    
-      <tr>
-        <%= hidden_field_tag "ktoNr[]", konto.ktoNr %>
-        <td><%= select_tag "kkl[]", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl", konto.KKLVerlauf.last.kkl) %></td>
-      </tr>
-
-    <% end %>
-
-  </table>
+  <div id="konten" style="float:left;">
+    <% @kklCheck = true %>
+    <%= render :partial => 'application/suche_konten', :locals => {:action => "kkl"} %>
+  </div>  
 </div>
-  <br style="clear:both;" />
-  <p style>
-    Alle auswählen <%= check_box_tag "checkedAll" %> Klasse: <%= select_tag "kklAuswahl", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl") %>
-  </p>
-  
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>
-<% end %>
 
-<!-- Seitennavigation -->
-<div class="paginateBox" >
-  <%= will_paginate @konten %> 
-</div>
+<br style="clear:both;" />
+<p style>
+  Alle auswählen <%= check_box_tag "checkedAll" %> Klasse: <%= select_tag "kklAuswahl", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl") %>
+</p>
 
 <script>
 $(document).ready(function() {
-  $("select#kkl_").change(function () {
-    $(this).css("color", "red");
-  });
+  $("td.kklRow").css("display", "block");
   
   $("#kklAuswahl").change(function () {
     if( $("#checkedAll").attr("checked") == "checked" ) {

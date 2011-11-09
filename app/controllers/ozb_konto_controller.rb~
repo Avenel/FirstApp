@@ -191,7 +191,7 @@ class OzbKontoController < ApplicationController
   def changeKKL
     i = 0
     params[:kkl].each do |kkl|
-      @verlauf = KKLVerlauf.create( :ktoNr => params[:ktoNr][i], :kklAbDatum => Time.now, :kkl => params[:kkl] )
+      @verlauf = KKLVerlauf.create( :ktoNr => params[:ktoNr][i], :kklAbDatum => Time.now, :kkl => kkl )
       i += 1
     end
     redirect_to :action => "kkl"

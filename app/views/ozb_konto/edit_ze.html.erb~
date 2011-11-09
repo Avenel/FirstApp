@@ -34,7 +34,7 @@
     </tr>
     <tr>
       <td>ZE-Nr.:</td>
-      <td><%= text_field_tag :zeNr, @ze_konto.zeNr %></td>
+      <td><%= label_tag :zeNr, @ze_konto.zeNr %></td>
     </tr>
     <tr>
       <td>EE-Konto-Nr.:</td>

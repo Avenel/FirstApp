@@ -1,5 +1,5 @@
 <table>
-  <tr>
+  <tr>  
     <%= form_tag({:action => "searchKtoNr"}, :id=>"searchKtoNrForm", :method => 'get') do %>
       <td><%= text_field_tag "ktoNr", "", :id => "ktoNr", :style => "width: 80px;" %></td>
       <td><%= text_field_tag "mnr", "", :style => "width: 80px;" %></td>
@@ -25,22 +25,31 @@
     <th>Saldo Datum</th>
   </tr>
   
-  <% @konten.each do |konto| %>  
-    <tr>
-      <td><%= konto.ktoNr %></td>
-      <td><%= konto.mnr %></td>
-      <% person = Person.where(:pnr => OZBPerson.where(:mnr => konto.mnr).first.ueberPnr).first %>
-      <% if !person.nil? %>
-        <td><%= person.name.to_s + ", "+ person.vorname.to_s %></td>
-      <% else %>
-        <td>-</td>
-      <% end %>
-      <td><%= konto.ktoEinrDatum %></td>
-      <td><%= konto.wSaldo %></td>
-      <td><%= konto.pSaldo %></td>
-      <td><%= konto.saldoDatum %></td>
-      <td><%= link_to_function "einfügen", "$('#ktoNr').val('"+konto.ktoNr.to_s+"'); $.fancybox.close() "%></td>
-    </tr>
+  <%= form_tag({:action => "kkl", :controller=>"OzbKonto"}, :id=>"kklForm", :method => 'post') do %>
+    <% @konten.each do |konto| %>  
+      <tr>
+        <td><%= konto.ktoNr %></td>
+        <td><%= konto.mnr %></td>
+        <% person = Person.where(:pnr => OZBPerson.where(:mnr => konto.mnr).first.ueberPnr).first %>
+        <% if !person.nil? %>
+          <td><%= person.name.to_s + ", "+ person.vorname.to_s %></td>
+        <% else %>
+          <td>-</td>
+        <% end %>
+        <td><%= konto.ktoEinrDatum %></td>
+        <td><%= konto.wSaldo %></td>
+        <td><%= konto.pSaldo %></td>
+        <td><%= konto.saldoDatum %></td>
+        <%= hidden_field_tag "ktoNr[]", konto.ktoNr %>
+        <td class="kklRow"style="display:none;">
+          <%= select_tag "kkl[]", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl", konto.KKLVerlauf.last.kkl) %>
+        </td>
+        <td class="insertRow"style="display:none;">
+          <%= link_to_function "einfügen", "$('#ktoNr').val('"+konto.ktoNr.to_s+"'); $.fancybox.close() "%>
+        </td>
+      </tr>
+    <% end %>
+    <%= link_to_function "Speichern", "", :onclick => "$('#kklForm').submit(); return false;", :id => "saveButton" %>
   <% end %>
 </table>
     

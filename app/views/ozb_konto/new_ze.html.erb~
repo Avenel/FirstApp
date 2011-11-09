@@ -21,6 +21,10 @@
       <td>SaldoDatum:</td>
       <td><%= text_field_tag :saldoDatum, "", :id => "saldoDatum" %></td>
     </tr>
+    <tr>
+      <td>KKL:</td>
+      <td><%= text_field_tag :kkl%></td>
+    </tr>
   </table>
   
   
@@ -97,6 +101,7 @@
 
   $(document).ready(function() {
     $("#searchKtoNr").fancybox();
+    $("td.insertRow").css("display", "block");
   });
 
 </script>

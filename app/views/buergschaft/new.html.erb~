@@ -6,9 +6,8 @@
   <table style="margin: 10px auto;">
     <tr>
       <td><b><%= label_tag "Buergschafter:" %></b></td>
-      <td>
-        <%= text_field_tag :pnrB %>
-        <%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchBFrame" %>
+      <td><%= text_field_tag :pnrB %></td>
+      <td><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchBFrame" %></td>
       </td>
     </tr>
   
@@ -130,6 +129,8 @@
       dateFormat: 'yy-mm-dd'
     });
   });
+  
+  $("td.insertRow").css("display", "block");
   
   $(function() {
     $( "#sichAbDatum" ).datepicker({
