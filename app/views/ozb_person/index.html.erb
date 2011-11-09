@@ -11,7 +11,7 @@
   
     <tr>
       <td><%= person.mnr %></td>	
-			<% current_person = Person.find(person.mnr) %>
+			<% current_person = Person.find(person.ueberPnr) %>
 			<td><%= current_person.name + ", " + current_person.vorname %></td>
 			<% edit_link = "/OZBPerson/" + person.mnr.to_s %>
       <% delete_link = "/OZBPerson/" + person.mnr.to_s + "/delete" %>

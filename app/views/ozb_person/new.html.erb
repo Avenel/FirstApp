@@ -1,105 +1,225 @@
 <h1>Person anlegen</h1>
-<%= link_to "zurück", "/OZBPerson" %>
 
-<%= form_tag({:action => "save"}, :id=>"newForm") do %>
-
-	<p> 
-    <%= label_tag "Rolle:" %>
-    <%= text_field_tag :rolle %>  
-  </p>
+	<%= link_to "zurück", "/OZBPerson" %>
+	<%= form_tag({:action => "save"}, :id=>"newForm") do %>	
 	
-  <p> 
-    <%= label_tag "Name:" %>
-    <%= text_field_tag :name %>  
-  </p>
+ 	<p>
+		<%= label_tag "Name:" %>
+		<%= text_field_tag :name %>  
+	</p>
 	
-	<p> 
-    <%= label_tag "Vorname:" %>
-    <%= text_field_tag :vorname %>  
-  </p>
-  
-  <p>
-    <%= label_tag "Geburtsdatum:" %>  
-    <%= text_field_tag :gebDatum %>  
-  </p>  
-  
-  <p>
-    <%= label_tag "Straße:" %>
-    <%= text_field_tag :strasse %>
-  </p>
+	<p>
+		<%= label_tag "Vorname:" %>
+		<%= text_field_tag :vorname %>  
+	</p>
+	  
+	<p>
+		<%= label_tag "Geburtsdatum:" %>  
+		<%= text_field_tag :gebDatum %>
+	</p>  
+	  
+	<p>
+		<%= label_tag "Straße:" %>
+		<%= text_field_tag :strasse %>
+	</p>
 	
-	<p> 
-    <%= label_tag "PLZ:" %>
-    <%= text_field_tag :plz %>  
-  </p>
+	<p>
+		<%= label_tag "PLZ:" %>
+		<%= text_field_tag :plz %>  
+	</p>
 	
-	<p> 
-    <%= label_tag "Ort:" %>
-    <%= text_field_tag :ort %>  
-  </p>
+	<p>
+		<%= label_tag "Ort:" %>
+		<%= text_field_tag :ort %>  
+	</p>
 	
-	<p> 
-    <%= label_tag "Telefon:" %>
-    <%= text_field_tag :telefon %>  
-  </p>
+	<p>
+		<%= label_tag "Telefon:" %>
+		<%= telephone_field_tag :telefon %>  
+	</p>
 	
-	<p> 
-    <%= label_tag "Fax:" %>
-    <%= text_field_tag :fax %>  
-  </p>
+	<p>
+		<%= label_tag "Fax:" %>
+		<%= telephone_field_tag :fax %>  
+	</p>
 	
-	<p> 
-    <%= label_tag "Email:" %>
-    <%= text_field_tag :email %>  
-  </p>
-	
+	<p>
+		<%= label_tag "Email:" %>
+		<%= email_field_tag :email %>  
+	</p>
+<!--	
 	<p>
 		Bankdaten:
 	</p>
 	
-	<p> 
-    <%= label_tag "Kontoinhaber:" %>
-    <%= text_field_tag :kontoinhaber %>  
-  </p>
+	<p>
+		<%= label_tag "Kontoinhaber:" %>
+		<%= text_field_tag :kontoinhaber %>  
+	</p>
 	
-	<p> 
-    <%= label_tag "Kontonummer:" %>
-    <%= text_field_tag :kontonr %>  
-  </p>
+	<p>
+		<%= label_tag "Kontonummer:" %>
+		<%= text_field_tag :kontonr %>  
+	</p>
 	
-	<p> 
-    <%= label_tag "BLZ:" %>
-    <%= text_field_tag :blz %>  
-  </p>	
+	<p>
+		<%= label_tag "BLZ:" %>
+		<%= text_field_tag :blz %>  
+	</p>	
 	
-	<p> 
-    <%= label_tag "Bankname:" %>
-    <%= text_field_tag :bankname %>  
-  </p>
+	<p>
+		<%= label_tag "Bankname:" %>
+		<%= text_field_tag :bankname %>  
+	</p>
+-->	
+
+	<p>
+    	<%= label_tag "Rolle:" %>
+    	<%= select_tag 'rolle', options_for_select(@Rollen), { :onChange => "show_role()" } %>
+  	</p>
+  	
+  	<div id="Student">
+  		<p>
+			<%= label_tag "Ausbildungsbezeichnung:" %>
+			<%= text_field_tag :ausbildBez %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Institut:" %>
+			<%= text_field_tag :institutName %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Studienort:" %>
+			<%= text_field_tag :studienort %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Studienbeginn:" %>
+			<%= text_field_tag :studienbeginn %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Studienende:" %>
+			<%= text_field_tag :studienende %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Abschluss:" %>
+			<%= text_field_tag :abschluss %>  
+		</p>
+
+  	</div>
+  	
+  	<div id="Gesellschafter">
+  		<p>
+			<%= label_tag "FA Steuernummer:" %>
+			<%= text_field_tag :faSteuerNr %>  
+		</p>
+
+  		<p>
+			<%= label_tag "FA Lfd. Nr.:" %>
+			<%= text_field_tag :faLfdNr %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Wohnsitzfinanzamt:" %>
+			<%= text_field_tag :wohnsitzFinanzamt %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Notar:" %>
+			<%= text_field_tag :notarPnr %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Beurkundungsdatum:" %>
+			<%= text_field_tag :beurkDatum %>  
+		</p>
+  	</div>
+  	
+  	<div id="Foerdermitglied">
+  		<p>
+			<%= label_tag "Region" %>
+			<%= text_field_tag :region %>  
+		</p>
+
+  		<p>
+			<%= label_tag "Förderbeitrag" %>
+			<%= text_field_tag :foerderbeitrag %>  
+		</p>
+  	</div>
+  	
+  	<div id="Mitglied">
+  		<p>
+			<%= label_tag "RV Datum:" %>
+			<%= text_field_tag :rvDatum %>  
+		</p>
+  	</div>
+  	
+  	<div id="Partner">
+  		<p>
+			<%= label_tag "Partner:" %>
+			<%= text_field_tag :partner %>  
+		</p>
+		
+		<p>
+			<%= label_tag "Berechtigung" %>
+			<%= text_field_tag :berechtigung %>  
+		</p>
+  	</div>
+  	
+	<p>
+		<%= label_tag "Antragsdatum:" %>
+		<%= text_field_tag :antragsdatum %>  
+	</p>
 	
-	<p> 
-    <%= label_tag "Antragsdatum:" %>
-    <%= text_field_tag :antragsdatum %>  
-  </p>
-	
-	<p> 
-    <%= label_tag "Aufnahmedatum:" %>
-    <%= text_field_tag :aufnahmedatum %>  
-  </p>  
+	<p>
+		<%= label_tag "Aufnahmedatum:" %>
+		<%= text_field_tag :aufnahmedatum %>  
+	</p>  
   
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
+  	<%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
   
 <% end %>
 
 <script>
-  $(function() {
-    $( "#antragsdatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
-    });
-  });
 	$(function() {
-    $( "#aufnahmedatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
-    });
-  });
+		$( "#antragsdatum" ).datepicker({
+			dateFormat: 'dd.mm.yy'
+ 		});
+	});
+	$(function() {
+		$( "#aufnahmedatum" ).datepicker({
+			dateFormat: 'dd.mm.yy'
+		});
+	});
+	function show_role()
+	{
+		$("div#Foerdermitglied").hide();
+	    $("div#Student").hide();
+    	$("div#Mitglied").hide();
+    	$("div#Partner").hide();
+    	$("div#Gesellschafter").hide();
+	    var role = $('select#rolle').val();
+	    switch (role) {
+		    case "F":
+		    	$("div#Foerdermitglied").show();
+		    	break;
+		    case "S":
+		    	$("div#Student").show();
+		    	break;
+		    case "G":
+		    	$("div#Gesellschafter").show();
+		    	break;
+		    case "P":
+		    	$("div#Partner").show();
+		    	break;
+		    case "M":
+		    	$("div#Mitglied").show();
+		    	break;
+		    default:
+		}		
+	}
+	show_role();
 </script>
