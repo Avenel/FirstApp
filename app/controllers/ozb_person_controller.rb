@@ -1,9 +1,9 @@
 class OZBPersonController < ApplicationController
 
-  @@Rollen = {"Mitglied" => "M", "Fördermitglied" => "F", "Partner" => "P", "Gesellschafter" => "G", "Student" => "S"}
+  @@Rollen = {"Mitglied" => "M", "F&Ouml;rdermitglied" => "F", "Partner" => "P", "Gesellschafter" => "G", "Student" => "S"}
 
   def index
-		@OZBPersonen = OZBPerson.paginate(:page => params[:page], :per_page => 1)
+		@OZBPersonen = OZBPerson.paginate(:page => params[:page], :per_page => 10)
   end
   
   def edit
@@ -16,9 +16,14 @@ class OZBPersonController < ApplicationController
   end
 
   def new
+    searchOZBPerson()
     @Rollen = @@Rollen
   end
 	
+	def searchOZBPerson
+    super
+  end
+  
 	def save
     begin
       @OZBPerson = OZBPerson.find(params[:mnr])
@@ -74,7 +79,7 @@ class OZBPersonController < ApplicationController
 			#Datensaetze speichern
 			@new_Person.save!
 			@new_OZBPerson.save!
-			@new_Bankverbindung.save!
+			#@new_Bankverbindung.save!
 			
 			#Telefon hinzufuegen
 			if params[:telefon].length > 0
