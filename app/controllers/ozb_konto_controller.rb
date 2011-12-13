@@ -165,6 +165,19 @@ class OzbKontoController < ApplicationController
   
   end
   
+  def show
+    @ozb_konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
+    if params[:typ] == "EE" then
+      @konto = @ozb_konto.EEKonto.first
+    end
+    
+    if params[:typ] == "ZE" then
+      @konto = @ozb_konto.ZEKonto.first
+    end
+    
+    render "show.html.erb"
+  end
+  
   def delete
     begin
       @konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first

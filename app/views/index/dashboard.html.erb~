@@ -1,28 +1,13 @@
-<h1>Startseite</h1>
-<h2>Hallo <%= @current_person.vorname %> <%= @current_person.name %></h2>
-<h3 style="margin-top:50px">Was möchten Sie tun?</h3>
+<h2>Guten Tag,  <%=@current_person.vorname%> <%= @current_person.name %></h2>
 
-<table style="border: 1px solid; margin: 0 auto"> 
-  <tr>
-    <td><a href='/ozbKonten'>Alle Konten einsehen</a></td>
-  </tr>
-  <tr>
-    <td><a href='/buergschaften'>Alle Buergschaften einsehen</a></td>
-  </tr>
-  <tr>
-    <td><a href='/adressen'>Alle Adressen einsehen</a></td>
-  </tr>
-  <tr>
-    <td><a href='/kontoklasse'>Kontoklasse bearbeiten</a></td>
-  </tr>
-  <tr>
-    <td><a href='/OZBPerson'>Personen bearbeiten</a></td>
-  </tr>
-  <tr>
-    <td><a href='OZBPerson/1/Konto'>Konto anlegen</a></td>
-  </tr>
-  <tr>
-    <td><a href='OZBPerson/1/Konto'>KKL ändern</a></td>
-  </tr>
+<h3>Einlage-/Entnahmekonten</h3>
+
+<table>
+  <% current_OZBPerson.OZBKonto.each do |konto| %>
+    <tr>
+      <td><a href="/OZBPerson/<%= current_OZBPerson.id %>/Konto/EE/<%= konto.EEKonto.first.ktoNr %>/Buchungen"><%= konto.EEKonto.first.ktoNr %></a></td>
+    </tr>
+  <% end %>
 </table>
 
+<h3>Zusatzentnahmekonten</h3>
