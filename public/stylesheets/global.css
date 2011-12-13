@@ -4,14 +4,21 @@ html {
 
 body {
   height: 100%;
-  background: #d8e7fc;
+  background: #8EC1DA;
+  
+  background:-moz-linear-gradient(top, #8EC1DA, #D8E7FC);
+  background:-webkit-gradient(linear, left top, left bottom, from(#8EC1DA), to(#bbd5fa));
   color: #333; 
   margin: 0px;
 }
 
 a {
-  color:#ACACAC;
+  color:#2797CD;
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 body, p, ol, ul, td {
@@ -27,12 +34,12 @@ pre {
 }
 
 .content {
-  min-height: 92% !important; 
+  min-height: 80% !important; 
   text-align:center; 
   width: 900px; 
   margin: 0px auto;
   background-color: #ffffff;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 
@@ -49,7 +56,7 @@ div.field, div.actions {
 }
 
 .topbar a{
-  margin: 10px;
+  padding: 15px;
   color:#ACACAC;
   text-decoration: none;
 }
