@@ -1,9 +1,10 @@
+# encoding: UTF-8
 class OZBPersonController < ApplicationController
 
   @@Rollen = {"Mitglied" => "M", "Foerdermitglied" => "F", "Partner" => "P", "Gesellschafter" => "G", "Student" => "S"}
 
   def index
-		@OZBPersonen = OZBPerson.paginate(:page => params[:page], :per_page => 10)
+		@OZBPersonen = OZBPerson.paginate(:page => params[:page], :per_page => 5)
   end
   
   def edit
@@ -66,7 +67,7 @@ class OZBPersonController < ApplicationController
     rescue
 
 			#Person erstellen
-			@new_Person = Person.create ( :rolle => params[:rolle], :name => params[:name], :vorname => params[:vorname], :geburtsdatum => params[:gebDatum],
+			@new_Person = Person.create( :rolle => params[:rolle], :name => params[:name], :vorname => params[:vorname], :geburtsdatum => params[:gebDatum],
 																		:strasse => params[:strasse], :plz => params[:plz], :ort => params[:ort], :antragsdatum => params[:antragsdatum],
 																		:aufnahmedatum => params[:aufnahmedatum] )
 			

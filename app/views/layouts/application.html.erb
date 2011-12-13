@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>OZB</title>
-     
+
   <div class="topbar" style="text-align:center;">
     
     <div style="position:relative;">
@@ -25,11 +25,9 @@
         <%= link_to "Einloggen", new_OZBPerson_session_path %>
       <% end %>
    </div>
-    
+   
   </div>
   
-    
-    
   <%= stylesheet_link_tag :all %>
   <%= stylesheet_link_tag "jquery.fancybox-1.3.4_css" %>
   
@@ -45,7 +43,7 @@
   <% @kklCheck = true %>
 </head>
 <body>
-<div class="content">
+  <div class="content">
   <%= yield %>  
 </div>
 </body>
