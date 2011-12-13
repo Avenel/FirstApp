@@ -75,7 +75,11 @@ table {
 }
 
 #notice {
-  color: green;
+  color: black;
+  margin: 15px auto;
+  width: 800px;
+  text-align: center;
+  background: yellow;
 }
 
 .field_with_errors {

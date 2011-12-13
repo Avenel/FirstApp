@@ -1,3 +1,5 @@
+<h1>Startseite</h1>
+
 <h2>Guten Tag,  <%=@current_person.vorname%> <%= @current_person.name %></h2>
 
 

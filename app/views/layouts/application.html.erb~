@@ -10,7 +10,6 @@
     <div style="position:relative;">
       <% if OZBPerson_signed_in? %>
         <a href='/'>Startseite</a>
-        <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Konto'>Meine Konten</a>
         <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Daten'>Meine Daten</a>
         <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Tanlisten'>Meine TAN</a>
         <a href='/Admin'>Admin</a>
@@ -45,6 +44,7 @@
   <% @kklCheck = true %>
 </head>
 <body>
+  <p id="notice"><%= notice %></p>
   <div class="content">
   <%= yield %>  
 </div>

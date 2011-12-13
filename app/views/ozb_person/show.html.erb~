@@ -1,2 +1,1 @@
-<p id="notice"><%= notice %></p>
-
+<h1>Datenübersicht</h1>
