@@ -14,6 +14,18 @@ class OZBPersonController < ApplicationController
     #@Bankverbindungen = Bankverbindung.find(:all, :conditions => {:pnr => @Person.pnr})
     @Telefon = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Tel"})
     @Fax = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Fax"})
+    case @Person.rolle
+    when "M"
+      @Mitglied = Mitglied.find(@OZBPerson.mnr)
+    when "F"
+      @Foerdermitglied = Foerdermitglied.find(@Person.pnr)
+    when "P"
+      @Partner = Partner.find(@OZBPerson.mnr)
+    when "G"
+      @Gesellschafter = Gesellschafter.find(@OZBPerson.mnr)
+    when "S"
+      @Student = Student.find(@OZBPerson.mnr)
+    end
   end
 
   def new
