@@ -2,20 +2,17 @@
 <%= link_to "zurück", "/" %>
 
 <div id="searchKtoNrFrame" style="margin: 50px auto; ">
-  <div id="konten" style="float:left;">
+  <div id="konten">
     <% @kklCheck = true %>
     <%= render :partial => 'application/suche_konten', :locals => {:action => "kkl"} %>
   </div>  
 </div>
 
-<br style="clear:both;" />
-<p style>
-  Alle auswählen <%= check_box_tag "checkedAll" %> Klasse: <%= select_tag "kklAuswahl", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl") %>
-</p>
+
 
 <script>
 $(document).ready(function() {
-  $("td.kklRow").css("display", "block");
+  $("kklRow").css("display", "block");
   
   $("#kklAuswahl").change(function () {
     if( $("#checkedAll").attr("checked") == "checked" ) {
@@ -24,9 +21,14 @@ $(document).ready(function() {
     }    
   });
   
+  $("select#kkl_").change(function() {
+    $(this).css("color", "red");
+  })
+  
   $("#checkedAll").change(function () {
     if( $("#checkedAll").attr("checked") == "checked" ) {
       $("select#kkl_").val( $("#kklAuswahl").val() );
+      $("select#kkl_").css("color", "red");
     } 
     else {
       $("#kklAuswahl").css("color", "black");

@@ -1,4 +1,4 @@
-<table>
+<table style="margin: 10px auto;">
   <tr>  
     <%= form_tag({:action => "searchKtoNr"}, :id=>"searchKtoNrForm", :method => 'get') do %>
       <td><%= text_field_tag "ktoNr", "", :id => "ktoNr", :style => "width: 80px;" %></td>
@@ -49,13 +49,22 @@
         </td>
       </tr>
     <% end %>
-    <%= link_to_function "Speichern", "", :onclick => "$('#kklForm').submit(); return false;", :id => "saveButton" %>
   <% end %>
 </table>
     
 <!-- Seitennavigation -->
 <div class="paginateBox" >
   <%= will_paginate @konten %> 
+</div>
+
+<br style="clear:both;" />
+
+<div class="kklRow"style="display:none; margin-top: 20px;">
+  <p style>
+    Alle auswählen <%= check_box_tag "checkedAll" %> Klasse: <%= select_tag "kklAuswahl",
+     options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl") %>
+  </p>
+  <%= link_to_function "Speichern", "", :onclick => "$('#kklForm').submit(); return false;", :id => "saveButton" %>
 </div>
 
 <script>
@@ -68,7 +77,7 @@
     );  
   });    
   
-  // Search form.  
+  // Search form. 
   $('#searchKtoNrForm').submit(function () {  
     $.get('/application/suche_konten.js', $(this).serialize(), null, 'script');  
     return false;  

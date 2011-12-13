@@ -2,12 +2,16 @@
 <html>
 <head>
   <title>OZB</title>
-  <div id="user_nav" style="text-align:right">
+  <div style="margin: -5px auto;">
+    <img src="/images/ozb.png" />
+  </div>
+  
+  <div id="user_nav" style="text-align:right; background-color: #333333; color: white;">
     <% if OZBPerson_signed_in? %>
       Eingeloggt als <%= current_OZBPerson.mnr %>.
-      <%= link_to "Ausloggen", destroy_OZBPerson_session_path, :method => :delete %>
+      <%= link_to "Ausloggen", destroy_OZBPerson_session_path, :method => :delete, :style => "color: white;" %>
     <% else %>
-      <%= link_to "Einloggen", new_OZBPerson_session_path %>
+      <%= link_to "Einloggen", new_OZBPerson_session_path, :style => "color: white;" %>
     <% end %>
   </div>
   <%= stylesheet_link_tag :all %>
@@ -25,7 +29,8 @@
   <% @kklCheck = true %>
 </head>
 <body>
-<div style="text-align:center; width: 800px; margin: 50px auto">
+
+<div style="text-align:center; width: 800px; margin: 50px auto;">
   <%= link_to "Startseite", "/" %>
   <%= yield %>  
 </div>

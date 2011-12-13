@@ -6,15 +6,15 @@ class CreateOZBKonto < ActiveRecord::Migration
       # Mitgliedsnummer FS
       t.integer :mnr, :null => false, :uniqueness => true, :limit => 10
       # Kontoeinrichtungsdatum
-      t.date :ktoEinrDatum, :default => nil
+      t.date :ktoEinrDatum
       # Waehrung
       t.string :waehrung, :limit => 3, :default => "STR"
       # WSaldo
       t.decimal :wSaldo, :scale => 2, :precision => 10, :default => nil
       # PSaldo
-      t.integer :pSaldo, :limit => 11, :default => nil
+      t.integer :pSaldo, :limit => 11
       # SaldoDatum
-      t.date :saldoDatum, :default => nil
+      t.date :saldoDatum
     end
   end
 

@@ -1,7 +1,7 @@
-kklDisplay = $("td.kklRow").css("display");
+kklDisplay = $(".kklRow").css("display");
 insertDisplay = $("td.insertRow").css("display");
 
-$('#konten').html('<%= escape_javascript(render :partial => "application/suche_konten") %>');
+$('#konten').html('<%= escape_javascript(render("application/suche_konten")) %>');
 
-$("td.kklRow").css("display", kklDisplay);
+$(".kklRow").css("display", kklDisplay);
 $("td.insertRow").css("display", insertDisplay);

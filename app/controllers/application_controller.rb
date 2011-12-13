@@ -53,37 +53,37 @@ class ApplicationController < ActionController::Base
   def searchOZBPerson
     #Suchkriterien: mnr, pnr, rolle, name, ktoNr
     @personen = Person.paginate(:page => params[:page], :per_page => 5)
-    if params[:mnr].nil? then
+    if params[:sop_mnr].nil? then
       @personen = Person.paginate(:page => params[:page], :per_page => 5)
     else
-      if params[:mnr].empty? and params[:name].empty? and 
-        params[:ktoNr].empty? and params[:rolle].empty? then
+      if params[:sop_mnr].empty? and params[:sop_name].empty? and 
+        params[:sop_ktoNr].empty? and params[:sop_rolle].empty? then
           @personen = Person.paginate(:page => params[:page], :per_page => 5) 
       else
         @personen = Person;
         
-        if( !params[:mnr].empty? ) then
-          @personen = @personen.where( "pnr like ?", "%" +  params[:mnr] + "%" )
+        if( !params[:sop_mnr].empty? ) then
+          @personen = @personen.where( "pnr like ?", "%" +  params[:sop_mnr] + "%" )
         end
                 
-        if( !params[:name].empty? or !params[:vorname].empty? ) then
-          if !params[:name].empty? and params[:vorname].empty? then
-            @personen = Person.where( "(name like ? )", "%" + params[:name] + "%" )
+        if( !params[:sop_name].empty? or !params[:sop_vorname].empty? ) then
+          if !params[:sop_name].empty? and params[:sop_vorname].empty? then
+            @personen = Person.where( "(name like ? )", "%" + params[:sop_name] + "%" )
           else
-            if !params[:vorname].empty? and params[:name].empty? then
-              @personen = Person.where( "(vorname like ? )", "%" + params[:vorname] + "%" )
+            if !params[:sop_vorname].empty? and params[:sop_name].empty? then
+              @personen = Person.where( "(vorname like ? )", "%" + params[:sop_vorname] + "%" )
             else
-              @personen = Person.where( "(name like ? AND vorname like ?)", "%" + params[:name] + "%", "%" + params[:vorname] + "%" )
+              @personen = Person.where( "(name like ? AND vorname like ?)", "%" + params[:sop_name] + "%", "%" + params[:sop_vorname] + "%" )
             end
           end
         end
         
-        if( !params[:rolle].empty? ) then
-          @personen = @personen.where(:rolle => params[:rolle])
+        if( !params[:sop_rolle].empty? ) then
+          @personen = @personen.where(:sop_rolle => params[:sop_rolle])
         end
         
-        if( !params[:ktoNr].empty? ) then
-          @konten = OZBKonto.where( "ktoNr LIKE ?", "%" + params[:ktoNr] + "%" )
+        if( !params[:sop_ktoNr].empty? ) then
+          @konten = OZBKonto.where( "ktoNr LIKE ?", "%" + params[:sop_ktoNr] + "%" )
           
           pnrs = Array.new
           @konten.each do |konto|
