@@ -1,0 +1,20 @@
+<h1>Administration</h1>
+
+<br />
+
+<h2>Verwaltung</h2>
+<ul style="padding: 0; margin: 0px auto;" type="none">
+  <li><a href='/buergschaften'>Bürgschaften</a></li>
+  <li><a href='/kontoklasse'>Kontoklassen</a></li>
+  <li><a href='/OZBPerson'>o/zB Personen</a></li>
+</ul>
+
+<br />
+
+<h2>Reports</h2>
+<ul style="padding: 0; margin: 0px auto;" type="none">
+  <li><a href='/ozbKonten'>Konten</a></li>
+  <li><a href='/adressen'>Adressen</a></li>
+  <li><a href='/kontoklasse'>Kontoklassen verwalten</a></li>
+  <li><a href='/OZBPerson'>Protokoll</a></li>
+</ul>

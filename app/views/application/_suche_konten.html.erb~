@@ -42,7 +42,7 @@
         <td><%= konto.saldoDatum %></td>
         <%= hidden_field_tag "ktoNr[]", konto.ktoNr %>
         <td class="kklRow"style="display:none;">
-          <%= select_tag "kkl[]", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl", konto.KKLVerlauf.last.kkl) %>
+
         </td>
         <td class="insertRow"style="display:none;">
           <%= link_to_function "einfügen", "$('#ktoNr').val('"+konto.ktoNr.to_s+"'); $.fancybox.close() "%>
@@ -71,7 +71,7 @@
   $(function () {  
     $('.pagination a').live('click',
       function () {  
-        $.getScript(this.href);  
+        $.getScript(this.href, {search:"person"});  
         return false;  
       }   
     );  

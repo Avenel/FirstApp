@@ -1,5 +1,6 @@
 <h2>Übersicht von Kontoklasse: <%= @kkl %></h2>
 
+
 <table style="margin: 50px auto">
   <tr>
     <td>Konto-Nr.</td>

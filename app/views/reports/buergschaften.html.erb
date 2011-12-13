@@ -1,18 +1,19 @@
-<table style="margin: 50px auto">
+<table>
 
   <tr>
-    <td>Personal-Nr. Buerger</td>
-    <td>Personal-Nr. Gesellschafter</td>
-    <td>Konto-Nr</td>
-    <td>sichAbDatum</td>
-    <td>sichEndDatum</td>
-    <td>sichBetrag</td>
-    <td>sichKurzBez</td>
+    <th>Personal-Nr. Buerger</th>
+    <th>Personal-Nr. Gesellschafter</th>
+    <th>Konto-Nr</th>
+    <th>sichAbDatum</th>
+    <th>sichEndDatum</th>
+    <th>sichBetrag</th>
+    <th>sichKurzBez</th>
   </tr>
 
+  <% i = 0 %>
   <% @buergschaften.each do |buergschaft| %>
-  
-    <tr>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <td><%= buergschaft.pnrB %></td>
       <td><%= buergschaft.mnrG %></td>
       <td><%= buergschaft.ktoNr %></td>
@@ -21,7 +22,7 @@
       <td><%= buergschaft.sichBetrag %></td>
       <td><%= buergschaft.sichKurzBez %></td>
     </tr>
-
+    <% i += 1 %>
   <% end %>
 
 </table>

@@ -1,17 +1,19 @@
-<table style="margin: 50px auto">
+<h1>Alle Konten</h1>
 
+<table>
   <tr>
-    <td>Konto-Nr</td>
-    <td>Mitglieds-Nr</td>
-    <td>Konto-Einrichtungsdatum</td>
-    <td>wSaldo</td>
-    <td>pSaldo</td>
-    <td>Saldo Datum</td>
+    <th>Konto-Nr</th>
+    <th>Mitglieds-Nr</th>
+    <th>Konto-Einrichtungsdatum</th>
+    <th>wSaldo</th>
+    <th>pSaldo</th>
+    <th>Saldo Datum</th>
   </tr>
 
+  <% i=0 %>
   <% @ozbKonten.each do |konto| %>
-  
-    <tr>
+  <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <td><%= konto.ktoNr %></td>
       <td><%= konto.mnr %></td>
       <td><%= konto.ktoEinrDatum %></td>
@@ -19,12 +21,12 @@
       <td><%= konto.pSaldo %></td>
       <td><%= konto.saldoDatum %></td>
     </tr>
-
+  <% i += 1 %>
   <% end %>
 
 </table>
 
 <!-- Seitennavigation -->
 <div class="paginateBox" >
-  <%= will_paginate @ozbKonten %> 
+  <%= will_paginate @ozbKonten %>
 </div>

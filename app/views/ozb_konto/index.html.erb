@@ -1,4 +1,4 @@
-<h2>OZB Konten</h2>
+<h1>OZB Konten</h1>
 
 
 
@@ -6,7 +6,7 @@
      :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus -->
 
 <h3 style="margin-top: 20px;">ZE-Konten</h3> 
-<table style="margin: 10px auto;">
+<table>
   <tr>
     <th>Konto-Nr.</th>
     <th>EEKonto-Nr.</th>
@@ -21,10 +21,14 @@
     <th>Kdu-Rate</th>
     <th>Rdu-Rate</th>
     <th>Status</th>
+    <th />
+    <th />
   </tr>
 
+  <% i = 0 %>
   <% @ze_konten.each do |konto| %>
-    <tr>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <td><%= konto.ktoNr %></td>
       <td><%= konto.eeKtoNr %></td>
       <td><%= konto.zeNr %></td>
@@ -40,7 +44,8 @@
       <td><%= konto.zeStatus %></td>
       <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s %></td>
       <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s+"/delete" %></td>
-    </tr>  
+    </tr>
+    <% i += 1 %>
   <% end %>
 </table>
 <% if @ze_count < 4 then %>
@@ -50,7 +55,7 @@
 <!-- :ktoNr, :bankId, :kreditlimit,  :id, :bankKtoNr, :blz, :bic, :iban, :bankName    -->
 
 <h3 style="margin-top: 20px;">EE-Konten</h3> 
-<table style="margin: 10px auto;">
+<table>
   <tr>
     <th>Konto-Nr.</th>
     <th>Bank-Id</th>
@@ -58,10 +63,14 @@
     <th>Bankleitzahl</th>
     <th>Bankname</th>
     <th>Kreditlimit</th>
+    <th />
+    <th />
   </tr>
  
+  <% i = 0 %>
   <% @ee_konten.each do |konto| %>
-    <tr>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <td><%= konto.ktoNr %></td>
       <td><%= konto.bankId %></td>
       
@@ -73,6 +82,7 @@
       <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s %></td>
       <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s+"/delete" %></td>
     </tr>
+    <% i += 1 %>
   <% end %>
 </table>
 <% if @ee_count < 3 then %>

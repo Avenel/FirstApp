@@ -8,5 +8,13 @@ class IndexController < ApplicationController
     @current_person = Person.find(current_OZBPerson.mnr)
   
   end
+  
+  def admin
+  
+  end
+  
+  def error_404
+  
+  end
 
 end

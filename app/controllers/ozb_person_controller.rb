@@ -4,7 +4,7 @@ class OZBPersonController < ApplicationController
   @@Rollen = {"Mitglied" => "M", "Foerdermitglied" => "F", "Partner" => "P", "Gesellschafter" => "G", "Student" => "S"}
 
   def index
-		@OZBPersonen = OZBPerson.paginate(:page => params[:page], :per_page => 5)
+    @OZBPersonen = OZBPerson.paginate(:page => params[:page], :per_page => 5)
   end
   
   def edit
@@ -32,8 +32,8 @@ class OZBPersonController < ApplicationController
     searchOZBPerson()
     @Rollen = @@Rollen
   end
-	
-	def searchOZBPerson
+
+  def searchOZBPerson
     super
   end
   
@@ -144,4 +144,9 @@ class OZBPersonController < ApplicationController
     end 
 	redirect_to :action => "index"
   end
+  
+  def show
+  
+  end
+  
 end

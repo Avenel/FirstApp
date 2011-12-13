@@ -1,12 +1,10 @@
 <h1>Edtieren</h1>
-<%= link_to "zurück", "/buergschaften" %>
-
 
 <% buergschafter = Person.where(:pnr => @buergschaft.pnrB).first %>
 <% gesellschafter = Person.where( :pnr => OZBPerson.where(:mnr => @buergschaft.mnrG).first.ueberPnr ).first %>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
-  <table style="margin: 10px auto;">
+  <table class="table">
     <tr> 
       <td><b><%= label_tag "Buergschafter:" %></b></td>
       <td>

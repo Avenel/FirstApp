@@ -5,15 +5,17 @@
 
   <div class="topbar" style="text-align:center;">
     
+    <a href="http://www.ozb.eu"><img src="/images/besserohnezins.png" style="position:relative;" /></a>
+    
     <div style="position:relative;">
       <% if OZBPerson_signed_in? %>
         <a href='/'>Startseite</a>
-        <a href='/ozbKonten'>Meine Konten</a>
-        <a href='/buergschaften'>Meine Daten</a>
-        <a href='/adressen'>Meine TAN</a>
-        <a href='/kontoklasse'>Admin</a>
-        <a href='/OZBPerson'>Protokoll</a>
-        <a href='OZBPerson/1/Konto'>o/ZBlick</a>
+        <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Konto'>Meine Konten</a>
+        <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Daten'>Meine Daten</a>
+        <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Tanlisten'>Meine TAN</a>
+        <a href='/Admin'>Admin</a>
+        <a href='/Protokolle'>Protokolle</a>
+        <a href='/OzBlick'>o/ZBlick</a>
       <% end %>
     </div>
     
@@ -43,13 +45,7 @@
   <% @kklCheck = true %>
 </head>
 <body>
-<<<<<<< HEAD
-<div class="content">
-=======
-
-<div style="text-align:center; width: 800px; margin: 50px auto;">
-  <%= link_to "Startseite", "/" %>
->>>>>>> fdcb00f759e92d135d47a1bed6e189fa91b1861c
+  <div class="content">
   <%= yield %>  
 </div>
 </body>

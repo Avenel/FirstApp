@@ -1,20 +1,28 @@
 <h1>OZB Personen</h1>
 
-<table style="border: 1px solid; margin: 50px auto">
+<table>
   <tr>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>Nr.</th>
+    <th>Name</th>
+    <th />
+    <th />
   </tr>
-
+  
+<% i = 0 %>
 <% @OZBPersonen.each do |person| %>
-  <tr>
-	<td><%= person.mnr %></td>
-	  <% show_link = "/OZBPerson/"+person.mnr.to_s %>
-    <td><%= link_to 'Show', show_link %></td>
-	<td><%= link_to 'Edit', edit_OZBPerson_path(person) %></td>
-  </tr>
+  <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
+      <td><%= person.mnr %></td>	
+			<% current_person = Person.find(person.ueberPnr) %>
+			<td><%= current_person.name + ", " + current_person.vorname %></td>
+			<% edit_link = "/OZBPerson/" + person.mnr.to_s %>
+      <% delete_link = "/OZBPerson/" + person.mnr.to_s + "/delete" %>
+      <td><%= link_to "Editieren", edit_link %></td>
+      <td><%= link_to "Löschen", delete_link %></td>
+    </tr>
+    <% i += 1 %>
 <% end %>
 </table>
-<%= link_to 'OZB Person hinzufuegen', new_OZBPerson_path %>
 
+<%= link_to 'OZB Person hinzufuegen', "/OZBPerson/new" %>
+<%= will_paginate @OZBPersonen %>

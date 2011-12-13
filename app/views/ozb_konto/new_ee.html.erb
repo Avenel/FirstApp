@@ -5,7 +5,6 @@
 
 
 <h1>EEKonto anlegen</h1>
-<%= link_to "zurück", "/OZBPerson/"+params[:id]+"/Konto" %>
 
 <%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
@@ -35,7 +34,7 @@
   
   
   <h2 style="margin-top:20px;">EE-Konto</h2>
-  <table style="margin: 10px auto;">
+  <table>
     <tr>
       <td>Konto-Nr.:</td>
       <td><%= label_tag :ozbKtoNr, @newKtoNr %></td>
@@ -49,7 +48,7 @@
 
 <!-- Bankverbindung:  :id, :bankKtoNr, :blz, :bic, :iban, :bankName -->
   <h3 style="margin-top:20px;">Bankverbindung</h2>
-  <table style="margin: 10px auto;">
+  <table>
     <tr>
       <td>Bank-Konto-Nr.:</td>
       <td><%= text_field_tag :bankKtoNr %></td>
