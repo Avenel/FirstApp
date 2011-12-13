@@ -19,6 +19,10 @@ OZB::Application.routes.draw do
   match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#save', :via => :POST
   match '/OZBPerson/:id/Konto/:typ/:ktoNr/delete' => 'OzbKonto#delete'
   match '/OZBPerson/:id/Konto/:typ/:ktoNr/buchungen' => 'OzbKonto#show', :via => :GET
+  match '/OZBPerson/:id/Daten' => 'OZBPerson#show'
+  
+  # Tanlisten
+  match '/OZBPerson/:id/Tanlisten' => "index#error_404"
   
   # Kontoklassen
   match '/kontoklasse' => 'kontoklasse#index'
@@ -53,6 +57,17 @@ OZB::Application.routes.draw do
   # Application
   match '/application/suche_ozb_personen.js' => 'application#searchOZBPerson'
   match '/application/suche_konten.js' => 'application#searchKtoNr'
+  
+  # Administration
+  match '/Admin' => "index#admin"
+  
+  # Protokolle
+  match '/Protokolle' => "index#error_404"
+  
+  # OzBlick
+  match '/OzBlick' => "index#error_404"
+  
+
   
   # Root
   root :to => "index#dashboard"
