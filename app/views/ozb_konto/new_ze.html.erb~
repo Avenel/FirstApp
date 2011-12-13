@@ -1,10 +1,9 @@
 <h1>ZEKonto anlegen</h1>
-<%= link_to "zurück", "/OZBPerson/"+params[:id]+"/Konto" %>
 
 <%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
   <h2 style="margin-top:40px;">OZB-Konto</h2>
-  <table style="margin: 10px auto;">
+  <table class="table">
     <tr>
       <td>Konto-Nr.:</td>
       <td><%= label_tag :ozbKtoNr, @newKtoNr %> <%= hidden_field_tag :ozbKtoNr, @newKtoNr%></td>
@@ -31,7 +30,7 @@
   <!-- ZE-Konto:  :ktoNr, :eeKtoNr, :pgNr, :zeNr, :zeAbDatum, :zeEndDatum, :zeBetrag, 
                   :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus -->
   <h2 style="margin-top:20px;">ZE-Konto</h2>
-  <table style="margin: 10px auto;">
+  <table class="table">
     <tr>
       <td>Konto-Nr.:</td>
       <td><%= label_tag :zeKtoNr, @newKtoNr %></td>

@@ -12,7 +12,7 @@
 
 <script>
 $(document).ready(function() {
-  $("kklRow").css("display", "block");
+  $(".kklRow").css("display", "block");
   
   $("#kklAuswahl").change(function () {
     if( $("#checkedAll").attr("checked") == "checked" ) {

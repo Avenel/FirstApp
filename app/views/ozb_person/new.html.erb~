@@ -1,8 +1,7 @@
 <h1>Person anlegen</h1>
 
-	<%= link_to "zurück", "/OZBPerson" %>
 	<%= form_tag({:action => "save"}, :id=>"newForm") do %>	
-	<table style="margin: 20px auto;">
+	<table class="table">
    	<tr>
 		  <td><%= label_tag "Name:" %></td>
 		  <td><%= text_field_tag :name %></td>  

@@ -1,17 +1,20 @@
 <h1>Kontoklassen</h1>
-<%= link_to "zurück", "/" %>
 
 
-<table style="margin: 50px auto">
+<table class="table">
   <tr>
-    <td>Name</td>
-    <td>Prozent</td>
-    <td>AbDatum</td>
+    <th>Name</th>
+    <th>Prozent</th>
+    <th>AbDatum</th>
+    <th />
+    <th />
+    <th />
   </tr>
 
+  <% i = 0 %>
   <% @kontoklassen.each do |kkl| %>
-  
-    <tr>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <td><%= kkl.kkl %></td>
       <td><%= kkl.prozent %></td>
       <td><%= kkl.kklAbDatum %></td>
@@ -22,7 +25,7 @@
       <td><%= link_to "Löschen", delete_link %></td>
       <td><%= link_to "Verlauf", verlauf_link %></td>
     </tr>
-  
+    <% i += 1 %>
   <% end %>
 </table>
 

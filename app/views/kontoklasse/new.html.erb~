@@ -11,12 +11,12 @@
   
     <tr>
         <td><b><%= label_tag "Prozent:" %></b></td>
-      <%= text_field_tag :prozent %></td>
+        <td><%= text_field_tag :prozent %></td>
     </p>  
     
     <tr>
         <td><b><%= label_tag "AbDatum:" %></b></td>
-      <%= text_field_tag :kklAbDatum %></td>
+        <td><%= text_field_tag :kklAbDatum %></td>
     </tr>
   </table>
   

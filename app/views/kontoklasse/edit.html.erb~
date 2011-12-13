@@ -1,9 +1,8 @@
 <h1>Editieren</h1>
-<%= link_to "zurück", "/kontoklasse" %>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
 
-  <table>
+  <table style="margin: 10px auto;">
     <tr>
       <td><b><%= label_tag "Kontoklasse:" %></b></td>
       <td>

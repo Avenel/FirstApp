@@ -1,15 +1,16 @@
 <h1>Buergschaften</h1>
-<%= link_to "zurück", "/" %>
 
-<table style="margin: 50px auto">
+<table class="table">
   <tr>
-    <td>Buergschafter</td>
-    <td>Gesellschafter</td>
-    <td>Konto-Nr.</td>
-    <td>sichAbDatum</td>
-    <td>sichEndDatum</td>    
-    <td>sichBetrag</td>
-    <td>sichKurzBez</td>
+    <th>Buergschafter</th>
+    <th>Gesellschafter</th>
+    <th>Konto-Nr.</th>
+    <th>sichAbDatum</th>
+    <th>sichEndDatum</th>    
+    <th>sichBetrag</th>
+    <th>sichKurzBez</th>
+    <th />
+    <th />
   </tr>
 
   <% @buergschaften.each do |buergschaft| %>
@@ -21,7 +22,11 @@
       <% else %>
         <td>nicht gefunden</td>
       <% end %>
-      <td><%= gesellschafter.name.to_s + ", " + gesellschafter.vorname.to_s %></td>
+      <% if !gesellschafter.nil? then %>
+        <td><%= gesellschafter.name.to_s + ", " + gesellschafter.vorname.to_s %></td>
+      <% else %>
+        <td>nicht gefunden</td>
+      <% end %>
       <td><%= buergschaft.ktoNr %></td>
       <td><%= buergschaft.sichAbDatum %></td>
       <td><%= buergschaft.sichEndDatum %></td>      

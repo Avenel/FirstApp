@@ -1,19 +1,33 @@
+<h1>Kontoübersicht</h1>
 <h2><%= @konto.ktoNr %></h2>
 
 <div>
-<table style="margin: 10px auto; width:100%;">
-  <tr style="color:#FFFFFF;">
-    <td>Datum</td>
-    <td>Buchungstext</td>
-    <td>Soll</td>
-    <td>Haben</td>
-    <td>Punkte</td>
+<table>
+  <tr style=";">
+    <th>Datum</th>
+    <th>Buchungstext</th>
+    <th>Soll</th>
+    <th>Haben</th>
+    <th>Punkte</th>
   </tr>
   
+  <% i = 0 %>
+  <% @ozb_konto.Buchung.each do |buchung| %>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
+      <td><%= buchung.buchDatum %></td>
+      <td><%= buchung.buchungstext %></td>
+      <td><%= buchung.sollBetrag %></td>
+      <td><%= buchung.habenBetrag %></td>
+      <td><%= buchung.punkte %></td>
+    </tr>
+    <% i += 1 %>
+  <% end %>
+  
   <tr>
-    <td>Heute</td>
-    <td>Tagessaldo</td>
-    <td>
-    <td>123</td>
-    <td>213213</td>
+    <th><b><%= Time.new %></b></th>
+    <th>Tagessaldo</th>
+    <th> </th>
+    <th>123</th>
+    <th>213213</th>
 </table>

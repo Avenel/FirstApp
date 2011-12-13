@@ -1,12 +1,14 @@
 <h1>Kontoklassen</h1>
-<%= link_to "zurück", "/" %>
 
 
-<table style="margin: 50px auto">
+<table class="table">
   <tr>
-    <td>Name</td>
-    <td>Prozent</td>
-    <td>AbDatum</td>
+    <th>Name</th>
+    <th>Prozent</th>
+    <th>AbDatum</th>
+    <th />
+    <th />
+    <th />
   </tr>
 
   <% @kontoklassen.each do |kkl| %>
@@ -17,7 +19,7 @@
       <td><%= kkl.kklAbDatum %></td>
       <% edit_link = "/kontoklasse/" + kkl.kkl.to_s %>
       <% delete_link = "/kontoklasse/" + kkl.kkl.to_s + "/delete" %>
-      <% delete_link = "/kontoklasse/verlauf/" + kkl.kkl.to_s %>
+      <% verlauf_link = "/kontoklasse/verlauf/" + kkl.kkl.to_s %>
       <td><%= link_to "Editieren", edit_link %></td>
       <td><%= link_to "Löschen", delete_link %></td>
       <td><%= link_to "Verlauf", verlauf_link %></td>

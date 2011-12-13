@@ -1,17 +1,20 @@
-<table style="margin: 50px auto">
+<h1>Alle Adressen</h1>
+
+<table>
 
   <tr>
-    <td>Name</td>
-    <td>Vorname</td>
-    <td>Straße</td>
-    <td>Hausnummer</td>
-    <td>Postleitzahl</td>
-    <td>Ort</td>
+    <th>Name</th>
+    <th>Vorname</th>
+    <th>Straße</th>
+    <th>Hausnummer</th>
+    <th>Postleitzahl</th>
+    <th>Ort</th>
   </tr>
   
+  <% i=0 %>
   <% @personen.each do |person| %>
-  
-    <tr>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <td><%= person.name %></td>
       <td><%= person.vorname %></td>
       <td><%= person.strasse %></td>
@@ -19,7 +22,7 @@
       <td><%= person.plz %></td>
       <td><%= person.ort %></td>
     </tr>
-
+  <% i += 1 %>
   <% end %>
 
 </table>

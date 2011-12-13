@@ -1,21 +1,24 @@
 <h1>Buergschaften</h1>
-<%= link_to "zurück", "/" %>
 
-<table style="margin: 50px auto">
+<table class="table">
   <tr>
-    <td>Buergschafter</td>
-    <td>Gesellschafter</td>
-    <td>Konto-Nr.</td>
-    <td>sichAbDatum</td>
-    <td>sichEndDatum</td>    
-    <td>sichBetrag</td>
-    <td>sichKurzBez</td>
+    <th>Buergschafter</th>
+    <th>Gesellschafter</th>
+    <th>Konto-Nr.</th>
+    <th>sichAbDatum</th>
+    <th>sichEndDatum</th>    
+    <th>sichBetrag</th>
+    <th>sichKurzBez</th>
+    <th />
+    <th />
   </tr>
 
+  <% i = 0 %>
   <% @buergschaften.each do |buergschaft| %>
   <% buergschafter = Person.where(:pnr => buergschaft.pnrB).first %>
   <% gesellschafter = Person.where( :pnr => OZBPerson.where(:mnr => buergschaft.mnrG).first.ueberPnr ).first   %>
-    <tr>
+  <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <% if !buergschafter.nil? then %>
         <td><%= buergschafter.name.to_s + ", " + buergschafter.vorname.to_s %></td>
       <% else %>
@@ -36,7 +39,7 @@
       <td><%= link_to "Editieren", edit_link %></td>
       <td><%= link_to "Löschen", delete_link %></td>
     </tr>
-  
+    <% i += 1 %>
   <% end %>
 </table>
 

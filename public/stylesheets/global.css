@@ -36,8 +36,9 @@ pre {
 .content {
   min-height: 80% !important; 
   text-align:center; 
-  width: 900px; 
-  margin: 0px auto;
+  width: 800px; 
+  margin: 20px auto;
+  padding: 50px;
   background-color: #ffffff;
   border-radius: 10px;
 }
@@ -63,6 +64,14 @@ div.field, div.actions {
 
 .topbar a:hover {
   color: #FFFFFF;
+}
+
+table {
+  margin: 20px auto;
+  border: 1px solid;
+  background:#8EC1DA;
+  border-collapse:collapse;
+  width: 75%;
 }
 
 #notice {

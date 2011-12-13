@@ -5,7 +5,7 @@
 
   <div class="topbar" style="text-align:center;">
     
-    <img src="images/besserohnezins.png" style="position:relative;" />
+    <a href="www.ozb.eu"><img src="/images/besserohnezins.png" style="position:relative;" /></a>
     
     <div style="position:relative;">
       <% if OZBPerson_signed_in? %>
@@ -15,7 +15,7 @@
         <a href='/adressen'>Meine TAN</a>
         <a href='/kontoklasse'>Admin</a>
         <a href='/OZBPerson'>Protokoll</a>
-        <a href='OZBPerson/1/Konto'>o/ZBlick</a>
+        <a href='/OZBPerson/1/Konto'>o/ZBlick</a>
       <% end %>
     </div>
     
