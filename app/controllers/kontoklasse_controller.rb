@@ -3,41 +3,61 @@ class KontoklasseController < ApplicationController
 	before_filter :authenticate_OZBPerson!
 
   def index
-    @kontoklassen = Kontenklasse.paginate(:page => params[:page], :per_page => 5)
+    if current_OZBPerson.canEditD then
+      @kontoklassen = Kontenklasse.paginate(:page => params[:page], :per_page => 5)
+    else
+      redirect_to "/"
+    end
   end
   
   def new
+    if current_OZBPerson.canEditD then
+    else
+      redirect_to "/"
+    end
   end
   
   def edit
-    @kontoklasse = Kontenklasse.find(params[:id])
+    if current_OZBPerson.canEditD then
+      @kontoklasse = Kontenklasse.find(params[:id])
+    else
+      redirect_to "/"
+    end
   end
   
   def save
-    begin
-      @kontoklasse = Kontenklasse.find(params[:kkl])
-      @kontoklasse.prozent = params[:prozent]
-      @kontoklasse.kklAbDatum = Date.parse(params[:kklAbDatum])
-      @kontoklasse.save!
-    rescue
-        @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
-                                              :kklAbDatum => Date.parse(params[:kklAbDatum]) )
-        @new_kontoklasse.save!
+    if current_OZBPerson.canEditD then
+      begin
+        @kontoklasse = Kontenklasse.find(params[:kkl])
+        @kontoklasse.prozent = params[:prozent]
+        @kontoklasse.kklAbDatum = Date.parse(params[:kklAbDatum])
+        @kontoklasse.save!
+      rescue
+          @new_kontoklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
+                                                :kklAbDatum => Date.parse(params[:kklAbDatum]) )
+          @new_kontoklasse.save!
+      end
+      
+      @kontoklassen = Kontenklasse.all
+      redirect_to :action => "index"
+    else
+      redirect_to "/"
     end
-    
-    @kontoklassen = Kontenklasse.all
-    redirect_to :action => "index"
   end
   
   def delete
-    begin
-      @kontoklasse = Kontenklasse.find(params[:id])
-      @kontoklasse.delete
-    rescue
+    if current_OZBPerson.canEditD then
+      begin
+        @kontoklasse = Kontenklasse.find(params[:id])
+        @kontoklasse.delete
+      rescue
+      end
+      
+      @kontoklassen = Kontenklasse.all    
+      redirect_to :action => "index"
+    else
+      redirect_to "/"
     end
-    
-    @kontoklassen = Kontenklasse.all    
-    redirect_to :action => "index"
   end
   
 end

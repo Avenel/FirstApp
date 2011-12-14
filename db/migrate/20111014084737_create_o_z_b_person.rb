@@ -12,6 +12,13 @@ class CreateOZBPerson < ActiveRecord::Migration
       t.date :pwAendDatum, :default => nil
       # Gesperrt
       t.boolean :gesperrt, :null => false, :default => false
+      
+      # Rechte
+      t.boolean :canEditA, :null => false, :default => false
+      t.boolean :canEditB, :null => false, :default => false
+      t.boolean :canEditC, :null => false, :default => false
+      t.boolean :canEditD, :null => false, :default => false
+      
     end
     
   end

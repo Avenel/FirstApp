@@ -44,20 +44,24 @@
     <th>Konto-Nr.</th>
     <th>Saldo</th>
     <th>Punkte</th>
+    <th />
   </tr>
   <% i=0 %>
   <% current_OZBPerson.OZBKonto.each do |konto| %>
-    <% if !konto.ZEKonto.first.nil? then %>
+    <% if !konto.EEKonto.first.nil? then %>
     <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
     <tr style="background:<%= bg_color %>;">
       <td>
-        <a href="/OZBPerson/<%= current_OZBPerson.id %>/Konto/ZE/<%= konto.ZEKonto.first.ktoNr %>/buchungen"><%= konto.ZEKonto.first.ktoNr %></a>
+        <a href="/OZBPerson/<%= current_OZBPerson.id %>/Konto/ZE/<%= konto.ZEKonto.first.ktoNr %>/buchungen"><%= konto.EEKonto.first.ktoNr %></a>
       </td>
       <td>
         <%= konto.wSaldo %>
       </td>
       <td>
         <%= konto.pSaldo %>
+      </td>
+      <td class = "detail_link_td">
+        <a href="/OZBPerson/<%= current_OZBPerson.id %>/Konto/EE/<%= konto.EEKonto.first.ktoNr %>/buchungen" class="detail_link">Detail</a>
       </td>
     </tr>
     <% i += 1 %>

@@ -1,5 +1,5 @@
-<h1>Editieren</h1>
-<%= link_to "zurück", "/OZBPerson" %>
+<h1>OZB Person</h1>
+<h2>Editieren</h2>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
 
@@ -13,11 +13,11 @@
   
   	<tr>
     	<td><%= label_tag "Rolle:" %></td>
-      <td><%= select_tag 'rolle', options_for_select(@Rollen, @Person.rolle), {:onChange => "alert('Test')"} %></td>
+      <td><%= select_tag 'rolle', options_for_select(@Rollen, @Person.rolle), {:onChange => "show_role()"} %></td>
   	</tr>
 
-    <% if @Person.rolle == "S" %>
-    <div name="Student">
+    <% if @Student != nil then %>
+    <div id="Student">
       <tr>
 		    <td><%= label_tag "Ausbildungsbezeichnung:" %></td>
 		    <td><%= text_field_tag :ausbildBez, @Student.ausbildBez %></td>
@@ -50,8 +50,8 @@
   	</div>
   	<% end %>
   	
-  	<% if @Person.rolle == "G" %>
-  	<div name="Gesellschafter">
+  	<% if @Gesellschafter != nil then %>
+  	<div id="Gesellschafter">
   		<tr>
 			  <td><%= label_tag "FA Steuernummer:" %></td>
 			  <td><%= text_field_tag :faSteuerNr, @Gesellschafter.faSteuerNr %></td>  
@@ -78,9 +78,9 @@
 		  </tr>
   	</div>
   	<% end %>
-  	
-  	<% if @Person.rolle == "F" %>
-  	<div name="Foerdermitglied">
+
+  	<% if @Foerdermitglied != nil then %>
+  	<div id="Foerdermitglied">
   		<tr>
 			  <td><%= label_tag "Region" %></td>
 			  <td><%= text_field_tag :region, @Foerdermitglied.region %></td>  
@@ -93,8 +93,7 @@
   	</div>
   	<% end %>
   	
-  	<% if @Person.rolle == "M" %>
-  	<div name="Mitglied">
+  	<% if @Mitglied != nil %>
   		<tr>
 			  <td><%= label_tag "RV Datum:" %></td>
 			  <td><%= text_field_tag :rvDatum, @Mitglied.rvDatum %></td>
@@ -102,8 +101,8 @@
   	</div>
   	<% end %>
   	
-  	<% if @Person.rolle == "P" %>
-  	<div name="Partner">
+  	<% if @Partner != nil %>
+  	<div id="Partner">
   		<tr>
 			  <td><%= label_tag "Partner:" %></td>
 			  <td><%= text_field_tag :tdartner, @Partner.partner %></td>
@@ -147,7 +146,7 @@
 	</tr>
 	
 	<tr>
-		<td><%= label_tag "tdLZ:" %></td>
+		<td><%= label_tag "PLZ:" %></td>
 		<td><%= text_field_tag :plz, @Person.plz %></td>
 	</tr>
 	
@@ -215,29 +214,29 @@
 <script>
   function show_role()
   {
-    $("div#Foerdermitglied").hide();
-      $("div#Student").hide();
-      $("div#Mitglied").hide();
-      $("div#tdartner").hide();
-      $("div#Gesellschafter").hide();
-      var role = $('select#rolle').val();
+    $("#Foerdermitglied").css("display", "none");
+      $("#Student").css("display", "none");
+      $("#Mitglied").css("display", "none");
+      $("#tdartner").css("display", "none");
+      $("#Gesellschafter").css("display", "none");
+      var role = $('#rolle').val();
       switch (role) {
         case "F":
-          $("div#Foerdermitglied").show();
+          $("#Foerdermitglied").css("display", "block");
           break;
         case "S":
-          $("div#Student").show();
+          $("#Student").show();
           break;
         case "G":
-          $("div#Gesellschafter").show();
+          $("#Gesellschafter").show();
           break;
         case "td":
-          $("div#tdartner").show();
+          $("#Partner").show();
           break;
         case "M":
-          $("div#Mitglied").show();
+          $("#Mitglied").show();
           break;
         default:
     }
   }
-</scritdt>
+</script>

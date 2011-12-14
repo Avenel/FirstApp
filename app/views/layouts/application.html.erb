@@ -12,7 +12,9 @@
         <a href='/'>Meine Konten</a>
         <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Daten'>Meine Daten</a>
         <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Tanlisten'>Meine TAN</a>
-        <a href='/Admin'>Admin</a>
+        <% if current_OZBPerson.canEditA  || current_OZBPerson.canEditB || current_OZBPerson.canEditC || current_OZBPerson.canEditD then %>
+          <a href='/Admin'>Admin</a>
+        <% end %>
         <a href='/Protokolle'>Protokolle</a>
         <a href='/OzBlick'>o/ZBlick</a>
       <% end %>

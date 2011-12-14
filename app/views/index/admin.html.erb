@@ -4,9 +4,22 @@
 
 <h2>Verwaltung</h2>
 <ul style="padding: 0; margin: 0px auto;" type="none">
-  <li><a href='/buergschaften'>Bürgschaften</a></li>
-  <li><a href='/kontoklasse'>Kontoklassen</a></li>
-  <li><a href='/OZBPerson'>Personen</a></li>
+  
+  <% if current_OZBPerson.canEditA then %>
+    <li><a href='/OZBPerson'>Personen</a></li>
+  <% end %>
+  
+  <% if current_OZBPerson.canEditB then %>
+    <li><a href='/buergschaften'>Bürgschaften</a></li>
+    <li><a href='/kontoklasse'>Kontoklassen</a></li>
+  <% end %>
+    
+  <% if current_OZBPerson.canEditC then %>
+  <% end %>
+  
+  <% if current_OZBPerson.canEditD then %>
+  <% end %>
+  
 </ul>
 
 <br />

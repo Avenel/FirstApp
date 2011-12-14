@@ -27,5 +27,5 @@
 </table>
 
 <br />
-<%= link_to 'OZB Person hinzufuegen', "/OZBPerson/new", :class => "submit_ok" %>
+<%= link_to 'OZB Person hinzufügen', "/OZBPerson/new", :class => "submit_ok" %>
 <%= will_paginate @OZBPersonen %>

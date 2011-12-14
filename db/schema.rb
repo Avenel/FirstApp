@@ -112,6 +112,10 @@ ActiveRecord::Schema.define(:version => 20111019110025) do
     t.string   "passwort",               :limit => 35
     t.date     "pwAendDatum"
     t.boolean  "gesperrt",                              :default => false, :null => false
+    t.boolean  "canEditA",                              :default => false, :null => false
+    t.boolean  "canEditB",                              :default => false, :null => false
+    t.boolean  "canEditC",                              :default => false, :null => false
+    t.boolean  "canEditD",                              :default => false, :null => false
     t.string   "email",                                 :default => "",    :null => false
     t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"

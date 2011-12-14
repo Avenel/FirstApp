@@ -2,6 +2,6 @@ class Foerdermitglied < ActiveRecord::Base
 
    set_table_name "Foerdermitglied"
 
-   attr_acessible :pnr, :region, :foerderbeitrag
+   attr_accessible :pnr, :region, :foerderbeitrag
 
 end

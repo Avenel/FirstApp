@@ -1,52 +1,77 @@
 class BuergschaftController < ApplicationController
 
   def index
-    @buergschaften = Buergschaft.paginate(:page => params[:page], :per_page => 5)
+    if current_OZBPerson.canEditB then 
+      @buergschaften = Buergschaft.paginate(:page => params[:page], :per_page => 5)
+    else
+      redirect_to "/"
+    end
   end
 
   def new
-    searchKtoNr()
-    searchOZBPerson()
+    if current_OZBPerson.canEditB then
+      searchKtoNr()
+      searchOZBPerson()
+    else
+      redirect_to "/"
+    end
   end
   
   def searchKtoNr
-    if( !params[:pnrB].nil? ) then
-      @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]] )
+    if current_OZBPerson.canEditB then
+      if( !params[:pnrB].nil? ) then
+        @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]] )
+      end
+      super
+    else
+      redirect_to "/"
     end
-    super
   end
   
   
   def searchOZBPerson
-    super
+    if current_OZBPerson.canEditB then 
+      super
+    else
+      redirect_to "/"
+    end
   end
   
   def edit
-    searchKtoNr()
+    if current_OZBPerson.canEditB then
+      searchKtoNr()
+    else
+      redirect_to "/"
+    end
   end
     
   def save
-    begin
-      @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
-      @buergschaft.sichEndDatum = Date.parse(params[:sichEndDatum])
-      @buergschaft.sichBetrag = params[:sichBetrag]
-      @buergschaft.sichKurzBez = params[:sichKurzBez]
-      @buergschaft.ktoNr = params[:ktoNr]
-      @buergschaft.save
-      puts @buergschaft.inspect
-    rescue
-        @new_buergschaft = Buergschaft.create( :pnrB => params[:pnrB], :mnrG => params[:mnrG],
-                                              :ktoNr => params[:ktoNr], :sichAbDatum => Date.parse(params[:sichAbDatum]),
-                                              :sichEndDatum => Date.parse(params[:sichEndDatum]), :sichBetrag => params[:sichBetrag],
-                                              :sichKurzBez => params[:sichKurzBez] )
-        @new_buergschaft.save
+    if current_OZBPerson.canEditB then
+      begin
+        @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
+        @buergschaft.sichEndDatum = Date.parse(params[:sichEndDatum])
+        @buergschaft.sichBetrag = params[:sichBetrag]
+        @buergschaft.sichKurzBez = params[:sichKurzBez]
+        @buergschaft.ktoNr = params[:ktoNr]
+        @buergschaft.save
+        puts @buergschaft.inspect
+      rescue
+          @new_buergschaft = Buergschaft.create( :pnrB => params[:pnrB], :mnrG => params[:mnrG],
+                                                :ktoNr => params[:ktoNr], :sichAbDatum => Date.parse(params[:sichAbDatum]),
+                                                :sichEndDatum => Date.parse(params[:sichEndDatum]), :sichBetrag => params[:sichBetrag],
+                                                :sichKurzBez => params[:sichKurzBez] )
+          @new_buergschaft.save
+      end
+      
+      @buergschaften = Buergschaft.all
+      redirect_to :action => "index"
+    else
+      redirect_to "/"
     end
-    
-    @buergschaften = Buergschaft.all
-    redirect_to :action => "index"
   end
   
   def delete
+    if !current_OZBPerson.canEditB then redirect_to "/"  end
     begin
       @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
       @buergschaft.delete
