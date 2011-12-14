@@ -60,6 +60,16 @@ input {
   width: 80%;
 }
 
+.field_with_errors {
+  margin: 0 auto;
+  border-radius: 5px;
+  width: 80%;
+}
+
+.field_with_errors input{
+  font-size: 12px;
+  }
+
 .content {
   min-height: 80% !important; 
   text-align:center; 
@@ -84,6 +94,10 @@ input {
 
 #login_link a {
   color: #D94A38;
+}
+
+#login_link a:hover {
+  text-decoration: underline;
 }
 
 .topbar {
@@ -233,6 +247,10 @@ input {
 
 .searchlink_td {
   text-align: left;
+}
+
+#error_explanation {
+  margin: 5px auto;
 }
 
 #notice {

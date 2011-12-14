@@ -45,9 +45,9 @@ OZB::Application.routes.draw do
   match '/buergschaften/new' => 'buergschaft#new'
   match '/buergschaften/new' => 'buergschaft#searchKtoNr'
   match '/buergschaften/new' => 'buergschaft#searchOZBPerson'
-  match '/buergschaften/save' => 'buergschaft#save'
+  match '/buergschaften/save' => 'buergschaft#create'
   match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#edit', :via => :GET
-  match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#save', :via => :POST
+  match '/buergschaften/:pnrB/:mnrG' => 'buergschaft#update', :via => :POST
   match '/buergschaften/:pnrB/:mnrG/delete' => 'buergschaft#delete'
   
   # Adressen

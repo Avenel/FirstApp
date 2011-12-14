@@ -10,7 +10,7 @@ class IndexController < ApplicationController
   end
   
   def admin
-  
+
   end
   
   def error_404

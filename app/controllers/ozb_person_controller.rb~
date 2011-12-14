@@ -1,10 +1,11 @@
 # encoding: UTF-8
 class OZBPersonController < ApplicationController
 
-  @@Rollen = {"Mitglied" => "M", "Foerdermitglied" => "F", "Partner" => "P", "Gesellschafter" => "G", "Student" => "S"}
-
+  @@Rollen = Hash["Mitglied", "M", "Foerdermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]
   def index
+    
     if current_OZBPerson.canEditA then
+      @Rollen = @@Rollen
       @OZBPersonen = OZBPerson.paginate(:page => params[:page], :per_page => 5)
     else
       redirect_to "/"
@@ -166,7 +167,6 @@ class OZBPersonController < ApplicationController
   end
   
   def show
-  
   end
   
 end

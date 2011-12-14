@@ -60,6 +60,15 @@ input {
   width: 80%;
 }
 
+.field_with_errors {
+  margin: 0 auto;
+  width: 80%;
+}
+
+.field_with_errors input{
+  font-size: 12px;
+  }
+
 .content {
   min-height: 80% !important; 
   text-align:center; 
@@ -237,6 +246,10 @@ input {
 
 .searchlink_td {
   text-align: left;
+}
+
+#error_explanation {
+  margin: 5px auto;
 }
 
 #notice {

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class BuergschaftController < ApplicationController
 
   def index
@@ -10,6 +11,7 @@ class BuergschaftController < ApplicationController
 
   def new
     if current_OZBPerson.canEditB then
+      @buergschaft = Buergschaft.new
       searchKtoNr()
       searchOZBPerson()
     else
@@ -19,7 +21,7 @@ class BuergschaftController < ApplicationController
   
   def searchKtoNr
     if current_OZBPerson.canEditB then
-      if( !params[:pnrB].nil? ) then
+      if( !params[:pnrB].nil? && params[:pnrB].to_i > 0 && !params[:mnrG].nil? && params[:mnrG].to_i > 0) then
         @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]] )
       end
       super
@@ -45,41 +47,61 @@ class BuergschaftController < ApplicationController
     end
   end
     
-  def save
+  def create 
     if current_OZBPerson.canEditB then
-      begin
-        @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
-        @buergschaft.sichEndDatum = Date.parse(params[:sichEndDatum])
-        @buergschaft.sichBetrag = params[:sichBetrag]
-        @buergschaft.sichKurzBez = params[:sichKurzBez]
-        @buergschaft.ktoNr = params[:ktoNr]
-        @buergschaft.save
-        puts @buergschaft.inspect
-      rescue
-          @new_buergschaft = Buergschaft.create( :pnrB => params[:pnrB], :mnrG => params[:mnrG],
-                                                :ktoNr => params[:ktoNr], :sichAbDatum => Date.parse(params[:sichAbDatum]),
-                                                :sichEndDatum => Date.parse(params[:sichEndDatum]), :sichBetrag => params[:sichBetrag],
-                                                :sichKurzBez => params[:sichKurzBez] )
-          @new_buergschaft.save
+      @buergschaft = Buergschaft.new(params[:buergschaft])
+      @buergschaft.validate! 
+
+      if @buergschaft.errors.any? then
+       searchKtoNr()
+       searchOZBPerson()
+       render "new"
+      else
+        @buergschaft.save   
+        @buergschaften = Buergschaft.all
+        redirect_to :action => "index", :notce => "Bürgschaft erfolgreich angelegt."   
       end
+    else
+      redirect_to "/"
+    end
+  end
+  
+  def update
+    if current_OZBPerson.canEditB then
+      @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
+      @buergschaft.attributes = params[:buergschaft]
+      puts @buergschaft.inspect
+      puts @buergschaft.errors.inspect
+      @buergschaft.refresh
+      @buergschaft.validate!
       
-      @buergschaften = Buergschaft.all
-      redirect_to :action => "index"
+      if @buergschaft.errors.count > 0 then
+        searchKtoNr()
+        searchOZBPerson()
+        puts @buergschaft.errors.inspect
+        render "edit"
+      else
+        @buergschaft.update_attributes(params[:buergschaft])
+        redirect_to :action => "index", :notice => "Bürgschaft erfolgreich aktualisiert."   
+      end
     else
       redirect_to "/"
     end
   end
   
   def delete
-    if !current_OZBPerson.canEditB then redirect_to "/"  end
-    begin
-      @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
-      @buergschaft.delete
-    rescue
+    if current_OZBPerson.canEditB then
+      begin
+        @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
+        @buergschaft.delete
+      rescue
+      end
+      
+      @buergschaften = Buergschaft.all    
+      redirect_to :action => "index"
+    else
+      redirect_to "/"
     end
-    
-    @buergschaften = Buergschaft.all    
-    redirect_to :action => "index"
   end
 
 end
