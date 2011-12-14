@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class OZBPersonController < ApplicationController
 
-  @@Rollen = {"Mitglied" => "M", "Foerdermitglied" => "F", "Partner" => "P", "Gesellschafter" => "G", "Student" => "S"}
+  @@Rollen = Hash["Mitglied", "M", "Foerdermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]
 
   def index
     if current_OZBPerson.canEditA then
@@ -13,6 +13,7 @@ class OZBPersonController < ApplicationController
   
   def edit
     if current_OZBPerson.canEditB then
+      searchOZBPerson()
       @OZBPerson = OZBPerson.find(params[:id])
       @Person = Person.find(@OZBPerson.ueberPnr)
       @Rollen = @@Rollen
@@ -26,6 +27,7 @@ class OZBPersonController < ApplicationController
         @Foerdermitglied = Foerdermitglied.find(@Person.pnr)
       when "P"
         @Partner = Partner.find(@OZBPerson.mnr)
+        @PartnerPerson = Person.find(@Partner.mnrO)
       when "G"
         @Gesellschafter = Gesellschafter.find(@OZBPerson.mnr)
       when "S"

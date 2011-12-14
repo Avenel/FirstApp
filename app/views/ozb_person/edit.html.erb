@@ -13,7 +13,8 @@
   
   	<tr>
     	<td><%= label_tag "Rolle:" %></td>
-      <td><%= select_tag 'rolle', options_for_select(@Rollen, @Person.rolle), {:onChange => "show_role()"} %></td>
+        <td><%= text_field_tag :rolle, @Rollen.key("S") %></td>
+	    <!-- ><td><%= select_tag 'rolle', options_for_select(@Rollen, @Person.rolle), {:onChange => "show_role()"} %></td> -->
   	</tr>
 
     <% if @Student != nil then %>
@@ -105,7 +106,8 @@
   	<div id="Partner">
   		<tr>
 			  <td><%= label_tag "Partner:" %></td>
-			  <td><%= text_field_tag :tdartner, @Partner.partner %></td>
+			  <td><%= text_field_tag :partner, @Partner.mnrO %></td>
+			  <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchPartnerFrame", :class => "searchlink" %></td>
 		  </tr>
 		
 		  <tr>
@@ -212,6 +214,35 @@
 <% end %>
 
 <script>
+  
+  var insertId = "";
+	
+	$("#searchNotarFrame").click(function(){
+		insertId = "#notarPnr";
+	});
+	
+	$("#searchPartnerFrame").click(function() {
+		insertId = "#partner";
+	});
+	
+	$(document).ready(function() {
+	    $("#searchNotarFrame").fancybox();
+	    $("#searchPartnerFrame").fancybox();
+	});
+	
+	$(function() {
+		var availableTagsB = [
+			<% tags = String.new %>
+			<% Person.all.each do |person| %>
+				<% tags += "'" + person.pnr.to_s + "'" + "," %>
+			<% end %>
+			<%= tags.chop %>
+		];
+		$( "#notarPnr" ).autocomplete({
+		source: availableTagsB
+    	});
+	});
+
   function show_role()
   {
     $("#Foerdermitglied").css("display", "none");
