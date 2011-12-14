@@ -67,7 +67,7 @@ div.field, div.actions {
 }
 
 table {
-  margin: 40px auto;
+  margin: 20px auto;
   border: 1px solid;
   background:#8EC1DA;
   border-collapse:collapse;
@@ -75,7 +75,11 @@ table {
 }
 
 #notice {
-  color: green;
+  color: black;
+  margin: 0px auto;
+  width: 800px;
+  text-align: center;
+  background: yellow;
 }
 
 .field_with_errors {
