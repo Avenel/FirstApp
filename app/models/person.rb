@@ -16,6 +16,7 @@ class Person < ActiveRecord::Base
    has_many :buergschaft, :foreign_key => :pnrB, :dependent => :delete_all    # Done, getestet
    has_many :OZBPerson, :foreign_key => :ueberPnr, :dependent => :delete_all # Done, getestet
    has_one :Bankverbindung, :foreign_key => :pnr, :dependent => :destroy # Done, getestet
+   has_one :foerdermitglied, :foreign_key => :pnr, :dependent => :destroy
    
 end
 

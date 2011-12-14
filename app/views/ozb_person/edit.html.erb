@@ -14,6 +14,7 @@
     	<%= select_tag 'rolle', options_for_select(@Rollen, @Person.rolle), {:onChange => "alert('Test')"} %>
   	</p>
   	
+  	<% if @Student != nil %>
   	<div name="Student">
   		<p>
 			<%= label_tag "Ausbildungsbezeichnung:" %>
@@ -44,9 +45,10 @@
 			<%= label_tag "Abschluss:" %>
 			<%= text_field_tag :abschluss, @Student.abschluss %>  
 		</p>
-
   	</div>
+  	<% end %>
   	
+  	<% if @Gesellschafter != nil %>
   	<div name="Gesellschafter">
   		<p>
 			<%= label_tag "FA Steuernummer:" %>
@@ -60,7 +62,7 @@
 
   		<p>
 			<%= label_tag "Wohnsitzfinanzamt:" %>
-			<%= text_field_tag :wohnsitzfinanzamt, @Gesellschafter.wohnsitzfinanzamt %>  
+			<%= text_field_tag :wohnsitzFinanzamt, @Gesellschafter.wohnsitzFinanzamt %>  
 		</p>
 
   		<p>
@@ -70,10 +72,12 @@
 
   		<p>
 			<%= label_tag "Beurkundungsdatum:" %>
-			<%= text_field_tag :beurkundungsdatum, @Gesellschafter.beurkundungsdatum %>  
+			<%= text_field_tag :beurkDatum, @Gesellschafter.beurkDatum %>  
 		</p>
   	</div>
+  	<% end %>
   	
+  	<% if @Foerdermitglied != nil %>
   	<div name="Foerdermitglied">
   		<p>
 			<%= label_tag "Region" %>
@@ -85,14 +89,18 @@
 			<%= text_field_tag :foerderbeitrag, @Foerdermitglied.foerderbeitrag %>  
 		</p>
   	</div>
+  	<% end %>
   	
+  	<% if @Mitglied != nil %>
   	<div name="Mitglied">
   		<p>
 			<%= label_tag "RV Datum:" %>
 			<%= text_field_tag :rvDatum, @Mitglied.rvDatum %>  
 		</p>
   	</div>
+  	<% end %>
   	
+  	<% if @Partner != nil %>
   	<div name="Partner">
   		<p>
 			<%= label_tag "Partner:" %>
@@ -104,6 +112,8 @@
 			<%= text_field_tag :berechtigung, @Partner.berechtigung %>  
 		</p>
   	</div>
+  	<% end %>
+  	
 	
  	<p>
 		<%= label_tag "Name:" %>
