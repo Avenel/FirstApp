@@ -1,12 +1,15 @@
-<h1>Edtieren</h1>
+<h1>Bürgschaft</h1>
+<h2>Editieren</h2>
 
 <% buergschafter = Person.where(:pnr => @buergschaft.pnrB).first %>
 <% gesellschafter = Person.where( :pnr => OZBPerson.where(:mnr => @buergschaft.mnrG).first.ueberPnr ).first %>
 
+<br />
+
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
-  <table class="table">
+  <table>
     <tr> 
-      <td><b><%= label_tag "Buergschafter:" %></b></td>
+      <td><b><%= label_tag "Bürgschafter:" %></b></td>
       <td>
         <% if !buergschafter.nil? then %>
           <%= label_tag :nameB, buergschafter.name.to_s + "," + buergschafter.vorname.to_s %>  
@@ -15,6 +18,7 @@
         <% end %>
         <%= hidden_field_tag :pnrB, @buergschaft.pnrB %>  
       </td>
+      <td />
     </tr>
   
     <tr>
@@ -27,6 +31,7 @@
         <% end %>
         <%= hidden_field_tag :mnrG, @buergschaft.mnrG %>  
       </td>
+      <td />
     </tr>  
   
     <tr>
@@ -35,30 +40,35 @@
         <%= label_tag :sichAbDatum, @buergschaft.sichAbDatum %>  
         <%= hidden_field_tag :sichAbDatum, @buergschaft.sichAbDatum %>  
       </td>
+      <td />
     </tr>
     
     <tr>
       <td><b><%= label_tag "Konto-Nr.:" %></b></td>
       <td><%= text_field_tag :ktoNr, @buergschaft.ktoNr %></td>
-      <td><%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr" %></td>
+      <td class="searchlink_td"><%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr", :class => "searchlink" %></td>
     </tr>
   
     <tr>
       <td><b><%= label_tag "sichEndDatum:" %></b></td>
       <td><%= text_field_tag :sichEndDatum, @buergschaft.sichEndDatum %></td>
+      <td />
     </tr>
   
     <tr>
       <td><b><%= label_tag "sichBetrag:" %></b></td>
       <td><%= text_field_tag :sichBetrag, @buergschaft.sichBetrag %></td>
+      <td />
     </tr>
   
     <tr>
       <td><b><%= label_tag "sichKurzBez:" %></b></td>
       <td><%= text_field_tag :sichKurzBez, @buergschaft.sichKurzBez %></td>
+      <td />
     </tr>
   </table>
-  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>	
+  <br />
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok" %>	
 
 <% end %>
 

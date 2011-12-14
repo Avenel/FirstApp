@@ -1,7 +1,7 @@
 <h1>Person anlegen</h1>
 
 	<%= form_tag({:action => "save"}, :id=>"newForm") do %>	
-	<table class="table">
+	<table>
    	<tr>
 		  <td><%= label_tag "Name:" %></td>
 		  <td><%= text_field_tag :name %></td>  
@@ -116,27 +116,31 @@
     		<tr>
 			    <td><%= label_tag "FA Steuernummer:" %></td>
 			    <td><%= text_field_tag :faSteuerNr %>  </td>
+			    <td />
 		    </tr>
 
     	<tr>
 			  <td><%= label_tag "FA Lfd. Nr.:" %></td>
 			  <td><%= text_field_tag :faLfdNr %>  </td>
+			  <td />
 		  </tr>
 
     	<tr>
 			  <td><%= label_tag "Wohnsitzfinanzamt:" %></td>
 			  <td><%= text_field_tag :wohnsitzFinanzamt %>  </td>
+			  <td />
 		  </tr>
 
     	<tr>
 			  <td><%= label_tag "Notar:" %></td>
 			  <td><%= text_field_tag :notarPnr %></td>
-			  <td><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchNotarFrame" %></td>
+			  <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchNotarFrame", :class => "searchlink" %></td>
 		  </tr>
 
     	<tr>
 			  <td><%= label_tag "Beurkundungsdatum:" %></td>
 			  <td><%= text_field_tag :beurkDatum %> </td> 
+			  <td />
 		  </tr>
 		  </table>
     </div>
@@ -169,12 +173,13 @@
     	<tr>
 			  <td><%= label_tag "Partner:" %></td>
 			  <td><%= text_field_tag :partner %>  </td>
-			  <td><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchPartnerFrame" %></td>
+			  <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchPartnerFrame", :class => "searchlink" %></td>
 	    </tr>
 		
 	    <tr>
 			  <td><%= label_tag "Berechtigung" %></td>
-			  <td><%= text_field_tag :berechtigung %></td>  
+			  <td><%= text_field_tag :berechtigung %></td>
+			  <td />
 		  </tr>
 		  </table>
     </div>
@@ -191,7 +196,9 @@
 	  </tr> 
 	   
   </table>  
-  	<%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
+  
+  <br />
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %>
   
 <% end %>
 

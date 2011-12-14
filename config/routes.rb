@@ -31,7 +31,6 @@ OZB::Application.routes.draw do
   match '/kontoklasse/:id' => 'kontoklasse#edit', :via => :GET
   match '/kontoklasse/:id' => 'kontoklasse#save', :via => :POST
   match '/kontoklasse/:id/delete' => 'kontoklasse#delete'
-  match '/kontoklasse/verlauf/:kkl' => 'kontoklasse#verlauf'
   
   # OZBKonten
   match '/ozbKonten' => 'reports#ozbKonten'

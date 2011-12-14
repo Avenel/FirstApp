@@ -3,13 +3,13 @@
 <head>
   <title>OZB</title>
 
-  <div class="topbar" style="text-align:center;">
+  <div class="topbar">
     
-    <a href="http://www.ozb.eu"><img src="/images/besserohnezins.png" style="position:relative;" /></a>
+    <a href="http://www.ozb.eu"><img src="/images/besserohnezins.png"/></a>
     
-    <div style="position:relative;">
+    <div class="navbar">
       <% if OZBPerson_signed_in? %>
-        <a href='/'>Startseite</a>
+        <a href='/'>Meine Konten</a>
         <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Daten'>Meine Daten</a>
         <a href='/OZBPerson/<%= current_OZBPerson.mnr %>/Tanlisten'>Meine TAN</a>
         <a href='/Admin'>Admin</a>
@@ -18,9 +18,15 @@
       <% end %>
     </div>
     
-    <div style="position:absolute; top:20px; right:20px; ">
+    <div id="login_link">
       <% if OZBPerson_signed_in? %>
-        Eingeloggt als <%= current_OZBPerson.mnr %>.
+        Eingeloggt als
+        <% current_person = Person.find(current_OZBPerson.mnr) %>
+        <% if !current_person.name.nil? then %>
+          <%= current_person.name %>
+        <% else %>
+           <%= current_OZBPerson.mnr %>
+        <% end %>.
         <%= link_to "Ausloggen", destroy_OZBPerson_session_path, :method => :delete %>
       <% else %>
         <%= link_to "Einloggen", new_OZBPerson_session_path %>

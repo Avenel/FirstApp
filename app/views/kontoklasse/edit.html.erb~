@@ -1,8 +1,10 @@
-<h1>Editieren</h1>
+<h1>Kontoklasse</h1>
+<h2>Editieren</h2>
 
+<br />
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
 
-  <table style="margin: 10px auto;">
+  <table>
     <tr>
       <td><b><%= label_tag "Kontoklasse:" %></b></td>
       <td>
@@ -23,7 +25,8 @@
     </tr>
   </table>
   
-  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>	
+  <br />
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok" %>
 
 <% end %>
 

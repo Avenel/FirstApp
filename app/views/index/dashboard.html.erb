@@ -11,6 +11,7 @@
     <th>Konto-Nr.</th>
     <th>Saldo</th>
     <th>Punkte</th>
+    <th />
   </tr>
   <% i=0 %>
   <% current_OZBPerson.OZBKonto.each do |konto| %>
@@ -26,6 +27,9 @@
       <td>
         <%= konto.pSaldo %>
       </td>
+      <td class = "detail_link_td">
+        <a href="/OZBPerson/<%= current_OZBPerson.id %>/Konto/EE/<%= konto.EEKonto.first.ktoNr %>/buchungen" class="detail_link">Detail</a>
+      </td>
     </tr>
     <% i += 1 %>
     <% end %>
@@ -40,6 +44,7 @@
     <th>Konto-Nr.</th>
     <th>Saldo</th>
     <th>Punkte</th>
+    <th />
   </tr>
   <% i=0 %>
   <% current_OZBPerson.OZBKonto.each do |konto| %>
@@ -54,6 +59,9 @@
       </td>
       <td>
         <%= konto.pSaldo %>
+      </td>
+      <td class = "detail_link_td">
+        <a href="/OZBPerson/<%= current_OZBPerson.id %>/Konto/EE/<%= konto.EEKonto.first.ktoNr %>/buchungen" class="detail_link">Detail</a>
       </td>
     </tr>
     <% i += 1 %>

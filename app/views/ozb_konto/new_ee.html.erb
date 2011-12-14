@@ -2,9 +2,8 @@
 
 <!-- EE-Konto:  :ktoNr, :bankId, :kreditlimit -->
 
-
-
-<h1>EEKonto anlegen</h1>
+<h1>EEKonto</h1>
+<h2>Neues EEKonto</h2>
 
 <%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
@@ -71,8 +70,8 @@
     </tr>
   </table>
   
-  
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
+  <br />
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %>
   
 <% end %>
 

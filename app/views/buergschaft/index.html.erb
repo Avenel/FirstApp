@@ -1,6 +1,8 @@
 <h1>Buergschaften</h1>
 
-<table class="table">
+<br />
+
+<table>
   <tr>
     <th>Buergschafter</th>
     <th>Gesellschafter</th>
@@ -36,8 +38,8 @@
       <td><%= buergschaft.sichKurzBez %></td>
       <% edit_link = "/buergschaften/" + buergschaft.pnrB.to_s + "/" + buergschaft.mnrG.to_s %>
       <% delete_link = "/buergschaften/" + buergschaft.pnrB.to_s + "/" + buergschaft.mnrG.to_s + "/delete" %>
-      <td><%= link_to "Editieren", edit_link %></td>
-      <td><%= link_to "Löschen", delete_link %></td>
+      <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
+      <td><%= link_to "Löschen", delete_link, :class => "delete_link" %></td>
     </tr>
     <% i += 1 %>
   <% end %>
@@ -48,5 +50,6 @@
   <%= will_paginate @buergschaften %> 
 </div>
 
-<%= link_to "Neue Buergschaft hinzufügen", "/buergschaften/new" %>
+<br />
+<%= link_to "Neue Bürgschaft hinzufügen", "/buergschaften/new", :class => "submit_ok" %>
 

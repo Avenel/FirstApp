@@ -40,9 +40,4 @@ class KontoklasseController < ApplicationController
     redirect_to :action => "index"
   end
   
-  def verlauf
-    @kkl = params[:kkl]
-    @kontenklassenverlauf = KKLVerlauf.where(:kkl => params[:kkl]).paginate(:page => params[:page], :per_page => 5)
-  end
-
 end

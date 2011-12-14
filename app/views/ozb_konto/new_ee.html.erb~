@@ -2,9 +2,8 @@
 
 <!-- EE-Konto:  :ktoNr, :bankId, :kreditlimit -->
 
-
-
-<h1>EEKonto anlegen</h1>
+<h1>EEKonto</h1>
+<h2>Neues EEKonto</h2>
 
 <%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
@@ -34,7 +33,7 @@
   
   
   <h2 style="margin-top:20px;">EE-Konto</h2>
-  <table class="table">
+  <table>
     <tr>
       <td>Konto-Nr.:</td>
       <td><%= label_tag :ozbKtoNr, @newKtoNr %></td>
@@ -48,7 +47,7 @@
 
 <!-- Bankverbindung:  :id, :bankKtoNr, :blz, :bic, :iban, :bankName -->
   <h3 style="margin-top:20px;">Bankverbindung</h2>
-  <table class="table">
+  <table>
     <tr>
       <td>Bank-Konto-Nr.:</td>
       <td><%= text_field_tag :bankKtoNr %></td>
@@ -71,8 +70,8 @@
     </tr>
   </table>
   
-  
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
+  <br />
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %>
   
 <% end %>
 

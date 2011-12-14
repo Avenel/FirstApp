@@ -3,7 +3,7 @@
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
 
   <h2 style="margin-top:40px;">OZB-Konto</h2>
-  <table class="table">
+  <table>
     <tr>
       <td>Konto-Nr.:</td>
       <td><%= label_tag :ozbKtoNr, @ozb_konto.ktoNr %> <%= hidden_field_tag :ozbKtoNr, @ozb_konto.ktoNr%></td>
@@ -24,7 +24,7 @@
   
   
   <h2 style="margin-top:20px;">EE-Konto</h2>
-  <table class="table">
+  <table>
     <tr>
       <td>Konto-Nr.:</td>
       <td><%= label_tag :ozbKtoNr, @ee_konto.ktoNr %> <%= hidden_field_tag :eeKtoNr, @ee_konto.ktoNr%></td>
@@ -38,7 +38,7 @@
 
 <!-- Bankverbindung:  :id, :bankKtoNr, :blz, :bic, :iban, :bankName -->
   <h3 style="margin-top:20px;">Bankverbindung</h2>
-  <table class="table">
+  <table>
     <tr>
       <td>Bank-Konto-Nr.:</td>
       <td><%= text_field_tag :bankKtoNr, @bankverbindung.bankKtoNr %></td>
@@ -61,8 +61,8 @@
     </tr>
   </table>
   
-  
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>
+  <br />
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok"  %>
   
 <% end %>
 

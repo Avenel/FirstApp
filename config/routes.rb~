@@ -19,7 +19,7 @@ OZB::Application.routes.draw do
   match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#save', :via => :POST
   match '/OZBPerson/:id/Konto/:typ/:ktoNr/delete' => 'OzbKonto#delete'
   match '/OZBPerson/:id/Konto/:typ/:ktoNr/buchungen' => 'OzbKonto#show', :via => :GET
-  match '/OZBPerson/:id/Daten' => 'OZBPerson#show'
+  match '/OZBPerson/:id/Daten' => 'index#error_404'
   
   # Tanlisten
   match '/OZBPerson/:id/Tanlisten' => "index#error_404"

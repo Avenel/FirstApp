@@ -6,6 +6,7 @@
     <th>Name</th>
     <th />
     <th />
+    <th />
   </tr>
   
   <% i = 0 %>
@@ -15,14 +16,16 @@
         <td><%= person.mnr %></td>	
 			  <% current_person = Person.find(person.ueberPnr) %>
 			  <td><%= current_person.name + ", " + current_person.vorname %></td>
+			  <td><a href="/OZBPerson/<%= person.mnr %>/Konto" class="konto_link">Konten</a></td>
 			  <% edit_link = "/OZBPerson/" + person.mnr.to_s %>
         <% delete_link = "/OZBPerson/" + person.mnr.to_s + "/delete" %>
-        <td><%= link_to "Editieren", edit_link %></td>
-        <td><%= link_to "Löschen", delete_link %></td>
+      <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
+      <td><%= link_to "Löschen", delete_link, :class => "delete_link" %></td>
       </tr>
       <% i += 1 %>
   <% end %>
 </table>
 
-<%= link_to 'OZB Person hinzufuegen', "/OZBPerson/new" %>
+<br />
+<%= link_to 'OZB Person hinzufügen', "/OZBPerson/new", :class => "submit_ok" %>
 <%= will_paginate @OZBPersonen %>

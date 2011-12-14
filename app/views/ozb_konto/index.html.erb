@@ -8,18 +8,15 @@
 <h3 style="margin-top: 20px;">ZE-Konten</h3> 
 <table>
   <tr>
-    <th>Konto-Nr.</th>
-    <th>EEKonto-Nr.</th>
-    <th>ZE-Nr.</th>
+    <th>KtoNr</th>
+    <th>EEKtoNr</th>
+    <th>ZEKtoNr</th>
     <th>AbDatum</th>
     <th>EndDatum</th>
     <th>Betrag</th>
     <th>Laufzeit</th>
-    <th>Zahlmodus</th>
     <th>Tilgungsrate</th>
     <th>Ansparrate</th>
-    <th>Kdu-Rate</th>
-    <th>Rdu-Rate</th>
     <th>Status</th>
     <th />
     <th />
@@ -36,25 +33,23 @@
       <td><%= konto.zeEndDatum %></td>
       <td><%= konto.zeBetrag %></td>
       <td><%= konto.laufzeit %></td>
-      <td><%= konto.zahlModus %></td>
       <td><%= konto.tilgRate %></td>
       <td><%= konto.ansparRate %></td>
-      <td><%= konto.kduRate %></td>
-      <td><%= konto.rduRate %></td>
       <td><%= konto.zeStatus %></td>
-      <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s %></td>
-      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s+"/delete" %></td>
+      <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s, :class => "edit_link" %></td>
+      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s+"/delete", :class => "delete_link" %></td>
     </tr>
     <% i += 1 %>
   <% end %>
 </table>
+<br />
 <% if @ze_count < 4 then %>
-  <%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new" %>
+  <%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new", :class => "submit_ok" %>
 <% end %>
 
 <!-- :ktoNr, :bankId, :kreditlimit,  :id, :bankKtoNr, :blz, :bic, :iban, :bankName    -->
 
-<h3 style="margin-top: 20px;">EE-Konten</h3> 
+<h3 style="margin-top: 80px;">EE-Konten</h3> 
 <table>
   <tr>
     <th>Konto-Nr.</th>
@@ -79,12 +74,13 @@
       <td><%= bankverbindung.blz %></td>
       <td><%= bankverbindung.bankName %></td>
       <td><%= konto.kreditlimit %></td>
-      <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s %></td>
-      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s+"/delete" %></td>
+      <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s, :class => "edit_link" %></td>
+      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s+"/delete", :class => "delete_link" %></td>
     </tr>
     <% i += 1 %>
   <% end %>
 </table>
+<br />
 <% if @ee_count < 3 then %>
-  <%= link_to "Neues EE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/EE/new" %>
+  <%= link_to "Neues EE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/EE/new", :class => "submit_ok" %>
 <% end %>

@@ -1,4 +1,12 @@
-<table>
+<table class="searchTable">
+
+  <tr>  
+    <th>Mitglieds-Nr.</th>
+    <th>Rolle</th>
+    <th>Name <br/>(Name, Vorname)</th>
+    <th>Konto-Nr.</th>
+  </tr>
+
   <tr>
     <!-- #Suchkriterien: mnr, pnr, rolle, name, vorname, ktoNr -->
     <%= form_tag({:action => "searchOZBPerson"}, :id=>"searchOZBPersonForm", :method => 'get') do %>
@@ -13,29 +21,29 @@
         </table>
       </td>
       <td><%= text_field_tag "sop_ktoNr", "", :style => "width: 80px;" %></td>
-      <td><%= link_to_function "Suchen", "", :onclick => "$('#searchOZBPersonForm').submit(); return false;", :id => "searchButton" %></td>
+      <td><%= link_to_function "Suchen", "", :class => "submit", :onclick => "$('#searchOZBPersonForm').submit(); return false;", :id => "searchButton" %></td>
     <% end %>
   </tr>
-  <tr>
-    <th>Mitglieds-Nr.</th>
-    <th>Rolle</th>
-    <th>Name</th>
-    <th>Konto-Nr.</th>
-  </tr>
   
+  <% i = 0 %>
   <% @personen.each do |person| %>  
-    <tr>
+    <% if !person.OZBPerson.first.nil? %>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <td><%= person.OZBPerson.first.mnr %></td>
       <td><%= person.rolle %></td>
       <td><%= person.name.to_s + ", "+ person.vorname.to_s %></td>
-
-      <% if !person.OZBPerson.first.OZBKonto.first.nil? then %>
-     	 <td><%= person.OZBPerson.first.OZBKonto.first.ktoNr.to_s %></td>
-     	<% else %>
-     	  <td />
-     	<% end %>
-      <td><%= link_to_function "einfügen", "insert("+person.pnr.to_s+")"%></td>
+      <% if !person.OZBPerson.first.nil? %>
+        <% if !person.OZBPerson.first.OZBKonto.first.nil? then %>
+          <td><%= person.OZBPerson.first.OZBKonto.first.ktoNr.to_s %></td>
+        <% else %>
+          <td />
+        <% end %>
+      <% end %>
+      <td><%= link_to_function "einfügen", "insert("+person.pnr.to_s+")", :class => "insert" %></td>
     </tr>
+    <% end  %>
+  <% i += 1 %>
   <% end %>
 </table>
     
@@ -50,7 +58,7 @@
   $(function () {  
     $('.pagination a').live('click',
       function () {  
-        $.getScript(this.href, {});  
+        $.getScript(this.href, {search:"person"});  
         return false;  
       }   
     );  

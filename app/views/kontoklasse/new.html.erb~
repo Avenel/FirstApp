@@ -1,9 +1,9 @@
-<h1>Neu anlegen</h1>
-<%= link_to "zurück", "/kontoklasse" %>
+<h1>Kontoklasse</h1>
+<h2>Neu anlegen</h2>
 
 <%= form_tag({:action => "save"}, :id=>"newForm") do %>
 
-  <table style="margin: 10px auto;">
+  <table>
     <tr>
       <td><b><%= label_tag "Kontoklasse:" %></b></td>
       <td><%= text_field_tag :kkl %></td>
@@ -20,7 +20,7 @@
     </tr>
   </table>
   
-  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;" %>
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %>
   
 <% end %>
 

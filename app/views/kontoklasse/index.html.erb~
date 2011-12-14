@@ -8,25 +8,25 @@
     <th>AbDatum</th>
     <th />
     <th />
-    <th />
   </tr>
 
+  <% i = 0 %>
   <% @kontoklassen.each do |kkl| %>
-  
-    <tr>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
       <td><%= kkl.kkl %></td>
       <td><%= kkl.prozent %></td>
       <td><%= kkl.kklAbDatum %></td>
       <% edit_link = "/kontoklasse/" + kkl.kkl.to_s %>
       <% delete_link = "/kontoklasse/" + kkl.kkl.to_s + "/delete" %>
       <% verlauf_link = "/kontoklasse/verlauf/" + kkl.kkl.to_s %>
-      <td><%= link_to "Editieren", edit_link %></td>
-      <td><%= link_to "Löschen", delete_link %></td>
-      <td><%= link_to "Verlauf", verlauf_link %></td>
+      <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
+      <td><%= link_to "Löschen", delete_link, :class => "delete_link" %></td>
     </tr>
-  
+    <% i += 1 %>
   <% end %>
 </table>
 
-<%= link_to "Neue Kontoklasse hinzufügen", "/kontoklasse/new" %>
+<br />
+<%= link_to "Neue Kontoklasse hinzufügen", "/kontoklasse/new", :class => "submit_ok" %>
 

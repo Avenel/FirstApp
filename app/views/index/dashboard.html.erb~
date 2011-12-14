@@ -1,4 +1,4 @@
-<h1>Startseite</h1>
+<h1>Meine Konten</h1>
 
 <h2>Guten Tag,  <%=@current_person.vorname%> <%= @current_person.name %></h2>
 
@@ -11,6 +11,7 @@
     <th>Konto-Nr.</th>
     <th>Saldo</th>
     <th>Punkte</th>
+    <th />
   </tr>
   <% i=0 %>
   <% current_OZBPerson.OZBKonto.each do |konto| %>
@@ -25,6 +26,9 @@
       </td>
       <td>
         <%= konto.pSaldo %>
+      </td>
+      <td class = "detail_link_td">
+        <a href="/OZBPerson/<%= current_OZBPerson.id %>/Konto/EE/<%= konto.EEKonto.first.ktoNr %>/buchungen" class="detail_link">Detail</a>
       </td>
     </tr>
     <% i += 1 %>

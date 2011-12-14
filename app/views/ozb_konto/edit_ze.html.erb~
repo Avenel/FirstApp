@@ -1,9 +1,10 @@
-<h1>ZEKonto anlegen</h1>
+<h1>ZEKonto</h1>
+<h1>Neues ZEKonto</h1>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
 
   <h2 style="margin-top:40px;">OZB-Konto</h2>
-  <table class="table">
+  <table>
     <tr>
       <td>Konto-Nr.:</td>
       <td><%= label_tag :ozbKtoNr, @ozb_konto.ktoNr %> <%= hidden_field_tag :ozbKtoNr, @ozb_konto.ktoNr %></td>
@@ -26,7 +27,7 @@
   <!-- ZE-Konto:  :ktoNr, :eeKtoNr, :pgNr, :zeNr, :zeAbDatum, :zeEndDatum, :zeBetrag, 
                   :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus -->
   <h2 style="margin-top:20px;">ZE-Konto</h2>
-  <table class="table">
+  <table>
     <tr>
       <td>Konto-Nr.:</td>
       <td><%= label_tag :zeKtoNr, @ze_konto.ktoNr %> <%= hidden_field_tag :zeKtoNr, @ze_konto.ktoNr %></td>
@@ -81,24 +82,10 @@
     </tr>
   </table>  
   
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;" %>
+  <br />
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok"  %>
   
 <% end %>
-
-<div style="display:none">
-  <div id="searchKtoNrFrame">
-    <div id="konten"><%= render 'application/suche_konten' %></div>  
-  </div>
-</div>
-
-<script>
-
-  $(document).ready(function() {
-    $("#searchKtoNr").fancybox();
-    $("td.insertRow").css("display", "block");
-  });
-
-</script>
 
 <script>
   $(function() {
