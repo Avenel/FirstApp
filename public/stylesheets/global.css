@@ -137,14 +137,14 @@ input {
 
 .submit {
   padding: 15px;
-  background: #D94A38;
+  background: #002bDD;
   border-radius: 3px;
   color: white;
   font-weight: bold;  
 }
 
 .submit:hover {
-  background: #D90816;
+  background: #002bab;
   text-decoration: none;
 }
 
@@ -233,14 +233,14 @@ input {
 
 .searchlink {
   padding: 5px;
-  background: #D94A38;
+  background: #002bDD;
   border-radius: 3px;
   color: white;
   font-weight: bold;  
 }
 
 .searchlink:hover {
-  background: #D90816;
+  background: #002bab;
   text-decoration: none;
 }
 

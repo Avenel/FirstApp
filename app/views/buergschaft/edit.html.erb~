@@ -8,12 +8,12 @@
 
 <%= form_for @buergschaft, :url => { :action => "update" }, :html => {:id => "editForm", :method => "post"}  do |f| %>
 
-  <% if @buergschaft.errors.count > 0 %>
+  <% if @errors.any? %>
   <div id="error_explanation">
-    <h2><%= @buergschaft.errors.count %> Fehler <br /> Konnte die Bürgschaft nicht aktualisieren, weil:</h2>
+    <h2><%= @errors.count %> Fehler <br /> Konnte die Bürgschaft nicht aktualisieren, weil:</h2>
 
     <ul>
-      <% @buergschaft.errors.full_messages.each do |msg| %>
+      <% @errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
       <% end %>
     </ul>
@@ -57,7 +57,7 @@
     </tr>
     
     <tr>
-      <td><b><%= label_tag "Konto-Nr.:" %></b></td>
+      <td><b><%= label_tag "Konto-Nr. *:" %></b></td>
       <td><%= f.text_field :ktoNr, :id => "ktoNr" %></td>
       <td class="searchlink_td"><%= link_to "Suchen...", "#searchKtoNrFrame", :id => "searchKtoNr", :class => "searchlink" %></td>
     </tr>

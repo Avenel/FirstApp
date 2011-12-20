@@ -40,7 +40,8 @@
           <td />
         <% end %>
       <% end %>
-      <td><%= link_to_function "einfügen", "insert("+person.pnr.to_s+")", :class => "insert" %></td>
+      <% fullname = person.name.to_s+", "+person.vorname.to_s %>
+      <td class="insert_td"><%= link_to_function "einfügen", "insert("+person.pnr.to_s+","+ fullname +")", :class => "insert" %></td>
     </tr>
     <% end  %>
   <% i += 1 %>
@@ -70,8 +71,11 @@
     return false;  
   }); 
   
-  function insert(value) {
-    $(insertId).val(value); $.fancybox.close() 
+  function insert(value, value2, value3) {
+    $(insertId).val(value); 
+    $(insertId+"Name").val(value2);
+    $.fancybox.close() ;
+    
   } 
 
 </script> 

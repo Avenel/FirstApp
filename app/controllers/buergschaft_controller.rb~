@@ -50,9 +50,9 @@ class BuergschaftController < ApplicationController
   def create 
     if current_OZBPerson.canEditB then
       @buergschaft = Buergschaft.new(params[:buergschaft])
-      @buergschaft.validate! 
-
-      if @buergschaft.errors.any? then
+      @errors = @buergschaft.validate!
+    
+      if !@errors.nil? && @errors.any? then
        searchKtoNr()
        searchOZBPerson()
        render "new"
@@ -70,15 +70,11 @@ class BuergschaftController < ApplicationController
     if current_OZBPerson.canEditB then
       @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
       @buergschaft.attributes = params[:buergschaft]
-      puts @buergschaft.inspect
-      puts @buergschaft.errors.inspect
-      @buergschaft.refresh
-      @buergschaft.validate!
+      @errors = @buergschaft.validate!
       
-      if @buergschaft.errors.count > 0 then
+      if !@errors.nil? && @errors.any? then
         searchKtoNr()
         searchOZBPerson()
-        puts @buergschaft.errors.inspect
         render "edit"
       else
         @buergschaft.update_attributes(params[:buergschaft])
