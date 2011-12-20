@@ -84,3 +84,6 @@
 <% if @ee_count < 3 then %>
   <%= link_to "Neues EE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/EE/new", :class => "submit_ok" %>
 <% end %>
+
+<br />
+<%= link_to "Zurück", "/Admin", :class => "cancel_link" %>

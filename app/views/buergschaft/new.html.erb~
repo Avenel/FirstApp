@@ -18,7 +18,7 @@
   <table>
     <tr>
       <td><b><%= label_tag "Buergschafter *:" %></b></td>
-      <td><%= text_field_tag :pnrBName, "" %><%= f.hidden_field :pnrB, :id => "pnrB" %></td>
+      <td><%= text_field_tag :pnrBName, @tempNames[0] %><%= f.hidden_field :pnrB, :id => "pnrB" %></td>
       <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchBFrame", :class => "searchlink" %></td>
     </tr>
   
@@ -62,8 +62,9 @@
   </table>
   
   <br />
+  
+  <%= link_to "Abbrechen", "/", :class => "cancel_link" %>
   <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %>	
-
 <% end %>
 
 

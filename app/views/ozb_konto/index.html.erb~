@@ -33,7 +33,6 @@
       <td><%= konto.zeEndDatum %></td>
       <td><%= konto.zeBetrag %></td>
       <td><%= konto.laufzeit %></td>
-      <td><%= konto.zahlModus %></td>
       <td><%= konto.tilgRate %></td>
       <td><%= konto.ansparRate %></td>
       <td><%= konto.zeStatus %></td>

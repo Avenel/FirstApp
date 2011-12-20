@@ -149,11 +149,12 @@ input {
 }
 
 .submit_ok {
-  padding: 15px 30px;
+  padding: 15px 55px;
   background: #2fab24;
   border-radius: 3px;
   color: white;
   font-weight: bold;  
+  float: right; 
 }
 
 .submit_ok:hover {
@@ -196,6 +197,21 @@ input {
 }
 
 .delete_link:hover {
+  background: #D90816;
+  text-decoration: none;
+}
+
+
+.cancel_link {
+  padding: 15px 30px;
+  background: #D94A38;
+  border-radius: 2px;
+  color: white;
+  font-weight: bold; 
+  float: left; 
+}
+
+.cancel_link:hover {
   background: #D90816;
   text-decoration: none;
 }

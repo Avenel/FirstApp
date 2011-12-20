@@ -8,7 +8,7 @@
 
 <%= form_for @buergschaft, :url => { :action => "update" }, :html => {:id => "editForm", :method => "post"}  do |f| %>
 
-  <% if @errors.any? %>
+  <% if !@errors.nil? && @errors.any? %>
   <div id="error_explanation">
     <h2><%= @errors.count %> Fehler <br /> Konnte die Bürgschaft nicht aktualisieren, weil:</h2>
 
@@ -81,8 +81,9 @@
     </tr>
   </table>
   <br />
+  
+  <%= link_to "Abbrechen", "/", :class => "cancel_link" %>
   <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok" %>	
-
 <% end %>
 
 <script>

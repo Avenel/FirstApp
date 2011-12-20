@@ -1,4 +1,5 @@
-<h1>EEKonto editieren</h1>
+<h1>EEKonto</h1>
+<h2>EEKonto editieren</h2>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
 
@@ -62,6 +63,8 @@
   </table>
   
   <br />
+  
+  <%= link_to "Abbrechen", "../", :class => "cancel_link" %>
   <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok"  %>
   
 <% end %>

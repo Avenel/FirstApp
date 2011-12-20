@@ -71,8 +71,9 @@
   </table>
   
   <br />
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %>
   
+  <%= link_to "Abbrechen", "../", :class => "cancel_link" %>
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %> 
 <% end %>
 
 <script>

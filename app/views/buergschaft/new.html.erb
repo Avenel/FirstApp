@@ -62,8 +62,9 @@
   </table>
   
   <br />
+  
+  <%= link_to "Abbrechen", "/buergschaften", :class => "cancel_link" %>
   <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %>	
-
 <% end %>
 
 

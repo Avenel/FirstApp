@@ -1,4 +1,6 @@
-<table style="margin: 50px auto">
+<h1>Alle Adressen</h1>
+
+<table>
 
   <tr>
     <th>Name</th>
@@ -24,6 +26,8 @@
   <% end %>
 
 </table>
+
+<%= link_to "Zurück", "../", :class => "cancel_link" %>
 
 <!-- Seitennavigation -->
 <div class="paginateBox" >

@@ -1,5 +1,5 @@
 <h1>ZEKonto</h1>
-<h1>Neues ZEKonto</h1>
+<h1>ZEKonto Editieren</h1>
 
 <%= form_tag({:action => "save"}, :id=>"editForm") do %>
 
