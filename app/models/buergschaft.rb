@@ -9,18 +9,25 @@ class Buergschaft < ActiveRecord::Base
   belongs_to :OZBPerson
   belongs_to :ZEKonto
   
-  def validate!    
+  def validate(bName, gName)!    
     errors = ActiveModel::Errors.new(self)
     person = nil
     
     # Bürgschafter
-    if self.pnrB == nil then
-      errors.add("", "Personalnummer des Bürgschafters darf nicht leer sein.")
+    if self.pnrB.nil? then    
+      names = bName.split(",")
+      self.pnrB = find_by_name(names[0], names[-1])
+      person = Person.find(self.pnrB)
+      
+      if self.pnrB == 0 then
+        self.pnrB = nil
+        errors.add("", "Personalnummer oder Name des Bürgschafters konnte nicht gefunden werden.")
+      end
     else
       person = Person.find(self.pnrB)
     end
    
-    if person.nil? && self.pnrB != "" then 
+    if person.nil? then 
       errors.add("", "Personalnummer konnte in der Datenbank nicht gefunden werden.")
     else
       if person.rolle != "B" then 
@@ -30,13 +37,22 @@ class Buergschaft < ActiveRecord::Base
     
     # Gesellschafter
     person = nil
-    if self.mnrG == nil then
-      errors.add("", "Mitgliedsnummer des Gesellschafters darf nicht leer sein.") 
+    if self.mnrG.nil? then
+    
+      names = gName.split(",")
+      self.mnrG = find_by_name(names[0], names[-1])
+      person = Person.find(self.mnrG)
+      
+      if self.mnrG == 0 then
+        self.mnrG = nil
+        errors.add("", "Mitgliedsnummer oder Name des Gesellschafters konnte nicht gefunden werden.")
+      end
+      
     else
       person = Person.find(self.mnrG)
     end
     
-    if person.nil? && self.mnrG != "" then 
+    if person.nil? then 
       errors.add("", "Personalnummer konnte in der Datenbank nicht gefunden werden.")
     else
       if person.rolle != "G" then 
@@ -45,7 +61,7 @@ class Buergschaft < ActiveRecord::Base
     end
     
     # Kontonummer
-    if self.ktoNr == nil then
+    if self.ktoNr.nil? then
       errors.add("", "Die Kontonummer darf nicht leer sein.")
     end
     
@@ -60,6 +76,19 @@ class Buergschaft < ActiveRecord::Base
     
     
     return errors
+  end
+  
+  def find_by_name(lastname, firstname)
+    person = Person.where("name = ? AND vorname = ?", lastname.to_s.strip, firstname.to_s.strip).first
+    
+    puts person.inspect
+    
+    if person.nil? then
+      return 0
+    else
+      return person.pnr
+    end
+    
   end
   
 end

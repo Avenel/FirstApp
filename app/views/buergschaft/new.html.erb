@@ -18,13 +18,13 @@
   <table>
     <tr>
       <td><b><%= label_tag "Buergschafter *:" %></b></td>
-      <td><%= text_field_tag :pnrBName, "" %><%= f.hidden_field :pnrB, :id => "pnrB" %></td>
+      <td><%= text_field_tag :pnrBName, @tempNames[0] %><%= f.hidden_field :pnrB, :id => "pnrB" %></td>
       <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchBFrame", :class => "searchlink" %></td>
     </tr>
   
     <tr>
         <td><b><%= label_tag "Gesellschafter *:" %></b></td>
-        <td><%= text_field_tag :mnrGName, "" %><%= f.hidden_field :mnrG, :id => "mnrG" %></td>
+        <td><%= text_field_tag :mnrGName, @tempNames[1] %><%= f.hidden_field :mnrG, :id => "mnrG" %></td>
         <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchGFrame", :class => "searchlink" %></td>
     </tr>  
   

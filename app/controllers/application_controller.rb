@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
         end
         
         if( !params[:sop_rolle].empty? ) then
-          @personen = @personen.where(:sop_rolle => params[:sop_rolle])
+          @personen = @personen.where(:rolle => params[:sop_rolle])
         end
         
         if( !params[:sop_ktoNr].empty? ) then

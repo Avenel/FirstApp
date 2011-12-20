@@ -14,6 +14,10 @@ class BuergschaftController < ApplicationController
       @buergschaft = Buergschaft.new
       searchKtoNr()
       searchOZBPerson()
+
+      @tempNames = Array.new
+      @tempNames.push("")
+      @tempNames.push("")
     else
       redirect_to "/"
     end
@@ -42,6 +46,10 @@ class BuergschaftController < ApplicationController
   def edit
     if current_OZBPerson.canEditB then
       searchKtoNr()
+      
+      @tempNames = Array.new
+      @tempNames.push("")
+      @tempNames.push("")
     else
       redirect_to "/"
     end
@@ -50,7 +58,11 @@ class BuergschaftController < ApplicationController
   def create 
     if current_OZBPerson.canEditB then
       @buergschaft = Buergschaft.new(params[:buergschaft])
-      @errors = @buergschaft.validate!
+      @errors = @buergschaft.validate(params[:pnrBName], params[:mnrGName])
+    
+      @tempNames = Array.new
+      @tempNames.push(params[:pnrBName])
+      @tempNames.push(params[:mnrGName])
     
       if !@errors.nil? && @errors.any? then
        searchKtoNr()
@@ -70,9 +82,13 @@ class BuergschaftController < ApplicationController
     if current_OZBPerson.canEditB then
       @buergschaft = Buergschaft.find([params[:pnrB], params[:mnrG]])
       @buergschaft.attributes = params[:buergschaft]
-      @errors = @buergschaft.validate!
+      @errors = @buergschaft.validate(params[:pnrBName], params[:mnrGName])
       
-      if !@errors.nil? && @errors.any? then
+      @tempNames = Array.new
+      @tempNames.push(params[:pnrBName])
+      @tempNames.push(params[:mnrGName])
+      
+      if !@errors.nil? && @errors.any? then 
         searchKtoNr()
         searchOZBPerson()
         render "edit"
