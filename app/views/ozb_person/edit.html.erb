@@ -1,7 +1,7 @@
 <h1>OZB Person</h1>
 <h2>Editieren</h2>
 
-<%= form_tag({:action => "save"}, :id=>"editForm") do %>
+<%= form_tag({:action => "edit"}, :id=>"editForm") do %>
 
 <table>
 
@@ -13,8 +13,7 @@
   
   	<tr>
     	<td><%= label_tag "Rolle:" %></td>
-        <td><%= text_field_tag :rolle, @Rollen.key("S") %></td>
-	    <!-- ><td><%= select_tag 'rolle', options_for_select(@Rollen, @Person.rolle), {:onChange => "show_role()"} %></td> -->
+        <td><%= text_field_tag :rolle, @Rollen2.fetch(@Person.rolle), :disabled => true %></td>
   	</tr>
 
     <% if @Student != nil then %>
@@ -214,8 +213,7 @@
 <% end %>
 
 <script>
-  
-  var insertId = "";
+  var insertId = "#notarPnr";
 	
 	$("#searchNotarFrame").click(function(){
 		insertId = "#notarPnr";
@@ -242,32 +240,4 @@
 		source: availableTagsB
     	});
 	});
-
-  function show_role()
-  {
-    $("#Foerdermitglied").css("display", "none");
-      $("#Student").css("display", "none");
-      $("#Mitglied").css("display", "none");
-      $("#tdartner").css("display", "none");
-      $("#Gesellschafter").css("display", "none");
-      var role = $('#rolle').val();
-      switch (role) {
-        case "F":
-          $("#Foerdermitglied").css("display", "block");
-          break;
-        case "S":
-          $("#Student").show();
-          break;
-        case "G":
-          $("#Gesellschafter").show();
-          break;
-        case "td":
-          $("#Partner").show();
-          break;
-        case "M":
-          $("#Mitglied").show();
-          break;
-        default:
-    }
-  }
 </script>

@@ -2,6 +2,9 @@
 class OZBPersonController < ApplicationController
 
   @@Rollen = Hash["Mitglied", "M", "Foerdermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]
+  
+  #Workaround - Da Ruby 1.8.7 die key()-Funktion nicht kennt
+  @@Rollen2 = Hash["M", "Mitglied", "F", "Foerdermitglied", "P", "Partner", "G", "Gesellschafter", "S", "Student"]
 
   def index
     if current_OZBPerson.canEditA then
@@ -16,7 +19,7 @@ class OZBPersonController < ApplicationController
       searchOZBPerson()
       @OZBPerson = OZBPerson.find(params[:id])
       @Person = Person.find(@OZBPerson.ueberPnr)
-      @Rollen = @@Rollen
+      @Rollen2 = @@Rollen2
       #@Bankverbindungen = Bankverbindung.find(:all, :conditions => {:pnr => @Person.pnr})
       @Telefon = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Tel"})
       @Fax = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Fax"})
