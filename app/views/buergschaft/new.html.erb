@@ -103,12 +103,12 @@
       <% tags = String.new %>
       <% Person.all.each do |person| %>
         <% if person.rolle.to_str == 'B' then %>
-          <% tags += "'" + person.pnr.to_s + "'" + "," %>
+          <% tags += "'" + person.name.to_s + ", " + person.vorname.to_s + "'," %>
         <% end %>
       <% end %>
       <%= tags.chop %>
       ];
-    $( "#pnrB" ).autocomplete({
+    $( "#pnrBName" ).autocomplete({
       source: availableTagsB
     });
     
@@ -116,12 +116,12 @@
       <% tags = String.new %>
       <% Person.all.each do |person| %>
         <% if person.rolle.to_str == 'G' then %>
-          <% tags += "'" + person.pnr.to_s + "'" + "," %>
+          <% tags += "'" + person.name.to_s + ", " + person.vorname.to_s + "'," %>
         <% end %>
       <% end %>
       <%= tags.chop %>
       ];
-    $( "#mnrG" ).autocomplete({
+    $( "#mnrGName" ).autocomplete({
       source: availableTagsG
     });
     
