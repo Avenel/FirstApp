@@ -70,11 +70,11 @@ input {
   }
 
 .content {
-  min-height: 80% !important; 
+  min-height: 82% !important; 
   text-align:center; 
   width: 800px; 
   margin: 20px auto;
-  padding: 50px;
+  padding: 20px 50px;
   background-color: #ffffff;
   border-radius: 10px;
 }
@@ -149,12 +149,12 @@ input {
 }
 
 .submit_ok {
-  padding: 15px 60px;
+  padding: 15px 55px;
   background: #2fab24;
   border-radius: 3px;
   color: white;
-  font-weight: bold;  
-  float: right; 
+  font-weight: bold;
+  float: right;
 }
 
 .submit_ok:hover {
@@ -208,7 +208,7 @@ input {
   border-radius: 2px;
   color: white;
   font-weight: bold; 
-  float: left; 
+  float: left;
 }
 
 .cancel_link:hover {

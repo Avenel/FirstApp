@@ -7,6 +7,10 @@ class Bankverbindung < ActiveRecord::Base
   attr_accessible :id, :pnr, :bankKtoNr, :blz, :bic, :iban, :bankName   
 
   belongs_to :Person
-  has_one :EEKonto, :foreign_key => :bankId # Done, ungetestet
+  has_one :EEKonto, :foreign_key => :bankId # Done, getestet
+
+
+  def validate!
+  end
 
 end

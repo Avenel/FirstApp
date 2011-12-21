@@ -2,26 +2,31 @@ class OzbKontoController < ApplicationController
 
   def index
     if current_OZBPerson.canEditB then
-      @ozb_konten = OZBKonto.where( :mnr => params[:id] )
-      @ee_konten = Array.new
-      @ze_konten = Array.new
-      
-      @ee_count = 0
-      @ze_count = 0
-      @ozb_konten.each do |konto|
-        if konto.EEKonto.count > 0 then
-          @ee_konten.push(konto.EEKonto.first)
-          @ee_count += 1
-        end
-        if konto.ZEKonto.count > 0 then
-          @ze_konten.push(konto.ZEKonto.first)
-          @ze_count += 1
-        end
-      end
+      get_konten()
     else
       redirect_to "/"
     end
     
+  end
+  
+  
+  def get_konten
+    @ozb_konten = OZBKonto.where( :mnr => params[:id] )
+    @ee_konten = Array.new
+    @ze_konten = Array.new
+    
+    @ee_count = 0
+    @ze_count = 0
+    @ozb_konten.each do |konto|
+      if konto.EEKonto.count > 0 then
+        @ee_konten.push(konto.EEKonto.first)
+        @ee_count += 1
+      end
+      if konto.ZEKonto.count > 0 then
+        @ze_konten.push(konto.ZEKonto.first)
+        @ze_count += 1
+      end
+    end
   end
     
   def new
@@ -29,6 +34,7 @@ class OzbKontoController < ApplicationController
       searchKtoNr()
       @person = Person.where( :pnr => params[:id] ).first
       @ozb_konten = OZBKonto.where( :mnr => params[:id] )
+      @ozb_konto = OZBKonto.new
 
       if params[:typ] == "EE" then      
         count = 0
@@ -70,88 +76,109 @@ class OzbKontoController < ApplicationController
     end
   end
   
-  def save
+  def create
     if current_OZBPerson.canEditB then
-      if params[:typ] == "EE" then
-        # Editieren
-        begin
-          @ozb_konto = OZBKonto.where( :ktoNr => params[:ozbKtoNr] ).first
-          @ee_konto = @ozb_konto.EEKonto.first
-          @bankverbindung = Bankverbindung.where( :id => @ee_konto.bankId ).first
-          
-          @ee_konto.kreditlimit = params[:kreditlimit]
-          @ee_konto.save
-          
-          @bankverbindung.bankKtoNr = params[:bankKtoNr]
-          @bankverbindung.bankName = params[:bankName]
-          @bankverbindung.blz = params[:blz]
-          @bankverbindung.bic = params[:bic]
-          @bankverbindung.iban = params[:iban]
-          @bankverbindung.save
-          
-        rescue
-          # Neu anlegen
-          # OZB-Konto:  :ktoNr, :mnr, :ktoEinrDatum, :waehrung, :wSaldo, :pSaldo, :saldoDatum
-          @ozb_konto = OZBKonto.create( :ktoNr => params[:ozbKtoNr], :mnr => params[:id], :ktoEinrDatum => Time.now,
-                                        :waehrung => "EUR", :wSaldo => params[:wSaldo], :pSaldo => params[:pSaldo], :saldoDatum => params[:saldoDatum] )
-          @ozb_konto.save
-          
+      @errors = Array.new
+      @ozb_konto = OZBKonto.new
+      
+      # OZB Konto
+      # Existiert die Kontonummer bereits?
+      kto = OZBKonto.where("ktoNr = ?", params[:ozb_konto][:ktoNr]).first
+      ktoEE = EEKonto.where("ktoNr = ?", params[:ozb_konto][:ktoNr]).first
+      
+      if not(kto.nil? and ktoEE.nil?) then
+        error = ActiveModel::Errors.new(@ozb_konto)
+        error.add("","Diese Kontonummer ist bereits vergeben.")
+        @errors.push(error)
+      else
+        @ozb_konto = OZBKonto.new(params[:ozb_konto])
+        @ozb_konto.ktoEinrDatum = Time.now
+        @ozb_konto.waehrung = "EUR"
+        @ozb_konto.mnr = params[:id]
+        @errors.push(@ozb_konto.validate!)
+        
+        # Neuen Kontenverlauf hinzufügen
+        @verlauf = KKLVerlauf.new( :ktoNr => params[:ozb_konto][:ktoNr], :kklAbDatum => Time.now, :kkl => params[:kkl] )
+        @errors.push(@verlauf.validate!)
+        
+        
+        # EE Konto
+        if params[:typ] == "EE" then
           # Bankverbindung: id, :pnr, :bankKtoNr, :blz, :bic, :iban, :bankName    
-          @bankverbindung = Bankverbindung.create( :pnr => params[:id], :bankKtoNr => params[:bankKtoNr], :blz => params[:blz], :bic => params[:bic], 
+          @bankverbindung = Bankverbindung.new( :pnr => params[:id], :bankKtoNr => params[:bankKtoNr], :blz => params[:blz], :bic => params[:bic], 
                                                    :iban => params[:iban], :bankName => params[:bankName] )
-          @bankverbindung.save
+          @errors.push(@bankverbindung.validate!)
           
           # EE-Konto:  :ktoNr, :bankId, :kreditlimit
-          @eeKonto = EEKonto.create( :ktoNr => params[:ozbKtoNr], :bankId => @bankverbindung.id, :kreditlimit => params[:kreditlimit] )
-          @eeKonto.save
-          
-          # Neuen Kontenverlauf hinzufügen
-          @verlauf = KKLVerlauf.create( :ktoNr => params[:ozbKtoNr], :kklAbDatum => Time.now, :kkl => params[:kkl] )
-          @verlauf.save
+          @eeKonto = EEKonto.new( :ktoNr => params[:ozb_konto][:ktoNr], :bankId => 1, :kreditlimit => params[:kreditlimit] )
+          @errors.push(@eeKonto.validate!)
         end
         
-        redirect_to :action => "index"
-      end
-      
-      if params[:typ] == "ZE" then
-      
-        begin
-          # Editieren
-          @ozb_konto = OZBKonto.where( :ktoNr => params[:ozbKtoNr] ).first
-          @ze_konto = ZEKonto.where( :ktoNr => params[:zeKtoNr] ).first
-          @ze_konto.zeEndDatum = params[:zeEndDatum]
-          @ze_konto.zahlModus = params[:zahlModus]
-          @ze_konto.tilgRate = params[:tilgRate]
-          @ze_konto.ansparRate = params[:ansparRate]
-          @ze_konto.kduRate = params[:kduRate]
-          @ze_konto.rduRate = params[:rduRate]
-          @ze_konto.save
-        rescue
-          # Neu anlegen
-          # OZB-Konto:  :ktoNr, :mnr, :ktoEinrDatum, :waehrung, :wSaldo, :pSaldo, :saldoDatum
-          @ozb_konto = OZBKonto.create( :ktoNr => params[:ozbKtoNr], :mnr => params[:id], :ktoEinrDatum => params[:ktoEinrDatum],
-                                        :waehrung => "EUR", :wSaldo => params[:wSaldo], :pSaldo => params[:pSaldo], :saldoDatum => params[:saldoDatum] )
-          @ozb_konto.save
-          
+        
+        # ZE Konto
+        if params[:typ] == "ZE" then
           #ZE-Konto:  :ktoNr, :eeKtoNr, :pgNr, :zeNr, :zeAbDatum, :zeEndDatum, :zeBetrag, :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus
-          @ze_konto = ZEKonto.create( :ktoNr => params[:ozbKtoNr], :eeKtoNr => params[:eeKtoNr], :pgNr => params[:id], :zeNr => params[:zeNr], 
+          @ze_konto = ZEKonto.new( :ktoNr => params[:ozbKtoNr], :eeKtoNr => params[:eeKtoNr], :pgNr => params[:id], :zeNr => params[:zeNr], 
                                       :zeAbDatum => Date.parse(params[:zeAbDatum]), :zeEndDatum => Date.parse(params[:zeEndDatum]), 
                                       :zeBetrag => params[:zeBetrag], :laufzeit => params[:laufzeit], :zahlModus => params[:zahlModus], 
                                       :tilgRate => params[:tilgRate], :ansparRate => params[:ansparRate], :kduRate => params[:kduRate], 
                                       :rduRate => params[:rduRate], :zeStatus => params[:zeStatus] )
-          @ze_konto.save
-          
-          # Neuen Kontenverlauf hinzufügen
-          @verlauf = KKLVerlauf.create( :ktoNr => params[:ozbKtoNr], :kklAbDatum => Time.now, :kkl => params[:kkl] )
+          @errors.push(@ze_konto.validate!)
+        end
+      end
+      
+      # Auswertung der Validierung
+      @error_count = 0
+      @errors.each do |error| 
+        if !error.nil? && error.any?
+          @error_count += error.count 
+        end 
+      end
+      
+      if @error_count > 0 then
+        if params[:typ] == "EE" then 
+          render "new_ee" 
+        else
+          if params[:typ] == "ZE" then
+            render "new_ze"
+          else
+            redirect_to "/"
+          end
+        end
+        
+      else
+      
+        if params[:typ] == "EE" or params[:typ] == "ZE" then
+          @ozb_konto.save
           @verlauf.save
         end
         
-        redirect_to :action => "index"    
+        if params[:typ] == "EE" then 
+          @bankverbindung.save
+          @eeKonto.bankId = @bankverbindung.id
+          @eeKonto.save
+        end
+        
+        if params[:typ] == "ZE" then 
+          @ze_konto.save
+        end
+        
+        get_konten()
+        redirect_to :action => "index", :notice => "Konto erfolgreich angelegt."   
       end
     else
       redirect_to "/"
     end
+  end
   
+  
+  def update
+  
+  end
+  
+  
+  def save
+    
   end
   
   def edit

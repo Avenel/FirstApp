@@ -1,29 +1,49 @@
-
-
 <!-- EE-Konto:  :ktoNr, :bankId, :kreditlimit -->
 
 <h1>EEKonto</h1>
 <h2>Neues EEKonto</h2>
 
-<%= form_tag({:action => "save"}, :id=>"newForm") do %>
+<%= form_for @ozb_konto, :url => { :action => "create" }, :html => {:id => "newForm"}  do |f| %>
+
+  <% if !@errors.nil? && @errors.any? %>
+  <div id="error_explanation">
+    <% error_count = 0 %>
+    <% @errors.each do |error| %>
+      <% if !error.nil? && error.any? %>
+        <% error_count += error.count %>
+      <% end %>
+    <% end %>
+    <h2><%= error_count %> Fehler <br /> Konnte kein Konto anlegen, weil:</h2>
+
+    <ul>
+      <% @errors.each do |error| %>
+        <% if !error.nil? && error.any? %>
+          <% error.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
 
   <h2 style="margin-top:40px;">OZB-Konto</h2>
   <table style="margin: 10px auto;">
     <tr>
       <td>Konto-Nr.:</td>
-      <td><%= label_tag :ozbKtoNr, @newKtoNr %> <%= hidden_field_tag :ozbKtoNr, @newKtoNr%></td>
+      <td><%= f.text_field :ktoNr %></td>
     </tr>
     <tr>
       <td>wSaldo:</td>
-      <td><%= text_field_tag :wSaldo %></td>
+      <td><%= f.text_field :wSaldo %></td>
     </tr>
     <tr>
       <td>pSaldo:</td>
-      <td><%= text_field_tag :pSaldo %></td>
+      <td><%= f.text_field :pSaldo %></td>
     </tr>
     <tr>
       <td>SaldoDatum:</td>
-      <td><%= text_field_tag :saldoDatum, "", :id => "saldoDatum" %></td>
+      <td><%= f.text_field :saldoDatum, :id => "saldoDatum" %></td>
     </tr>
     <tr>
       <td>KKL:</td>
@@ -34,10 +54,6 @@
   
   <h2 style="margin-top:20px;">EE-Konto</h2>
   <table>
-    <tr>
-      <td>Konto-Nr.:</td>
-      <td><%= label_tag :ozbKtoNr, @newKtoNr %></td>
-    </tr>
     <tr>
       <td>Kreditlimit:</td>
       <td><%= text_field_tag :kreditlimit %></td>
@@ -71,9 +87,11 @@
   </table>
   
   <br />
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %>
   
 <% end %>
+
+<%= link_to "Abbrechen", "/OZBPerson/"+params[:id]+"/Konto", :class => "cancel_link" %>
+<%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %> 
 
 <script>
   $(function() {

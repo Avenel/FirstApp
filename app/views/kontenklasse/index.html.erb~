@@ -11,7 +11,7 @@
   </tr>
 
   <% i = 0 %>
-  <% @kontoklassen.each do |kkl| %>
+  <% @kontenklassen.each do |kkl| %>
     <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
     <tr style="background:<%= bg_color %>;">
       <td><%= kkl.kkl %></td>

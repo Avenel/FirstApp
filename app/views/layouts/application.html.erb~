@@ -53,7 +53,6 @@
 </head>
 <body>
   <p id="notice"><%= notice %></p>
-  <p><%= notice.inspect %></p>
   <div class="content">
   <%= yield %>  
 </div>

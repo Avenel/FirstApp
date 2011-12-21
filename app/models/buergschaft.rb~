@@ -14,24 +14,21 @@ class Buergschaft < ActiveRecord::Base
     person = nil
     
     # Bürgschafter
-    if self.pnrB.nil? then    
+    if self.pnrB.nil? then
       names = bName.split(",")
       self.pnrB = find_by_name(names[0], names[-1])
-      person = Person.find(self.pnrB)
+      person = Person.where("pnr = ?", self.pnrB)
+      
       if self.pnrB == 0 then
         self.pnrB = nil
         errors.add("", "Personalnummer oder Name des Bürgschafters konnte nicht gefunden werden.")
       end
     else
-      person = Person.find(self.pnrB)
+      person = Person.where("pnr = ?", self.pnrB)
     end
    
     if person.nil? then 
       errors.add("", "Personalnummer konnte in der Datenbank nicht gefunden werden.")
-    else
-      if person.rolle != "B" then 
-        errors.add("", "Es sind nur Bürgschafter erlaubt.")
-      end
     end
     
     # Gesellschafter
@@ -40,13 +37,15 @@ class Buergschaft < ActiveRecord::Base
     
       names = gName.split(",")
       self.mnrG = find_by_name(names[0], names[-1])
+      person = Person.where("pnr = ?", self.mnrG)
+      
       if self.mnrG == 0 then
         self.mnrG = nil
         errors.add("", "Mitgliedsnummer oder Name des Gesellschafters konnte nicht gefunden werden.")
       end
       
     else
-      person = Person.find(self.mnrG)
+      person = Person.where("pnr = ?", self.mnrG)
     end
     
     if person.nil? then 
@@ -71,6 +70,20 @@ class Buergschaft < ActiveRecord::Base
       errors.add("", "Bitte geben Sie einen Sicherheitsbetrag größer 0 an.")
     end
     
+    # sichAbDatum
+    if !self.sichAbDatum.nil? then
+      if self.sichAbDatum.to_s.match('\d\d\d\d-\d\d-\d\d').nil? then
+        errors.add("", "Bitte geben sie das sichAbDatum im Format: yyyy-mm-dd an.")
+      end
+    end
+    
+    # sichEndDatum
+    if !self.sichEndDatum.nil? then
+      puts self.sichEndDatum.to_s
+      if self.sichEndDatum.to_s.match('\d\d\d\d-\d\d-\d\d').nil? then
+        errors.add("", "Bitte geben sie das sichEndDatum im Format: yyyy-mm-dd an.")
+      end
+    end
     
     return errors
   end

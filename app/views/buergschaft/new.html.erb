@@ -103,9 +103,7 @@
     var availableTagsB = [
       <% tags = String.new %>
       <% Person.all.each do |person| %>
-        <% if person.rolle.to_str == 'B' then %>
-          <% tags += "'" + person.name.to_s + ", " + person.vorname.to_s + "'," %>
-        <% end %>
+        <% tags += "'" + person.name.to_s + ", " + person.vorname.to_s + "'," %>
       <% end %>
       <%= tags.chop %>
       ];
