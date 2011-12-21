@@ -11,7 +11,9 @@ class OZBPerson < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :mnr, :ueberPnr, :email, :password, :password_confirmation, :remember_me, :passwort, :pwAendDatum, :gesperrt,
                   :canEditA, :canEditB, :canEditC, :canEditD # A: OZBPersonenverwaltung, B: Kontenverwaltung, C: Veranstaltung und Teilnahmeverwaltung,
-                                                             # D:Tabellen (Veranstaltung, Kontoklassen, Projektgruppen)
+                                                             # D:Tabellen (Veranstaltung, Kontoklassen, Projektgruppen)          
+                                                                                                    
+  
     
   has_one :Mitglied, :foreign_key => :mnr, :dependent => :destroy  # Done, getestet
   has_one :Student, :foreign_key => :mnr, :dependent => :destroy # Done, ungetestet

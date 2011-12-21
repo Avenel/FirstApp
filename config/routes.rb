@@ -7,7 +7,7 @@ OZB::Application.routes.draw do
   match '/OZBPerson' => 'OZBPerson#index'
   match '/OZBPerson/new' => 'OZBPerson#new'
   match '/OZBPerson/new' => 'OZBPerson#searchOZBPerson'
-  match '/OZBPerson/save' => 'OZBPerson#save'
+  match '/OZBPerson/save' => 'OZBPerson#create'
 	match '/OZBPerson/:id' => 'OZBPerson#edit', :via => :GET
 	match '/OZBPerson/:id' => 'OZBPerson#save', :via => :POST  
   match '/OZBPerson/:id/delete' => 'OZBPerson#delete'
