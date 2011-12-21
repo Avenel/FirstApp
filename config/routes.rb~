@@ -24,7 +24,7 @@ OZB::Application.routes.draw do
   # Tanlisten
   match '/OZBPerson/:id/Tanlisten' => "index#error_404"
   
-  # Kontoklassen
+  # Kontenklassen
   match '/kontenklasse' => 'kontenklasse#index'
   match '/kontenklasse/new' => 'kontenklasse#new'
   match '/kontenklasse/save' => 'kontenklasse#create'

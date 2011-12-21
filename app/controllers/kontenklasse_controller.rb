@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class KontenklasseController < ApplicationController
 
 	before_filter :authenticate_OZBPerson!

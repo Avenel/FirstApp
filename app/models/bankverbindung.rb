@@ -9,4 +9,8 @@ class Bankverbindung < ActiveRecord::Base
   belongs_to :Person
   has_one :EEKonto, :foreign_key => :bankId # Done, getestet
 
+
+  def validate!
+  end
+
 end

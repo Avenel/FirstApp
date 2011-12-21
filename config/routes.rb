@@ -14,9 +14,9 @@ OZB::Application.routes.draw do
   match '/OZBPerson/:id/Konto' => 'OzbKonto#index'
   match '/OZBPerson/:id/Konto/:typ/new' => 'OzbKonto#new'
   match '/buergschaften/Konto/:typ/new' => 'OzbKonto#searchKtoNr'
-  match '/OZBPerson/:id/Konto/:typ' => 'OzbKonto#save', :via => :POST
+  match '/OZBPerson/:id/Konto/:typ' => 'OzbKonto#create', :via => :POST
   match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#edit', :via => :GET
-  match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#save', :via => :POST
+  match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#update', :via => :POST
   match '/OZBPerson/:id/Konto/:typ/:ktoNr/delete' => 'OzbKonto#delete'
   match '/OZBPerson/:id/Konto/:typ/:ktoNr/buchungen' => 'OzbKonto#show', :via => :GET
   match '/OZBPerson/:id/Daten' => 'index#error_404'

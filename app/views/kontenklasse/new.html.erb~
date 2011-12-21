@@ -2,11 +2,11 @@
 <h2>Neu anlegen</h2>
 
 
-<%= form_for @kontoklasse, :url => { :action => "create" }, :html => {:id => "newForm"}  do |f| %>
+<%= form_for @kontenklasse, :url => { :action => "create" }, :html => {:id => "newForm"}  do |f| %>
 
   <% if !@errors.nil? && @errors.any? %>
   <div id="error_explanation">
-    <h2><%= @errors.count %> Fehler <br /> Konnte keine Kontoklasse anlegen, weil:</h2>
+    <h2><%= @errors.count %> Fehler <br /> Konnte keine Kontenklasse anlegen, weil:</h2>
 
     <ul>
       <% @errors.full_messages.each do |msg| %>
@@ -18,7 +18,7 @@
 
   <table>
     <tr>
-      <td><b><%= label_tag "Kontoklasse:" %></b></td>
+      <td><b><%= label_tag "Kontenklasse:" %></b></td>
       <td><%= f.text_field :kkl %></td>
     </tr>
   
@@ -33,10 +33,11 @@
     </tr>
   </table>
   
-  <%= link_to "Abbrechen", "/kontoklasse", :class => "cancel_link" %>
-  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %>  
+
 <% end %>
 
+  <%= link_to "Abbrechen", "/kontenklasse", :class => "cancel_link" %>
+  <%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %>  
 
 <script>
   $(function() {

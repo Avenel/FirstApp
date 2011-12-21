@@ -47,6 +47,7 @@ class KontenklasseController < ApplicationController
   def update
     if current_OZBPerson.canEditD then
       @kontenklasse = Kontenklasse.find(params[:id])
+      @kontenklasse.attributes = params[:kontenklasse]
       @errors = @kontenklasse.validate!
       
       if !@errors.nil? && @errors.any? then
