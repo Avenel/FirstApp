@@ -7,7 +7,7 @@ class Person < ActiveRecord::Base
    attr_accessible   :pnr, :rolle, :name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
                      :ort, :vermerk, :email, :antragsdatum, :aufnahmedatum, :austrittsdatum
                      
-   validates_presence_of :name, :aufnahmedatum, :email
+   validates_presence_of :name, :antragsdatum
 
    #validates :email, :EmailValidator => true
 

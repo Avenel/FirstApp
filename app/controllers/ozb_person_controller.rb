@@ -43,47 +43,81 @@ class OZBPersonController < ApplicationController
   
   def update
     if current_OZBPerson.canEditB then
+      @OZBPerson = OZBPerson.find(params[:mnr])
+      @Person = Person.find(@OZBPerson.ueberPnr)
+      @Telefon = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Tel"})
+      @Fax = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Fax"})
+      @Person.name = params[:name]
+      @Person.vorname = params[:vorname]
+      @OZBPerson.email = params[:email]
+      if params[:password] != "********"
+        @OZBPerson.password = params[:password]
+      end
+      @Person.geburtsdatum = Date.parse(params[:gebDatum])
+      @Person.strasse = params[:strasse]
+      @Person.hausnr = params[:hausnr]
+      @Person.plz = params[:plz]
+      @Person.ort = params[:ort]
+      @Person.antragsdatum = params[:antragsdatum]
+      @Person.aufnahmedatum = params[:aufnahmedatum]
+      
+      case @Person.rolle
+      when "M"
+        @Mitglied = Mitglied.find(@OZBPerson.mnr)
+        @Mitglied.rvDatum = params[:rvDatum]
+        @Mitglied.save!
+      when "F"
+        @Foerdermitglied = Foerdermitglied.find(@Person.pnr)
+        @Foerdermitglied.region = params[:region]
+        @Foerdermitglied.foerderbeitrag = params[:foerderbeitrag]
+        @Foerdermitglied.save!
+      when "P"
+        @Partner = Partner.find(@OZBPerson.mnr)
+        @Partner.mnrO = params[:partner]
+        @Partner.berechtigung = params[:berechtigung]
+        @Partner.save!
+      when "G"
+        @Gesellschafter = Gesellschafter.find(@OZBPerson.mnr)
+        @Gesellschafter.faSteuerNr = params[:faSteuerNr]
+        @Gesellschafter.faLfdNr = params[:faLfdNr]
+        @Gesellschafter.wohnsitzFinanzamt = params[:wohnsitzFinanzamt]
+        @Gesellschafter.notarPnr = params[:notarPnr]
+        @Gesellschafter.beurkDatum = params[:beurkDatum]
+        @Gesellschafter.save!
+      when "S"
+        @Student = Student.find(@OZBPerson.mnr)
+        @Student.ausbildBez = params[:ausbildBez]
+        @Student.institutName = params[:institutName]
+        @Student.studienort = params[:studienort]
+        @Student.studienbeginn = params[:studienbeginn]
+        @Student.studienende = params[:studienende]
+        @Student.abschluss = params[:abschluss]
+        @Student.save!
+      end
+      
       begin
-        @OZBPerson = OZBPerson.find(params[:mnr])
-        @Person = Person.find(@OZBPerson.ueberPnr)
-        @Telefon = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Tel"})
-        @Fax = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Fax"})
-        @Person.rolle = params[:rolle]
-        @Person.name = params[:name]
-        @Person.vorname = params[:vorname]
-        @Person.geburtsdatum = Date.parse(params[:gebDatum])
-        @OZBPerson.email = params[:email]
-        if params[:password] != ""
-          @OZBPerson.password = params[:password]
-        end
-        @Person.strasse = params[:strasse]
-        @Person.plz = params[:plz]
-        @Person.ort = params[:ort]
-        begin
-          @Telefon[0].telefonNr = params[:telefon]
-          @Telefon.save!
-        rescue
-          #Telefon hinzufuegen
-          if params[:telefon].length > 0
-            @new_Telefon = Telefon.create( :pnr => @Person.pnr, :telefonNr => params[:telefon], :telefonTyp => "Tel" )
-            @new_Telefon.save!
-          end
-        end      
-        begin
-          @Fax[0].telefonNr = params[:fax]
-          @Fax.save!
-        rescue
-          #Fax hinzufuegen
-          if params[:fax].length > 0
-            @new_Fax = Telefon.create( :pnr => @Person.pnr, :telefonNr => params[:fax], :telefonTyp => "Fax" )
-            @new_Fax.save!
-          end
-        end
-        @OZBPerson.save!
-        @Person.save!
+        @Telefon[0].telefonNr = params[:telefon]
+        @Telefon.save!
       rescue
-                                                         
-      end 
+        #Telefon hinzufuegen
+        if params[:telefon].length > 0
+          @new_Telefon = Telefon.create( :pnr => @Person.pnr, :telefonNr => params[:telefon], :telefonTyp => "Tel" )
+          @new_Telefon.save!
+        end
+      end      
+      begin
+        @Fax[0].telefonNr = params[:fax]
+        @Fax.save!
+      rescue
+        #Fax hinzufuegen
+        if params[:fax].length > 0
+          @new_Fax = Telefon.create( :pnr => @Person.pnr, :telefonNr => params[:fax], :telefonTyp => "Fax" )
+          @new_Fax.save!
+        end
+      end
+      @OZBPerson.save!
+      @Person.save!
+
       redirect_to :action => "index"
     else
       redirect_to "/"
@@ -94,31 +128,14 @@ class OZBPersonController < ApplicationController
     if current_OZBPerson.canEditB then
       searchOZBPerson()
       @Rollen = @@Rollen
+      @new_Person = Person.new
+      @new_OZBPerson = OZBPerson.new
+      @new_Student = Student.new
+      @new_Foerdermitglied = Foerdermitglied.new
+      @new_Gesellschafter = Gesellschafter.new
+      @new_Partner = Partner.new
+      @new_Mitglied = Mitglied.new     
       
-      @tempNames = Array.new
-      @tempNames.push("")
-      @tempNames.push("")
-      @tempNames.push("")
-      
-      @tempStudentNames = Array.new
-      @tempStudentNames.push("")
-      @tempStudentNames.push("")
-      @tempStudentNames.push("")
-      @tempStudentNames.push("")
-      @tempStudentNames.push("")
-      
-      @tempGesellschafterNames = Array.new
-      @tempGesellschafterNames.push("")
-      @tempGesellschafterNames.push("")
-      @tempGesellschafterNames.push("")
-      
-      @tempFoerdermitgliedNames = Array.new
-      @tempFoerdermitgliedNames.push("")
-      @tempFoerdermitgliedNames.push("")
-      
-      @tempPartnerNames = Array.new
-      @tempPartnerNames.push("")
-      @tempPartnerNames.push("")
     else
       redirect_to "/"
     end
@@ -135,20 +152,32 @@ class OZBPersonController < ApplicationController
   def create
     @errors = Array.new
     
+    @new_Person = Person.new
+    @new_OZBPerson = OZBPerson.new
+    @new_Student = Student.new
+    @new_Foerdermitglied = Foerdermitglied.new
+    @new_Gesellschafter = Gesellschafter.new
+    @new_Partner = Partner.new
+    @new_Mitglied = Mitglied.new     
+    
     #Person erstellen
     @new_Person = Person.create( :rolle => params[:rolle], :name => params[:name], :vorname => params[:vorname], :geburtsdatum => params[:gebDatum],
-                                  :strasse => params[:strasse], :plz => params[:plz], :ort => params[:ort], :antragsdatum => params[:antragsdatum],
+                                  :strasse => params[:strasse], :hausnr => params[:hausnr], :plz => params[:plz], :ort => params[:ort], :antragsdatum => params[:antragsdatum],
                                   :aufnahmedatum => params[:aufnahmedatum] )
   
     #Fehler aufgetreten?
-    @errors.push(@new_Person.errors)
+    if !@new_Person.errors.empty? then
+      @errors.push(@new_Person.errors)
+    end
     
     #Login erstellen
     @new_OZBPerson = OZBPerson.create( :ueberPnr => @new_Person.pnr, :email => params[:email], :password => params[:passwort] )
   
     #Fehler aufgetreten?
-    @errors.push(@new_OZBPerson.errors)
-    
+    if !@new_OZBPerson.errors.empty? then
+      @errors.push(@new_OZBPerson.errors)
+    end
+        
     #Telefon hinzufuegen
     if params[:telefon].length > 0
       @new_Telefon = Telefon.create( :pnr => @new_Person.pnr, :telefonNr => params[:telefon], :telefonTyp => "Tel" )
@@ -170,7 +199,9 @@ class OZBPersonController < ApplicationController
                                                    :notarPnr => params[:notarPnr], 
                                                    :beurkDatum => params[:beurkDatum] )
       #Fehler aufgetreten?
-      @errors.push(@new_Gesellschafter.errors)
+      if !@new_Gesellschafter.errors.empty? then
+        @errors.push(@new_Gesellschafter.errors)
+      end
     when "S"
       @new_Student = Student.create( :mnr => @new_OZBPerson.mnr,
                                      :ausbildBez => params[:ausbildBez],
@@ -180,54 +211,34 @@ class OZBPersonController < ApplicationController
                                      :studienende => params[:studienende],
                                      :abschluss => params[:abschluss] )
       #Fehler aufgetreten?
-      @errors.push(@new_Student.errors)
+      if !@new_Student.errors.empty? then
+        @errors.push(@new_Student.errors)
+      end
     when "M"
       @new_Mitglied = Mitglied.create( :mnr => @new_OZBPerson.mnr,
                                        :rvDatum => params[:rvDatum] )
       #Fehler aufgetreten?
-      @errors.push(@new_Mitglied.errors)
+      if !@new_Mitglied.errors.empty? then
+        @errors.push(@new_Mitglied.errors)
+      end
     when "P"
       @new_Partner = Partner.create( :mnr => @new_OZBPerson.mnr,
                                      :mnrO => params[:partner],
                                      :berechtigung => params[:berechtigung] )
       #Fehler aufgetreten?
-      @errors.push(@new_Partner.errors)
+      if !@new_Partner.errors.empty? then
+        @errors.push(@new_Partner.errors)
+      end
     when "F"
       @new_Foerdermitglied = Foerdermitglied.create( :pnr => @new_Person.pnr, 
                                                      :region => params[:region],
                                                      :foerderbeitrag => params[:foerderbeitrag] )
       #Fehler aufgetreten?
-      @errors.push(@new_Foerdermitglied.errors)
+      if !@new_Foerdermitglied.errors.empty? then
+        @errors.push(@new_Foerdermitglied.errors)
+      end
     end
-    if !@errors.nil? && @errors.any? then
-      searchOZBPerson()
-      @Rollen = @@Rollen
-      @tempNames = Array.new
-      @tempNames.push("")
-      @tempNames.push("")
-      @tempNames.push("")
-      
-      @tempStudentNames = Array.new
-      @tempStudentNames.push("")
-      @tempStudentNames.push("")
-      @tempStudentNames.push("")
-      @tempStudentNames.push("")
-      @tempStudentNames.push("")
-      
-      @tempGesellschafterNames = Array.new
-      @tempGesellschafterNames.push("")
-      @tempGesellschafterNames.push("")
-      @tempGesellschafterNames.push("")
-      
-      @tempFoerdermitgliedNames = Array.new
-      @tempFoerdermitgliedNames.push("")
-      @tempFoerdermitgliedNames.push("")
-      
-      @tempPartnerNames = Array.new
-      @tempPartnerNames.push("")
-      @tempPartnerNames.push("")
-      render "new"
-    else  
+    if @errors.empty? then      
       #Datensaetze speichern
       @new_Person.save!
       @new_OZBPerson.save!
@@ -245,63 +256,14 @@ class OZBPersonController < ApplicationController
         @new_Foerdermitglied.save!
       end      
       
-      redirect_to :action => "index", :notce => "Person erfolgreich angelegt."  
+      redirect_to :action => "index", :notice => "Person erfolgreich angelegt."
+    else
+      searchOZBPerson()
+      @Rollen = @@Rollen      
+      render "new"  
     end 
       
-  end
-  
-	def save
-    if current_OZBPerson.canEditB then
-      begin
-        @OZBPerson = OZBPerson.find(params[:mnr])
-        @Person = Person.find(@OZBPerson.ueberPnr)
-        
-      
-        @Telefon = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Tel"})
-        @Fax = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Fax"})
-        @Person.rolle = params[:rolle]
-        @Person.name = params[:name]
-        @Person.vorname = params[:vorname]
-        @Person.geburtsdatum = Date.parse(params[:gebDatum])
-        @OZBPerson.email = params[:email]
-        if params[:password] != ""
-          @OZBPerson.password = params[:password]
-        end
-        @Person.strasse = params[:strasse]
-        @Person.plz = params[:plz]
-        @Person.ort = params[:ort]
-        begin
-          @Telefon[0].telefonNr = params[:telefon]
-          @Telefon.save!
-        rescue
-          #Telefon hinzufuegen
-          if params[:telefon].length > 0
-            @new_Telefon = Telefon.create( :pnr => @Person.pnr, :telefonNr => params[:telefon], :telefonTyp => "Tel" )
-            @new_Telefon.save!
-          end
-        end      
-        begin
-          @Fax[0].telefonNr = params[:fax]
-          @Fax.save!
-        rescue
-          #Fax hinzufuegen
-          if params[:fax].length > 0
-            @new_Fax = Telefon.create( :pnr => @Person.pnr, :telefonNr => params[:fax], :telefonTyp => "Fax" )
-            @new_Fax.save!
-          end
-        end
-        @OZBPerson.save!
-        @Person.save!
-      rescue
-
-			  
-                                                     			
-      end 
-	    redirect_to :action => "index"
-	  else
-	    redirect_to "/"
-	  end
-  end
+  end	
   
   def show
   end

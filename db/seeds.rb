@@ -2,12 +2,12 @@
 
 # Personen-Beziehungen: Telefon, Administrator, Partner, Veranstaltung, Teilnahme, Buergschaft
   
-person = Person.create( :rolle => :M, :name => "Mustermann", :vorname => "Max" )
-person2 = Person.create( :rolle => :P, :name => "Mueller", :vorname => "Hermann" )
-person3 = Person.create( :rolle => :S, :name => "Müller", :vorname => "Lieschen" )
-person4 = Person.create( :rolle => :M, :name => "Neuer", :vorname => "Manuel" )
-person5 = Person.create( :rolle => :G, :name => "Kahn", :vorname => "Oliver" )
-person6 = Person.create( :rolle => :F, :name => "Schneider", :vorname => "Rudi" )
+person = Person.create( :rolle => :M, :name => "Mustermann", :vorname => "Max", :antragsdatum => Date.new() )
+person2 = Person.create( :rolle => :P, :name => "Mueller", :vorname => "Hermann", :antragsdatum => Date.new() )
+person3 = Person.create( :rolle => :S, :name => "Müller", :vorname => "Lieschen", :antragsdatum => Date.new() )
+person4 = Person.create( :rolle => :M, :name => "Neuer", :vorname => "Manuel", :antragsdatum => Date.new() )
+person5 = Person.create( :rolle => :G, :name => "Kahn", :vorname => "Oliver", :antragsdatum => Date.new() )
+person6 = Person.create( :rolle => :F, :name => "Schneider", :vorname => "Rudi", :antragsdatum => Date.new() )
    
 tel = Telefon.create( :pnr => person.pnr, :telefonNr => "072458292", :telefonTyp => "Fest" )
 tel = Telefon.create( :pnr => person.pnr, :telefonNr => "072458293", :telefonTyp => "Fest" )

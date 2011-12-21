@@ -4,16 +4,90 @@
 <%= form_tag({:action => "edit"}, :id=>"editForm") do %>
 
 <table>
-
+	<tr>
+		<td><%= label_tag "Name:" %></td>
+		<td><%= text_field_tag :name, @Person.name %></td>
+		<td />
+	</tr>
+	
+	<tr>
+		<td><%= label_tag "Vorname:" %></td>
+		<td><%= text_field_tag :vorname, @Person.vorname %></td>
+		<td />
+	</tr>
+	
+	<tr>
+		<td><%= label_tag "Email:" %></td>
+		<td><%= email_field_tag :email, @OZBPerson.email %></td>
+		<td />
+	</tr>	
+	
+	<tr>
+		<td><%= label_tag "Passwort:" %></td>
+		<td><%= password_field_tag :passwort, "********" %></td>
+		<td />
+	</tr>	
+	  
+	<tr>
+		<td><%= label_tag "Geburtsdatum:" %></td>
+		<td><%= text_field_tag :gebDatum, @Person.geburtsdatum %></td>
+		<td />
+	</tr>  
+	  
+	<tr>
+		<td><%= label_tag "Straße:" %></td>
+		<td><%= text_field_tag :strasse, @Person.strasse %></td>
+		<td />
+	</tr>
+	
+	<tr>
+		<td><%= label_tag "Hausnummer:" %></td>
+		<td><%= text_field_tag :hausnr, @Person.hausnr %></td>
+		<td />
+	</tr>
+	
+	<tr>
+		<td><%= label_tag "PLZ:" %></td>
+		<td><%= text_field_tag :plz, @Person.plz %></td>
+		<td />
+	</tr>
+	
+	<tr>
+		<td><%= label_tag "Ort:" %></td>
+		<td><%= text_field_tag :ort, @Person.ort %></td>
+		<td />
+	</tr>
+	
+	<tr>
+		<td><%= label_tag "Telefon:" %></td>
+		<% if @Telefon[0] != nil %>
+			<td><%= text_field_tag :telefon, @Telefon[0].telefonNr %></td>
+		<% else %>
+			<td><%= text_field_tag :telefon %></td>
+		<% end %>
+		<td />
+	</tr>
+	
+	<tr>
+		<td><%= label_tag "Fax:" %></td>
+		<% if @Fax[0] != nil %>		
+			<td><%= text_field_tag :fax, @Fax[0].telefonNr %></td>
+		<% else %>
+			<td><%= text_field_tag :fax %></td>
+		<% end %>
+		<td />
+	</tr>
 	<tr>
 		<td><%= label_tag "person:" %></td>
 		<td><%= label_tag :mnr, @OZBPerson.mnr %></td>
+		<td />
     <%= hidden_field_tag :mnr, @OZBPerson.mnr %>
 	</tr>
   
   	<tr>
     	<td><%= label_tag "Rolle:" %></td>
         <td><%= text_field_tag :rolle, @Rollen2.fetch(@Person.rolle), :disabled => true %></td>
+		<td />
   	</tr>
 
     <% if @Student != nil then %>
@@ -21,31 +95,37 @@
       <tr>
 		    <td><%= label_tag "Ausbildungsbezeichnung:" %></td>
 		    <td><%= text_field_tag :ausbildBez, @Student.ausbildBez %></td>
+			<td />
 	    </tr>
 
   		<tr>
 		    <td><%= label_tag "Institut:" %></td>
 		    <td><%= text_field_tag :institutName, @Student.institutName %></td>
+			<td />
 	    </tr>
 
   		<tr>
 		    <td><%= label_tag "Studienort:" %></td>
 		    <td><%= text_field_tag :studienort, @Student.studienort %></td> 
+			<td />
 	    </tr>
 
   		<tr>
 		  <td><%= label_tag "Studienbeginn:" %></td>
 		  <td><%= text_field_tag :studienbeginn, @Student.studienbeginn %></td>  
+			<td />
 	    </tr>
 
   		<tr>
 		  <td><%= label_tag "Studienende:" %></td>
 		  <td><%= text_field_tag :studienende, @Student.studienende %></td>  
+			<td />
 	    </tr>
 
   		<tr>
 		  <td><%= label_tag "Abschluss:" %></td>
 		  <td><%= text_field_tag :abschluss, @Student.abschluss %></td>  
+			<td />
 	    </tr>
   	</div>
   	<% end %>
@@ -55,27 +135,31 @@
   		<tr>
 			  <td><%= label_tag "FA Steuernummer:" %></td>
 			  <td><%= text_field_tag :faSteuerNr, @Gesellschafter.faSteuerNr %></td>  
+			<td />
 		  </tr>
 
   		<tr>
 			  <td><%= label_tag "FA Lfd. Nr.:" %></td>
 			  <td><%= text_field_tag :faLfdNr, @Gesellschafter.faLfdNr %></td>  
+			<td />
 		  </tr>
 
   		<tr>
 			  <td><%= label_tag "Wohnsitzfinanzamt:" %></td>
-			  <td><%= text_field_tag :wohnsitzfinanzamt, @Gesellschafter.wohnsitzfinanzamt %></td>  
+			  <td><%= text_field_tag :wohnsitzFinanzamt, @Gesellschafter.wohnsitzFinanzamt %></td>  
+			<td />
 		  </tr>
 
   		<tr>
 			  <td><%= label_tag "Notar:" %></td>
-			  <td><%= text_field_tag :notartdnr, @Gesellschafter.notartdnr %></td>
+			  <td><%= text_field_tag :notarPnr, @Gesellschafter.notarPnr %></td>
 			  <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchNotarFrame", :class => "searchlink" %></td>  
 		  </tr>
 
   		<tr>
 			  <td><%= label_tag "Beurkundungsdatum:" %></td>
-			  <td><%= text_field_tag :beurkundungsdatum, @Gesellschafter.beurkundungsdatum %></td>  
+			  <td><%= text_field_tag :beurkDatum, @Gesellschafter.beurkDatum %></td>  
+			<td />
 		  </tr>
   	</div>
   	<% end %>
@@ -85,19 +169,23 @@
   		<tr>
 			  <td><%= label_tag "Region" %></td>
 			  <td><%= text_field_tag :region, @Foerdermitglied.region %></td>  
+			<td />
 		  </tr>
 
   		<tr>
 			  <td><%= label_tag "Förderbeitrag" %></td>
 			  <td><%= text_field_tag :foerderbeitrag, @Foerdermitglied.foerderbeitrag %></td>  
+			<td />
 		  </tr>
   	</div>
   	<% end %>
   	
   	<% if @Mitglied != nil %>
-  		<tr>
+  	<div id="Mitglied">
+  	  		<tr>
 			  <td><%= label_tag "RV Datum:" %></td>
 			  <td><%= text_field_tag :rvDatum, @Mitglied.rvDatum %></td>
+			<td />
 		  </tr>
   	</div>
   	<% end %>
@@ -113,67 +201,22 @@
 		  <tr>
 			  <td><%= label_tag "Berechtigung" %></td>
 			  <td><%= text_field_tag :berechtigung, @Partner.berechtigung %></td>
+			<td />
 		  </tr>
   	</div>
   	<% end %>
-	
- 	<tr>
-		<td><%= label_tag "Name:" %></td>
-		<td><%= text_field_tag :name, @Person.name %></td>
-	</tr>
-	
-	<tr>
-		<td><%= label_tag "Vorname:" %></td>
-		<td><%= text_field_tag :vorname, @Person.vorname %></td>
-	</tr>
-	
-	<tr>
-		<td><%= label_tag "Email:" %></td>
-		<td><%= email_field_tag :email, @OZBPerson.email %></td>
-	</tr>	
-	
-	<tr>
-		<td><%= label_tag "passwort:" %></td>
-		<td><%= password_field_tag 'password', @OZBPerson.password %></td>
-	</tr>	
-	  
-	<tr>
-		<td><%= label_tag "Geburtsdatum:" %></td>
-		<td><%= text_field_tag :gebDatum, @Person.geburtsdatum %></td>
-	</tr>  
-	  
-	<tr>
-		<td><%= label_tag "Straße:" %></td>
-		<td><%= text_field_tag :strasse, @Person.strasse %></td>
-	</tr>
-	
-	<tr>
-		<td><%= label_tag "PLZ:" %></td>
-		<td><%= text_field_tag :plz, @Person.plz %></td>
-	</tr>
-	
-	<tr>
-		<td><%= label_tag "Ort:" %></td>
-		<td><%= text_field_tag :ort, @Person.ort %></td>
-	</tr>
-	
-	<tr>
-		<td><%= label_tag "Telefon:" %></td>
-		<% if @Telefon[0] != nil %>
-			<td><%= text_field_tag :telefon, @Telefon[0].telefonNr %></td>
-		<% else %>
-			<td><%= text_field_tag :telefon %></td>
-		<% end %>
-	</tr>
-	
-	<tr>
-		<td><%= label_tag "Fax:" %></td>
-		<% if @Fax[0] != nil %>		
-			<td><%= text_field_tag :fax, @Fax[0].telefonNr %></td>
-		<% else %>
-			<td><%= text_field_tag :fax %></td>
-		<% end %>
-	</tr>
+  	
+  	<tr>
+	  	<td><%= label_tag "Antragsdatum *:" %></td>
+	  	<td><%= text_field_tag :antragsdatum, @Person.antragsdatum %></td>  
+		<td />
+  	</tr>
+
+  	<tr>
+	  	<td><%= label_tag "Aufnahmedatum:" %></td>
+		<td><%= text_field_tag :aufnahmedatum, @Person.aufnahmedatum %></td>
+		<td />
+  	</tr>	   
 	
 </table>
 
