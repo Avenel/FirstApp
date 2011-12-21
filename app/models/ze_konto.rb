@@ -20,7 +20,7 @@ class ZEKonto < ActiveRecord::Base
     if self.ktoNr.nil? then
       errors.add("", "Bitte geben sie eine Kontonummer an.")
     else
-      if !self.ktoNr.match('\d+') then
+      if self.ktoNr.to_s.match(/[0-9]+/).nil? then
         erros.add("", "Die Kontonummer muss eine Zahl sein.")
       end
     end
@@ -29,14 +29,14 @@ class ZEKonto < ActiveRecord::Base
     if self.eeKtoNr.nil? then
       errors.add("", "Bitte geben sie ein EEKonto an.")
     else
-      if !self.ktoNr.match('\d+') then
+      if self.ktoNr.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die Kontonummer (EEKonto) muss eine Zahl sein.")
       end
     end
     
     # Projektgruppe
     if !self.pgNr.nil? then
-      if !self.pgNr.match('\d+') then
+      if self.pgNr.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die Projektgruppennummer muss eine Zahl sein.")
       end
     end
@@ -45,41 +45,28 @@ class ZEKonto < ActiveRecord::Base
     if self.zeNr.nil? then
       errors.add("", "Bitte geben sie ein ZE Nummer an.")
     else
-      if !self.zeNr.match('\d+') then
+      if self.zeNr.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die ZE Nummer muss eine Zahl sein.")
       end
     end
-        
-    # Kreditlimit
-    if !self.kreditlimit.nil? then
-      errors.add("", "Bitte geben sie ein gültiges Kreditlimit (>0) an.")
-    else
-      if !self.kreditlimit.match('\d+') then
-        errors.add("", "Bitte geben sie einen gültigen Zahlenwert > 0 an.")
-      else
-        if self.kreditlimit < 0 then
-          errors.add("", "Bitte geben Sie einen positiven Zahlenwert für das Kreditlimit an.")
-        end
-      end
-    end
-  
+      
     # zeAbDatum
     if !self.zeAbDatum.nil? then
-      if !self.zeAbDatum.match('\d\d\d\d-\d\d-\d\d') then
+      if self.zeAbDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/).nil? then
         errors.add("", "Bitte geben sie das ZE Ab-Datum im Format: yyyy-mm-dd an.")
       end
     end
     
     # zeEndeDatum
     if !self.zeEndDatum.nil? then
-      if !self.zeEndDatum.match('\d\d\d\d-\d\d-\d\d') then
+      if self.zeEndDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/).nil? then
         errors.add("", "Bitte geben sie das ZE End-Datum im Format: yyyy-mm-dd an.")
       end
     end
     
     # Betrag
     if !self.zeBetrag.nil? then
-      if !self.zeBetrag.match('\d+') then
+      if self.zeBetrag.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Der Betrag muss eine Zahl sein.")
       else
         if self.zeBetrag < 0 then
@@ -90,7 +77,7 @@ class ZEKonto < ActiveRecord::Base
   
     # Laufzeit
     if !self.laufzeit.nil? then
-      if !self.laufzeit.match('\d+') then
+      if self.laufzeit.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die Laufzeit muss eine Zahl sein.")
       else
         if self.laufzeit < 0 then
@@ -101,14 +88,14 @@ class ZEKonto < ActiveRecord::Base
   
     # ZahlModus
     if !self.zahlModus.nil? then
-      if !self.zahlModus.match('.') then
+      if self.zahlModus.to_s.match(/./).nil? then
         errors.add("", "Der Zahlmodus muss ein Buchstabe sein.")
       end
     end
     
     # Tilgungsrate
     if !self.tilgRate.nil? then
-      if !self.tilgRate.match('\d+') then
+      if self.tilgRate.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die Tilgungsrate muss eine Zahl sein.")
       else
         if self.tilgRate < 0 then
@@ -119,7 +106,7 @@ class ZEKonto < ActiveRecord::Base
     
     # Ansparrate
     if !self.ansparRate.nil? then
-      if !self.ansparRate.match('\d+') then
+      if self.ansparRate.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die Ansparrate muss eine Zahl sein.")
       else
         if self.ansparRate < 0 then
@@ -130,7 +117,7 @@ class ZEKonto < ActiveRecord::Base
     
     # Kdu Rate
     if !self.kduRate.nil? then
-      if !self.kduRate.match('\d+') then
+      if self.kduRate.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die kduRate muss eine Zahl sein.")
       else
         if self.kduRate < 0 then
@@ -141,7 +128,7 @@ class ZEKonto < ActiveRecord::Base
     
     # Rdu Rate
     if !self.rduRate.nil? then
-      if !self.rduRate.match('\d+') then
+      if self.rduRate.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die rduRate muss eine Zahl sein.")
       else
         if self.rduRate < 0 then

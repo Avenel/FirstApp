@@ -70,7 +70,6 @@ input {
   }
 
 .content {
-  min-height: 100% !important; 
   text-align:center; 
   width: 800px; 
   margin: 20px auto;
@@ -79,6 +78,10 @@ input {
   border-radius: 10px;
 }
 
+.actions {
+  border: none;
+  background: #FFFFFF;
+}
 
 .login_form input {
   width: auto;

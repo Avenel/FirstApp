@@ -1,25 +1,41 @@
 <h1>ZEKonto</h1>
 <h2>Neues ZEKonto</h2>
 
-<%= form_tag({:action => "save"}, :id=>"newForm") do %>
+<%= form_for @ozb_konto, :url => { :action => "create" }, :html => {:id => "newForm"}  do |f| %>
+
+  <% if !@errors.nil? && @errors.any? %>
+  <div id="error_explanation">
+    <h2><%= @error_count %> Fehler <br /> Konnte kein Konto anlegen, weil:</h2>
+
+    <ul>
+      <% @errors.each do |error| %>
+        <% if !error.nil? && error.any? %>
+          <% error.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
 
   <h2 style="margin-top:40px;">OZB-Konto</h2>
   <table>
     <tr>
       <td>Konto-Nr.:</td>
-      <td><%= label_tag :ozbKtoNr, @newKtoNr %> <%= hidden_field_tag :ozbKtoNr, @newKtoNr%></td>
+      <td><%= f.text_field :ktoNr %></td>
     </tr>
     <tr>
       <td>wSaldo:</td>
-      <td><%= text_field_tag :wSaldo %></td>
+      <td><%= f.text_field :wSaldo %></td>
     </tr>
     <tr>
       <td>pSaldo:</td>
-      <td><%= text_field_tag :pSaldo %></td>
+      <td><%= f.text_field :pSaldo %></td>
     </tr>
     <tr>
       <td>SaldoDatum:</td>
-      <td><%= text_field_tag :saldoDatum, "", :id => "saldoDatum" %></td>
+      <td><%= f.text_field :saldoDatum, :id => "saldoDatum" %></td>
     </tr>
     <tr>
       <td>KKL:</td>
@@ -32,11 +48,6 @@
                   :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus -->
   <h2 style="margin-top:20px;">ZE-Konto</h2>
   <table>
-    <tr>
-      <td>Konto-Nr.:</td>
-      <td><%= label_tag :zeKtoNr, @newKtoNr %></td>
-      <td />
-    </tr>
     <tr>
       <td>ZE-Nr.:</td>
       <td><%= text_field_tag :zeNr %></td>
@@ -100,11 +111,15 @@
   </table>  
   
   <br />
-
-  <%= link_to "Abbrechen", "../", :class => "cancel_link" %>
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %>
   
 <% end %>
+
+<table class="actions">
+  <tr>
+    <td><%= link_to "Abbrechen", "../", :class => "cancel_link" %></td>
+    <td><%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %></td>
+  </tr>
+</table>
 
 <div style="display:none">
   <div id="searchKtoNrFrame">
@@ -124,13 +139,13 @@
 <script>
   $(function() {
     $( "#saldoDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'dd-mm-yy'
     });
     $( "#zeAbDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'dd-mm-yy'
     });
     $( "#zeEndDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'dd-mm-yy'
     });
   });
 </script>

@@ -18,7 +18,7 @@ class EEKonto < ActiveRecord::Base
     if self.ktoNr.nil? then
       errors.add("", "Bitte geben sie eine Kontonummer an.")
     else
-      if !self.ktoNr.to_s.match('\d+') then
+      if !self.ktoNr.to_s.match(/[0-9]+/) then
         errors.add("", "Die Kontonummer muss eine Zahl sein.")
       end
     end
@@ -32,7 +32,7 @@ class EEKonto < ActiveRecord::Base
     if self.kreditlimit.nil? then
       errors.add("", "Bitte geben sie ein gültiges Kreditlimit (>0) an.")
     else
-      if !self.kreditlimit.to_s.match('\d+') then
+      if !self.kreditlimit.to_s.match('/\d+') then
         errors.add("", "Bitte geben sie einen gültigen Zahlenwert > 0 an.")
       else
         if self.kreditlimit < 0 then

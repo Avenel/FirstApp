@@ -1,13 +1,29 @@
 <h1>EEKonto</h1>
 <h2>EEKonto editieren</h2>
 
-<%= form_tag({:action => "save"}, :id=>"editForm") do %>
+<%= form_for @ozb_konto, :url => { :action => "update" }, :html => {:id => "editForm", :method => "POST"}  do |f| %>
+
+  <% if !@errors.nil? && @errors.any? %>
+  <div id="error_explanation">
+    <h2><%= @error_count %> Fehler <br /> Konnte kein Konto anlegen, weil:</h2>
+
+    <ul>
+      <% @errors.each do |error| %>
+        <% if !error.nil? && error.any? %>
+          <% error.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
 
   <h2 style="margin-top:40px;">OZB-Konto</h2>
   <table>
     <tr>
       <td>Konto-Nr.:</td>
-      <td><%= label_tag :ozbKtoNr, @ozb_konto.ktoNr %> <%= hidden_field_tag :ozbKtoNr, @ozb_konto.ktoNr%></td>
+      <td><%= label_tag :ozbKtoNr, @ozb_konto.ktoNr %> <%= f.hidden_field :ktoNr%></td>
     </tr>
     <tr>
       <td>wSaldo:</td>
@@ -65,14 +81,13 @@
   <br />
   
   <%= link_to "Abbrechen", "../", :class => "cancel_link" %>
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok"  %>
-  
+  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok"  %>  
 <% end %>
 
 <script>
   $(function() {
     $( "#saldoDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'yy-mm-dd'
     });
   });
 </script>

@@ -43,9 +43,14 @@
   <% end %>
 </table>
 <br />
-<% if @ze_count < 4 then %>
-  <%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new", :class => "submit_ok" %>
-<% end %>
+
+<table class="actions">
+  <tr>
+    <% if @ze_count < 4 then %>
+      <td><%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new", :class => "submit_ok" %></td>
+    <% end %>
+  </tr>
+</table>
 
 <!-- :ktoNr, :bankId, :kreditlimit,  :id, :bankKtoNr, :blz, :bic, :iban, :bankName    -->
 
@@ -81,9 +86,12 @@
   <% end %>
 </table>
 <br />
-<% if @ee_count < 3 then %>
-  <%= link_to "Neues EE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/EE/new", :class => "submit_ok" %>
-<% end %>
 
-<br />
-<%= link_to "Zurück", "/Admin", :class => "cancel_link" %>
+<table class="actions">
+  <tr>
+    <td><%= link_to "Zurück", "/Admin", :class => "cancel_link" %></td>
+    <% if @ee_count < 3 then %>
+      <td><%= link_to "Neues EE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/EE/new", :class => "submit_ok" %></td>
+    <% end %>
+  </tr>
+</table>

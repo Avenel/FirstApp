@@ -1,4 +1,4 @@
-<h1>Kontoklassen</h1>
+<h1>Kontenklassen</h1>
 
 
 <table>
@@ -17,9 +17,9 @@
       <td><%= kkl.kkl %></td>
       <td><%= kkl.prozent %></td>
       <td><%= kkl.kklAbDatum %></td>
-      <% edit_link = "/kontoklasse/" + kkl.kkl.to_s %>
-      <% delete_link = "/kontoklasse/" + kkl.kkl.to_s + "/delete" %>
-      <% verlauf_link = "/kontoklasse/verlauf/" + kkl.kkl.to_s %>
+      <% edit_link = "/kontenklasse/" + kkl.kkl.to_s %>
+      <% delete_link = "/kontenklasse/" + kkl.kkl.to_s + "/delete" %>
+      <% verlauf_link = "/kontenklasse/verlauf/" + kkl.kkl.to_s %>
       <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
       <td><%= link_to "Löschen", delete_link, :class => "delete_link" %></td>
     </tr>
@@ -29,6 +29,6 @@
 
 <br />
 <%= link_to "Zurück", "/Admin", :class => "cancel_link" %>
-<%= link_to "Neue Kontoklasse hinzufügen", "/kontoklasse/new", :class => "submit_ok" %>
+<%= link_to "Neue Kontenklasse hinzufügen", "/kontenklasse/new", :class => "submit_ok" %>
 
 

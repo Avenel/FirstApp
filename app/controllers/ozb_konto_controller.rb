@@ -110,7 +110,7 @@ class OzbKontoController < ApplicationController
           @errors.push(@bankverbindung.validate!)
           
           # EE-Konto:  :ktoNr, :bankId, :kreditlimit
-          @eeKonto = EEKonto.new( :ktoNr => params[:ozb_konto][:ktoNr], :bankId => 1, :kreditlimit => params[:kreditlimit] )
+          @ee_konto = EEKonto.new( :ktoNr => params[:ozb_konto][:ktoNr], :bankId => 1, :kreditlimit => params[:kreditlimit] )
           @errors.push(@eeKonto.validate!)
         end
         
@@ -118,11 +118,19 @@ class OzbKontoController < ApplicationController
         # ZE Konto
         if params[:typ] == "ZE" then
           #ZE-Konto:  :ktoNr, :eeKtoNr, :pgNr, :zeNr, :zeAbDatum, :zeEndDatum, :zeBetrag, :laufzeit, :zahlModus, :tilgRate, :ansparRate, :kduRate, :rduRate, :zeStatus
-          @ze_konto = ZEKonto.new( :ktoNr => params[:ozbKtoNr], :eeKtoNr => params[:eeKtoNr], :pgNr => params[:id], :zeNr => params[:zeNr], 
-                                      :zeAbDatum => Date.parse(params[:zeAbDatum]), :zeEndDatum => Date.parse(params[:zeEndDatum]), 
+          @ze_konto = ZEKonto.new( :ktoNr => params[:ozbKtoNr], :eeKtoNr => params[:eeKtoNr], :pgNr => params[:id], :zeNr => params[:zeNr],  
                                       :zeBetrag => params[:zeBetrag], :laufzeit => params[:laufzeit], :zahlModus => params[:zahlModus], 
                                       :tilgRate => params[:tilgRate], :ansparRate => params[:ansparRate], :kduRate => params[:kduRate], 
                                       :rduRate => params[:rduRate], :zeStatus => params[:zeStatus] )
+
+          if !params[:zeAbDatum].nil? && params[:zeAbDatum] != "" then
+            @ze_konto.zeAbDatum = Date.parse(params[:zeAbDatum])
+          end
+          
+          if !params[:zeEndDatum].nil? && params[:zeEndDatum] != "" then
+            @ze_konto.zeEndDatum = Date.parse(params[:zeEndDatum])
+          end
+          
           @errors.push(@ze_konto.validate!)
         end
       end
@@ -140,6 +148,7 @@ class OzbKontoController < ApplicationController
           render "new_ee" 
         else
           if params[:typ] == "ZE" then
+            searchKtoNr
             render "new_ze"
           else
             redirect_to "/"
@@ -155,8 +164,8 @@ class OzbKontoController < ApplicationController
         
         if params[:typ] == "EE" then 
           @bankverbindung.save
-          @eeKonto.bankId = @bankverbindung.id
-          @eeKonto.save
+          @ee_konto.bankId = @bankverbindung.id
+          @ee_konto.save
         end
         
         if params[:typ] == "ZE" then 
@@ -173,13 +182,75 @@ class OzbKontoController < ApplicationController
   
   
   def update
-  
-  end
-  
-  
-  def save
+    if current_OZBPerson.canEditB then
+      @errors = Array.new
+      @ozb_konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
     
+      if params[:typ] == "EE" then 
+        @ee_konto = @ozb_konto.EEKonto.first
+        @bankverbindung = Bankverbindung.where( :id => @ee_konto.bankId ).first
+        
+        @ee_konto.kreditlimit = params[:kreditlimit]
+        @errors.push(@ee_konto.validate!)
+        
+        @bankverbindung.bankKtoNr = params[:bankKtoNr]
+        @bankverbindung.bankName = params[:bankName]
+        @bankverbindung.blz = params[:blz]
+        @bankverbindung.bic = params[:bic]
+        @bankverbindung.iban = params[:iban]
+        
+        @errors.push(@bankverbindung.validate!)
+      end
+      
+      if params[:typ] == "ZE" then
+        @ze_konto = ZEKonto.where( :ktoNr => params[:zeKtoNr] ).first
+        @ze_konto.zeEndDatum = params[:zeEndDatum]
+        @ze_konto.zahlModus = params[:zahlModus]
+        @ze_konto.tilgRate = params[:tilgRate]
+        @ze_konto.ansparRate = params[:ansparRate]
+        @ze_konto.kduRate = params[:kduRate]
+        @ze_konto.rduRate = params[:rduRate]
+        
+        @errors.push(@ze_konto.validate!)
+      end
+      
+      
+      # Auswertung der Validierung
+      @error_count = 0
+      @errors.each do |error| 
+        if !error.nil? && error.any?
+          @error_count += error.count 
+        end 
+      end
+      
+     
+      if @error_count > 0 then
+        if params[:typ] == "EE" then 
+          render "edit_ee" 
+        else
+          if params[:typ] == "ZE" then
+            searchKtoNr()
+            render "edit_ze"
+          else
+            redirect_to "/"
+          end
+        end        
+      else        
+        if params[:typ] == "EE" then 
+          @bankverbindung.save
+          @ee_konto.save
+        end        
+        if params[:typ] == "ZE" then 
+          @ze_konto.save
+        end
+        get_konten()
+        redirect_to :action => "index", :notice => "Konto erfolgreich angelegt."   
+      end
+    else
+      redirect_to "/"
+    end
   end
+  
   
   def edit
     if current_OZBPerson.canEditB then 

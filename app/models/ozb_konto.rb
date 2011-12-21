@@ -21,8 +21,8 @@ class OZBKonto < ActiveRecord::Base
     if self.ktoNr.nil? then
       errors.add("", "Bitte geben sie eine Kontonummer an.")
     else
-      if self.ktoNr.to_s.match('\d+').nil? then
-        erros.add("", "Die Kontonummer muss eine Zahl sein.")
+      if self.ktoNr.to_s.match(/[0-9]+/).nil? then
+        errors.add("", "Die Kontonummer muss eine Zahl sein.")
       end
     end
     
@@ -30,7 +30,7 @@ class OZBKonto < ActiveRecord::Base
     if self.mnr.nil? then
       errors.add("", "Bitte geben sie eine Mitgliedsnummer an.")
     else
-      if self.mnr.to_s.match('\d+').nil? then
+      if self.mnr.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Die Mitgliedsnummer muss eine Zahl sein.")
       else
         person = OZBPerson.find(self.mnr)
@@ -44,14 +44,14 @@ class OZBKonto < ActiveRecord::Base
     if self.ktoEinrDatum.nil? then
       errors.add("", "Bitte geben sie ein Kontoeinrichtungs-Datum an.")
     else
-      if self.ktoEinrDatum.to_s.match('\d\d\d\d-\d\d-\d\d').nil? then
+      if self.ktoEinrDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/).nil? then
         errors.add("", "Bitte geben sie das Kto-Einrichtungs-Datum im Format: yyyy-mm-dd an.")
       end
     end
     
     # Saldodatum
     if !self.saldoDatum.nil? then
-      if self.saldoDatum.to_s.match('\d\d\d\d-\d\d-\d\d').nil? then
+      if self.saldoDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/).nil? then
         errors.add("", "Bitte geben sie das Saldo-Datum im Format: yyyy-mm-dd an.")
       end
     end
@@ -60,7 +60,7 @@ class OZBKonto < ActiveRecord::Base
     if self.wSaldo.nil? then
       errors.add("", "Bitte geben sie einen gültigen Saldowert (>0) an.")
     else
-      if self.wSaldo.to_s.match('\d+').nil? then
+      if self.wSaldo.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Bitte geben sie einen gültigen Zahlenwert > 0 an.")
       else
         if self.wSaldo < 0 then
@@ -73,7 +73,7 @@ class OZBKonto < ActiveRecord::Base
     if self.pSaldo.nil? then
       errors.add("", "Bitte geben sie einen gültigen Punkte Saldowert (>0) an.")
     else
-      if self.pSaldo.to_s.match('\d+').nil? then
+      if self.pSaldo.to_s.match(/[0-9]+/).nil? then
         errors.add("", "Bitte geben sie einen gültigen Zahlenwert > 0 an.")
       else
         if self.pSaldo < 0 then

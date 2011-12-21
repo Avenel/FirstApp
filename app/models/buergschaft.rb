@@ -72,7 +72,7 @@ class Buergschaft < ActiveRecord::Base
     
     # sichAbDatum
     if !self.sichAbDatum.nil? then
-      if self.sichAbDatum.to_s.match('\d\d\d\d-\d\d-\d\d').nil? then
+      if self.sichAbDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/).nil? then
         errors.add("", "Bitte geben sie das sichAbDatum im Format: yyyy-mm-dd an.")
       end
     end
@@ -80,7 +80,7 @@ class Buergschaft < ActiveRecord::Base
     # sichEndDatum
     if !self.sichEndDatum.nil? then
       puts self.sichEndDatum.to_s
-      if self.sichEndDatum.to_s.match('\d\d\d\d-\d\d-\d\d').nil? then
+      if self.sichEndDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/).nil? then
         errors.add("", "Bitte geben sie das sichEndDatum im Format: yyyy-mm-dd an.")
       end
     end

@@ -83,14 +83,17 @@
   <br />
   
 <% end %>
-
-<%= link_to "Abbrechen", "/OZBPerson/"+params[:id]+"/Konto", :class => "cancel_link" %>
-<%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %> 
+<table class="actions">
+  <tr>
+    <td><%= link_to "Abbrechen", "/OZBPerson/"+params[:id]+"/Konto", :class => "cancel_link" %></td>
+    <td><%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok"  %></td>
+  </tr>
+</table>
 
 <script>
   $(function() {
     $( "#saldoDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'yy-mm-dd'
     });
   });
 </script>

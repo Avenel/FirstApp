@@ -27,7 +27,7 @@
 
 </table>
 
-<%= link_to "Zurück", "../", :class => "cancel_link" %>
+<%= link_to "Zurück", "/Admin", :class => "cancel_link" %>
 
 <!-- Seitennavigation -->
 <div class="paginateBox" >

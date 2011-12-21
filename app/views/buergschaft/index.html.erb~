@@ -51,5 +51,15 @@
 </div>
 
 <br />
-<%= link_to "Neue Bürgschaft hinzufügen", "/buergschaften/new", :class => "submit_ok" %>
+
+
+<table class="actions">
+  <tr>
+    <td><%= link_to "Zurück", "/Admin", :class => "cancel_link" %></td>
+    <td><%= link_to "Neue Bürgschaft hinzufügen", "/buergschaften/new", :class => "submit_ok" %></td>
+  </tr>
+</table>
+
+
+
 

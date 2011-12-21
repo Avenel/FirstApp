@@ -7,13 +7,7 @@
 
   <% if !@errors.nil? && @errors.any? %>
   <div id="error_explanation">
-    <% error_count = 0 %>
-    <% @errors.each do |error| %>
-      <% if !error.nil? && error.any? %>
-        <% error_count += error.count %>
-      <% end %>
-    <% end %>
-    <h2><%= error_count %> Fehler <br /> Konnte kein Konto anlegen, weil:</h2>
+    <h2><%= @error_count %> Fehler <br /> Konnte kein Konto anlegen, weil:</h2>
 
     <ul>
       <% @errors.each do |error| %>
@@ -96,7 +90,7 @@
 <script>
   $(function() {
     $( "#saldoDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'yy-mm-dd'
     });
   });
 </script>

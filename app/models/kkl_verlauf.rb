@@ -14,8 +14,8 @@ class KKLVerlauf < ActiveRecord::Base
     if self.ktoNr.nil? then
       errors.add("", "Bitte geben sie eine Kontonummer an.")
     else
-      if !self.ktoNr.to_s.match('\d+') then
-        erros.add("", "Die Kontonummer muss eine Zahl sein.")
+      if !self.ktoNr.to_s.match(/[0-9]+/) then
+        errors.add("", "Die Kontonummer muss eine Zahl sein.")
       end
     end
     
@@ -23,7 +23,7 @@ class KKLVerlauf < ActiveRecord::Base
     if self.kklAbDatum.nil? then
       errors.add("", "Bitte geben sie ein Kontenklassenablauf-Datum an.")
     else
-      if !self.kklAbDatum.to_s.match('\d\d\d\d-\d\d-\d\d') then
+      if !self.kklAbDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/) then
         errors.add("", "Bitte geben sie das Kontenklassenablauf-Datum im Format: yyyy-mm-dd an.")
       end
     end
@@ -32,8 +32,8 @@ class KKLVerlauf < ActiveRecord::Base
     if self.kkl.nil? then
       errors.add("", "Bitte geben sie eine Kontenklasse an.")
     else
-      if !self.ktoNr.to_s.match('\d+') then
-        erros.add("", "Die Kontenklasse muss eine Zahl sein.")
+      if !self.ktoNr.to_s.match(/[0-9]+/) then
+        errors.add("", "Die Kontenklasse muss eine Zahl sein.")
       end
     end
     
