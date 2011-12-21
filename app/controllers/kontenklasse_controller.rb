@@ -1,4 +1,4 @@
-class KontoklasseController < ApplicationController
+class KontenklasseController < ApplicationController
 
 	before_filter :authenticate_OZBPerson!
 
@@ -36,7 +36,7 @@ class KontoklasseController < ApplicationController
       else
         @kontenklasse.save   
         @kontenklassen = Kontenklasse.all
-        redirect_to :action => "index", :notce => "Kontenklasse erfolgreich angelegt."   
+        redirect_to :action => "index", :notice => "Kontenklasse erfolgreich angelegt."   
       end
       
     else
@@ -47,14 +47,16 @@ class KontoklasseController < ApplicationController
   def update
     if current_OZBPerson.canEditD then
       @kontenklasse = Kontenklasse.find(params[:id])
+      @kontenklasse.attributes = params[:kontenklasse]
       @errors = @kontenklasse.validate!
       
       if !@errors.nil? && @errors.any? then
-       render "new"
+        puts @errors.inspect
+        render "edit"
       else
-        @kontenklasse.update_attributes(params[:kontoklasse])
+        @kontenklasse.update_attributes(params[:kontenklasse])
         @kontenklassen = Kontenklasse.all
-        redirect_to :action => "index", :notce => "Kontoklasse erfolgreich angelegt."   
+        redirect_to :action => "index", :notice => "Kontoklasse erfolgreich aktualisiert."   
       end
       
     else

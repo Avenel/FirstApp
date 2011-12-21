@@ -11,7 +11,7 @@
   
   <% if current_OZBPerson.canEditB then %>
     <li><a href='/buergschaften'>Bürgschaften</a></li>
-    <li><a href='/kontoklasse'>Kontoklassen</a></li>
+    <li><a href='/kontenklasse'>Kontoklassen</a></li>
   <% end %>
     
   <% if current_OZBPerson.canEditC then %>
@@ -19,8 +19,7 @@
   
   <% if current_OZBPerson.canEditD then %>
   <% end %>
-
-
+  
 </ul>
 
 <br />

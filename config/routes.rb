@@ -24,13 +24,13 @@ OZB::Application.routes.draw do
   # Tanlisten
   match '/OZBPerson/:id/Tanlisten' => "index#error_404"
   
-  # Kontoklassen
-  match '/kontoklasse' => 'kontoklasse#index'
-  match '/kontoklasse/new' => 'kontoklasse#new'
-  match '/kontoklasse/save' => 'kontoklasse#save'
-  match '/kontoklasse/:id' => 'kontoklasse#edit', :via => :GET
-  match '/kontoklasse/:id' => 'kontoklasse#save', :via => :POST
-  match '/kontoklasse/:id/delete' => 'kontoklasse#delete'
+  # Kontenklassen
+  match '/kontenklasse' => 'kontenklasse#index'
+  match '/kontenklasse/new' => 'kontenklasse#new'
+  match '/kontenklasse/save' => 'kontenklasse#create'
+  match '/kontenklasse/:id' => 'kontenklasse#edit', :via => :GET
+  match '/kontenklasse/:id' => 'kontenklasse#update', :via => :POST
+  match '/kontenklasse/:id/delete' => 'kontenklasse#delete'
   
   # OZBKonten
   match '/ozbKonten' => 'reports#ozbKonten'

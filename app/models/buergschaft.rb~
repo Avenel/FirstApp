@@ -18,6 +18,7 @@ class Buergschaft < ActiveRecord::Base
       names = bName.split(",")
       self.pnrB = find_by_name(names[0], names[-1])
       person = Person.find(self.pnrB)
+      
       if self.pnrB == 0 then
         self.pnrB = nil
         errors.add("", "Personalnummer oder Name des Bürgschafters konnte nicht gefunden werden.")
@@ -40,6 +41,8 @@ class Buergschaft < ActiveRecord::Base
     
       names = gName.split(",")
       self.mnrG = find_by_name(names[0], names[-1])
+      person = Person.find(self.mnrG)
+      
       if self.mnrG == 0 then
         self.mnrG = nil
         errors.add("", "Mitgliedsnummer oder Name des Gesellschafters konnte nicht gefunden werden.")

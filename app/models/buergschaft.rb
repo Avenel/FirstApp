@@ -29,10 +29,6 @@ class Buergschaft < ActiveRecord::Base
    
     if person.nil? then 
       errors.add("", "Personalnummer konnte in der Datenbank nicht gefunden werden.")
-    else
-      if person.rolle != "B" then 
-        errors.add("", "Es sind nur Bürgschafter erlaubt.")
-      end
     end
     
     # Gesellschafter

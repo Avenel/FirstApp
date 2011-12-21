@@ -1,22 +1,35 @@
 <h1>Kontoklasse</h1>
 <h2>Neu anlegen</h2>
 
-<%= form_tag({:action => "save"}, :id=>"newForm") do %>
+
+<%= form_for @kontoklasse, :url => { :action => "create" }, :html => {:id => "newForm"}  do |f| %>
+
+  <% if !@errors.nil? && @errors.any? %>
+  <div id="error_explanation">
+    <h2><%= @errors.count %> Fehler <br /> Konnte keine Kontoklasse anlegen, weil:</h2>
+
+    <ul>
+      <% @errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
 
   <table>
     <tr>
       <td><b><%= label_tag "Kontoklasse:" %></b></td>
-      <td><%= text_field_tag :kkl %></td>
+      <td><%= f.text_field :kkl %></td>
     </tr>
   
     <tr>
         <td><b><%= label_tag "Prozent:" %></b></td>
-        <td><%= text_field_tag :prozent %></td>
+        <td><%= f.text_field :prozent %></td>
     </p>  
     
     <tr>
         <td><b><%= label_tag "AbDatum:" %></b></td>
-        <td><%= text_field_tag :kklAbDatum %></td>
+        <td><%= f.text_field :kklAbDatum, :id => "kklAbDatum" %></td>
     </tr>
   </table>
   
