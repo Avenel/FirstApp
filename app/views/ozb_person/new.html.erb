@@ -223,15 +223,21 @@
 	</table>  
   
   <br />
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %>
   
 <% end %>
 
-		  <div style="display:none">
-		    <div id="searchOZBPersonFrame">
-		      <div id="personen"><%= render 'application/suche_ozb_personen' %></div>  
-		    </div>
-		  </div>
+<table class="actions">
+  <tr>
+    <td><%= link_to "Zurück", "/OZBPerson", :class => "cancel_link" %></td>
+    <td><%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %></td>
+  </tr>
+</table>
+
+<div style="display:none">
+  <div id="searchOZBPersonFrame">
+    <div id="personen"><%= render 'application/suche_ozb_personen' %></div>  
+  </div>
+</div>
 
 <script>
 

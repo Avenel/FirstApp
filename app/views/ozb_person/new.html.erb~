@@ -1,10 +1,26 @@
-<h1>Person anlegen</h1>
+<h1>Person</h1>
+<h2>Neu anlegen</h2>
 
-	<%= form_tag({:action => "save"}, :id=>"newForm") do %>	
+<%= form_tag({:action => "create"}, :id=>"newForm") do %>	
+	<%= @errors.inspect %>
+	<% if !@errors.nil? && @errors.any? %>
+	  <div id="error_explanation">
+	    <h2>Konnte keine Person anlegen:</h2>
+	
+	    <ul>
+	      <% @errors.each do |error| %>
+		      <% error.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		      <% end %>
+	      <% end %>
+	    </ul>
+	  </div>
+  	<% end %>
+  
 	<table>
    	<tr>
-		  <td><%= label_tag "Name:" %></td>
-		  <td><%= text_field_tag :name %></td>  
+		  <td><%= label_tag "Name *:" %></td>
+		  <td><%= text_field_tag :name, @tempNames[0] %></td>  
 	  </tr>
 	
 	  <tr>
@@ -46,6 +62,11 @@
 		  <td><%= label_tag "Email:" %></td>
 		  <td><%= email_field_tag :email %></td>  
 	  </tr>
+	  
+	  <tr>
+		  <td><%= label_tag "Passwort *:" %></td>
+		  <td><%= password_field_tag :passwort, @tempNames[1] %></td>  
+	  </tr>
   <!--	
 	  <tr>
 		  Bankdaten:
@@ -80,23 +101,23 @@
     <div id="Student">
       <table style="margin: 10px auto;">
     	<tr>
-			  <td><%= label_tag "Ausbildungsbezeichnung:" %></td>
-			  <td><%= text_field_tag :ausbildBez %></td>  
+			  <td><%= label_tag "Ausbildungsbezeichnung *:" %></td>
+			  <td><%= text_field_tag :ausbildBez, @tempStudentNames[0] %></td>  
 		  </tr>
 
     	<tr>
-			  <td><%= label_tag "Institut:" %></td>
-			  <td><%= text_field_tag :institutName %></td>  
+			  <td><%= label_tag "Institut *:" %></td>
+			  <td><%= text_field_tag :institutName, @tempStudentNames[1] %></td>  
 		  </tr>
 
     	<tr>
-			 <td><%= label_tag "Studienort:" %></td>
-			 <td><%= text_field_tag :studienort %></td>  
+			 <td><%= label_tag "Studienort *:" %></td>
+			 <td><%= text_field_tag :studienort, @tempStudentNames[2] %></td>  
 		  </tr>
 
     	<tr>
-			  <td><%= label_tag "Studienbeginn:" %></td>
-			  <td><%= text_field_tag :studienbeginn %>  </td>
+			  <td><%= label_tag "Studienbeginn *:" %></td>
+			  <td><%= text_field_tag :studienbeginn, @tempStudentNames[3] %>  </td>
 		  </tr>
 
     	<tr>
@@ -105,8 +126,8 @@
 		  </tr>
 
     	<tr>
-			  <td><%= label_tag "Abschluss:" %></td>
-			  <td><%= text_field_tag :abschluss %>  </td>
+			  <td><%= label_tag "Abschluss *:" %></td>
+			  <td><%= text_field_tag :abschluss, @tempStudentNames[4] %>  </td>
 		  </tr>
       </table>
     	</div>
@@ -114,20 +135,20 @@
     	<div id="Gesellschafter">
     	<table style="margin: 10px auto;">
     		<tr>
-			    <td><%= label_tag "FA Steuernummer:" %></td>
-			    <td><%= text_field_tag :faSteuerNr %>  </td>
+			    <td><%= label_tag "FA Steuernummer *:" %></td>
+			    <td><%= text_field_tag :faSteuerNr, @tempGesellschafterNames[0] %>  </td>
 			    <td />
 		    </tr>
 
     	<tr>
-			  <td><%= label_tag "FA Lfd. Nr.:" %></td>
-			  <td><%= text_field_tag :faLfdNr %>  </td>
+			  <td><%= label_tag "FA Lfd. Nr. *:" %></td>
+			  <td><%= text_field_tag :faLfdNr, @tempGesellschafterNames[1] %>  </td>
 			  <td />
 		  </tr>
 
     	<tr>
-			  <td><%= label_tag "Wohnsitzfinanzamt:" %></td>
-			  <td><%= text_field_tag :wohnsitzFinanzamt %>  </td>
+			  <td><%= label_tag "Wohnsitzfinanzamt *:" %></td>
+			  <td><%= text_field_tag :wohnsitzFinanzamt, @tempGesellschafterNames[2] %>  </td>
 			  <td />
 		  </tr>
 
@@ -148,13 +169,13 @@
     <div id="Foerdermitglied">
       <table style="margin: 10px auto;">
     	<tr>
-			  <td><%= label_tag "Region" %></td>
-			  <td><%= text_field_tag :region %></td>  
+			  <td><%= label_tag "Region *:" %></td>
+			  <td><%= text_field_tag :region, @tempFoerdermitgliedNames[0] %></td>  
 		  </tr>
 
     	<tr>
-			  <td><%= label_tag "Förderbeitrag" %></td>
-			  <td><%= text_field_tag :foerderbeitrag %>  </td>
+			  <td><%= label_tag "Förderbeitrag *:" %></td>
+			  <td><%= text_field_tag :foerderbeitrag, @tempFoerdermitgliedNames[1] %>  </td>
 		  </tr>
 		  </table>
     </div>
@@ -171,14 +192,14 @@
     <div id="Partner">
       <table style="margin: 10px auto;">
     	<tr>
-			  <td><%= label_tag "Partner:" %></td>
-			  <td><%= text_field_tag :partner %>  </td>
+			  <td><%= label_tag "Partner *:" %></td>
+			  <td><%= text_field_tag :partner, @tempPartnerNames[0] %>  </td>
 			  <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchPartnerFrame", :class => "searchlink" %></td>
 	    </tr>
 		
 	    <tr>
-			  <td><%= label_tag "Berechtigung" %></td>
-			  <td><%= text_field_tag :berechtigung %></td>
+			  <td><%= label_tag "Berechtigung *:" %></td>
+			  <td><%= text_field_tag :berechtigung, @tempPartnerNames[1] %></td>
 			  <td />
 		  </tr>
 		  </table>
@@ -186,8 +207,8 @@
     
   <table style="margin: 10px auto;">
 	  <tr>
-		  <td><%= label_tag "Antragsdatum:" %></td>
-		  <td><%= text_field_tag :antragsdatum %></td>  
+		  <td><%= label_tag "Antragsdatum *:" %></td>
+		  <td><%= text_field_tag :antragsdatum, @tempNames[2] %></td>  
 	  </tr>
 	
 	  <tr>

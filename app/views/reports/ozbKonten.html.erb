@@ -26,13 +26,13 @@
 
 </table>
 
+<!-- Seitennavigation -->
+<div class="paginateBox" >
+  <%= will_paginate @ozbKonten %>
+</div>
+
 <table class="actions">
   <tr>
     <td><%= link_to "Zurück", "/Admin", :class => "cancel_link" %></td>
   </tr>
 </table>
-
-<!-- Seitennavigation -->
-<div class="paginateBox" >
-  <%= will_paginate @ozbKonten %>
-</div>
