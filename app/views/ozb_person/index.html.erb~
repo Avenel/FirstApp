@@ -26,8 +26,6 @@
   <% end %>
 </table>
 
-<%= @Rollen.key("M") %>
-
 <%= will_paginate @OZBPersonen %>
 
 <br />
