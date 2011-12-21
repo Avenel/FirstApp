@@ -6,6 +6,8 @@ class Person < ActiveRecord::Base
 
    attr_accessible   :pnr, :rolle, :name, :vorname, :geburtsdatum, :strasse, :hausnr, :plz, 
                      :ort, :vermerk, :email, :antragsdatum, :aufnahmedatum, :austrittsdatum
+                     
+   validates_presence_of :name, :aufnahmedatum, :email
 
    #validates :email, :EmailValidator => true
 
@@ -17,7 +19,7 @@ class Person < ActiveRecord::Base
    has_many :OZBPerson, :foreign_key => :ueberPnr, :dependent => :delete_all # Done, getestet
    has_one :Bankverbindung, :foreign_key => :pnr, :dependent => :destroy # Done, getestet
    has_one :foerdermitglied, :foreign_key => :pnr, :dependent => :destroy
-   
+      
 end
 
 class EmailValidator < ActiveModel::EachValidator

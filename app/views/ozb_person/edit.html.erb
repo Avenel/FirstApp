@@ -69,7 +69,8 @@
 
   		<tr>
 			  <td><%= label_tag "Notar:" %></td>
-			  <td><%= text_field_tag :notartdnr, @Gesellschafter.notartdnr %></td>  
+			  <td><%= text_field_tag :notartdnr, @Gesellschafter.notartdnr %></td>
+			  <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchNotarFrame", :class => "searchlink" %></td>  
 		  </tr>
 
   		<tr>
@@ -175,6 +176,12 @@
 	</tr>
 	
 </table>
+
+<div style="display:none">
+	<div id="searchOZBPersonFrame">
+		<div id="personen"><%= render 'application/suche_ozb_personen' %></div>  
+	</div>
+</div>
 <!--  
 	<tr>Bankverbindungen</tr>
 	<table style="margin: 50tdx auto">
@@ -213,10 +220,10 @@
 <% end %>
 
 <script>
-  var insertId = "#notarPnr";
+  var insertId = "#notartdnr";
 	
 	$("#searchNotarFrame").click(function(){
-		insertId = "#notarPnr";
+		insertId = "#notartdnr";
 	});
 	
 	$("#searchPartnerFrame").click(function() {
@@ -236,7 +243,7 @@
 			<% end %>
 			<%= tags.chop %>
 		];
-		$( "#notarPnr" ).autocomplete({
+		$( "#notartdnr" ).autocomplete({
 		source: availableTagsB
     	});
 	});

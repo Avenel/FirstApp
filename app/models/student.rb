@@ -4,5 +4,7 @@ class Student < ActiveRecord::Base
 
   attr_accessible :mnr, :ausbildBez, :institutName, :studienort, :studienbeginn, :studienende, :abschluss   
   
+  validates_presence_of :ausbildBez, :institutName, :studienort, :studienbeginn, :abschluss
+  
   belongs_to :OZBPerson
 end
