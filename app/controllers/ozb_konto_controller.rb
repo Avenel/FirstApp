@@ -1,5 +1,7 @@
 class OzbKontoController < ApplicationController
 
+  before_filter :authenticate_OZBPerson!
+
   def index
     if current_OZBPerson.canEditB then
       get_konten()
@@ -204,7 +206,11 @@ class OzbKontoController < ApplicationController
       
       if params[:typ] == "ZE" then
         @ze_konto = ZEKonto.where( :ktoNr => params[:zeKtoNr] ).first
-        @ze_konto.zeEndDatum = params[:zeEndDatum]
+        
+        if !params[:zeEndDatum].nil? && params[:zeEndDatum] != "" then
+          @ze_konto.zeEndDatum = params[:zeEndDatum]
+        end
+       
         @ze_konto.zahlModus = params[:zahlModus]
         @ze_konto.tilgRate = params[:tilgRate]
         @ze_konto.ansparRate = params[:ansparRate]

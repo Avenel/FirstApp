@@ -111,7 +111,7 @@ class OzbKontoController < ApplicationController
           
           # EE-Konto:  :ktoNr, :bankId, :kreditlimit
           @ee_konto = EEKonto.new( :ktoNr => params[:ozb_konto][:ktoNr], :bankId => 1, :kreditlimit => params[:kreditlimit] )
-          @errors.push(@ee_Konto.validate!)
+          @errors.push(@ee_konto.validate!)
         end
         
         
@@ -204,7 +204,11 @@ class OzbKontoController < ApplicationController
       
       if params[:typ] == "ZE" then
         @ze_konto = ZEKonto.where( :ktoNr => params[:zeKtoNr] ).first
-        @ze_konto.zeEndDatum = params[:zeEndDatum]
+        
+        if !params[:zeEndDatum].nil? && params[:zeEndDatum] != "" then
+          @ze_konto.zeEndDatum = params[:zeEndDatum]
+        end
+       
         @ze_konto.zahlModus = params[:zahlModus]
         @ze_konto.tilgRate = params[:tilgRate]
         @ze_konto.ansparRate = params[:ansparRate]

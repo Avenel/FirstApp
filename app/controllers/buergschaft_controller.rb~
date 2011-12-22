@@ -14,6 +14,10 @@ class BuergschaftController < ApplicationController
       @buergschaft = Buergschaft.new
       searchKtoNr()
       searchOZBPerson()
+
+      @tempNames = Array.new
+      @tempNames.push("")
+      @tempNames.push("")
     else
       redirect_to "/"
     end
@@ -42,6 +46,7 @@ class BuergschaftController < ApplicationController
   def edit
     if current_OZBPerson.canEditB then
       searchKtoNr()
+      
       @tempNames = Array.new
       @tempNames.push("")
       @tempNames.push("")

@@ -1,6 +1,8 @@
 # encoding: UTF-8
 class BuergschaftController < ApplicationController
-
+  
+  before_filter :authenticate_OZBPerson!
+  
   def index
     if current_OZBPerson.canEditB then 
       @buergschaften = Buergschaft.paginate(:page => params[:page], :per_page => 5)
