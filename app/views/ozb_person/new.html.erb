@@ -73,32 +73,6 @@
 			<td><%= telephone_field_tag :fax %></td>  
 		</tr>
 
-  <!--	
-	  <tr>
-		  Bankdaten:
-	  </tr>
-	
-	  <tr>
-		  <%= label_tag "Kontoinhaber:" %>
-		  <%= text_field_tag :kontoinhaber %>  
-	  </tr>
-	
-	  <tr>
-		  <%= label_tag "Kontonummer:" %>
-		  <%= text_field_tag :kontonr %>  
-	  </tr>
-	
-	  <tr>
-		  <%= label_tag "BLZ:" %>
-		  <%= text_field_tag :blz %>  
-	  </tr>	
-	
-	  <tr>
-		  <%= label_tag "Bankname:" %>
-		  <%= text_field_tag :bankname %>  
-	  </tr>
-  -->	
-
 		<tr>
 			<td><%= label_tag "Rolle:" %></td>
 			<td><%= select_tag 'rolle', options_for_select(@Rollen, @new_Person.rolle), { :onChange => "switch_role()" } %></td>
@@ -269,6 +243,21 @@
     	});
 	});
 	
+	$(function() {
+		$( "#studienbeginn" ).datepicker({
+			dateFormat: 'dd.mm.yy'
+ 		});
+	});
+	$(function() {
+		$( "#studienende" ).datepicker({
+			dateFormat: 'dd.mm.yy'
+ 		});
+	});
+	$(function() {
+		$( "#beurkDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy'
+ 		});
+	});
 	$(function() {
 		$( "#antragsdatum" ).datepicker({
 			dateFormat: 'dd.mm.yy'

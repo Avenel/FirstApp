@@ -1,6 +1,8 @@
 # encoding: UTF-8
 class OZBPersonController < ApplicationController
-
+  
+  before_filter :authenticate_OZBPerson!
+  
   @@Rollen = Hash["Mitglied", "M", "Foerdermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]
   
   #Workaround - Da Ruby 1.8.7 die key()-Funktion nicht kennt
@@ -35,7 +37,7 @@ class OZBPersonController < ApplicationController
     when "S"
       @Student = Student.find(@OZBPerson.mnr)
     end
-    if current_OZBPerson.canEditB then
+    if current_OZBPerson.canEditB || current_OZBPerson.mnr = params[:id] then
       @disabled = false;
     else
       @disabled = true;
@@ -144,6 +146,8 @@ class OZBPersonController < ApplicationController
 
   def searchOZBPerson
     if current_OZBPerson.canEditB then
+      super
+    elsif current_OZBPerson.mnr = params[:id] then
       super
     else
       redirect_to "/"
