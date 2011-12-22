@@ -80,6 +80,7 @@ input {
 
 .actions {
   border: none;
+  background: #FFFFFF;
 }
 
 .login_form input {
@@ -139,14 +140,14 @@ input {
 
 .submit {
   padding: 15px;
-  background: #002bDD;
+  background: #2fab24;
   border-radius: 3px;
   color: white;
   font-weight: bold;  
 }
 
 .submit:hover {
-  background: #002bab;
+  background: #2f8902;
   text-decoration: none;
 }
 

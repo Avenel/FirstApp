@@ -21,14 +21,18 @@
       <% delete_link = "/kontenklasse/" + kkl.kkl.to_s + "/delete" %>
       <% verlauf_link = "/kontenklasse/verlauf/" + kkl.kkl.to_s %>
       <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
-      <td><%= link_to "Löschen", delete_link, :class => "delete_link" %></td>
+      <td><%= link_to "Löschen", delete_link, :class => "delete_link", :confirm => "Sind Sie sicher?" %></td>
     </tr>
     <% i += 1 %>
   <% end %>
 </table>
 
 <br />
-<%= link_to "Zurück", "/Admin", :class => "cancel_link" %>
-<%= link_to "Neue Kontenklasse hinzufügen", "/kontenklasse/new", :class => "submit_ok" %>
 
+<table class="actions">
+  <tr>
+    <td><%= link_to "Zurück", "/Admin", :class => "cancel_link" %></td>
+    <td><%= link_to "Neue Kontenklasse hinzufügen", "/kontenklasse/new", :class => "submit_ok" %></td>
+  </tr>
+</table>
 

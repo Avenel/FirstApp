@@ -113,13 +113,13 @@
 <script>
   $(function() {
     $( "#saldoDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'dd-mm-yy'
     });
     $( "#zeAbDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'dd-mm-yy'
     });
     $( "#zeEndDatum" ).datepicker({
-      dateFormat: 'dd.mm.yy'
+      dateFormat: 'dd-mm-yy'
     });
   });
 </script>
