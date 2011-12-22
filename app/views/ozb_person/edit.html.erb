@@ -86,7 +86,7 @@
 		<% if @Fax[0] != nil %>		
 			<td><%= text_field_tag :fax, @Fax[0].telefonNr, :disabled => @disabled %></td>
 		<% else %>
-			<td><%= text_field_tag :fax, "" ,:disabled => @disabled %></td>
+			<td><%= text_field_tag :fax, "", :disabled => @disabled %></td>
 		<% end %>
 		<td />
 	</tr>

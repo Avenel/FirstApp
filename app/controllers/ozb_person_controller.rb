@@ -37,7 +37,7 @@ class OZBPersonController < ApplicationController
     when "S"
       @Student = Student.find(@OZBPerson.mnr)
     end
-    if current_OZBPerson.canEditB || current_OZBPerson.mnr = params[:id] then
+    if current_OZBPerson.canEditA || current_OZBPerson.mnr.to_s == params[:id] then
       @disabled = false;
     else
       @disabled = true;
@@ -45,7 +45,7 @@ class OZBPersonController < ApplicationController
   end
   
   def update
-    if current_OZBPerson.canEditB then
+    if current_OZBPerson.canEditA then
       @OZBPerson = OZBPerson.find(params[:mnr])
       @Person = Person.find(@OZBPerson.ueberPnr)
       @Telefon = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Tel"})
@@ -128,7 +128,7 @@ class OZBPersonController < ApplicationController
   end
 
   def new
-    if current_OZBPerson.canEditB then
+    if current_OZBPerson.canEditA then
       searchOZBPerson()
       @Rollen = @@Rollen
       @new_Person = Person.new
@@ -145,7 +145,7 @@ class OZBPersonController < ApplicationController
   end
 
   def searchOZBPerson
-    if current_OZBPerson.canEditB then
+    if current_OZBPerson.canEditA then
       super
     elsif current_OZBPerson.mnr = params[:id] then
       super
@@ -271,7 +271,7 @@ class OZBPersonController < ApplicationController
   end	
   
   def delete
-    if current_OZBPerson.canEditB then
+    if current_OZBPerson.canEditA then
       @OZBPerson = OZBPerson.find(params[:id])
       @Person = Person.find(@OZBPerson.ueberPnr)
       @Person.destroy
