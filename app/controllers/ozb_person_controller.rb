@@ -265,7 +265,18 @@ class OZBPersonController < ApplicationController
       
   end	
   
-  def show
+  def delete
+    if current_OZBPerson.canEditB then
+      @OZBPerson = OZBPerson.find(params[:id])
+      @Person = Person.find(@OZBPerson.ueberPnr)
+      @Person.destroy
+      
+      @OZBPersonen = OZBPerson.all
+      
+      redirect_to :action => "index"
+    else
+      redirect_to "/"
+    end
   end
   
 end
