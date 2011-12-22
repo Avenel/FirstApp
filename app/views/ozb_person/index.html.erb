@@ -19,8 +19,13 @@
 			  <td><a href="/OZBPerson/<%= person.mnr %>/Konto" class="konto_link">Konten</a></td>
 			  <% edit_link = "/OZBPerson/" + person.mnr.to_s %>
         <% delete_link = "/OZBPerson/" + person.mnr.to_s + "/delete" %>
-      <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
-      <td><%= link_to "Löschen", delete_link, :class => "delete_link" %></td>
+      <% if current_OZBPerson.canEditB then %>
+      	<% edit_link_name = "Bearbeiten" %>
+      <% else %>
+      	<% edit_link_name = "Details" %>
+      <% end %>
+      <td><%= link_to edit_link_name, edit_link, :class => "edit_link" %></td>
+      <td><%= link_to "Löschen", delete_link, :class => "delete_link", :confirm => "Möchten Sie " + current_person.name + ", " + current_person.vorname + " wirklich löschen?" %></td>
       </tr>
       <% i += 1 %>
   <% end %>
