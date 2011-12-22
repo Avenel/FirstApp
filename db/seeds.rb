@@ -2,12 +2,12 @@
 
 # Personen-Beziehungen: Telefon, Administrator, Partner, Veranstaltung, Teilnahme, Buergschaft
   
-person = Person.create( :rolle => :M, :name => "Mustermann", :vorname => "Max" )
-person2 = Person.create( :rolle => :P, :name => "Mueller", :vorname => "Hermann" )
-person3 = Person.create( :rolle => :S, :name => "Müller", :vorname => "Lieschen" )
-person4 = Person.create( :rolle => :M, :name => "Neuer", :vorname => "Manuel" )
-person5 = Person.create( :rolle => :G, :name => "Kahn", :vorname => "Oliver" )
-person6 = Person.create( :rolle => :F, :name => "Schneider", :vorname => "Rudi" )
+person = Person.create( :rolle => :M, :name => "Mustermann", :vorname => "Max", :antragsdatum => Time.now() )
+person2 = Person.create( :rolle => :P, :name => "Mueller", :vorname => "Hermann", :antragsdatum => Time.now() )
+person3 = Person.create( :rolle => :S, :name => "Müller", :vorname => "Lieschen", :antragsdatum => Time.now() )
+person4 = Person.create( :rolle => :M, :name => "Neuer", :vorname => "Manuel", :antragsdatum => Time.now() )
+person5 = Person.create( :rolle => :G, :name => "Kahn", :vorname => "Oliver", :antragsdatum => Time.now() )
+person6 = Person.create( :rolle => :F, :name => "Schneider", :vorname => "Rudi", :antragsdatum => Time.now() )
    
 tel = Telefon.create( :pnr => person.pnr, :telefonNr => "072458292", :telefonTyp => "Fest" )
 tel = Telefon.create( :pnr => person.pnr, :telefonNr => "072458293", :telefonTyp => "Fest" )
@@ -36,13 +36,13 @@ ozbPerson4 = OZBPerson.create( :mnr => person6.pnr, :ueberPnr => person6.pnr, :e
 
 
 # Rollen
-admin = Administrator.create( :pnr => person.pnr, :adminPw => "test", :adminEmail => "test@test.de" )
+#admin = Administrator.create( :pnr => person.pnr, :adminPw => "test", :adminEmail => "test@test.de" )
 partner = Partner.create( :mnr => ozbPartner.mnr, :mnrO => ozbPerson.mnr, :berechtigung => 'A' )
 mitglied = Mitglied.create(:mnr => ozbPerson.mnr )
 mitglied2 = Mitglied.create(:mnr => person4.pnr )
-student = Student.create( :mnr => ozbPerson3.mnr, :studienort => "Karlsruhe" ) 
-gesellschafter = Gesellschafter.create( :mnr => ozbPerson5.mnr, :faSteuerNr => 13512, :faLfdNr => 2134 ) 
-foerdermitglied = Foerdermitglied.create( :pnr => person6.pnr )
+student = Student.create( :mnr => ozbPerson3.mnr, :ausbildBez => "Informatik", :institutName => "Hochschule Karlsruhe", :studienort => "Karlsruhe", :studienbeginn => Time.now(), :abschluss => "Bachelor" ) 
+gesellschafter = Gesellschafter.create( :mnr => ozbPerson5.mnr, :faSteuerNr => 13512, :faLfdNr => 2134, :wohnsitzFinanzamt => "Karlsruhe" ) 
+foerdermitglied = Foerdermitglied.create( :pnr => person6.pnr, :region => "Rhein-Neckar", :foerderbeitrag => 4711 )
 
 
 # Veranstaltungen
