@@ -1,6 +1,8 @@
 # encoding: UTF-8
 class OZBPersonController < ApplicationController
-
+  
+  before_filter :authenticate_OZBPerson!
+  
   @@Rollen = Hash["Mitglied", "M", "Foerdermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]
   
   #Workaround - Da Ruby 1.8.7 die key()-Funktion nicht kennt
@@ -15,29 +17,30 @@ class OZBPersonController < ApplicationController
   end
   
   def edit
-    if current_OZBPerson.canEditB then
-      searchOZBPerson()
-      @OZBPerson = OZBPerson.find(params[:id])
-      @Person = Person.find(@OZBPerson.ueberPnr)
-      @Rollen2 = @@Rollen2
-      #@Bankverbindungen = Bankverbindung.find(:all, :conditions => {:pnr => @Person.pnr})
-      @Telefon = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Tel"})
-      @Fax = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Fax"})
-      case @Person.rolle
-      when "M"
-        @Mitglied = Mitglied.find(@OZBPerson.mnr)
-      when "F"
-        @Foerdermitglied = Foerdermitglied.find(@Person.pnr)
-      when "P"
-        @Partner = Partner.find(@OZBPerson.mnr)
-        @PartnerPerson = Person.find(@Partner.mnrO)
-      when "G"
-        @Gesellschafter = Gesellschafter.find(@OZBPerson.mnr)
-      when "S"
-        @Student = Student.find(@OZBPerson.mnr)
-      end
+    searchOZBPerson()
+    @OZBPerson = OZBPerson.find(params[:id])
+    @Person = Person.find(@OZBPerson.ueberPnr)
+    @Rollen2 = @@Rollen2
+    #@Bankverbindungen = Bankverbindung.find(:all, :conditions => {:pnr => @Person.pnr})
+    @Telefon = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Tel"})
+    @Fax = Telefon.find(:all, :conditions => {:pnr => @Person.pnr, :telefonTyp => "Fax"})
+    case @Person.rolle
+    when "M"
+      @Mitglied = Mitglied.find(@OZBPerson.mnr)
+    when "F"
+      @Foerdermitglied = Foerdermitglied.find(@Person.pnr)
+    when "P"
+      @Partner = Partner.find(@OZBPerson.mnr)
+      @PartnerPerson = Person.find(@Partner.mnrO)
+    when "G"
+      @Gesellschafter = Gesellschafter.find(@OZBPerson.mnr)
+    when "S"
+      @Student = Student.find(@OZBPerson.mnr)
+    end
+    if current_OZBPerson.canEditB || current_OZBPerson.mnr = params[:id] then
+      @disabled = false;
     else
-      redirect_to "/"
+      @disabled = true;
     end
   end
   
@@ -143,6 +146,8 @@ class OZBPersonController < ApplicationController
 
   def searchOZBPerson
     if current_OZBPerson.canEditB then
+      super
+    elsif current_OZBPerson.mnr = params[:id] then
       super
     else
       redirect_to "/"
