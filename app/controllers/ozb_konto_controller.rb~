@@ -111,7 +111,7 @@ class OzbKontoController < ApplicationController
           
           # EE-Konto:  :ktoNr, :bankId, :kreditlimit
           @ee_konto = EEKonto.new( :ktoNr => params[:ozb_konto][:ktoNr], :bankId => 1, :kreditlimit => params[:kreditlimit] )
-          @errors.push(@eeKonto.validate!)
+          @errors.push(@ee_Konto.validate!)
         end
         
         
@@ -148,6 +148,7 @@ class OzbKontoController < ApplicationController
           render "new_ee" 
         else
           if params[:typ] == "ZE" then
+            searchKtoNr
             render "new_ze"
           else
             redirect_to "/"
@@ -250,10 +251,6 @@ class OzbKontoController < ApplicationController
     end
   end
   
-  
-  def save
-    
-  end
   
   def edit
     if current_OZBPerson.canEditB then 

@@ -1,9 +1,53 @@
-# German translations for Ruby on Rails
-# by Clemens Kofler (clemens@railway.at)
-# contributors:
-# - Alexander Dreher - http://github.com/alexdreher - Rails 3 update
-
 de:
+  errors:
+    messages:
+      expired: "ist abgelaufen, bitte neu anfordern"
+      not_found: "wurde nicht gefunden"
+      already_confirmed: "wurde bereits bestätigt, bitte melde Dich an"
+      not_locked: "war nicht gesperrt"
+      not_saved:
+        one: "Konnte %{resource} nicht speichern: ein Fehler."
+        other: "Konnte %{resource} nicht speichern: %{count} Fehler."
+
+  devise:
+    failure:
+      already_authenticated: "Du bist schon angemeldet."
+      unauthenticated: "Bitte melde Dich an."
+      unconfirmed: "Bitte bestätige Deine Anmeldung, bevor Du fortfährst."
+      locked: "Dein Nutzerkonto ist gesperrt."
+      invalid: "Der Nutzername, bzw. die E-Mail-Adresse oder das Passwort ist ungültig."
+      invalid_token: "Dieser Freischalt-Code ist ungültig."
+      timeout: "Deine Anmeldung ist abgelaufen, bitte melde Dich erneut an."
+      inactive: "Du hast Deine Anmeldung noch nicht bestätigt."
+    sessions:
+      signed_in: "Hallo, Du bist jetzt angemeldet."
+      signed_out: "Auf wiedersehen, Du bist jetzt abgemeldet."
+    passwords:
+      send_instructions: "Eine E-Mail zum Ändern Deines Passworts ist zu Dir unterwegs."
+      updated: "Du hast Dein Passwort soeben geändert. Du bist nun angemeldet."
+      invalid_token: "Dieser Link zum Ändern Deines Passworts ist ungültig oder wurde bereits genutzt."
+    confirmations:
+      send_instructions: "Eine E-Mail ist zu Dir unterwegs, mit der Du Deine Registrierung bestätigen kannst."
+      confirmed: "Vielen Dank für die Deine Registrierung. Du bist nun angemeldet."
+    registrations:
+      signed_up: "Vielen Dank. Eine E-Mail ist zu Dir unterwegs, mit der Du Deine Registrierung bestätigen kannst."
+      inactive_signed_up: "Vielen Dank. Eine E-Mail ist zu Dir unterwegs, mit der Du Deine Registrierung bestätigen kannst."
+      updated: "Danke, dass Du Deine Daten aktuell hältst."
+      destroyed: "Schade, Du hast Dein Nutzerkonto gelöscht. Mach's gut und vielleicht bis bald."
+    unlocks:
+      send_instructions: "Eine E-Mail mit Freischalt-Infos ist zu Dir unterwegs."
+      unlocked: "Du hast Dein Nutzerkonto soeben freigeschaltet. Du bist nun angemeldet."
+    omniauth_callbacks:
+      success: "Du hast Dich erfolgreich per %{kind} angemeldet."
+      failure: 'Die Anmeldung per %{kind} hat leider nicht geklappt: "%{reason}"'
+    mailer:
+      confirmation_instructions:
+        subject: "Registrierung bestätigen"
+      reset_password_instructions:
+        subject: "Passwort ändern"
+      unlock_instructions:
+        subject: "Nutzerkonto freischalten"
+    
   date:
     formats:
       default: "%d.%m.%Y"
@@ -221,3 +265,44 @@ de:
 
       full_messages:
         format: "%{attribute} %{message}"
+        
+  devise:
+    failure:
+      already_authenticated: 'You are already signed in.'
+      unauthenticated: 'You need to sign in or sign up before continuing.'
+      unconfirmed: 'You have to confirm your account before continuing.'
+      locked: 'Your account is locked.'
+      invalid: 'Invalid email or password.'
+      invalid_token: 'Invalid authentication token.'
+      timeout: 'Your session expired, please sign in again to continue.'
+      inactive: 'Your account was not activated yet.'
+    sessions:
+      signed_in: 'Anmeldung erfolgreich.'
+      signed_out: 'Abmeldung erfolgreich.'
+    passwords:
+      send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
+      updated: 'Your password was changed successfully. You are now signed in.'
+      send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+    confirmations:
+      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
+      send_paranoid_instructions: 'If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
+      confirmed: 'Your account was successfully confirmed. You are now signed in.'
+    registrations:
+      signed_up: 'Welcome! You have signed up successfully.'
+      inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
+      updated: 'You updated your account successfully.'
+      destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+    unlocks:
+      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
+      unlocked: 'Your account was successfully unlocked. You are now signed in.'
+      send_paranoid_instructions: 'If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.'
+    omniauth_callbacks:
+      success: 'Successfully authorized from %{kind} account.'
+      failure: 'Could not authorize you from %{kind} because "%{reason}".'
+    mailer:
+      confirmation_instructions:
+        subject: 'Confirmation instructions'
+      reset_password_instructions:
+        subject: 'Reset password instructions'
+      unlock_instructions:
+        subject: 'Unlock Instructions'

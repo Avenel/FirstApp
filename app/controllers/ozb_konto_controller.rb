@@ -111,7 +111,7 @@ class OzbKontoController < ApplicationController
           
           # EE-Konto:  :ktoNr, :bankId, :kreditlimit
           @ee_konto = EEKonto.new( :ktoNr => params[:ozb_konto][:ktoNr], :bankId => 1, :kreditlimit => params[:kreditlimit] )
-          @errors.push(@eeKonto.validate!)
+          @errors.push(@ee_konto.validate!)
         end
         
         

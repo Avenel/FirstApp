@@ -39,7 +39,7 @@
       <% edit_link = "/buergschaften/" + buergschaft.pnrB.to_s + "/" + buergschaft.mnrG.to_s %>
       <% delete_link = "/buergschaften/" + buergschaft.pnrB.to_s + "/" + buergschaft.mnrG.to_s + "/delete" %>
       <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
-      <td><%= link_to "Löschen", delete_link, :class => "delete_link" %></td>
+      <td><%= link_to "Löschen", delete_link, :class => "delete_link", :confirm => 'Sind Sie sicher?' %></td>
     </tr>
     <% i += 1 %>
   <% end %>
@@ -59,7 +59,4 @@
     <td><%= link_to "Neue Bürgschaft hinzufügen", "/buergschaften/new", :class => "submit_ok" %></td>
   </tr>
 </table>
-
-
-
 

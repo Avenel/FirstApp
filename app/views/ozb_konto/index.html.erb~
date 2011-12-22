@@ -37,15 +37,20 @@
       <td><%= konto.ansparRate %></td>
       <td><%= konto.zeStatus %></td>
       <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s, :class => "edit_link" %></td>
-      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s+"/delete", :class => "delete_link" %></td>
+      <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s+"/delete", :class => "delete_link", :confirm => "Sind Sie sicher?" %></td>
     </tr>
     <% i += 1 %>
   <% end %>
 </table>
 <br />
-<% if @ze_count < 4 then %>
-  <%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new", :class => "submit_ok" %>
-<% end %>
+
+<table class="actions">
+  <tr>
+    <% if @ze_count < 4 then %>
+      <td><%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new", :class => "submit_ok" %></td>
+    <% end %>
+  </tr>
+</table>
 
 <!-- :ktoNr, :bankId, :kreditlimit,  :id, :bankKtoNr, :blz, :bic, :iban, :bankName    -->
 
