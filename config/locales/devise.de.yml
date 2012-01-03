@@ -262,3 +262,7 @@ de:
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+        
+  will_paginate:
+    previous_label: 'zurück'
+    next_label: 'weiter'
