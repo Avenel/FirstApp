@@ -33,7 +33,7 @@
   
     <tr>
       <td><b><%= label_tag "AbDatum:" %></b></td>
-      <td><%= f.text_field :kklAbDatum %></td>
+      <td><%= f.text_field :kklAbDatum, :id => "kklAbDatum" %></td>
     </tr>
   </table>
   

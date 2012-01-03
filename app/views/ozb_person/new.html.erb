@@ -2,7 +2,6 @@
 <h2>Hinzufügen</h2>
 
 <%= form_tag({:action => "create"}, :id=>"newForm") do %>	
-<%= @errors.inspect %>
 	<% if !@errors.nil? && @errors.any? %>
 	  <div id="error_explanation">
 	    <h2>Konnte keine Person anlegen:</h2>
@@ -180,6 +179,7 @@
 		  	<tr>
 			  	<td><%= label_tag "Berechtigung:*" %></td>
 			  	<td><%= text_field_tag :berechtigung, @new_Partner.berechtigung %></td>
+			  	<td />
 		  	</tr>
 		</table>
     </div>
@@ -188,11 +188,13 @@
 	  	<tr>
 		  	<td><%= label_tag "Antragsdatum *:" %></td>
 		  	<td><%= text_field_tag :antragsdatum, @new_Person.antragsdatum %></td>  
+		  	<td />
 	  	</tr>
 	
 	  	<tr>
 		  	<td><%= label_tag "Aufnahmedatum:" %></td>
 			<td><%= text_field_tag :aufnahmedatum, @new_Person.aufnahmedatum %></td>
+			<td />
 	  	</tr>	   
 	</table>  
   
