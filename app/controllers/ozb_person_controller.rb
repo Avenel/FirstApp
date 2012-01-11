@@ -56,13 +56,20 @@ class OZBPersonController < ApplicationController
       if params[:password] != "********"
         @OZBPerson.password = params[:password]
       end
-      @Person.geburtsdatum = Date.parse(params[:gebDatum])
+      if !@Person.geburtsdatum.nil? && @Person.geburtsdatum != "" then
+        @Person.geburtsdatum = Date.parse(params[:gebDatum])
+      end
       @Person.strasse = params[:strasse]
       @Person.hausnr = params[:hausnr]
       @Person.plz = params[:plz]
       @Person.ort = params[:ort]
-      @Person.antragsdatum = params[:antragsdatum]
-      @Person.aufnahmedatum = params[:aufnahmedatum]
+      if !@Person.antragsdatum.nil? && @Person.antragsdatum != "" then
+        @Person.antragsdatum = params[:antragsdatum]
+      end
+      
+      if !@Person.aufnahmedatum.nil? && @Person.aufnahmedatum != "" then
+        @Person.aufnahmedatum = params[:aufnahmedatum]
+      end
       
       case @Person.rolle
       when "M"

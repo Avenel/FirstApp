@@ -1,8 +1,8 @@
 <h1>Person</h1>
-<h2>Neu anlegen</h2>
+<h2>Hinzufügen</h2>
 
 <%= form_tag({:action => "create"}, :id=>"newForm") do %>	
-	<%= @errors.inspect %>
+<%= @errors.inspect %>
 	<% if !@errors.nil? && @errors.any? %>
 	  <div id="error_explanation">
 	    <h2>Konnte keine Person anlegen:</h2>
@@ -18,216 +18,200 @@
   	<% end %>
   
 	<table>
-   	<tr>
-		  <td><%= label_tag "Name *:" %></td>
-		  <td><%= text_field_tag :name, @tempNames[0] %></td>  
-	  </tr>
+		<tr>
+			<td><%= label_tag "Name:*" %></td>
+			<td><%= text_field_tag :name, @new_Person.name %></td>
+		</tr>
+		
+		<tr>
+			<td><%= label_tag "Vorname:" %></td>
+			<td><%= text_field_tag :vorname, @new_Person.vorname %></td>
+		</tr>
+		
+		<tr>
+			<td><%= label_tag "Email:*" %></td>
+			<td><%= email_field_tag :email, @new_OZBPerson.email %></td>
+		</tr>	
+		
+		<tr>
+			<td><%= label_tag "Passwort:*" %></td>
+			<td><%= password_field_tag :passwort, @new_OZBPerson.password %></td>
+		</tr>	
+		  
+		<tr>
+			<td><%= label_tag "Geburtsdatum:" %></td>
+			<td><%= text_field_tag :gebDatum, @new_Person.geburtsdatum %></td>
+		</tr>  
+		  
+		<tr>
+			<td><%= label_tag "Straße:" %></td>
+			<td><%= text_field_tag :strasse, @new_Person.strasse %></td>
+		</tr>
+		
+		<tr>
+		  	<td><%= label_tag "Hausnummer:" %></td>
+		  	<td><%= text_field_tag :hausnr, @new_Person.hausnr %></td>
+	  	</tr>
+		
+		<tr>
+			<td><%= label_tag "PLZ:" %></td>
+			<td><%= text_field_tag :plz, @new_Person.plz %></td>
+		</tr>
+		
+		<tr>
+			<td><%= label_tag "Ort:" %></td>
+			<td><%= text_field_tag :ort, @new_Person.ort %></td>
+		</tr>	
 	
-	  <tr>
-		  <td><%= label_tag "Vorname:" %></td>
-		  <td><%= text_field_tag :vorname %></td>  
-	  </tr>
-	    
-	  <tr>
-		  <td><%= label_tag "Geburtsdatum:" %>  </td>
-		  <td><%= text_field_tag :gebDatum %></td>
-	  </tr>  
-	    
-	  <tr>
-		  <td><%= label_tag "Straße:" %></td>
-		  <td><%= text_field_tag :strasse %></td>
-	  </tr>
-	
-	  <tr>
-		  <td><%= label_tag "PLZ:" %></td>
-		  <td><%= text_field_tag :plz %></td>  
-	  </tr>
-	
-	  <tr>
-		  <td><%= label_tag "Ort:" %></td>
-		  <td><%= text_field_tag :ort %>  </td>
-	  </tr>
-	
-	  <tr>
-		  <td><%= label_tag "Telefon:" %></td>
-		  <td><%= telephone_field_tag :telefon %>  </td>
-	  </tr>
-	
-	  <tr>
-		  <td><%= label_tag "Fax:" %></td>
-		  <td><%= telephone_field_tag :fax %></td>  
-	  </tr>
-	
-	  <tr>
-		  <td><%= label_tag "Email:" %></td>
-		  <td><%= email_field_tag :email %></td>  
-	  </tr>
-	  
-	  <tr>
-		  <td><%= label_tag "Passwort *:" %></td>
-		  <td><%= password_field_tag :passwort, @tempNames[1] %></td>  
-	  </tr>
-  <!--	
-	  <tr>
-		  Bankdaten:
-	  </tr>
-	
-	  <tr>
-		  <%= label_tag "Kontoinhaber:" %>
-		  <%= text_field_tag :kontoinhaber %>  
-	  </tr>
-	
-	  <tr>
-		  <%= label_tag "Kontonummer:" %>
-		  <%= text_field_tag :kontonr %>  
-	  </tr>
-	
-	  <tr>
-		  <%= label_tag "BLZ:" %>
-		  <%= text_field_tag :blz %>  
-	  </tr>	
-	
-	  <tr>
-		  <%= label_tag "Bankname:" %>
-		  <%= text_field_tag :bankname %>  
-	  </tr>
-  -->	
+		<tr>
+			<td><%= label_tag "Telefon:" %></td>
+			<td><%= telephone_field_tag :telefon %>  </td>
+		</tr>
+		
+		<tr>
+			<td><%= label_tag "Fax:" %></td>
+			<td><%= telephone_field_tag :fax %></td>  
+		</tr>
 
-	  <tr>
-      <td><%= label_tag "Rolle:" %></td>
-      <td><%= select_tag 'rolle', options_for_select(@Rollen), { :onChange => "show_role()" } %></td>
-    </tr>
+		<tr>
+			<td><%= label_tag "Rolle:" %></td>
+			<td><%= select_tag 'rolle', options_for_select(@Rollen, @new_Person.rolle), { :onChange => "switch_role()" } %></td>
+		</tr>
     </table>	
     <div id="Student">
-      <table style="margin: 10px auto;">
-    	<tr>
-			  <td><%= label_tag "Ausbildungsbezeichnung *:" %></td>
-			  <td><%= text_field_tag :ausbildBez, @tempStudentNames[0] %></td>  
-		  </tr>
-
-    	<tr>
-			  <td><%= label_tag "Institut *:" %></td>
-			  <td><%= text_field_tag :institutName, @tempStudentNames[1] %></td>  
-		  </tr>
-
-    	<tr>
-			 <td><%= label_tag "Studienort *:" %></td>
-			 <td><%= text_field_tag :studienort, @tempStudentNames[2] %></td>  
-		  </tr>
-
-    	<tr>
-			  <td><%= label_tag "Studienbeginn *:" %></td>
-			  <td><%= text_field_tag :studienbeginn, @tempStudentNames[3] %>  </td>
-		  </tr>
-
-    	<tr>
-			  <td><%= label_tag "Studienende:" %></td>
-			  <td><%= text_field_tag :studienende %>  </td>
-		  </tr>
-
-    	<tr>
-			  <td><%= label_tag "Abschluss *:" %></td>
-			  <td><%= text_field_tag :abschluss, @tempStudentNames[4] %>  </td>
-		  </tr>
-      </table>
-    	</div>
-    	
-    	<div id="Gesellschafter">
-    	<table style="margin: 10px auto;">
-    		<tr>
-			    <td><%= label_tag "FA Steuernummer *:" %></td>
-			    <td><%= text_field_tag :faSteuerNr, @tempGesellschafterNames[0] %>  </td>
-			    <td />
+		<table style="margin: 10px auto;">
+	    	<tr>
+			    <td><%= label_tag "Ausbildungsbezeichnung:*" %></td>
+			    <td><%= text_field_tag :ausbildBez, @new_Student.ausbildBez %></td>
 		    </tr>
-
-    	<tr>
-			  <td><%= label_tag "FA Lfd. Nr. *:" %></td>
-			  <td><%= text_field_tag :faLfdNr, @tempGesellschafterNames[1] %>  </td>
-			  <td />
-		  </tr>
-
-    	<tr>
-			  <td><%= label_tag "Wohnsitzfinanzamt *:" %></td>
-			  <td><%= text_field_tag :wohnsitzFinanzamt, @tempGesellschafterNames[2] %>  </td>
-			  <td />
-		  </tr>
-
-    	<tr>
-			  <td><%= label_tag "Notar:" %></td>
-			  <td><%= text_field_tag :notarPnr %></td>
-			  <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchNotarFrame", :class => "searchlink" %></td>
-		  </tr>
-
-    	<tr>
-			  <td><%= label_tag "Beurkundungsdatum:" %></td>
-			  <td><%= text_field_tag :beurkDatum %> </td> 
-			  <td />
-		  </tr>
-		  </table>
+	
+	  		<tr>
+			    <td><%= label_tag "Institut:*" %></td>
+			    <td><%= text_field_tag :institutName, @new_Student.institutName %></td>
+		    </tr>
+	
+	  		<tr>
+			    <td><%= label_tag "Studienort:*" %></td>
+			    <td><%= text_field_tag :studienort, @new_Student.studienort %></td> 
+		    </tr>
+	
+	  		<tr>
+				<td><%= label_tag "Studienbeginn:*" %></td>
+				<td><%= text_field_tag :studienbeginn, @new_Student.studienbeginn %></td>  
+		    </tr>
+	
+	  		<tr>
+				<td><%= label_tag "Studienende:" %></td>
+				<td><%= text_field_tag :studienende, @new_Student.studienende %></td>  
+		    </tr>
+	
+	  		<tr>
+				<td><%= label_tag "Abschluss:*" %></td>
+				<td><%= text_field_tag :abschluss, @new_Student.abschluss %></td>  
+		    </tr>      
+	    </table>
     </div>
     	
-    <div id="Foerdermitglied">
-      <table style="margin: 10px auto;">
-    	<tr>
-			  <td><%= label_tag "Region *:" %></td>
-			  <td><%= text_field_tag :region, @tempFoerdermitgliedNames[0] %></td>  
-		  </tr>
+    <div id="Gesellschafter">
+    	<table style="margin: 10px auto;">
+			<tr>
+				<td><%= label_tag "FA Steuernummer:*" %></td>
+			  	<td><%= text_field_tag :faSteuerNr, @new_Gesellschafter.faSteuerNr %></td>
+			  	<td></td>  
+			</tr>
 
-    	<tr>
-			  <td><%= label_tag "Förderbeitrag *:" %></td>
-			  <td><%= text_field_tag :foerderbeitrag, @tempFoerdermitgliedNames[1] %>  </td>
-		  </tr>
-		  </table>
+  			<tr>
+			  	<td><%= label_tag "FA Lfd. Nr.:*" %></td>
+			  	<td><%= text_field_tag :faLfdNr, @new_Gesellschafter.faLfdNr %></td>  
+			  	<td></td>  
+		  	</tr>
+
+  			<tr>
+			  	<td><%= label_tag "Wohnsitzfinanzamt:*" %></td>
+			  	<td><%= text_field_tag :wohnsitzFinanzamt, @new_Gesellschafter.wohnsitzFinanzamt %></td>  
+			  	<td></td>  
+		  	</tr>
+
+  			<tr>
+			  	<td><%= label_tag "Notar:" %></td>
+			  	<td><%= text_field_tag :notarPnr, @new_Gesellschafter.notarPnr %></td>
+			  	<td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchNotarFrame", :class => "searchlink" %></td>  
+		  	</tr>
+
+  			<tr>
+			  	<td><%= label_tag "Beurkundungsdatum:" %></td>
+			  	<td><%= text_field_tag :beurkDatum, @new_Gesellschafter.beurkDatum %></td>  
+			  	<td></td>  
+		  	</tr>
+		</table>
+	</div>
+    	
+    <div id="Foerdermitglied">
+		<table style="margin: 10px auto;">
+			<tr>
+	  			<td><%= label_tag "Region:*" %></td>
+			  	<td><%= text_field_tag :region, @new_Foerdermitglied.region %></td>  
+		  	</tr>
+
+  			<tr>
+			  	<td><%= label_tag "Förderbeitrag:*" %></td>
+			  	<td><%= text_field_tag :foerderbeitrag, @new_Foerdermitglied.foerderbeitrag %></td>  
+		  	</tr>
+		</table>
     </div>
     	
     <div id="Mitglied">
-      <table style="margin: 10px auto;">
-    	<tr>
-			  <td><%= label_tag "RV Datum:" %></td>
-			  <td><%= text_field_tag :rvDatum %></td>  
-		  </tr>
-		  </table>
+		<table style="margin: 10px auto;">
+    		<tr>
+			  	<td><%= label_tag "RV Datum:" %></td>
+			  	<td><%= text_field_tag :rvDatum, @new_Mitglied.rvDatum %></td>
+		  	</tr>
+		</table>
     </div>
     	
     <div id="Partner">
-      <table style="margin: 10px auto;">
-    	<tr>
-			  <td><%= label_tag "Partner *:" %></td>
-			  <td><%= text_field_tag :partner, @tempPartnerNames[0] %>  </td>
-			  <td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchPartnerFrame", :class => "searchlink" %></td>
-	    </tr>
+		<table style="margin: 10px auto;">
+    		<tr>
+			  	<td><%= label_tag "Partner:*" %></td>
+			  	<td><%= text_field_tag :partner, @new_Partner.mnrO %></td>
+			  	<td class="searchlink_td"><%= link_to "Suchen...", "#searchOZBPersonFrame", :id => "searchPartnerFrame", :class => "searchlink" %></td>
+		  	</tr>
 		
-	    <tr>
-			  <td><%= label_tag "Berechtigung *:" %></td>
-			  <td><%= text_field_tag :berechtigung, @tempPartnerNames[1] %></td>
-			  <td />
-		  </tr>
-		  </table>
+		  	<tr>
+			  	<td><%= label_tag "Berechtigung:*" %></td>
+			  	<td><%= text_field_tag :berechtigung, @new_Partner.berechtigung %></td>
+		  	</tr>
+		</table>
     </div>
     
-  <table style="margin: 10px auto;">
-	  <tr>
-		  <td><%= label_tag "Antragsdatum *:" %></td>
-		  <td><%= text_field_tag :antragsdatum, @tempNames[2] %></td>  
-	  </tr>
+	<table style="margin: 10px auto;">
+	  	<tr>
+		  	<td><%= label_tag "Antragsdatum *:" %></td>
+		  	<td><%= text_field_tag :antragsdatum, @new_Person.antragsdatum %></td>  
+	  	</tr>
 	
-	  <tr>
-		  <td><%= label_tag "Aufnahmedatum:" %></td>
-		  <td><%= text_field_tag :aufnahmedatum %></td>
-	  </tr> 
-	   
-  </table>  
+	  	<tr>
+		  	<td><%= label_tag "Aufnahmedatum:" %></td>
+			<td><%= text_field_tag :aufnahmedatum, @new_Person.aufnahmedatum %></td>
+	  	</tr>	   
+	</table>  
   
   <br />
-  <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %>
   
 <% end %>
 
-		  <div style="display:none">
-		    <div id="searchOZBPersonFrame">
-		      <div id="personen"><%= render 'application/suche_ozb_personen' %></div>  
-		    </div>
-		  </div>
+<table class="actions">
+  <tr>
+    <td><%= link_to "Zurück", "/OZBPerson", :class => "cancel_link" %></td>
+    <td><%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %></td>
+  </tr>
+</table>
+
+<div style="display:none">
+  <div id="searchOZBPersonFrame">
+    <div id="personen"><%= render 'application/suche_ozb_personen' %></div>  
+  </div>
+</div>
 
 <script>
 
@@ -260,6 +244,21 @@
 	});
 	
 	$(function() {
+		$( "#studienbeginn" ).datepicker({
+			dateFormat: 'dd.mm.yy'
+ 		});
+	});
+	$(function() {
+		$( "#studienende" ).datepicker({
+			dateFormat: 'dd.mm.yy'
+ 		});
+	});
+	$(function() {
+		$( "#beurkDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy'
+ 		});
+	});
+	$(function() {
 		$( "#antragsdatum" ).datepicker({
 			dateFormat: 'dd.mm.yy'
  		});
@@ -269,7 +268,7 @@
 			dateFormat: 'dd.mm.yy'
 		});
 	});
-	function show_role()
+	function switch_role()
 	{
 		$("div#Foerdermitglied").hide();
 	    $("div#Student").hide();
@@ -296,5 +295,5 @@
 		    default:
 		}		
 	}
-	show_role();
+	switch_role();
 </script>

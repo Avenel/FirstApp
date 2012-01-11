@@ -203,7 +203,7 @@
 <table class="actions">
   <tr>
     <td><%= link_to "Zurück", "/OZBPerson", :class => "cancel_link" %></td>
-    <td><%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %></td>
+    <td><%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok", :notice => "Person erfolgreich aktualisiert" %></td>
   </tr>
 </table>
 
