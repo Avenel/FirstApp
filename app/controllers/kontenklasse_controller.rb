@@ -65,26 +65,6 @@ class KontenklasseController < ApplicationController
     end
   end
   
-  def save
-    if current_OZBPerson.canEditD then
-      begin
-        @kontenklasse = Kontenklasse.find(params[:kkl])
-        @kontenklasse.prozent = params[:prozent]
-        @kontenklasse.kklAbDatum = Date.parse(params[:kklAbDatum])
-        @kontenklasse.save!
-      rescue
-          @new_kontenklasse = Kontenklasse.create( :kkl => params[:kkl], :prozent => params[:prozent],
-                                                :kklAbDatum => Date.parse(params[:kklAbDatum]) )
-          @new_kontenklasse.save!
-      end
-      
-      @kontenklassen = Kontenklasse.all
-      redirect_to :action => "index"
-    else
-      redirect_to "/"
-    end
-  end
-  
   def delete
     if current_OZBPerson.canEditD then
       begin

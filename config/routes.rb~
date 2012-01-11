@@ -7,16 +7,16 @@ OZB::Application.routes.draw do
   match '/OZBPerson' => 'OZBPerson#index'
   match '/OZBPerson/new' => 'OZBPerson#new'
   match '/OZBPerson/new' => 'OZBPerson#searchOZBPerson'
-  match '/OZBPerson/save' => 'OZBPerson#save'
+  match '/OZBPerson/save' => 'OZBPerson#create'
 	match '/OZBPerson/:id' => 'OZBPerson#edit', :via => :GET
-	match '/OZBPerson/:id' => 'OZBPerson#save', :via => :POST  
+	match '/OZBPerson/:id' => 'OZBPerson#update', :via => :POST  
   match '/OZBPerson/:id/delete' => 'OZBPerson#delete'
   match '/OZBPerson/:id/Konto' => 'OzbKonto#index'
   match '/OZBPerson/:id/Konto/:typ/new' => 'OzbKonto#new'
   match '/buergschaften/Konto/:typ/new' => 'OzbKonto#searchKtoNr'
-  match '/OZBPerson/:id/Konto/:typ' => 'OzbKonto#save', :via => :POST
+  match '/OZBPerson/:id/Konto/:typ' => 'OzbKonto#create', :via => :POST
   match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#edit', :via => :GET
-  match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#save', :via => :POST
+  match '/OZBPerson/:id/Konto/:typ/:ktoNr' => 'OzbKonto#update', :via => :POST
   match '/OZBPerson/:id/Konto/:typ/:ktoNr/delete' => 'OzbKonto#delete'
   match '/OZBPerson/:id/Konto/:typ/:ktoNr/buchungen' => 'OzbKonto#show', :via => :GET
   match '/OZBPerson/:id/Daten' => 'index#error_404'

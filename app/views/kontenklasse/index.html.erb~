@@ -27,6 +27,11 @@
   <% end %>
 </table>
 
+<!-- Seitennavigation -->
+<div class="paginateBox" >
+  <%= will_paginate @kontenklassen %> 
+</div>
+
 <br />
 
 <table class="actions">
