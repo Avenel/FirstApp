@@ -1,0 +1,22 @@
+<h1>OZB Konten</h1>
+
+<h2>Kontenklassen-Verlauf</h2>
+<h3>Konto: <%= @ozb_konto.ktoNr %></h3>
+
+
+<table>
+
+  <th>KKLAbDatum</th>
+  <th>KKL</th>
+
+  <% i = 0 %>
+  <% @verlauf.each do |v| %>
+    <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
+    <tr style="background:<%= bg_color %>;">
+      <td><%= v.kklAbDatum %></td>
+      <td><%= v.kkl %></td>
+    </tr>
+    <% i += 1 %>
+  <% end %>
+
+</table>

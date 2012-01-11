@@ -338,5 +338,11 @@ class OzbKontoController < ApplicationController
       redirect_to "/"
     end
   end
+  
+  # Zeigt den KKLVerlauf an
+  def verlauf
+    @ozb_konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
+    @verlauf = @ozb_konto.KKLVerlauf
+  end
 
 end

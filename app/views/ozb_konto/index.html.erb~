@@ -13,6 +13,7 @@
     <th>Kreditlimit</th>
     <th />
     <th />
+    <th />
   </tr>
  
   <% i = 0 %>
@@ -27,7 +28,9 @@
       <td><%= bankverbindung.blz %></td>
       <td><%= bankverbindung.bankName %></td>
       <td><%= konto.kreditlimit %></td>
+      <% kkl_verlauf_link = "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s+"/verlauf" %>
       <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s, :class => "edit_link" %></td>
+      <td><%= link_to "KKLVerlauf", kkl_verlauf_link, :class => "konto_link" %></td>
       <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/EE/"+konto.ktoNr.to_s+"/delete", :class => "delete_link", :confirm => "Sind Sie sicher?" %></td>
     </tr>
     <% i += 1 %>
@@ -38,7 +41,6 @@
 
 <table class="actions">
   <tr>
-    <td><%= link_to "Zurück", "/Admin", :class => "cancel_link" %></td>
     <% if @ee_count < 3 then %>
       <td><%= link_to "Neues EE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/EE/new", :class => "submit_ok" %></td>
     <% end %>
@@ -63,6 +65,7 @@
     <th>Status</th>
     <th />
     <th />
+    <th />
   </tr>
 
   <% i = 0 %>
@@ -79,7 +82,9 @@
       <td><%= konto.tilgRate %></td>
       <td><%= konto.ansparRate %></td>
       <td><%= konto.zeStatus %></td>
+      <% kkl_verlauf_link = "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s+"/verlauf" %>
       <td><%= link_to "Editieren", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s, :class => "edit_link" %></td>
+      <td><%= link_to "KKLVerlauf", kkl_verlauf_link, :class => "konto_link" %></td>
       <td><%= link_to "Löschen", "/OZBPerson/"+params[:id]+"/Konto/ZE/"+konto.ktoNr.to_s+"/delete", :class => "delete_link", :confirm => "Sind Sie sicher?" %></td>
     </tr>
     <% i += 1 %>
@@ -89,6 +94,7 @@
 
 <table class="actions">
   <tr>
+    <td><%= link_to "Zurück", "/Admin", :class => "cancel_link" %></td>
     <% if @ze_count < 4 then %>
       <td><%= link_to "Neues ZE-Konto hinzufügen", "/OZBPerson/"+params[:id]+"/Konto/ZE/new", :class => "submit_ok" %></td>
     <% end %>
