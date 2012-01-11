@@ -1,6 +1,6 @@
 <h1>OZB Konten</h1>
 
-<h2>Kontenklasen-Verlauf</h2>
+<h2>Kontenklassen-Verlauf</h2>
 <h3>Konto: <%= @ozb_konto.ktoNr %></h3>
 
 
@@ -19,4 +19,12 @@
     <% i += 1 %>
   <% end %>
 
+</table>
+
+<br />
+
+<table class="actions">
+  <tr>
+    <td><%= link_to "Zurück", "/OZBPerson/#{params[:id]}/Konto", :class => "cancel_link" %></td>
+  </tr>
 </table>
