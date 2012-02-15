@@ -1,5 +1,7 @@
 class OzbKontoController < ApplicationController
 
+  before_filter :authenticate_OZBPerson!
+
   def index
     if current_OZBPerson.canEditB then
       get_konten()
@@ -335,6 +337,12 @@ class OzbKontoController < ApplicationController
     else 
       redirect_to "/"
     end
+  end
+  
+  # Zeigt den KKLVerlauf an
+  def verlauf
+    @ozb_konto = OZBKonto.where( :ktoNr => params[:ktoNr] ).first
+    @verlauf = @ozb_konto.KKLVerlauf.first
   end
 
 end

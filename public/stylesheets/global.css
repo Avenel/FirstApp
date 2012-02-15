@@ -151,6 +151,19 @@ input {
   text-decoration: none;
 }
 
+.submit_search {
+  padding: 15px 55px;
+  background: #002bDD;
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;  
+}
+
+.submit_search:hover {
+  background: #002bab;
+  text-decoration: none;
+}
+
 .submit_ok {
   padding: 15px 55px;
   background: #2fab24;

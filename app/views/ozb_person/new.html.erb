@@ -179,6 +179,7 @@
 		  	<tr>
 			  	<td><%= label_tag "Berechtigung:*" %></td>
 			  	<td><%= text_field_tag :berechtigung, @new_Partner.berechtigung %></td>
+			  	<td />
 		  	</tr>
 		</table>
     </div>
@@ -187,11 +188,13 @@
 	  	<tr>
 		  	<td><%= label_tag "Antragsdatum *:" %></td>
 		  	<td><%= text_field_tag :antragsdatum, @new_Person.antragsdatum %></td>  
+		  	<td />
 	  	</tr>
 	
 	  	<tr>
 		  	<td><%= label_tag "Aufnahmedatum:" %></td>
 			<td><%= text_field_tag :aufnahmedatum, @new_Person.aufnahmedatum %></td>
+			<td />
 	  	</tr>	   
 	</table>  
   
@@ -202,7 +205,7 @@
 <table class="actions">
   <tr>
     <td><%= link_to "Zurück", "/OZBPerson", :class => "cancel_link" %></td>
-    <td><%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok" %></td>
+    <td><%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#newForm').submit(); return false;", :class => "submit_ok", :notice => "Person erfolgreich aktualisiert" %></td>
   </tr>
 </table>
 

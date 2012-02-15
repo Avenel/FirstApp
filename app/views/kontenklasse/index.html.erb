@@ -19,13 +19,17 @@
       <td><%= kkl.kklAbDatum %></td>
       <% edit_link = "/kontenklasse/" + kkl.kkl.to_s %>
       <% delete_link = "/kontenklasse/" + kkl.kkl.to_s + "/delete" %>
-      <% verlauf_link = "/kontenklasse/verlauf/" + kkl.kkl.to_s %>
       <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
       <td><%= link_to "Löschen", delete_link, :class => "delete_link", :confirm => "Sind Sie sicher?" %></td>
     </tr>
     <% i += 1 %>
   <% end %>
 </table>
+
+<!-- Seitennavigation -->
+<div class="paginateBox" >
+  <%= will_paginate @kontenklassen %> 
+</div>
 
 <br />
 
