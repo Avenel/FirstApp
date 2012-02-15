@@ -12,7 +12,7 @@ class CreateTan < ActiveRecord::Migration
        # verwendet Am
        t.date :verwendetAm, :default => nil
        # status
-       t.column "status", :enum, :limit => [:o, :x] # o: offen, x: benutzt
+			 t.column :status, "ENUM('o', 'x')" # o: offen, x: benutzt
     end
   end
 

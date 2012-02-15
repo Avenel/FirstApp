@@ -64,12 +64,12 @@
 	
 		<tr>
 			<td><%= label_tag "Telefon:" %></td>
-			<td><%= telephone_field_tag :telefon %>  </td>
+			<td><%= text_field_tag :telefon, @new_Telefon.telefonNr %>  </td>
 		</tr>
 		
 		<tr>
 			<td><%= label_tag "Fax:" %></td>
-			<td><%= telephone_field_tag :fax %></td>  
+			<td><%= text_field_tag :fax, @new_Fax.telefonNr %></td>  
 		</tr>
 
 		<tr>

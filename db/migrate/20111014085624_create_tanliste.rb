@@ -6,7 +6,7 @@ class CreateTanliste < ActiveRecord::Migration
        # Listennummer PS2, FS
        t.integer :listNr, :null => false, :limit => 2
        # Status 
-       t.column "status", :enum, :limit => [:n, :d, :a]  
+       t.column :status, "ENUM('n', 'd', 'a')"  
     end
   end
 

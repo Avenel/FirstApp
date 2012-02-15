@@ -4,7 +4,7 @@ class CreatePerson < ActiveRecord::Migration
       # PNR PS
       t.integer :pnr, :null => false, :uniqueness => true, :limit => 10
       # Rolle                              
-      t.column "rolle", :enum, :limit => [:G, :M, :P, :S, :F] # G: Gesellschafter, M: Mitglied, P: Partner,  S: Student, F: Foerdermitglied
+      t.column :rolle, "ENUM('G', 'M', 'P', 'S', 'F')" # G: Gesellschafter, M: Mitglied, P: Partner,  S: Student, F: Foerdermitglied
       # Name
       t.string :name, :null => false, :limit => 20
       # Vorname
