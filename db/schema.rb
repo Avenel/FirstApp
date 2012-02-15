@@ -18,46 +18,46 @@ ActiveRecord::Schema.define(:version => 20111019115936) do
   end
 
   create_table "Bankverbindung", :force => true do |t|
-    t.integer "pnr",       :limit => 10, :null => false
+    t.integer "pnr",                     :null => false
     t.string  "bankKtoNr", :limit => 10
-    t.integer "blz",       :limit => 10
+    t.integer "blz"
     t.string  "bic",       :limit => 10
     t.string  "iban",      :limit => 20
     t.string  "bankName",  :limit => 35
   end
 
   create_table "Buchung", :id => false, :force => true do |t|
-    t.integer "buchJahr",     :limit => 4,                                                  :null => false
-    t.integer "ktoNr",        :limit => 5,                                                  :null => false
+    t.integer "buchJahr",                                                                   :null => false
+    t.integer "ktoNr",        :limit => 8,                                                  :null => false
     t.string  "bnKreis",      :limit => 2,                                                  :null => false
-    t.integer "belegNr",      :limit => 10,                                                 :null => false
+    t.integer "belegNr",                                                                    :null => false
     t.string  "typ",          :limit => 1,                                                  :null => false
     t.date    "belegDatum",                                                                 :null => false
     t.date    "buchDatum",                                                                  :null => false
     t.string  "buchungstext", :limit => 50,                                                 :null => false
     t.decimal "sollBetrag",                 :precision => 10, :scale => 2
     t.decimal "habenBetrag",                :precision => 10, :scale => 2
-    t.integer "sollKtoNr",    :limit => 5,                                 :default => 0,   :null => false
-    t.integer "habenKtoNr",   :limit => 5,                                 :default => 0,   :null => false
+    t.integer "sollKtoNr",    :limit => 8,                                 :default => 0,   :null => false
+    t.integer "habenKtoNr",   :limit => 8,                                 :default => 0,   :null => false
     t.decimal "wSaldoAcc",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.integer "punkte",       :limit => 10
-    t.integer "pSaldoAcc",    :limit => 10,                                :default => 0,   :null => false
+    t.integer "punkte"
+    t.integer "pSaldoAcc",                                                 :default => 0,   :null => false
   end
 
   create_table "BuchungOnline", :force => true do |t|
-    t.integer "mnr",         :limit => 10,                :null => false
-    t.date    "ueberwdatum",                              :null => false
-    t.integer "sollktonr",   :limit => 5,  :default => 0, :null => false
-    t.integer "habenktonr",  :limit => 5,  :default => 0, :null => false
-    t.integer "punkte",      :limit => 10,                :null => false
-    t.integer "tan",         :limit => 5,                 :null => false
-    t.integer "blocknr",     :limit => 2,                 :null => false
+    t.integer "mnr",                                     :null => false
+    t.date    "ueberwdatum",                             :null => false
+    t.integer "sollktonr",   :limit => 8, :default => 0, :null => false
+    t.integer "habenktonr",  :limit => 8, :default => 0, :null => false
+    t.integer "punkte",                                  :null => false
+    t.integer "tan",         :limit => 8,                :null => false
+    t.integer "blocknr",     :limit => 2,                :null => false
   end
 
   create_table "Buergschaft", :id => false, :force => true do |t|
-    t.integer "pnrB",         :limit => 10,                                 :null => false
-    t.integer "mnrG",         :limit => 10,                                 :null => false
-    t.integer "ktoNr",        :limit => 5,                                  :null => false
+    t.integer "pnrB",                                                       :null => false
+    t.integer "mnrG",                                                       :null => false
+    t.integer "ktoNr",        :limit => 8,                                  :null => false
     t.date    "sichAbDatum"
     t.date    "sichEndDatum"
     t.decimal "sichBetrag",                  :precision => 10, :scale => 2
@@ -78,12 +78,12 @@ ActiveRecord::Schema.define(:version => 20111019115936) do
     t.string  "faSteuerNr",        :limit => 15
     t.string  "faLfdNr",           :limit => 20
     t.string  "wohnsitzFinanzamt", :limit => 50
-    t.integer "notarPnr",          :limit => 10
+    t.integer "notarPnr"
     t.date    "beurkDatum"
   end
 
   create_table "KKLVerlauf", :force => true do |t|
-    t.integer "ktoNr",      :limit => 5, :null => false
+    t.integer "ktoNr",      :limit => 8, :null => false
     t.date    "kklAbDatum",              :null => false
     t.string  "kkl",        :limit => 1, :null => false
   end
@@ -98,16 +98,16 @@ ActiveRecord::Schema.define(:version => 20111019115936) do
   end
 
   create_table "OZBKonto", :primary_key => "ktoNr", :force => true do |t|
-    t.integer "mnr",          :limit => 10,                                                   :null => false
+    t.integer "mnr",                                                                         :null => false
     t.date    "ktoEinrDatum"
-    t.string  "waehrung",     :limit => 3,                                 :default => "STR"
-    t.decimal "wSaldo",                     :precision => 10, :scale => 2
-    t.integer "pSaldo",       :limit => 11
+    t.string  "waehrung",     :limit => 3,                                :default => "STR"
+    t.decimal "wSaldo",                    :precision => 10, :scale => 2
+    t.integer "pSaldo"
     t.date    "saldoDatum"
   end
 
   create_table "OZBPerson", :primary_key => "mnr", :force => true do |t|
-    t.integer  "ueberPnr",               :limit => 10
+    t.integer  "ueberPnr"
     t.string   "passwort",               :limit => 35
     t.date     "pwAendDatum"
     t.boolean  "gesperrt",                              :default => false, :null => false
@@ -133,12 +133,25 @@ ActiveRecord::Schema.define(:version => 20111019115936) do
   add_index "OZBPerson", ["reset_password_token"], :name => "index_OZBPerson_on_reset_password_token", :unique => true
 
   create_table "Partner", :primary_key => "mnr", :force => true do |t|
-    t.integer "mnrO",         :limit => 10, :null => false
-    t.string  "berechtigung", :limit => 1,  :null => false
+    t.integer "mnrO",                      :null => false
+    t.string  "berechtigung", :limit => 1, :null => false
   end
 
-# Could not dump table "Person" because of following StandardError
-#   Unknown type 'enum' for column 'rolle'
+  create_table "Person", :primary_key => "pnr", :force => true do |t|
+    t.string  "rolle",          :limit => 0
+    t.string  "name",           :limit => 20,                  :null => false
+    t.string  "vorname",        :limit => 15,  :default => "", :null => false
+    t.date    "geburtsdatum"
+    t.string  "strasse",        :limit => 50
+    t.string  "hausnr",         :limit => 10
+    t.integer "plz",            :limit => 8
+    t.string  "ort",            :limit => 50
+    t.string  "vermerk",        :limit => 100
+    t.string  "email"
+    t.date    "antragsdatum"
+    t.date    "aufnahmedatum"
+    t.date    "austrittsdatum"
+  end
 
   create_table "Projektgruppe", :primary_key => "pgNr", :force => true do |t|
     t.string "projGruppez"
@@ -153,17 +166,29 @@ ActiveRecord::Schema.define(:version => 20111019115936) do
     t.string "abschluss"
   end
 
-# Could not dump table "Tan" because of following StandardError
-#   Unknown type 'enum' for column 'status'
+  create_table "Tan", :id => false, :force => true do |t|
+    t.integer "mnr",                      :null => false
+    t.integer "listNr",      :limit => 2, :null => false
+    t.integer "tanNr",                    :null => false
+    t.integer "tan",         :limit => 8, :null => false
+    t.date    "verwendetAm"
+    t.string  "status",      :limit => 0
+  end
 
-# Could not dump table "Tanliste" because of following StandardError
-#   Unknown type 'enum' for column 'status'
+  create_table "Tanliste", :id => false, :force => true do |t|
+    t.integer "mnr",                 :null => false
+    t.integer "listNr", :limit => 2, :null => false
+    t.string  "status", :limit => 0
+  end
 
-# Could not dump table "Teilnahme" because of following StandardError
-#   Unknown type 'enum' for column 'teilnArt'
+  create_table "Teilnahme", :id => false, :force => true do |t|
+    t.integer "pnr",                   :null => false
+    t.integer "vnr",      :limit => 8, :null => false
+    t.string  "teilnArt", :limit => 0
+  end
 
   create_table "Telefon", :primary_key => "lfdNr", :force => true do |t|
-    t.integer "pnr",        :limit => 10, :null => false
+    t.integer "pnr",                      :null => false
     t.string  "telefonNr",  :limit => 15
     t.string  "telefonTyp", :limit => 6
   end
@@ -179,13 +204,13 @@ ActiveRecord::Schema.define(:version => 20111019115936) do
   end
 
   create_table "ZEKonto", :primary_key => "ktoNr", :force => true do |t|
-    t.integer "eeKtoNr",    :limit => 5,                                                  :null => false
+    t.integer "eeKtoNr",    :limit => 8,                                                  :null => false
     t.integer "pgNr",       :limit => 2
     t.string  "zeNr",       :limit => 10
     t.date    "zeAbDatum"
     t.date    "zeEndDatum"
     t.decimal "zeBetrag",                 :precision => 10, :scale => 2
-    t.integer "laufzeit",   :limit => 4,                                                  :null => false
+    t.integer "laufzeit",                                                                 :null => false
     t.string  "zahlModus",  :limit => 1,                                 :default => "M"
     t.decimal "tilgRate",                 :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.decimal "ansparRate",               :precision => 10, :scale => 2, :default => 0.0, :null => false

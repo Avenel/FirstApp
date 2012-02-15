@@ -2,7 +2,6 @@
 <h2>Hinzufügen</h2>
 
 <%= form_tag({:action => "create"}, :id=>"newForm") do %>	
-<%= @errors.inspect %>
 	<% if !@errors.nil? && @errors.any? %>
 	  <div id="error_explanation">
 	    <h2>Konnte keine Person anlegen:</h2>
