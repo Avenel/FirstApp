@@ -1,9 +1,0 @@
-//if(search == "person") {
-  $('#personen').html('<%= escape_javascript(render("application/suche_ozb_personen")) %>');
-//}
-
-//if(search == "konto") {
-  //alert(search);
-  $('#konten').html('<%= escape_javascript(render("application/suche_konten")) %>');
-//}
-

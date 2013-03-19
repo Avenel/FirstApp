@@ -1,6 +1,0 @@
-<p>Hallo <%= @resource.email %>!</p>
-
-<p>Ihr Account wurde gesperrt. Es wurden zu viele nicht erfolgreiche Einlog-Versuche registriert.</p>
-<p>Klicke den Link an, um Ihren Account wieder freizuschalten:</p>
-
-<p><%= link_to 'Account freischalten', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
