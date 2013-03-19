@@ -1,0 +1,61 @@
+<header class="subhead" id="overview">
+  <h1>WebImport > Buchungen</h1>
+  <hr />
+</header>
+
+<% if !@error.blank? %>
+	<div class="alert alert-error">
+		<button class="close" data-dismiss="alert">&times;</button>
+		<%= @error.html_safe %>
+	</div>
+<% end %>
+
+<% if !@notice.blank? %>
+	<div class="alert alert-success">
+		<button class="close" data-dismiss="alert">&times;</button>
+		<%= @notice.html_safe %>
+	</div>
+<% end %>
+
+<div class="alert alert-info">
+	<ol>
+		<li>Wählen Sie zunächst eine CSV-Datei auf Ihrem Computer aus.</li>
+		<li>Klicken Sie auf den Button "importieren", um den Importvorgang zu starten.</li>
+	</ol>
+</div>
+
+<%= form_for :webimport, :url => { :controller => "webimport", :action => "csvimport_buchungen" }, :html => { :multipart => true } do |form| %>
+	<%= form.file_field :file, :id => "csvfile", :style => "display:none" %>
+	
+	<div class="row">
+		<div class="span2">
+			<strong>CSV-Datei:</strong>
+		</div>
+		
+		<div class="span10">
+			<div class="input-append">
+			   <input id="fakefile-field" class="input-large" type="text">
+			   <a id="fakefile-button" class="btn">Auswählen...</a>
+			</div>
+		</div>
+	</div>
+	
+	<br />
+	
+	<%= form.submit :value => "importieren", :class => "btn btn-primary" %>
+<% end %> 
+
+<!-- http://duckranger.com/2012/06/pretty-file-input-field-in-bootstrap/ -->
+<script type="text/javascript">
+	$('input[id=csvfile]').change(function() {
+		$('#fakefile-field').val($(this).val());
+	});
+	
+	$('#fakefile-field').click(function() {
+		$('input[id=csvfile]').click();
+	});
+	
+	$('#fakefile-button').click(function() {
+		$('input[id=csvfile]').click();
+	});
+</script>

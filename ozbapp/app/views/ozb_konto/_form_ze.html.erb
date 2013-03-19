@@ -1,0 +1,113 @@
+<%= render :partial => "form_ozbkonto", :locals => { :o => o } %>
+
+<br />
+
+<header class="subhead">
+	<h4>ZE-Konto</h4>
+	<hr />
+</header>
+
+<div class="row-fluid">
+	
+		
+	<%= o.fields_for :ze_konto do |ze| %>
+	<div class="span6">
+		
+			<table class="table-hover" cellpadding="3" cellspacing="">
+				<tr>
+					<th><label>EE-Konto</label></th>
+					<td><%= ze.collection_select(:EEKtoNr, EeKonto.find(:all, :conditions => { :GueltigBis => "9999-12-31 23:59:59" }), :KtoNr, :ktonr_with_name, { :selected => ze.object.EEKtoNr }, { :class => "span10" }) %></td>
+				</tr>
+				<tr>
+					<th><%= ze.label :Pgnr %></th>
+					<td><%= ze.collection_select(:Pgnr, Projektgruppe.all, :Pgnr, :ProjGruppenBez, { :selected => ze.object.Pgnr }, { :class => "span10" }) %></td>
+				</tr>
+				<tr>
+					<th><%= ze.label :ZENr %></th>
+					<td><%= ze.text_field :ZENr, :class => "span10" %></td>
+				</tr>
+<!-- 				<tr>
+					<th><%= ze.label :ZEAbDatum %></th>
+					<td><%= ze.text_field :ZEAbDatum, :class => "span10" %></td>
+				</tr>
+				<tr>
+					<th><%= ze.label :ZEEndDatum %></th>
+					<td><%= ze.text_field :ZEEndDatum, :class => "span10" %></td>
+				</tr>
+ -->				<tr>
+					<th><label>ZE-Betrag:</label></th>
+					<td>
+						<div class="input-prepend input-append">
+							<span class="add-on">&euro;</span>
+							<%= ze.text_field :ZEBetrag, :class => "span9" %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th><label>Laufzeit Jahre*:</label></th>
+					<td><%= ze.text_field :Laufzeit, :class => "span10" %></td>
+				</tr>
+				<tr>
+					<th><label>Modus*:</label></th>
+					<td><%= ze.text_field :ZahlModus, :class => "span10" %></td>
+				</tr>
+			</table>
+	</div>
+	
+	<div class="span6">
+		<table class="table-hover" cellpadding="3" cellspacing="">
+				<tr>
+					<th><label>Tilgung*:</label></th>
+					<td><%= ze.text_field :TilgRate, :class => "span10" %></td>
+				</tr>
+				<tr>
+					<th><label>Sparen*:</label></th>
+					<td>
+						<div class="input-prepend input-append">
+							<span class="add-on">&euro;</span>
+							<%= ze.text_field :AnsparRate, :class => "span9" %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th><label>KDU*:</label></th>
+					<td>
+						<div class="input-prepend input-append">
+							<span class="add-on">&euro;</span>
+							<%= ze.text_field :KDURate, :class => "span9" %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th><label>RDU*:</label></th>
+					<td>
+						<div class="input-prepend input-append">
+							<span class="add-on">&euro;</span>
+							<%= ze.text_field :RDURate, :class => "span9" %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th><%= ze.label :ZEStatus %></th>
+					<td><%= ze.text_field :ZEStatus, :class => "span10" %></td>
+				</tr>
+			</table>
+	</div>
+	<% end %>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$("#ozb_konto_ze_konto_attributes_ZEAbDatum").datepicker({
+		dateFormat: 'dd.mm.yy',
+        changeMonth: true,
+        changeYear: true		
+	});
+
+	$("#ozb_konto_ze_konto_attributes_ZEEndDatum").datepicker({
+		dateFormat: 'dd.mm.yy',
+        changeMonth: true,
+        changeYear: true		
+	});
+});
+</script>

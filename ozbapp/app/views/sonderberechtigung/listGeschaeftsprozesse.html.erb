@@ -1,0 +1,47 @@
+<header class="subhead" id="overview">
+  <h1>Verwaltung: Geschäftsprozesse</h1>
+  <hr />
+</header>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<%= render 'verwaltung/tabnavigation_verwaltung' %>
+
+<table id="personen" class="table table-bordered table-striped tablesorter">
+  <thead> 
+    <tr>
+      <th>ID</th>
+      <th>Beschreibung</th>
+      <th style="width: 50px;">IT</th>
+      <th style="width: 50px;">RW</th>
+      <th style="width: 50px;">MV</th>
+      <th style="width: 50px;">ZE</th>
+      <th style="width: 50px;">Oea</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @Geschaeftsprozesse.each do |prozess| %>
+      <tr>
+        <td> <%= prozess.ID %> </td>
+        <td> <%= prozess.Beschreibung %></td>	
+        <td style="text-align: center; background-color: <%= prozess.IT ? '#defbd4': '#fde5e5' %>"> <i class =<%= prozess.IT ? "icon-ok" : "icon-remove" %>></i> </td>
+        <td style="text-align: center; background-color: <%= prozess.RW ? '#defbd4': '#fde5e5' %>"> <i class =<%= prozess.RW ? "icon-ok" : "icon-remove" %>></i> </td>
+        <td style="text-align: center; background-color: <%= prozess.MV ? '#defbd4': '#fde5e5' %>"> <i class =<%= prozess.MV ? "icon-ok" : "icon-remove" %>></i> </td>
+        <td style="text-align: center; background-color: <%= prozess.ZE ? '#defbd4': '#fde5e5' %>"> <i class =<%= prozess.ZE ? "icon-ok" : "icon-remove" %>></i> </td>
+        <td style="text-align: center; background-color: <%= prozess.OeA ? '#defbd4': '#fde5e5' %>"> <i class =<%= prozess.OeA ? "icon-ok" : "icon-remove" %>></i> </td>
+      </tr>
+    <% end %>
+  </tbody> 
+</table>
+
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span6" align="left">
+      <a href="javascript:history.back(-1);" class="btn">Zurück</a>
+    </div>  
+ </div> 
+</div> 
+
+
+

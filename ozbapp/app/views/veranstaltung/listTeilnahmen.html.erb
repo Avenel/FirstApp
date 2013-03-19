@@ -1,0 +1,60 @@
+<%= render :partial => '/verwaltung/navigation' %>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+
+<h2>Veranstaltungsteilnahmen</h2>
+
+<% if !@Veranstaltungen.empty? then %>
+  <table class="table table-bordered table-striped tablesorter" >  
+    <thead>    
+      <tr>
+        <th>Datum</th>
+        <th>Vnr. </th>
+        <th>Veranstaltungsart</th>
+        <th>Ort</th>
+        <th>Teilnahmeart</th>
+      </tr>
+    </thead>
+    </tbody>
+      <% @Veranstaltungen.each do |veranstaltung, teilnahme, veranstaltungsArt, teilnahmeArtAusgeschrieben| %>
+
+        <% veranstaltung_link = "/Verwaltung/Veranstaltungen/"+veranstaltung.Vnr.to_s+"/Ansicht" %>
+        <tr onclick="location.href='<%= veranstaltung_link %>'">
+          <td><%= veranstaltung.VADatum.strftime("%d.%m.%Y")%></td>
+          <td style="text-align: center;"><%= veranstaltung.Vnr %> </td>
+          <td><%= veranstaltungsArt.VABezeichnung%></td>
+          <td><%= veranstaltung.VAOrt%></td>
+          <td title = <%= teilnahmeArtAusgeschrieben%> style="text-align: center;"><%= teilnahme.TeilnArt%></td>   
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class ="well well-small" align ="center">
+    <h2><small>Es sind keine Teilnahmen eingetragen</small></h2>
+  </div>
+
+
+<% end %>
+
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <a href="javascript:history.back(-1);" class="btn">Zurück</a>
+  </div>    
+ </div> 
+</div>
+
+
+<style type="text/css">
+
+.table tbody tr:hover td {
+    background-color: #d2e6f4;
+}
+
+tr {
+  cursor: pointer
+}
+
+</style>

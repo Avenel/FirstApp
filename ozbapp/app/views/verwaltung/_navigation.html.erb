@@ -1,0 +1,30 @@
+<header class="subhead" id="overview">
+  <h1><%= @Person.Name + ", " + @Person.Vorname %></h1>
+  <hr />
+</header>
+
+<%
+	curr_link_route = request.fullpath.split("/")[4]
+	link_prefix = "/Verwaltung/OZBPerson/#{@OZBPerson.Mnr.to_s}/"
+	link_teilnahme = "/Verwaltung/OZBPerson/"+@OZBPerson.Mnr.to_s+"/Teilnahmen"
+
+	links = [ 
+		# access - name of tab			-			name of route link
+		[11,			"OZB-Konten",						"Konten"],
+		[2,				"Details", 							"Details"],
+		[3,				"Personaldaten",				"Personaldaten"],
+		[3,				"Kontaktdaten",					"Kontaktdaten"],
+		[3,				"Gesellschafterdaten",								"Rollen"],
+		# [4,				"Sonderrechte",					"Sonderberechtigungen"],
+		[17,			"Bürgschaften",					"Buergschaften"],
+	]
+%>
+
+<ul class="nav nav-tabs">
+	<% links.each do |acc_level, link_name, link_route| %>
+		<% if is_allowed(current_OZBPerson, acc_level) %>
+			<li <%= 'class="active"'.html_safe if curr_link_route == link_route %>><%= link_to link_name, link_prefix + link_route %></li>
+		<% end %>
+	<% end %>
+	<li <%= 'class="active"'.html_safe if request.fullpath == link_teilnahme %>><%= link_to "Teilnahmen", link_teilnahme %></li>
+</ul>

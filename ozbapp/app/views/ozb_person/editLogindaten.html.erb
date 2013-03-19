@@ -1,0 +1,49 @@
+<%= render 'navigation' %>
+
+<% if params[:notice] %>
+  <div class="alert alert-success">
+  	<button class="close" data-dismiss="alert">&times;</button>
+	
+	<% if params[:notice] = "Personaldaten aktualisiert" %>
+	    Personaldaten wurden erfolgreich aktualisiert!
+	<% elsif params[:notice] = "Kontaktdaten aktualisiert" %>
+		Kontaktdaten wurden erfolgreich aktualisiert!
+	<% else %>
+		Trulala
+	<% end %>
+	
+  </div>
+<% end %>
+
+<div class="row-fluid" style="">
+ <div class="span6">
+<h2>Change your password</h2>
+
+<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, :id => "form_resetPassword" }) do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.hidden_field :reset_password_token %>
+
+  <div><%= f.label :password, "New password" %><br />
+  <%= f.password_field :password %></div>
+
+  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
+  <%= f.password_field :password_confirmation %></div>
+
+
+<% end %>
+
+</div>
+</div>
+
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <a href="" class="btn" onclick="history.back();">Zurück</a>
+  </div>
+  <div class="span10" align="right">
+  <%= link_to_function "Passwort ändern!", "this.form.submit()", :onclick => "$('#form_resetPassword').submit(); return false;", :class => "btn btn-primary", :notice => "Kontaktdaten aktuallisiert" %>
+  </div>		
+ </div>	
+</div>
+
+

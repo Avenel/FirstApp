@@ -1,0 +1,39 @@
+<script>
+$(document).ready(function() { 
+	$("table.tablesorter").tablesorter(); 
+});
+</script>
+
+<%= render :partial => '/verwaltung/navigation' %>
+
+<h3>KKL-Verlauf > Konto <%= @ozb_konto.ktoNr %></h3>
+
+<table class="table table-bordered table-striped tablesorter">
+	<thead>
+		<tr>
+			<th class="header"><%= KklVerlauf.human_attribute_name(:KKLAbDatum) %></th>
+			<th class="header"><%= KklVerlauf.human_attribute_name(:KKL) %></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @verlauf.each do |v| %>
+			<tr>
+				<td><%= v.KKLAbDatum.strftime("%d.%m.%Y") %></td>
+				<td><%= v.KKL %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br />
+
+<div class="form-actions">
+	<div class="row-fluid">
+		<div class="span6" align="left">
+			<a href="javascript:history.back(-1);" class="btn">Zurück</a>
+		</div>
+		
+		<div class="span6" align="right"><!-- nothing --></div>
+	</div>
+</div>

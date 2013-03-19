@@ -1,0 +1,158 @@
+<%= render :partial => '/application/flash_notifier' %>
+
+
+<header class="subhead">
+	<h3><%= @action == "new" ? "Neue " : "" %> Bürgschaft <%= @action == "new" ? "hinzufügen " : "bearbeiten " %></h3>
+	<hr />
+</header>
+
+<%= form_for @buergschaft, :url => { :action => @action } do |f| %>
+
+	<%= simple_form_errors(@buergschaft) %>
+
+	<% if @edit == "g" then %> 
+		<%= hidden_field_tag :art, "g"%> 
+		<% ende = "?art=g" %>
+		<% @edit = true %>
+	<% else %> 
+		<%= hidden_field_tag :art, "b" %> 
+		<% ende = "?art=b" %>
+		<% @edit = true %>
+	<%end%>
+	
+	<% @action == "new" ? @edit = true & @mnr_ = @mnr : @edit = @edit & @mnr_ = f.object.Mnr_G %>
+
+	<div class="row-fluid">
+		<div class="span6">
+			<table class="table-hover" cellpadding="3" cellspacing="">
+				<tr>
+					<th>Von:</th>
+					<td>
+						<% @action == "new" ? @selected = @mnr_ : @selected = f.object.Pnr_B %>
+						<%= f.collection_select(:Pnr_B, Person.latest_all, :Pnr, :fullname, {:disabled => @mnr, :selected => @selected}, {:class => "span11", :disabled => @edit}) %>
+					</td>
+				</tr>
+				<tr>
+					<% @action == "new" ? @edit = true : @edit = @edit %>
+					<th>An:</th>
+					<% if @action != "new" %>
+						<td>
+							<%= f.collection_select(:Mnr_G, Person.latest_all, :Pnr, :fullname, {:disabled => @mnr, :selected => @mnr_},
+							 {:class => "span11", :disabled => @edit}) %>
+						</td>
+					<% else %>
+						<td>
+							<%= f.collection_select(:Pnr_B, Person.latest_all, :Pnr, :fullname,   {:disabled => @mnr, :prompt =>"Mitglied auswählen"},
+							 {:class => "span11", :readonly => !@edit, :onChange => "updateZekonto()", :id => 'buergschaft_Mnr_G'}) %>
+						</td>
+					<% end %>
+				</tr>
+				<div  id = "state_field">
+				<tr>
+					<th><%= f.label :ZENr %></th>
+					<td><%= f.collection_select(:ZENr, ZeKonto.latest_all_for(f.object.Mnr_G), :ZENr, :ZENr, {:prompt => 'Konto auswählen' }, { :class => "span11"}) %></td>
+				</tr>
+				<div>
+				
+				<tr>
+					<th><%= f.label :SichAbDatum %></th>
+					<td>
+						<%= f.text_field :SichAbDatum, :class => "span11",
+						 :value => @action != "new" ? @buergschaft.SichAbDatum.strftime("%d.%m.%Y") : Date.today.strftime("%d.%m.%Y")%>
+					</td>
+				</tr>
+				<tr>
+					<th><%= f.label :SichEndDatum %></th>
+					<td>
+						<%= f.text_field :SichEndDatum, :class => "span11",
+						 :value => @action != "new" ? @buergschaft.SichEndDatum.strftime("%d.%m.%Y") : Date.today.strftime("%d.%m.%Y") %>
+					</td>
+				</tr>
+					<th><%= f.label :SichBetrag %></th>
+					<td>
+						<div class="input-prepend input-append">
+							
+								<%= f.text_field :SichBetrag, :class => "span4", :style => "text-align: Right", :value => @action != "new" ? @buergschaft.SichBetrag : 0 %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th><%= f.label :SichKurzbez %></th>
+					<td><%= f.text_field :SichKurzbez, :class => "span11" %></td>
+				</tr>
+			</table>
+			<br />
+			Felder die mit einem * markiert sind, müssen ausgefüllt werden.
+		</div>
+	</div>
+
+	<br />
+
+	<div class="form-actions">
+		<div class="row-fluid">
+			<div class="span6" align="left">
+				<a href="javascript:history.back(-1);" class="btn">Zurück</a>
+			</div>
+			<% if is_allowed(current_OZBPerson, 19) && @action != "new" %>
+				<div class="span3" align="right">
+					<% loeschen = "/Verwaltung/OZBPerson/"+params[:Mnr]+"/Buergschaften/"+ @pnr +"/Loeschen"+ ende %> <!-- kein button_to da in anderer Form-->
+					
+					<%= link_to '<i class="icon-trash icon-white"></i> Löschen'.html_safe, loeschen, :method => :post ,:class=> "btn btn-danger",
+					 :confirm =>"Bürgschaft wirklich löschen ?" %>
+				</div>
+			<% end %>
+			<div class="<%= @action == "new" ? "span6" : "span3"%> " align="right">
+				<%= f.submit(:value => "Speichern", :class => "btn btn-primary") %>
+			</div>
+		</div>
+	</div>
+<% end %>
+
+<style type="text/css">
+	table tr th label {
+		font-weight: bold !important;
+		text-align: left;
+	}
+	
+	table.table-hover tr th {
+		width: 180px;
+		text-align: left;
+	}
+</style>
+
+<script type="text/javascript">
+
+var ozbUZeKonto = new Array();
+<% for konto in @zeKonten -%>
+  ozbUZeKonto.push(new Array(<%= konto[0].Mnr %>, <%= konto[0].KtoNr %>));
+<% end -%>
+
+function updateZekonto() {
+  pnr_g = document.getElementById('buergschaft_Mnr_G').value;
+  ktonr_g = document.getElementById('buergschaft_ZENr').options; 
+  
+  ktonr_g.length = 1;
+  $.each(ozbUZeKonto, function (index, konto) {
+    if (konto[0] == pnr_g) {
+      ktonr_g[ktonr_g.length] = new Option(konto[1], konto[1]);
+    }
+  });
+}
+
+
+$(function() {
+
+	
+  $( "#buergschaft_SichEndDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+  $( "#buergschaft_SichAbDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+
+});
+</script>

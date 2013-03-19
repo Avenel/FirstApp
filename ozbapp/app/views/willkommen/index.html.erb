@@ -1,0 +1,16 @@
+<header class="subhead" id="overview">
+  <h1>Meine Konten</h1>
+  <hr />
+</header>
+<h2>Guten Tag, <%= @current_person.Vorname %> <%= @current_person.Name %></h2>
+<br />
+
+<script>
+$(document).ready(function() { 
+	$("table.tablesorter").tablesorter(); 
+});
+</script>
+
+<%= render 'index_table_ee' %>
+
+<%= render 'index_table_ze' %>

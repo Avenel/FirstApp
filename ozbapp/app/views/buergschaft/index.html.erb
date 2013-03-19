@@ -1,0 +1,112 @@
+<%= render :partial => '/verwaltung/navigation' %>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<div class="page-header">
+  <h1>Bürgschaften <small>Aktuell</small></h1>
+</div>
+
+<% if !@buergschaften[0].empty? || !@buergschaften[1].empty? then %>
+
+	<% @buergschaften.each do |buergschaften| %>
+		<% if buergschaften.empty? %>
+
+		 	<div class="well well-small">
+		    <h2 align="center"><small>Es sind derzeit keine <%= @count == 0 ? "vergebenen" : "erhaltenen" %> Bürgschaften vorhanden.</small></h2>
+		  </div>
+
+		<% else %>
+
+	    <table id ="histo" class="table table-bordered table-striped tablesorter table-hover">
+				<thead>
+					<tr>
+						<th class="header"><%= @count == 0 ? "Vergeben an" : "Erhalten von" %></th>
+						<th class="header"><%= ZeKonto.human_attribute_name(:ZENr) %></th>
+						<th class="header" title ="ZE-Konto Betrag"><%= ZeKonto.human_attribute_name(:ZEBetrag)%></th>
+						<th class="header"><%= Buergschaft.human_attribute_name(:SichKurzbez) %></th>
+						<th class="header" title = "Bürgschaft Betrag"><%= Buergschaft.human_attribute_name(:SichBetrag)%></th>
+						<th class="header"><%= Buergschaft.human_attribute_name(:SichAbDatum) %></th>
+						<th class="header"><%= Buergschaft.human_attribute_name(:SichEndDatum) %></th>
+						<th class="header"><%= ZeKonto.human_attribute_name(:Laufzeit) %></th>
+						<th class="header">Ze-KtoNr</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<% buergschaften.each do |buergschaft, zeKonto, person| %>
+						
+
+						<% if @count == 0 then %>
+							
+							<% ende = '/Aendern'  %>
+						<% else %>
+						   
+						   <% ende = "/AendernB" %>
+						<% end %>
+
+						
+						<% aendern_link = "/Verwaltung/OZBPerson/"+params[:Mnr]+"/Buergschaften/"+ person.Pnr.to_s + ende %>
+						<tr onclick="location.href='<%= aendern_link %>'">
+							<td><%= person.fullname %></td>
+							<td><%= zeKonto.ZENr %></td>
+							<td style="text-align: right;"><%= number_to_currency(zeKonto.ZEBetrag, :unit => "")%></td>
+							<td><%= buergschaft.SichKurzbez.empty? ? '-' : buergschaft.SichKurzbez%></td>
+							<td style="text-align: right;"><%= number_to_currency(buergschaft.SichBetrag, :unit => "") %></td>
+							<td><%= buergschaft.SichAbDatum.strftime("%d.%m.%Y") %></td>
+							<td><%= buergschaft.SichEndDatum.strftime("%d.%m.%Y") %></td>
+							<td><%= zeKonto.Laufzeit %></td>
+							<td><%= zeKonto.KtoNr %></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		<% end %>
+		<% @count = 1 %>
+	<% end %>
+<% else %>
+
+	<div class="well well-small">
+		<h2 align="center"><small>Es sind derzeit keine Bürgschaften vorhanden.</small></h2>
+	</div>
+
+<% end %>
+
+<div class="form-actions">
+	<div class="row-fluid">
+		<div class="span6" align="left">
+			<a href="javascript:history.back(-1);" class="btn">Zurück</a>
+		</div>
+		<div class="span3" align="right">
+			<% if is_allowed(current_OZBPerson, 18) %>
+					<a href="<%= @link_aeltere%>" class="btn btn-info">Bürgschaften Historie</a>
+			<%end%>
+		</div>
+		<div class="span3" align="right">
+			<% if is_allowed(current_OZBPerson, 18) %>
+				<%= link_to 'Bürgschaft hinzufügen', "/Verwaltung/OZBPerson/#{params[:Mnr]}/Buergschaften/Neu", :class => "btn btn-primary" %>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+
+<script>
+$(document).ready(function() { 
+	$("table.tablesorter").tablesorter(); 
+});
+</script>
+
+<style type="text/css">
+.button_to, .button_to div {
+	display: inline;
+}
+
+.table tbody tr:hover td {
+    background-color: #d2e6f4;
+}
+
+tr {
+	cursor: pointer
+}
+
+</style>

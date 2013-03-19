@@ -1,0 +1,140 @@
+<%= render :partial => '/verwaltung/navigation' %>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<%= form_tag({:action => "updateKontaktdaten"}, :class => "form-horizontal", :id=>"form_updateKontaktdaten") do %>
+
+	<% if !@errors.nil? && @errors.any? %>
+    <div class="alert alert-error" id="error_explanation">
+	  <h3>Kontaktdaten wurden nicht aktualisiert:</h3>	
+	  <ul>
+	    <% @errors.each do |error| %>
+		  <% error.full_messages.each do |msg| %>
+		    <li><%= msg %></li>
+		  <% end %>
+	    <% end %>
+	  </ul>
+    </div>
+  	<% end %>
+
+
+<div class="row-fluid">
+ <div class="span6">
+  <h4>Kontaktdaten bearbeiten</h4>
+  <table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+   <tr>
+	<th align="left" style="width: 180px;"><font color="red">*</font>Email:</th>
+	<td><%= email_field_tag :email, @Person.Email, :disabled => false, :class => "" %></td>
+   </tr>   
+   <!--<tr><td colspan="2"><span class="label label-info">Telefone</span></td></tr>-->
+   <tr>
+    <th align="left">Tel.:</th>
+    <td>
+  	 <% if @Telefon[0] != nil %>
+	    <%= text_field_tag :telefon, @Telefon[0].TelefonNr %>
+	 <% else %>
+		<%= text_field_tag :telefon, "" %>
+	<% end %>	
+    </td>
+   </tr>
+   <tr>
+    <th align="left">Mobil:</th>
+    <td>
+	 <% if @Mobil[0] != nil %>		
+	   <%= text_field_tag :mobil, @Mobil[0].TelefonNr %>
+	 <% else %>
+	   <%= text_field_tag :mobil, "" %>
+	 <% end %>
+    </td>
+   </tr>
+   <tr>
+    <th align="left">Fax:</th>
+    <td>
+	 <% if @Fax[0] != nil %>		
+	   <%= text_field_tag :fax, @Fax[0].TelefonNr %>
+	 <% else %>
+	   <%= text_field_tag :fax, "" %>
+	 <% end %>
+    </td>
+   </tr>
+   <!--<tr><td colspan="2"><span class="label label-info">Adresse</span></td></tr>-->
+   <% if @Adresse != nil %>	
+   <tr>
+    <th align="left">Straße:</th>
+    <td>
+      <%= text_field_tag :strasse, @Adresse.Strasse %>
+    </td>
+   </tr>
+   <tr>
+    <th align="left">Hausnummer:</th>
+    <td>
+      <%= text_field_tag :hausnr, @Adresse.Nr %>
+   	</td>
+   </tr>
+   <tr>
+    <th align="left">PLZ:</th>
+    <td>
+      <%= text_field_tag :plz, @Adresse.PLZ %>
+   	</td>
+   </tr>
+   <tr>
+    <th align="left">Ort:</th>
+    <td>
+      <%= text_field_tag :ort, @Adresse.Ort %>
+   	</td>
+   </tr>
+     <tr>
+      <th align="left">Vermerk:</th>
+      <td><%= text_field_tag :vermerk, @Adresse.Vermerk %></td>
+    </tr>
+   <% else %>
+   <tr>
+    <th align="left">Straße:</th>
+    <td>
+      <%= text_field_tag :strasse, "" %>
+   	</td>
+   </tr>
+   <tr>
+    <th align="left">Hausnummer:</th>
+    <td>
+      <%= text_field_tag :hausnr, "" %>
+   	</td>
+   </tr>
+   <tr>
+    <th align="left">PLZ:</th>
+    <td>
+      <%= text_field_tag :plz, "" %>
+   	</td>
+   </tr>
+   <tr>
+    <th align="left">Ort:</th>
+    <td>
+      <%= text_field_tag :ort, "" %>
+   	</td>
+   </tr>            
+    <tr>
+      <th align="left">Vermerk:</th>
+      <td><%= text_field_tag :vermerk, "" %></td>
+    </tr>
+   <% end %>
+  </table>  
+ </div>
+ <div class="span6">
+ 
+ </div>	
+</div>
+ 
+
+<% end %>
+
+<font color="red">* Pflichtfelder</font>
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <a href="" class="btn" onclick="history.back();">Zurück</a>
+  </div>
+  <div class="span10" align="right">
+   <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#form_updateKontaktdaten').submit(); return false;", :class => "btn btn-primary", :notice => "Kontaktdaten aktuallisiert" %>	
+  </div>		
+ </div>	
+</div>

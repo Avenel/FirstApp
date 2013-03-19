@@ -1,0 +1,66 @@
+<%= render 'ozb_person/navigation' %>
+
+  <div class="row-fluid" style="">
+    <div class="span6">
+
+    <h4>Passwort zum internen o/ZB-Bereich ändern:</h4>
+
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+    <%= devise_error_messages! %>
+    <table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+      
+      <tr>
+        <th align="left" title="Passwort mit welchem Sie sich eingeloggt haben">
+          Aktuelles Passwort:
+        </th>
+        <td>
+          <%= f.password_field :current_password, :placeholder => 'Aktuelles Passwort' %>
+        </td>
+      </tr>
+
+      <tr>
+        <th align="left" title="Ersetzt das aktuelle Passwort">
+          <font color="red">*</font>Neues Passwort:
+        </th>
+        <td>
+          <%= f.password_field :password, :placeholder => 'Neues Passwort'%>
+        </td>
+      </tr>
+
+      <tr>
+        <th align="left" title="Wiederholung des neuen Passworts">
+          <font color="red">*</font>Neues Passwort bestätigen:
+        </th>
+        <td>
+          <%= f.password_field :password_confirmation, :placeholder => 'Neues Passwort bestätigen' %>
+        </td>
+      </tr>
+
+    </table> 
+    </div> 
+    <div class ="span6">
+      <font color="red">
+        * Das Passwort muss mindestens 6 Zeichen lang sein. Es sollte mindestens eine Ziffer 
+          und/oder Sonderzeichen wie +-_ usw. enthalten sein. Deutsche Umlaute 
+          sind erlaubt. Zwischen Groß- und Kleinschreibung wird unterschieden.
+      </font>
+    </div>
+
+  </div>
+
+
+  <div class="form-actions">
+   <div class="row-fluid">
+    <div class="span2" align="left">
+     <a href="" class="btn" onclick="history.back();">Zurück</a>
+    </div>
+    <div class="span10" align="right">
+     <%= f.submit "Passwort ändern",:onclick => "return confirm('Passwort wird geändert')",:class => "btn btn-primary",:notice =>"Passwort erfolgreich geändert"%> 
+    </div>
+    </div>    
+   </div> 
+  </div>
+  
+<% end %>
+
+

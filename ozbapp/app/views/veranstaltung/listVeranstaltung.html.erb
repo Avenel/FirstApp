@@ -1,0 +1,229 @@
+<%= render :partial => '/application/flash_notifier' %>
+
+<%= form_tag({:action => "createDeleteTeilnahme"}, :class => "form-horizontal", :id => "form_createTeilnahme") do %>
+  
+  <% if !@errors.nil? && @errors.any? %>
+    <div class="alert alert-error" id="error_explanation">
+      <h3>Teilnahme konnte nicht hinzugefügt werden:</h3>  
+      <ul>
+        <% @errors.each do |error| %>
+          <% error.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h3>Teilnehmer hinzufügen</h3>
+
+  <div class="well well-small" align="center"> 
+    <table>
+      <thead> 
+        <tr>
+          <th>Mnr.</th>
+          <th>Mitglied</th>
+          <th>Anwesenheit</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      </tbody>
+        <%= hidden_field_tag :vnr, @new_Teilnahme.Vnr, :value => @vnr%>
+        <td width = "50px"><%= text_field_tag :pnr, @new_Teilnahme.Pnr, :readonly => true, 
+                                              :placeholder => 'Mnr.', :style => 'width: 50px;' %></td>
+        <td><%= text_field_tag "test", "", :id => "suchFeld", 
+                                           :placeholder => 'Mitglied eingeben' %></td>
+        <td><%= select_tag :teilnArt, options_for_select(@TeilnahmeArten, @new_Teilnahme.TeilnArt), :style => 'width: 100px;' %></td>
+        <td>
+          <%= link_to_function "Hinzufügen", "this.form.submit()", :onclick => "$('#form_createTeilnahme').submit(); return false;", 
+                                      :class => "btn btn-primary", :notice => "Teilnahme erfolgreich hinzugefuegt" %>
+        </td>
+      </tbody>
+    </table>
+  </div>
+<%end%>
+
+<%= form_tag({:action => "createDeleteTeilnahme"}, :class => "form-horizontal", :id => "form_createTeilnahme_Zwo") do %>
+  
+  <h4 align = "center"><%= @veranstaltungsart.VABezeichnung%> am <%= @veranstaltung.VADatum.strftime("%d.%m.%Y") %>, <%= @veranstaltung.VAOrt%> </h4>
+<br />
+  <%= hidden_field_tag :vnr1%>
+  <%= hidden_field_tag :pnr1%>
+  <%= hidden_field_tag :teilnArt2%>
+  <%= hidden_field_tag :delete %>
+
+ 
+
+  <%if !@Teilnahmen.empty? && !@Teilnahmen.nil? %>
+    <div class="row-fluid" style="" align="center">
+      <div class="span12">
+        <table id="veranstaltungen" class="table-striped table-hover">
+          <thead> 
+            <tr>
+              <th></th>
+              <th></th>
+              <th align="left">Mnr.</th>
+              <th>Rolle</th>
+              <th align = "left">Name</th>
+              <th align = "left">Vorname</th>
+              <th width ="70px" align = "center">Teilnahmeart</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @TeilnUndPerson.each do |teilnahme, person, teilnahmeArtAusgeschrieben| %>
+              <% person_link = "/Verwaltung/OZBPerson/"+teilnahme.Pnr.to_s+"/Teilnahmen" %>
+              <tr>
+                <td title = "Löschen"><%= link_to_function '<i class="icon-trash icon-white"></i>'.html_safe, "", 
+                :onclick => "if (confirm('Wirklich Löschen?'))submit_form_delete(#{teilnahme.Pnr},#{teilnahme.Vnr})", 
+                :class => "btn btn-mini btn-danger"%></i></button><td>
+                
+                <td onclick="location.href='<%= person_link %>'" style="text-align: left; width: 50px;"><%= teilnahme.Pnr %></td>
+                <td onclick="location.href='<%= person_link %>'" style="text-align: center; width: 50px;"><%= person.Rolle %></td>
+                <td onclick="location.href='<%= person_link %>'"><%=person.Name%></td>
+                <td onclick="location.href='<%= person_link %>'"><%=person.Vorname%></td>
+                <% id = "as"+person.Pnr.to_s %>
+                <td name = "asd" title= <%= teilnahmeArtAusgeschrieben%> id= <%= id%> onclick= "bearbeiten(<%=person.Pnr.to_s%>)"
+                  <% if !@edit %>style = "text-align: center; display: block;"<%else%>style = "text-align: center; display: none;"<%end%>>
+                  <%= teilnahme.TeilnArt %>   
+                </td>
+                <% id = "be"+ person.Pnr.to_s %>
+                <td name="check" id= <%= id%> <% if !@edit %>style="text-align: center; display: none;"<%else%> 
+                                                             style="text-align: center; display: block;"<%end%>>
+                  <%= select_tag :teilnArt1, options_for_select(@TeilnahmeArten, teilnahme.TeilnArt),:id =>teilnahme.Pnr.to_s, 
+                  :style => "width: 100px;", :onchange => "submit_form(#{teilnahme.Pnr},#{teilnahme.Vnr})" %><td>
+              </tr>
+            <% end %>
+          </tbody> 
+        </table>
+      </div>
+    </div>
+  <%end%>
+<%end%>
+<div class="well well-small">
+  <table  class="different">
+    <thead> 
+            <tr>
+              <th></th>
+              <th width = "20px">l</th>
+              <th width = "20px">a</th>
+              <th width = "20px">e</th>
+              <th width = "20px">u</th>
+              <th>Gesamt</th>
+            </tr>
+          </thead>
+    
+    <tbody>
+      <% @AnzahlRollen.each do |rolle|%>
+        <tr>
+          <% rolle.each do |b| %>
+            <td align = "center"><%= b %></td>
+          <%end%>
+        </tr>
+      <%end%>
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <td></td>
+        <td align="center"><%= @AnzahlRollen[0][1]+@AnzahlRollen[1][1]+@AnzahlRollen[2][1]+@AnzahlRollen[3][1]%></td>
+        <td align="center"><%= @AnzahlRollen[0][2]+@AnzahlRollen[1][2]+@AnzahlRollen[2][2]+@AnzahlRollen[3][2]%></td>
+        <td align="center"><%= @AnzahlRollen[0][3]+@AnzahlRollen[1][3]+@AnzahlRollen[2][3]+@AnzahlRollen[3][3]%></td>
+        <td align="center"><%= @AnzahlRollen[0][4]+@AnzahlRollen[1][4]+@AnzahlRollen[2][4]+@AnzahlRollen[3][4]%></td>
+        <td align="center"><%= @AnzahlRollen[0][5]+@AnzahlRollen[1][5]+@AnzahlRollen[2][5]+@AnzahlRollen[3][5]%></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div class="form-actions">
+   <div class="row-fluid">
+    <div class="span2" align="left">
+     <a href="" class="btn" onclick="history.back();">Zurück</a>
+    </div>
+  </div>     
+</div>
+
+<script>
+  var table=$("table#veranstaltungen");
+  $(document).ready(function() { 
+    table.tablesorter(); 
+  });
+
+  function bearbeiten(pnr){
+    var noEdit  = document.getElementById("as"+pnr);
+    var Edit    = document.getElementById("be"+pnr);
+    noEdit.style['display'] = 'none';
+    Edit.style['display'] = 'block';
+  }
+
+  function submit_form(pnr,vnr){ 
+    var value = document.getElementById(pnr+'').value;
+    document.getElementById('vnr1').value = vnr;
+    document.getElementById('pnr1').value = pnr;
+    document.getElementById('teilnArt2').value = value;
+    document.getElementById('delete').value = "false"
+    $('#form_createTeilnahme_Zwo').submit()   
+  };
+
+  function submit_form_delete(pnr,vnr){
+      var value = document.getElementById(pnr+'').value;
+      document.getElementById('vnr1').value = vnr;
+      document.getElementById('pnr1').value = pnr;
+      document.getElementById('teilnArt2').value = value;
+      document.getElementById('delete').value = "true"
+      $('#form_createTeilnahme_Zwo').submit()
+  }
+
+
+  $(function() {      
+    var names = [ 
+      <% @DistinctPersonen.each do |person| %>
+      {
+        value: "<%= person.Pnr.to_s %>",
+        label: "<%= person.Name.to_s + ', ' + person.Vorname.to_s %>"
+      },
+      <% end %>
+    ];
+        
+    $( "#suchFeld" ).autocomplete({
+      minLength: 1,
+      source: names,  
+      select: function( event, ui ) {
+        $( "#suchFeld" ).val( ui.item.label );
+        $( "#pnr" ).val( ui.item.value );
+        
+        return false;
+      }
+    })
+    .data( "autocomplete" )._renderItem = function( ul, item ) {
+      return $( "<li></li>" )
+        .data( "item.autocomplete", item )
+        .append( "<a href='/Verwaltung/OZBPerson/" + item.value + "/Konten'>" + item.label + "</a>" )
+        .appendTo( ul );
+    };
+  });
+</script>
+
+<style type="text/css">
+
+  .table tbody tr:hover td {
+      background-color: #d2e6f4;
+      font-weight:bold;
+  }
+
+  tr {
+    cursor: pointer;
+    
+  }
+
+  .different tfoot {
+    border-top: 1px solid black;
+  }
+
+  tr:hover { 
+    font-weight: bold;
+
+     }
+</style>

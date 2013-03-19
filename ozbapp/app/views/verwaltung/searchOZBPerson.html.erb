@@ -1,0 +1,42 @@
+<!-- NU -->
+<header class="subhead" id="overview">
+  <h1>Mitgliedersuche</h1>
+  <hr />
+</header>
+
+<%= render :partial => 'tabnavigation_verwaltung' %>
+
+<p>Bitte geben Sie die zusuchende Person ein:</p>
+<div>
+    <%= text_field_tag "test", "", :id => "suchFeld"%>
+</div>
+
+<!-- jQuery Autocomplete -->
+<script>
+	$(function() {			
+		var names = [	
+			<% @DistinctPersonen.each do |person| %>
+			{
+				value: "<%= person.Pnr.to_s %>",
+				label: "<%= person.Name.to_s + ', ' + person.Vorname.to_s %>"
+			},
+			<% end %>
+		];
+				
+		$( "#suchFeld" ).autocomplete({
+			minLength: 1,
+			source: names,	
+			select: function( event, ui ) {
+				$( "#suchFeld" ).val( ui.item.label );
+				window.location.href = "/Verwaltung/OZBPerson/" + ui.item.value + "/Konten";
+				return false;
+			}
+		})
+		.data( "autocomplete" )._renderItem = function( ul, item ) {
+			return $( "<li></li>" )
+				.data( "item.autocomplete", item )
+				.append( "<a href='/Verwaltung/OZBPerson/" + item.value + "/Konten'>" + item.label + "</a>" )
+				.appendTo( ul );
+		};
+	});
+</script>

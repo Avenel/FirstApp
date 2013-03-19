@@ -1,0 +1,29 @@
+<h2 align="center">Neuen Darlehensvertrag berechnen</h2>
+
+<br>
+<br>
+<% if !@errors.nil? %>
+  <div class="alert alert-error" id="error_explanation">
+      <h3>Es konnte keine Suche gestartet werden:</h3>  
+      <ul>
+          <% @errors.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+      </ul>
+  </div>
+<% end %>
+
+<%= form_tag("/Verwaltung/Darlehensvertrag/BerechnungsFormular/", :method => "post") do %>
+  <table style="margin:auto;width:XX">
+    <tr>
+      <td align="left">Mitgliedsnummer: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:mitgliedsnummer, @mitgliedsnummer) %></td>
+    </tr>
+    <tr>  
+      <td></td>
+      <td><%= submit_tag("Bestätigen", :name => "bestätigen", :class => "btn btn-primary") %></td>
+    </tr>
+  </table>
+<% end  %>
+
+

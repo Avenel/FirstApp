@@ -1,0 +1,13 @@
+<%= render :partial => '/ozb_person/navigation' %>
+
+<% if !flash[:notice].nil? %>
+	<div class="alert alert-success">
+		<button class="close" data-dismiss="alert">&times;</button>
+		<%= flash[:notice] %>	
+	</div>
+<% elsif !flash[:error].nil? %>
+	<div class="alert alert-error">
+		<button class="close" data-dismiss="alert">&times;</button>
+		<%= flash[:error] %>	
+	</div>
+<% end %>

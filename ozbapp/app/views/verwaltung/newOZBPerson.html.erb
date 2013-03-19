@@ -1,0 +1,422 @@
+<header class="jumbotron subhead" id="overview">
+  <h1>Neue Person hinzufügen</h1>
+  <hr />
+</header>
+
+<%= form_tag({:action => "createOZBPerson"}, :class => "form-horizontal", :id => "form_newOZBPerson") do %>	
+
+	<% if !@errors.nil? && @errors.any? %>
+    <div class="alert alert-error" id="error_explanation">
+	  <h3>Konnte keine Person anlegen:</h3>	
+	  <ul>
+	    <% @errors.each do |error| %>
+		  <% error.full_messages.each do |msg| %>
+		    <li><%= msg %></li>
+		  <% end %>
+	    <% end %>
+	  </ul>
+    </div>
+  	<% end %>
+
+  	<!-- Kontainer für Personal- und Kontaktdaten -->
+	<div class="row-fluid">
+	 	<!-- Personaldaten-Spalte -->
+	 	<div class="span6">
+			<h4>Personaldaten</h4>
+			<table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+				<tr>
+				<th align="left" style="width: 180px;"><font color="red">*</font>Name:</th>
+				<td><%= text_field_tag :name, params[:name] %></td>
+				</tr>
+				<tr>
+				<th align="left"><font color="red">*</font>Vorname:</th>
+				<td><%= text_field_tag :vorname, params[:vorname] %></td>
+				</tr>
+				<tr>
+				<th align="left">Geburtsdatum:</th>
+				<td><%= text_field_tag :gebDatum, params[:gebDatum] %></td>
+				</tr>
+				<tr>
+				<th align="left"><font color="red">*</font>Antragsdatum:</th>
+				<td><%= text_field_tag :antragsdatum, params[:antragsdatum] %></td>
+				</tr>
+				<tr>
+				<th align="left">Aufnahmedatum:</th>
+				<td><%= text_field_tag :aufnahmedatum, params[:aufnahmedatum] %></td>
+				</tr>
+				<tr>
+				<th align="left">Austrittsdatum:</th>
+				<td><%= text_field_tag :austrittsdatum, params[:austrittsdatum] %></td>
+				</tr>
+			</table>  
+
+			<table class="table-hover" cellpadding="10">
+				<tr>
+				<th align="left" style="width: 180px;"><font color="red">*</font>Rolle:</th>
+				<td><%= select_tag :rolle, options_for_select(@Rollen, params[:rolle]), { :onChange =>  "switch_role();" } %></td>
+				</tr>
+
+				<tbody id="Student">
+					<tr>
+					<th align="left"><font color="red">*</font>Ausbildungsbez.:</th>
+					<td><%= text_field_tag :ausbildBez, params[:ausbildBez] %></td>
+					</tr>
+					<tr>
+					<th align="left"><font color="red">*</font>Institut:</th>
+					<td><%= text_field_tag :institutName, params[:institutName] %></td>
+					</tr>
+					<tr>
+					<th align="left"><font color="red">*</font>Studienort:</th>
+					<td><%= text_field_tag :studienort, params[:studienort] %></td>
+					</tr>
+					<tr>
+					<th align="left"><font color="red">*</font>Studienbeginn:</th>
+					<td><%= text_field_tag :studienbeginn, params[:studienbeginn] %></td>
+					</tr>
+					<tr>
+					<th align="left">Studienende:</th>
+					<td><%= text_field_tag :studienende, params[:studienende] %></td>
+					</tr>
+					<tr>
+					<th align="left"><font color="red">*</font>Abschluss:</th>
+					<td><%= text_field_tag :abschluss, params[:abschluss] %></td>
+					</tr> 
+				</tbody>
+
+				<tbody id="Gesellschafter">
+					<tr>
+					<th align="left"><font color="red">*</font>FA Steuernummer:</th>
+					<td><%= text_field_tag :faSteuerNr, params[:faSteuerNr] %></td>
+					</tr>
+					<tr>
+					<th align="left">FA ID Nr.:</th>
+					<td><%= text_field_tag :faIdNr, params[:faIdNr] %></td>
+					</tr>
+					<tr>
+					<th align="left"><font color="red">*</font>FA Lfd. Nr.:</th><!-- FA Lfd. Nr. -->
+					<td><%= text_field_tag :faLfdNr, params[:faLfdNr] %></td>
+					</tr>
+					<tr>
+					<th align="left"><font color="red">*</font>Wohnsitzfinanzamt:</th>
+					<td><%= text_field_tag :wohnsitzFinanzamt, params[:wohnsitzFinanzamt] %></td>
+					</tr>
+					<tr>
+					<th align="left">Notar:</th>
+					<td>
+					<%= text_field_tag :notarPnr, params[:notarPnr] %>
+					<a class="" id="searchNotarFrame" data-toggle="modal" href="#searchPerson" >Suchen...</a>
+					</td>
+					</tr>
+					<tr>
+					<th align="left">Beurkundungsdatum:</th>
+					<td><%= text_field_tag :beurkDatum, params[:beurkDatum] %></td>
+					</tr>
+				</tbody> 
+
+				<tbody id="Foerdermitglied">
+					<tr>
+					<th align="left"><font color="red">*</font>Region:</th>
+					<td><%= text_field_tag :region, params[:region] %></td>
+					</tr>
+					<tr>
+					<th align="left"><font color="red">*</font>Förderbeitrag:</th>
+					<td><%= text_field_tag :foerderbeitrag, params[:foerderbeitrag] %></td>
+					</tr>
+				</tbody>
+
+				<tbody id="Mitglied">
+					<tr>
+					<th align="left">RV Datum:</th>
+					<td><%= text_field_tag :rvDatum, params[:rvDatum] %></td>
+					</tr>
+				</tbody>
+
+				<tbody id="Partner">
+					<tr>
+					<th align="left"><font color="red">*</font>Partner (MnrO):</th>
+					<td>
+					<%= text_field_tag :partner, params[:partner] %>  	
+					<a class="" id="searchPartnerFrame" data-toggle="modal" href="#searchPerson" >Suchen...</a>
+					</td>
+					</tr>
+					<tr>
+					<th align="left"><font color="red">*</font>Berechtigung:</th>
+					<td><%= text_field_tag :berechtigung, params[:berechtigung] %></td>
+					</tr>
+				</tbody>
+			</table>
+	 	</div>
+
+	 	<!-- Kontaktdaten-Spalte -->
+		<div class="span6">
+			<h4>Kontaktdaten</h4>	
+			<table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+				<tr>
+				<th align="left" style="width: 180px;"><font color="red">*</font>Email:</th>
+				<td><%= email_field_tag :email, params[:email] %></td>
+				</tr>   
+				<tr>
+				<th align="left">Tel.:</th>
+				<td>
+				<%= text_field_tag :telefon, params[:telefon] %>
+				</td>
+				</tr>
+				<tr>
+				<th align="left">Mobil:</th>
+				<td>
+				<%= text_field_tag :mobil, params[:mobil] %>
+				</td>
+				</tr>
+				<tr>
+				<th align="left">Fax:</th>
+				<td>
+				<%= text_field_tag :fax, params[:fax] %>
+				</td>
+				</tr>
+				<tr>
+				<th align="left">Straße:</th>
+				<td>
+				<%= text_field_tag :strasse, params[:strasse] %>
+				</td>
+				</tr>
+				<tr>
+				<th align="left">Hausnummer:</th>
+				<td>
+				<%= text_field_tag :hausnr, params[:hausnr] %>
+				</td>
+				</tr>
+				<tr>
+				<th align="left">PLZ:</th>
+				<td>
+				<%= text_field_tag :plz, params[:plz] %>
+				</td>
+				</tr>
+				<tr>
+				<th align="left">Ort:</th>
+				<td>
+				<%= text_field_tag :ort, params[:ort] %>
+				</td>
+				</tr>
+				<tr>
+				<th align="left">Vermerk:</th>
+				<td><%= text_field_tag :vermerk, params[:vermerk] %></td>
+				</tr> 	
+			</table>  
+
+			<h4>Logindaten</h4>
+			<table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+				<tr>
+				<th align="left" style="width: 180px;"><font color="red">*</font>Passwort:</th>
+				<td><%= password_field_tag :passwort, params[:passwort] %></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+<% end %>
+
+
+<font color="red">* Pflichtfelder</font>
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <a href="" class="btn" onclick="history.back();">Zurück</a>
+  </div>
+  <div class="span10" align="right">
+   <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#form_newOZBPerson').submit(); return false;", :class => "btn btn-primary", :notice => "Person erfolgreich aktualisiert" %>	
+  </div>		
+ </div>	
+</div>
+
+
+
+
+
+<div class="modal hide fade" id="searchPerson">
+ <div class="modal-header">
+  <button class="close" data-dismiss="modal">×</button>
+  <h3>Schnellsuche einer Person</h3>
+ </div>
+ <div class="modal-body">
+  <div class="alert alert-info">
+  	Die Mitglied-Nr. wird automatisch übernommen, sobald Sie einen Namen ausgewählt haben.
+  </div>		
+  <label>Name:</label>
+  <input type="text" id="suchFeld" class="span4" />
+ </div>
+ <div class="modal-footer">
+  <a href="#" class="btn" data-dismiss="modal">Schliessen</a>
+ </div>
+</div>
+
+
+
+<!-- jQuery Autocomplete -->
+<script>
+	
+	$(function() {			
+		var names = [	
+			<% @DistinctPersonen.each do |person| %>
+			{
+				value: "<%= person.Pnr.to_s %>",
+				label: "<%= person.Name.to_s + ', ' + person.Vorname.to_s + ' (' + person.Pnr.to_s + ')' %>"
+			},
+			<% end %>
+		];
+				
+		$( "#suchFeld" ).autocomplete({
+			minLength: 0,
+			source: names,			
+			select: function( event, ui ) {
+				$( "#suchFeld" ).val( ui.item.label );
+				$( "#partner" ).val( ui.item.value );
+				$( "#notarPnr" ).val( ui.item.value );
+				return false;
+			}
+		})
+		.data( "autocomplete" )._renderItem = function( ul, item ) {
+			return $( "<li></li>" )
+				.data( "item.autocomplete", item )
+				.append( "<a>" + item.label + "</a>" )
+				.appendTo( ul );
+		};
+	});
+	function clearAutocompleteFields(){
+		$( "#suchfeld" ).val( "" );
+		$( "#partner" ).val( "" );
+		$( "#notarPnr" ).val( "" );
+	}
+</script>
+
+<!-- Sub-Navigationsleiste -->
+<script>
+	// $("#a_personaldaten").click(function(){
+	// 	$("#li_personaldaten").addClass("active");
+	// 	$("#li_kontaktdaten").removeClass("active");
+	// 	$("#li_rollen").removeClass("active");
+	// 	$("#li_logindaten").removeClass("active");
+	// 	$('#div_personaldaten').css('display', 'block');
+	// 	$('#div_kontaktdaten').css('display', 'none');
+	// 	$('#div_rollen').css('display', 'none');
+	// 	$('#div_logindaten').css('display', 'none');
+	// });
+	// $("#a_kontaktdaten").click(function(){
+	// 	$("#li_personaldaten").removeClass("active");
+	// 	$("#li_kontaktdaten").addClass("active");
+	// 	$("#li_rollen").removeClass("active");
+	// 	$("#li_logindaten").removeClass("active");		
+	// 	$('#div_personaldaten').css('display', 'none');
+	// 	$('#div_kontaktdaten').css('display', 'block');
+	// 	$('#div_rollen').css('display', 'none');
+	// 	$('#div_logindaten').css('display', 'none');
+	// });
+	// $("#a_rollen").click(function(){
+	// 	$("#li_personaldaten").removeClass("active");
+	// 	$("#li_kontaktdaten").removeClass("active");
+	// 	$("#li_rollen").addClass("active");
+	// 	$("#li_logindaten").removeClass("active");		
+	// 	$('#div_personaldaten').css('display', 'none');
+	// 	$('#div_kontaktdaten').css('display', 'none');
+	// 	$('#div_rollen').css('display', 'block');
+	// 	$('#div_logindaten').css('display', 'none');
+	// });
+	// $("#a_logindaten").click(function(){
+	// 	$("#li_personaldaten").removeClass("active");
+	// 	$("#li_kontaktdaten").removeClass("active");
+	// 	$("#li_rollen").removeClass("active");
+	// 	$("#li_logindaten").addClass("active");		
+	// 	$('#div_personaldaten').css('display', 'none');
+	// 	$('#div_kontaktdaten').css('display', 'none');
+	// 	$('#div_rollen').css('display', 'none');
+	// 	$('#div_logindaten').css('display', 'block');
+	// });	
+</script>
+
+<!-- Datepicker und Rollenswitcher -->
+<script>
+	$(function() {
+		$( "#gebDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+ 	});
+	$(function() {
+		$( "#studienbeginn" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+ 	});
+	$(function() {
+		$( "#studienende" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+	});
+	$(function() {
+		$( "#beurkDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+	});
+	$(function() {
+		$( "#antragsdatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+	});
+	$(function() {
+		$( "#aufnahmedatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+		});
+	});
+	$(function() {
+		$( "#austrittsdatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+		});
+	});
+	$(function() {
+		$( "#rvDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+		});
+	});	
+
+	function switch_role()
+	{
+		$("tbody#Foerdermitglied").hide();
+	    $("tbody#Student").hide();
+    	$("tbody#Mitglied").hide();
+    	$("tbody#Partner").hide();
+    	$("tbody#Gesellschafter").hide();
+	    var role = $('select#rolle').val();
+	    switch (role) {
+		    case "F":
+		    	$("tbody#Foerdermitglied").show();
+		    	break;
+		    case "S":
+		    	$("tbody#Student").show();
+		    	break;
+		    case "G":
+		    	$("tbody#Gesellschafter").show();
+		    	break;
+		    case "P":
+		    	$("tbody#Partner").show();
+		    	break;
+		    case "M":
+		    	$("tbody#Mitglied").show();
+		    	break;
+		    default:
+		}		
+	}
+	switch_role();
+</script>

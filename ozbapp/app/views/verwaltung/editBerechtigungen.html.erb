@@ -1,0 +1,102 @@
+<%
+# NU
+def display_berechtigungen_for (geschaeftsprozesse, gruppe)
+  if !geschaeftsprozesse.nil?
+    html = "<ul>"
+    geschaeftsprozesse.each do |gp| 
+      if gp.send(gruppe)
+        html << "<li>" << gp.Beschreibung << "</li>"
+      end
+    end
+    html << "</ul>"
+    html.html_safe
+  end
+end
+%>
+
+<%= render :partial => '/verwaltung/navigation' %>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<%= form_tag({:action => "createBerechtigung"}, :class => "form-horizontal", :id=>"editBerechtigungen") do %>
+
+	<% if !@errors.nil? && @errors.any? %>
+    <div class="alert alert-error" id="error_explanation">
+	  <h3>Konnte keine Sonderberechtigung hinzufügen/löschen:</h3>	
+	  <ul>
+	    <% @errors.each do |error| %>
+		  <% error.full_messages.each do |msg| %>
+		    <li><%= msg %></li>
+		  <% end %>
+	    <% end %>
+	  </ul>
+    </div>
+  	<% end %>
+
+<% #debug @Geschaeftsprozesse %>
+<!-- NU -->
+<div class="row-fluid" style="">
+ <div class="span6">
+  <h4>Neue Berechtigung hinzufügen</h4>
+  <table class="table-hover" width="100%" cellpadding="10" cellspacing="">  	  	
+   <tr>
+    <th align="left"><font color="red">*</font>Berechtigung:</th>
+    <td>
+      <% if is_allowed(current_OZBPerson, 7) %>
+  		<%= select_tag 'berechtigung', options_for_select(@Berechtigungen, @new_Sonderberechtigung.Berechtigung) %>
+  	  <% end %>
+  	</td>
+   </tr>
+   <tr>
+    <th align="left"><font color="red">*</font>Email:</th>
+    <td>
+      <%= email_field_tag :email, @new_Sonderberechtigung.Email %>
+    </td>
+   </tr>
+  </table>
+ </div>
+
+ <!-- NU -->
+  <div class="span6" id="beschreibung-berechtigung">
+    <h4></h4>
+    <div id="MV"><%= display_berechtigungen_for(@Geschaeftsprozesse, "MV") %></div>
+    <div id="IT"><%= display_berechtigungen_for(@Geschaeftsprozesse, "IT") %></div>
+    <div id="RW"><%= display_berechtigungen_for(@Geschaeftsprozesse, "RW") %></div>
+    <div id="ZE"><%= display_berechtigungen_for(@Geschaeftsprozesse, "ZE") %></div>
+    <div id="OeA"><%= display_berechtigungen_for(@Geschaeftsprozesse, "OeA") %></div>
+ </div>
+
+</div>
+
+<% end %>
+
+<font color="red">* Pflichtfelder</font>
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <%= link_to "Zurück", "/Verwaltung/OZBPerson/" + @OZBPerson.Mnr.to_s + "/Rollen", :class => "btn" %>
+  </div>
+  <div class="span10" align="right">
+   <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#editBerechtigungen').submit(); return false;", :class => "btn btn-primary", :notice => "Sonderberechtigungen erfolgreich aktualisiert" %>	
+  </div>		
+ </div>	
+</div>
+
+<script>
+    // NU
+    $(document).ready(function() {
+      $("#berechtigung").change(function(){
+        $("#beschreibung-berechtigung div").hide();
+        var value = $("#berechtigung").val();
+        $("#" + value).show();
+
+        if (value != ""){
+          var beschreibung = $("#berechtigung :selected").text();
+          $("#beschreibung-berechtigung h4").show().text("Rechte für " + beschreibung);
+        }
+        else{
+          $("#beschreibung-berechtigung h4").hide();
+        }
+      });
+    });
+</script>

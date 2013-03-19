@@ -1,0 +1,33 @@
+<header class="subhead" id="overview">
+  <h1>Meine Daten</h1>
+  <hr />
+</header>
+
+<% details_link = "/MeineDaten/Details"%>
+<% personaldaten_link = "/MeineDaten/Personaldaten"%>
+<% kontaktdaten_link = "/MeineDaten/Kontaktdaten"%>
+<% rolle_link = "/MeineDaten/Rolle"%>
+
+	  	
+<ul class="nav nav-tabs">
+	<li <% if getCurrentLocation == details_link || getCurrentLocation == "/MeineDaten" %>class="active"<%end%>>
+	 <%= link_to "Details", details_link %>
+	</li>
+	<!-- NU -->
+   <% if is_allowed(current_OZBPerson, 3) %>  
+		<li <% if getCurrentLocation == personaldaten_link %>class="active"<%end%>>
+			 <%= link_to "Personaldaten", personaldaten_link %>	
+		</li>
+   <% end %>		
+	<li <% if getCurrentLocation == kontaktdaten_link %>class="active"<%end%>>
+	 <%= link_to "Kontaktdaten", kontaktdaten_link %>	
+	</li>
+	<% if is_allowed(current_OZBPerson, 20) %>  
+		<li <% if getCurrentLocation == rolle_link %>class="active"<%end%>>
+		 <%= link_to "Rolle", rolle_link %>	
+		</li>
+	<% end %>		
+	<li <% if getCurrentLocation == edit_OZBPerson_registration_path %>class="active"<%end%>>
+	 <%= link_to "Passwort ändern", edit_OZBPerson_registration_path %>	
+	</li>	
+</ul>

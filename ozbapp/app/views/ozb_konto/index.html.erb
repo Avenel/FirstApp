@@ -1,0 +1,19 @@
+<script>
+$(document).ready(function() { 
+	$("table.tablesorter").tablesorter(); 
+});
+</script>
+
+<%= render :partial => '/verwaltung/navigation' %>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<%= render 'index_table_ee' %>
+
+<%= render 'index_table_ze' %>
+
+<style type="text/css">
+.button_to, .button_to div {
+	display: inline;
+}
+</style>

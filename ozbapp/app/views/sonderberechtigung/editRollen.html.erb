@@ -1,0 +1,128 @@
+<header class="subhead" id="overview">
+  <h1>Verwaltung: Mitglieder</h1>
+  <hr />
+</header>
+
+<%= form_tag({:action => "createBerechtigungRollen"}, :class => "form-horizontal", :id=>"editBerechtigungenRollen") do %>
+
+  <%= render :partial => '/application/flash_notifier' %>
+  <%= render 'verwaltung/tabnavigation_verwaltung' %>
+
+  <% if !@errors.nil? && @errors.any? %>
+    <div class="alert alert-error" id="error_explanation">
+      <h3>Konnte keine Sonderberechtigung hinzufügen/löschen:</h3>  
+      <ul>
+        <% @errors.each do |error| %>
+          <% error.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="span8">
+      <p class="lead"><b>Mitglieder mit Sonderberechtigungen</b></p>
+    </div>
+    <div class ="span4">
+      <div class="input-prepend" >
+        <span class="add-on" title ="Leer lassen falls die Standard-User-E-Mail Adresse verwendet werden soll"><i class="icon-envelope"></i></span>
+        <%= email_field_tag :email, @new_Sonderberechtigung.Email,:placeholder => 'Neue E-Mail eintragen' %>
+      </div>
+    </div>    
+  </div>
+
+  <%= hidden_field_tag :mnr,6 %>
+  <%= hidden_field_tag :berechtigung,'IT' %>
+      
+  <div class="row-fluid" style="">
+     <div>
+      <table id="personen" class="table table-bordered table-striped tablesorter  ">
+        <thead> 
+          <tr>
+            <th>Mnr.</th>
+            <th>Name, Vorname</th>
+            <th title = "Adimistrator">IT</th>
+            <th title = "Finanzverwaltung">RW</th>
+            <th title = "Mitgliederverwaltung">MV</th>
+            <th title = "Projektverwaltung">ZE</th>
+            <th title = "Öffentlichkeitsverwaltung">OeA</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if @OZBPersonen %>
+            <% @OZBPersonen.each do |ozbPerson| %>
+              <tr>
+                <% person = Person.get(ozbPerson.Mnr) %>
+                <td style="width: 50px;">
+                  <%= person.Pnr %>
+                </td>	
+
+                <td>
+              		<% details_link       = '/Verwaltung/OZBPerson/'+ ozbPerson.Mnr.to_s + "/Sonderberechtigungen" %>
+              		<% details_link_name  = person.Name + ", " + person.Vorname %>
+              		<%= link_to details_link_name, details_link, :class => "edit_link" %>
+                </td>
+
+                <% @Berechtigung.each do |b|%>
+                  <% @Sonderberechtigung = Sonderberechtigung.find(:all, :conditions =>{:Mnr => ozbPerson.Mnr, :Berechtigung => b })%>
+          
+                  <% if !@Sonderberechtigung.first().nil? %>
+                    <% delete_link = "/Verwaltung/OZBPerson/" + ozbPerson.Mnr.to_s + "/Sonderberechtigung/" + @Sonderberechtigung.first().ID.to_s + "/Loeschen" %>
+                    
+                    <td style="text-align: center; width: 50px; background-color: #defbd4">
+                      <%= link_to @falseTrue[1], delete_link, :style => 'color: #00CC00',:onclick => "return confirm('Sonderberechtigung von "+person.Vorname+" "+person.Name+" als "+@BerechtigungsName.fetch(@Sonderberechtigung.first().Berechtigung)+" entfernen?')", :title => @Sonderberechtigung.first().Email %>
+                    </td>
+                  <%else%>
+                    <td title = "hinzufügen" style="text-align: center; width: 50px; background-color: #fde5e5">
+                      <div id = 'link_'>
+                        <%= link_to_function @falseTrue[0], "submit_form(#{person.Pnr},'#{b}')",:style => 'color: #FF0000', :notice => "Sonderberechtigungen erfolgreich aktualisiert" %> 
+                      </div>
+                    </td>
+                  <% end %>
+                <% end %>
+              </tr>
+            <% end %> 
+          <% end %>  
+        </tbody> 
+      </table>
+    </div>
+  </div>
+  <div>
+  <p style="float: right;margin:0;padding:0;"><%= link_to "Geschäftsprozesse", "/Verwaltung/Geschaeftsprozesse" %></p>
+  </div> 
+<% end %>
+  
+<div class="form-actions">
+  <div class="row-fluid">
+    <div class="span6" align="left">
+      <a href="javascript:history.back(-1);" class="btn">Zurück</a>
+    </div> 
+    <div class="span6" align="right">
+      <a href="/Verwaltung/Rollen/NeueSonderberechtigung" class="btn btn-primary">Neue Sonderberechtigung</a>
+    </div>  
+  </div> 
+</div>
+
+<script>
+var table=$("table#personen");
+$(document).ready(function() { 
+  table.tablesorter(); 
+
+});
+
+function submit_form(pnr,berechtigung){
+    if (confirm("Berechtigung hinzufügen?")){
+      document.getElementById('mnr').value = pnr;
+      document.getElementById('berechtigung').value = berechtigung;
+      $('#editBerechtigungenRollen').submit()
+    }
+    else{
+      alert("Berechtigung wurde nicht hinzugefügt")
+    }
+};
+
+</script>
+

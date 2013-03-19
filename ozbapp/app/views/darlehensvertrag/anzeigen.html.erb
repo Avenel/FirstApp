@@ -1,0 +1,146 @@
+<h2 align="center">Neuen Darlehensvertrag berechnen</h2>
+<br>
+<br>
+
+<% if !@errors.empty? %>
+  <div class="alert alert-error" id="error_explanation">
+    <h3>Es konnte keine Suche gestartet werden:</h3>  
+    <ul>
+        <% @errors.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+  </div>
+<% end %>
+
+
+<%= form_tag("/Verwaltung/Darlehensvertrag/BerechnungsFormular/Berechnet", :method => "post") do %>
+  <table style="margin:auto;width:XX">
+    <tr>
+      <td align="left">Mitgliedsnummer: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:mitgliedsnummer, @mitgliedsnummer) %></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td align="left">Vorname: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:vorname, @vorname, :disabled => true) %></td>
+      <td align="left">&nbsp; Sparpunkte bis Auszahlungsdatum: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:sparpunkteBisAuszahlung, number_with_delimiter(@sparpunkteBisAuszahlung, :delimiter => "."), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Nachname: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:nachname, @nachname, :disabled => true) %></td>
+      <td align="left">&nbsp; Leihpunkte auszahlung bis 1. Rate: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:leihpunkteAuszahlungErsteRate, number_with_delimiter(@leihpunkteAuszahlungErsteRate, :delimiter => "."), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Heutiges Datum: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:heutigesDatum, @heutigesDatum) %></td>
+      <td align="left">&nbsp; Leihpunkte Tilgungszeitraum: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:leihpunkteTilgungszeitraum, number_with_delimiter(@leihpunkteTilgungszeitraum, :delimiter => "."), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Auszugs Datum: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:auszugsDatum, @auszugsDatum) %></td>
+      <td align="left">&nbsp; Leihpunte gesammt: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:leihpunteGesammt, number_with_delimiter(@leihpunteGesammt, :delimiter => "."), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Sparguthaben: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:sparguthaben, @sparguthaben) %></td>
+      <td align="left">&nbsp; Nachsparpunkte: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:nachsparpunkte, number_with_delimiter(@nachsparpunkte, :delimiter => "."), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Eigene Sparpunkte: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:eigSparPunkte, @eigSparPunkte) %></td>
+      <td align="left">&nbsp; Nachsparbetrag: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:nachsparBetrag, number_with_precision(@nachsparBetrag, :precision => 2), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Schenkungspunkte: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:schenkungspunkte, @schenkungspunkte) %></td>
+      <td align="left">&nbsp; Monatliche Darlehenstilgung: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:monatlicheDarlehenstilgung, number_with_precision(@monatlicheDarlehenstilgung, :precision => 2), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Höhe der Zusatzentnahme: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:hoeheDerZE, @hoeheDerZE) %></td>
+      <td align="left">&nbsp; Monatlicher Betrag Nachsparen: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:monatlicherBetragNachsparen, number_with_precision(@monatlicherBetragNachsparen, :precision => 2), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Gewünschtes Auszahldatum: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:gewAuszahlDat, @gewAuszahlDat) %></td>
+      <td align="left">&nbsp; Risikodekungsbeitrag: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:risikoDekungsbeitrag, number_with_precision(@risikoDekungsbeitrag, :precision => 2), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="left">Tilgungszeit in Jahren: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:tilgZeitInJahren, @tilgZeitInJahren) %></td>
+      <td align="left">&nbsp; Kostendeckungsumlage: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:kostendeckungsumlage, number_with_precision(@kostendeckungsumlage, :precision => 2), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= select_tag("kklVerlauf", "<option>Klasse A - 100.00%</option>
+                                        <option>Klasse B - 75.00%</option>
+                                        <option>Klasse C - 50.00%</option>
+                                        <option>Klasse D - 25.00%</option>
+                                        <option>Klasse E - 0.00%</option>".html_safe)%></td>
+      <td align="left">&nbsp; Monatliche Gesammtbeslastung: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:monatlicheGesammtbeslastung, number_with_precision(@monatlicheGesammtbeslastung, :precision => 2), :disabled => true) %></td>
+    </tr>
+    <tr>
+      <td align="legt">Nachsparzeit in Jahren: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:nachsparZeitInJahren, @nachsparZeitInJahren) %></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td align="left">Datum der ersten Tilgungsrate: &nbsp; &nbsp;</td>
+      <td><%= text_field_tag(:datDerErstenTilgRate, @datDerErstenTilgRate) %></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>  
+      <td></td>
+      <td><%= submit_tag("Berechnen", :name => "berechnen", :class => "btn btn-primary") %></td>
+    </tr>
+  </table>
+  <% end  %>
+
+
+
+
+<script>
+  $(function() {
+    $( "#gewAuszahlDat" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      changeMonth: true,
+      changeYear: true
+    });
+  });
+  $(function() {
+    $( "#datDerErstenTilgRate" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      changeMonth: true,
+      changeYear: true
+    });
+  });
+  $(function() {
+    $( "#heutigesDatum" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      changeMonth: true,
+      changeYear: true
+    });
+  });
+  $(function() {
+    $( "#auszugsDatum" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      changeMonth: true,
+      changeYear: true
+    });
+  });
+</script>

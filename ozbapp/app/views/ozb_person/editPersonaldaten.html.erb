@@ -1,0 +1,122 @@
+<%= render 'navigation' %>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<%= form_tag({:action => "updatePersonaldaten"}, :class => "form-horizontal", :id=>"form_editPersonaldaten") do %>
+
+	<% if !@errors.nil? && @errors.any? %>
+    <div class="alert alert-error" id="error_explanation">
+	  <h3>Personaldaten wurden nicht aktualisiert:</h3>	
+	  <ul>
+	    <% @errors.each do |error| %>
+		  <% error.full_messages.each do |msg| %>
+		    <li><%= msg %></li>
+		  <% end %>
+	    <% end %>
+	  </ul>
+    </div>
+  	<% end %>
+
+<div class="row-fluid" style="">
+ <div class="span6">
+  
+  <h4>Personaldaten bearbeiten</h4>
+  <table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+   
+   <tr>	
+	<th align="left" style="width: 180px;">Mitgliedsnummer:</th>
+	<td>
+		<%= text_field_tag :pnr, @OZBPerson.Mnr, :disabled => true %>
+        <%= hidden_field_tag :pnr, @OZBPerson.Mnr %>
+        <%= hidden_field_tag :mnr, @OZBPerson.Mnr %>
+    </td>
+   </tr>
+   
+   <tr>
+	<th align="left"><font color="red">*</font>Name:</th>
+	<td><%= text_field_tag :name, @Person.Name, :disabled => false, :class => "" %></td>
+   </tr>
+   <tr>
+	<th align="left"><font color="red">*</font>Vorname:</th>
+	<td><%= text_field_tag :vorname, @Person.Vorname %></td>
+   </tr>
+   <tr>
+	<th align="left">Geburtsdatum:</th>
+	<td><%= text_field_tag :gebDatum, ((!@Person.Geburtsdatum.nil?) ? @Person.Geburtsdatum.strftime("%d.%m.%Y") : nil) %></td>
+   </tr>
+   <tr>
+	<th align="left"><font color="red">*</font>Antragsdatum:</th>
+	<td><%= text_field_tag :antragsdatum, (!@OZBPerson.Antragsdatum.nil?) ? @OZBPerson.Antragsdatum.strftime("%d.%m.%Y") : nil %></td>
+   </tr>
+   <tr>
+	<th align="left">Aufnahmedatum:</th>
+	<td><%= text_field_tag :aufnahmedatum, (!@OZBPerson.Aufnahmedatum.nil?) ? @OZBPerson.Aufnahmedatum.strftime("%d.%m.%Y") : nil %></td>
+   </tr>
+   <tr>
+	<th align="left">Austrittsdatum:</th>
+	<td><%= text_field_tag :austrittsdatum, (!@OZBPerson.Austrittsdatum.nil?) ? @OZBPerson.Austrittsdatum.strftime("%d.%m.%Y") : nil %></td>
+   </tr>
+  </table>  
+
+
+ </div>
+ <div class="span6">
+ 
+ </div>	
+</div>
+
+
+
+<% end %>
+
+
+<font color="red">* Pflichtfelder</font>
+
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <a href="" class="btn" onclick="history.back();">Zurück</a>
+  </div>
+  <div class="span10" align="right">
+   <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#form_editPersonaldaten').submit(); return false;", :class => "btn btn-primary", :notice => "Personaldaten aktuallisiert" %>	
+  </div>		
+ </div>	
+</div>
+
+
+
+
+<script>
+	$(document).ready(function() {
+	
+	});
+	
+	$(function() {
+		$( "#gebDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+	});
+	$(function() {
+		$( "#antragsdatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+	});
+	$(function() {
+		$( "#aufnahmedatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+		});
+	});
+	$(function() {
+		$( "#austrittsdatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+		});
+	});
+</script>

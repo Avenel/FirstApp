@@ -1,0 +1,59 @@
+<style type="text/css">
+	table tr th label {
+		font-weight: bold !important;
+		text-align: left;
+	}
+	
+	table.table-hover tr th {
+		width: 180px;
+		text-align: left;
+	}
+</style>
+
+<header class="subhead">
+  <h3><%= @action == "new" ? "Neues " : "Vorhandenes " %> <%= @kontotyp %>-Konto <%= @action == "new" ? "hinzufügen " : "ändern " %></h3>
+  <hr />
+</header>
+
+<% if @kontotyp == "EE" %>
+  <% @ozb_konto = setup_ee_konto(@ozb_konto) %>
+<% else %>
+  <% @ozb_konto = setup_ze_konto(@ozb_konto) %>
+<% end %>
+
+﻿<%= form_for @ozb_konto, :class => "form-horizontal", :url => { :action => @action } do |o| %>
+
+  <% if @action == "new" %>
+    <%= simple_form_errors(@ozb_konto) %>
+  <% end %>
+  
+  <% if !@error.nil? %>
+    <%= simple_form_errors(@error) %>
+  <% end %>
+  
+  <%= o.hidden_field :Mnr, { :value => @OZBPerson.mnr } %>
+  
+  <% if @kontotyp == "EE" %>
+    <%= render :partial => "form_ee", :locals => {:o => o} %>
+  <% else %>
+    <%= render :partial => "form_ze", :locals => {:o => o} %>
+  <% end %>
+
+  <br />
+
+  Felder die mit einem * markiert sind, müssen ausgefüllt werden.
+
+  <br />
+
+	<div class="form-actions">
+		<div class="row-fluid">
+			<div class="span6" align="left">
+				<a href="javascript:history.back(-1);" class="btn">Zurück</a>
+			</div>
+
+			<div class="span6" align="right">
+				<%= o.submit(:value => "Speichern", :class => "btn btn-primary") %>
+			</div>
+		</div>
+	</div>
+<% end %>

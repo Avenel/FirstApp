@@ -1,0 +1,56 @@
+<h1>Kontoklasse</h1>
+<h2>Editieren</h2>
+
+<br />
+<%= form_for @kontenklasse, :url => { :action => "update" }, :html => {:id => "editForm", :method => "post"}  do |f| %>
+
+  <% if !@errors.nil? && @errors.any? %>
+  <div id="error_explanation">
+    <h2><%= @errors.count %> Fehler <br /> Konnte keine Kontenklasse anlegen, weil:</h2>
+
+    <ul>
+      <% @errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <table>
+    <tr>
+      <td><b><%= label_tag "Kontoklasse:" %></b></td>
+      <td>
+        <%= label_tag :kkl, @kontenklasse.kkl %>  
+        <%= f.hidden_field :kkl %>  
+      </td>
+    </tr>
+    
+
+    <tr>
+      <td><b><%= label_tag "Prozent:" %></b></td>
+      <td><%= f.text_field :prozent %></td>
+    </tr>  
+  
+    <tr>
+      <td><b><%= label_tag "AbDatum:" %></b></td>
+      <td><%= f.text_field :kklAbDatum, :id => "kklAbDatum" %></td>
+    </tr>
+  </table>
+  
+  <br />
+<% end %>
+
+<table class="actions">
+  <tr>
+    <td><%= link_to "Abbrechen", "/kontenklasse", :class => "cancel_link" %></td>
+    <td><%= link_to_function "Ok", "this.form.submit()", :onclick => "$('#editForm').submit(); return false;", :class => "submit_ok" %></td>
+  </tr>
+</table>
+
+<script>
+  $(function() {
+    $( "#kklAbDatum" ).datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+</script>

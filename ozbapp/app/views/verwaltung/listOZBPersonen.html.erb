@@ -1,0 +1,68 @@
+<header class="subhead" id="overview">
+  <h1>Verwaltung: Mitglieder</h1>
+  <hr />
+</header>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<%= render :partial => 'tabnavigation_verwaltung' %>
+
+<table id="personen" class="table table-bordered">
+ <thead> 
+  <tr>
+    <th><%= sortable "mnr", "Mitglied-Nr." %></th>
+    <th><%= sortable "name", "Name, Vorname" %></th>
+    <th><%= sortable "rolle", "Rolle" %></th>
+    <th><%= sortable "aufnahmedatum", "Aufnahmedatum" %></th>
+    <th><%= sortable "austrittsdatum", "Austrittsdatum" %></th>
+  </tr>
+ </thead>
+ <tbody>
+  <% @OZBPersonen.each do |ozbPerson| 
+      style = ""
+      if !ozbPerson.Austrittsdatum.nil? && ozbPerson.Austrittsdatum.strftime("%d.%m.%Y").to_date < Date.today.strftime("%d.%m.%Y").to_date
+        style = "style='background: #ddd'"
+      end
+    %>
+  <tr <%= style %>>
+    <% person = ozbPerson.Person.last %>
+  <td><%= ozbPerson.Mnr %></td> 
+  <td>
+    <% konto_link = '/Verwaltung/OZBPerson/'+ ozbPerson.Mnr.to_s + "/Konten" %>
+    <% konto_link_name = person.Name + ", " + person.Vorname %>
+    <%= link_to konto_link_name, konto_link, :class => "edit_link" %>
+  </td>
+  <td><%= rollen_bezeichnung(person.Rolle) %></td>
+  <td><%= (ozbPerson.Aufnahmedatum ? ozbPerson.Aufnahmedatum.strftime("%d.%m.%Y") : "") %></td>
+  <td><%= (ozbPerson.Austrittsdatum ? ozbPerson.Austrittsdatum.strftime("%d.%m.%Y") : "") %></td>
+  </tr>
+  <% end %>
+ </tbody> 
+</table>
+
+
+<%= page_navigation_links @OZBPersonen %>
+
+
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span6" align="left">
+   <a href="" class="btn" onclick="history.back();">Zurück</a>
+  </div>
+  <div class="span6" align="right">
+   <% if is_allowed(current_OZBPerson, 3) %>
+    <%= link_to 'Neues Mitglied hinzufügen', "/Verwaltung/OZBPerson/NeuePerson", :class => "btn btn-primary" %>
+   <% end %>
+  </div>		
+ </div>	
+</div>
+
+
+
+
+<script>
+//NU
+// $(document).ready(function() { 
+//   $("#personen").tablesorter(); 
+// });
+</script>

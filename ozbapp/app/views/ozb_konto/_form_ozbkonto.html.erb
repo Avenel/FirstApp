@@ -1,0 +1,59 @@
+<script type="text/javascript">
+$(function() {
+	$("#KtoEinrDatum").datepicker({
+		dateFormat: 'dd.mm.yy',
+        changeMonth: true,
+        changeYear: true		
+	});
+
+	$("#KKLAbDatum").datepicker({
+		dateFormat: 'dd.mm.yy',
+        changeMonth: true,
+        changeYear: true		
+	});
+});
+</script>
+
+<div class="row-fluid">
+	<div class="span6">
+
+		<header class="subhead">
+			<h4>OZB-Konto</h4>
+			<hr />
+		</header>
+
+		<table class="table-hover" cellpadding="3" cellspacing="">
+			<tr>
+				<th style="width: 180px; text-align: left"><%= o.label :KtoNr %></th>
+				<td><%= o.text_field :KtoNr, :class => "span12", :disabled => @action == "edit" %></td>
+			</tr>
+			<tr>
+				<th style="width: 180px; text-align: left"><%= o.label :KtoEinrDatum %></th>
+				<td><%= o.text_field :KtoEinrDatum, :id => "KtoEinrDatum", :value => (o.object.KtoEinrDatum.blank? ? Time.now.to_date.strftime("%d.%m.%Y") : o.object.KtoEinrDatum.strftime("%d.%m.%Y")), :class => "span12" %></td>
+			</tr>
+			<tr>
+				<th style="text-align: left"><%= o.label :Waehrung %></th>
+				<td><%= o.text_field :Waehrung, :value => (o.object.Waehrung.empty? ? "STR" : o.object.Waehrung), :class => "span12" %></td>
+			</tr>
+		
+			<!--
+			<tr>
+				<th style="text-align: left"><%= o.label :SaldoDatum %></th>
+				<td><%= o.text_field :SaldoDatum, :id => "saldoDatum", :value => (o.object.SaldoDatum.blank? ? Time.now.to_date : o.object.SaldoDatum), :class => "span11" %></td>
+			</tr>
+			-->
+			
+			<%= o.fields_for :kkl_verlauf do |kkl| %>
+				<tr>
+					<th style="text-align: left"><%= kkl.label :KKL %></th>
+					<td><%= kkl.collection_select(:KKL, Kontenklasse.all, :KKL, :kkl_with_percent, { :selected => (o.object.kkl_verlauf.KKL) ? o.object.kkl_verlauf.KKL : "B" }, { :class => "span12" }) %></td>
+				</tr>
+				<tr>
+					<th style="text-align: left"><%= kkl.label :KKLAbDatum %></th>
+					<td><%= kkl.text_field :KKLAbDatum, :id => "KKLAbDatum", :value => (kkl.object.KKLAbDatum.blank? ? Time.now.to_date.strftime("01.01.%Y") : kkl.object.KKLAbDatum.strftime("%d.%m.%Y")), :class => "span12" %></td>
+				</tr>
+			<% end %>
+		</table>
+
+	</div>
+</div>

@@ -1,0 +1,173 @@
+de:
+  activerecord:
+    # all the names for the error messages
+    attributes:
+      buergschaft:
+        Pnr_B: "Bürgschafter:"
+        Pnr_G: "Gläubiger:"
+        KtoNr: "ZE Konto-Nr.:"
+        SichAbDatum: "Beginn:"
+        SichEndDatum: "Ende:"
+        SichBetrag: "Betrag:"
+        SichKurzbez: "Kurzbezeichnung:"
+        SachPNR: "Sachbearbeiter:"
+        
+      ozb_konto:
+        KtoNr: "Konto-Nr.:"
+        GueltigVon: "Gültig von:"
+        GueltigBis: "Gültig bis:"
+        Mnr: "Mitglieder-Nr.:"
+        KtoEinrDatum: "Einrichtungsdatum:"
+        Waehrung: "Währung:"
+        WSaldo: "Währungssaldo:"
+        PSaldo: "Punktesaldo:"
+        SaldoDatum: "Saldo Datum:"
+        SachPNR: "Sachbearbeiter:"
+        
+        # associated model names
+        ee_konto: "EE-Konto"
+
+      ee_konto:
+        KtoNr: "EE Konto-Nr.:"
+        BankID: "Bank ID:"
+        Kreditlimit: "Kreditlimit:"
+        SachPNR: "Sachbearbeiter:"
+        GueltigVon: "Gültig von:"
+        GueltigBis: "Gültig bis:"
+        
+        # associated model names
+        Bankverbindung:
+          one: "Bankverbindung"
+          other: "Bankverbindungen"
+
+          BankKtoNr: "Bankverbindung > Konto-Nr.:"
+          IBAN: "Bankverbindung > IBAN:"
+          BLZ: "Bankverbindung > BLZ:"
+
+          Bank:
+            one: "Bank"
+            other: "Banken"
+
+            BankName: "Bankverbindung > Bankname:"
+            BIC: "Bankverbindung > BIC:"
+            IBAN: "Bankverbindung > IBAN:"
+            BLZ: "Bankverbindung > BLZ:"
+
+      bankverbindung:
+        ID: "Bank ID:"
+        GueltigVon: "Gültig von:"
+        GueltigBis: "Gültig bis:"
+        Pnr: "Personen-Nr."
+        BankKtoNr: "Bank Konto-Nr.:"
+        IBAN: "IBAN:"
+        BLZ: "BLZ:"
+
+      bank:
+        BLZ: "BLZ:"
+        BIC: "BIC:"
+        BankName: "Name der Bank:"
+      
+      ze_konto:
+        GueltigVon: "Gültig von:"
+        GueltigBis: "Gültig bis:"
+        KtoNr: "ZE Konto-Nr.:"
+        EEKtoNr: "EE Konto-Nr.:"
+        Pgnr: "Projekt:"
+        ZENr: "ZE-Nr.:"
+        ZEAbDatum: "Gültig ab:"
+        ZEEndDatum: "Gültig bis:"
+        ZEBetrag: "Betrag:"
+        Laufzeit: "Laufzeit:"
+        ZahlModus: "Zahlungsmodus:"
+        TilgRate: "Tilgungsrate:"
+        AnsparRate: "Ansparrate:"
+        KDURate: "KDU-Rate:"
+        RDURate: "RDU-Rate:"
+        ZEStatus: "Status:"
+        SachPNR: "Sachbearbeiter-Nr.:"
+
+      kontenklasse:
+        KKL: "Kontenklasse:"
+        KKLAbDatum: "Ab Datum:"
+        Prozent: "Prozentsatz:"
+
+      kkl_verlauf:
+        KtoNr: "Konto-Nr.:"
+        KKLAbDatum: "KKL Ab Datum:"
+        KKL: "Kontenklasse:"
+
+  helpers:
+    # all the names for the label form helper
+    label:
+      buergschaft:
+        Pnr_B: "Bürgschafter*:"
+        Pnr_G: "Gläubiger*:"
+        KtoNr: "ZE Konto-Nr.*:"
+        SichAbDatum: "Beginn*:"
+        SichEndDatum: "Ende*:"
+        SichBetrag: "Betrag*:"
+        SichKurzbez: "Kurzbezeichnung:"
+        SachPNR: "Sachbearbeiter:"
+        
+      ozb_konto:
+        KtoNr: "Konto-Nr.*:"
+        GueltigVon: "Gültig von:"
+        GueltigBis: "Gültig bis:"
+        Mnr: "Mitglieder-Nr.*:"
+        KtoEinrDatum: "Einrichtungsdatum*:"
+        Waehrung: "Währung*:"
+        WSaldo: "Währungssaldo:"
+        PSaldo: "Punktesaldo:"
+        SaldoDatum: "Saldo Datum:"
+        SachPNR: "Sachbearbeiter-Nr.:"
+
+      ee_konto:
+        KtoNr: "EE Konto-Nr.:*"
+        BankID: "Bank ID:"
+        Kreditlimit: "Kreditlimit:*"
+        SachPNR: "Sachbearbeiter:"
+        GueltigVon: "Gültig von:"
+        GueltigBis: "Gültig bis:"
+
+      bankverbindung:
+        ID: "Bank ID:"
+        GueltigVon: "Gültig von:"
+        GueltigBis: "Gültig bis:"
+        Pnr: "Personen-Nr."
+        BankKtoNr: "Bank Konto-Nr.*:"
+        IBAN: "IBAN:"
+        BLZ: "BLZ*:"
+
+      bank:
+        BLZ: "BLZ*:"
+        BIC: "BIC:"
+        BankName: "Name der Bank:"
+      
+      ze_konto:
+        GueltigVon: "Gültig von:"
+        GueltigBis: "Gültig bis:"
+        KtoNr: "ZE Konto-Nr.*:"
+        EEKtoNr: "EE Konto-Nr.*:"
+        Pgnr: "Projekt:"
+        ZENr: "ZE-Nr.*:"
+        ZEAbDatum: "Gültig ab:"
+        ZEEndDatum: "Gültig bis:"
+        ZEBetrag: "Betrag*:"
+        Laufzeit: "Laufzeit*:"
+        ZahlModus: "Zahlungsmodus*:"
+        TilgRate: "Tilgungsrate*:"
+        AnsparRate: "Ansparrate*:"
+        KDURate: "KDU-Rate:*"
+        RDURate: "RDU-Rate*:"
+        ZEStatus: "Status*:"
+        SachPNR: "Sachbearbeiter-Nr.:"
+
+      kontenklasse:
+        KKL: "Kontenklasse*:"
+        KKLAbDatum: "Ab Datum*:"
+        Prozent: "Prozentsatz*:"
+
+      kkl_verlauf:
+        KtoNr: "Konto-Nr.*:"
+        KKLAbDatum: "KKL Ab Datum*:"
+        KKL: "Kontenklasse*:"

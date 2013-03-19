@@ -1,0 +1,224 @@
+<%= render :partial => '/verwaltung/navigation' %>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<div class="row-fluid">
+ <div class="span6">
+  <h4>Personaldaten</h4>
+  <table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+   <tr>
+	<th align="left">Mitgliedsnummer:</th>
+	<td><%= @OZBPerson.Mnr %></td>
+   </tr>
+   <tr>
+	<th align="left" style="width: 180px;">Name:</th>
+	<td><%= @Person.Name + ", " + @Person.Vorname %></td>
+   </tr>
+   <tr>
+	<th align="left">Geburtsdatum:</th>
+	<td><%= (!@Person.Geburtsdatum.nil?) ? @Person.Geburtsdatum.strftime("%d.%m.%Y") : nil %></td>
+   </tr>
+   <tr>
+	<th align="left">Antragsdatum:</th>
+	<td><%= (!@OZBPerson.Antragsdatum.nil?) ? @OZBPerson.Antragsdatum.strftime("%d.%m.%Y") : nil %></td>
+   </tr>
+   <tr>
+	<th align="left">Aufnahmedatum:</th>
+	<td><%= (!@OZBPerson.Aufnahmedatum.nil?) ? @OZBPerson.Aufnahmedatum.strftime("%d.%m.%Y") : nil %></td>
+   </tr>
+   <tr>
+	<th align="left">Austrittsdatum:</th>
+  <td><%= (!@OZBPerson.Austrittsdatum.nil?) ? @OZBPerson.Austrittsdatum.strftime("%d.%m.%Y") : nil %></td>
+   </tr>
+  </table>
+  
+  <br />
+  
+  <h4>Kontaktdaten</h4>
+  <table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+   <tr>
+	<th align="left" style="width: 180px;">Email:</th>
+	<td><%= @Person.Email %></td>
+   </tr>
+
+   <% @Tel.each do |t| %>
+    <tr>
+      <%
+      typ = ""
+      case t.TelefonTyp
+      when "tel"
+        typ = "Telefon"
+      when "mob"
+        typ = "Mobil"
+      when "fax"
+        typ = "Fax"
+      when "gesch"
+        typ = "Geschäftlich"
+      when "büro"
+        typ = "Büro"
+      when "priv"
+        typ = "Privat"
+      end
+      %>
+      <th align="left"><%= typ %>:</th>
+      <td>
+        <%= t.TelefonNr %>
+      </td>
+    </tr>
+   <% end %>
+
+   <tr>
+    <th align="left">Adresse:</th>
+    <td>
+     <% if @Adresse != nil %>	
+      <%= @Adresse.Strasse%> <%= @Adresse.Nr %>, <%= @Adresse.PLZ %>  <%= @Adresse.Ort %> <%= (!@Adresse.Vermerk.nil? && !@Adresse.Vermerk.empty?) ? " / " + @Adresse.Vermerk : nil %>
+   	 <% end %>	
+   </tr>
+  </table>  
+ </div>
+ <div class="span6">
+ 	
+  <h4>Rolle</h4>
+  <table class="table-hover" width="100%" cellpadding="10" cellspacing="">	
+ <tr>
+  <th align="left" style="width: 180px;">Rolle:</th>
+  <td><%= @Rollen.fetch(@Person.Rolle) %></td>
+ </tr>
+<% if @Student != nil then %>
+ <tr>
+  <th align="left">Ausbildungsbez.:</th>
+  <td><%= @Student.AusbildBez %></td>
+ </tr>
+ <tr>
+  <th align="left">Institut:</th>
+  <td><%= @Student.InstitutName %></td>
+ </tr>
+ <tr>
+  <th align="left">Studienort:</th>
+  <td><%= @Student.Studienort %></td>
+ </tr>
+ <tr>
+  <th align="left">Studienbeginn:</th>
+  <td><%= (!@Student.Studienbeginn.nil?) ? @Student.Studienbeginn.strftime("%d.%m.%Y") : nil %></td>
+ </tr>
+ <tr>
+  <th align="left">Studienende:</th>
+  <td><%= (!@Student.Studienende.nil?) ? @Student.Studienende.strftime("%d.%m.%Y") : nil %></td>
+ </tr>
+ <tr>
+  <th align="left">Abschluss:</th>
+  <td><%= @Student.Abschluss %></td>
+ </tr> 
+<% end %>
+<% if @Gesellschafter != nil then %>
+ <tr>
+  <th align="left">FA Steuernummer:</th>
+  <td><%= @Gesellschafter.FASteuerNr %></td>
+ </tr>
+ <tr>
+  <th align="left">FA ID Nr.:</th>
+  <td><%= @Gesellschafter.FAIdNr %></td>
+ </tr>
+ <tr>
+  <th align="left">FA Lfd. Nr.:</th>
+  <td><%= @Gesellschafter.FALfdNr %></td>
+ </tr>
+ <tr>
+  <th align="left">Wohnsitzfinanzamt</th>
+  <td><%= @Gesellschafter.Wohnsitzfinanzamt %></td>
+ </tr> 
+ <tr>
+  <th align="left">Notar:</th>
+  <td><%= @Gesellschafter.NotarPnr %></td>
+ </tr>
+ <tr>
+  <th align="left">Beurkundungsdatum:</th>
+  <td><%= (!@Gesellschafter.BeurkDatum.nil?) ? @Gesellschafter.BeurkDatum.strftime("%d.%m.%Y") : nil %></td>
+ </tr> 
+<% end %>
+<% if @Foerdermitglied != nil then %>
+ <tr>
+  <th align="left">Region:</th>
+  <td><%= @Foerdermitglied.Region %></td>
+ </tr> 
+ <tr>
+  <th align="left">Förderbeitrag:</th>
+  <td><%= @Foerdermitglied.Foerderbeitrag %></td>
+ </tr>
+<% end %>
+<% if @Mitglied != nil %>
+ <tr>
+  <th align="left">RV Datum:</th>
+  <td><%= (!@Mitglied.RVDatum.nil?) ? @Mitglied.RVDatum.strftime("%d.%m.%Y") : nil %></td>
+ </tr>
+<% end %>
+<% if @Partner != nil %>
+ <tr>
+  <th align="left">Partner:</th>
+  <td><%= @Partner.MnrO %></td>
+ </tr>
+ <tr>
+  <th align="left">Berechtigung:</th>
+  <td><%= @Partner.Berechtigung %></td>
+ </tr>
+<% end %>
+</table>
+
+ </div>
+</div>
+
+
+
+
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <a href="" class="btn" onclick="history.back();">Zurück</a>
+  </div>
+  <div class="span10" align="right">
+   <% if is_allowed(current_OZBPerson, 5) %>  
+   		<% delete_link = "/Verwaltung/OZBPerson/" + @OZBPerson.Mnr.to_s + "/Loeschen" %>
+   		<%= link_to "Mitglied sicher löschen", delete_link, :class => "btn btn-danger", :onclick => "return confirm('Wollen Sie wirklich die Person löschen?');" %>
+   <% end %>		
+  </div>		
+ </div>	
+</div>
+
+
+
+<script>
+
+// function submit_form(pnr,berechtigung){
+//     if (confirm("Berechtigung hinzufügen?")){
+//       document.getElementById('mnr').value = pnr;
+//       document.getElementById('berechtigung').value = berechtigung;
+//       $('#editBerechtigungenRollen').submit()
+//     }
+//     else{
+//       alert("Berechtigung wurde nicht hinzugefügt")
+//     }
+// };
+
+</script>
+
+<!---
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <a href="" class="btn" onclick="history.back();">Zurück</a>
+  </div>
+  <div class="span10" align="right">
+	 <% edit_link = "/OZBPerson/" + @OZBPerson.mnr.to_s %>
+	 <% edit_link_name = "Bearbeiten" %>	  
+	 <%= link_to edit_link_name, edit_link, :class => "btn" %>
+	
+	 <a href="#" class="btn">Bürgschaften</a>
+	 <a href="#" class="btn">Konten</a>
+	 <a href="#" class="btn">Bankverbindungen</a>	
+  </div>		
+ </div>	
+</div>
+--->
+
+	 	
+

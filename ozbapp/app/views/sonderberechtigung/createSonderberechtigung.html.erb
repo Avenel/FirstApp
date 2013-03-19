@@ -1,0 +1,93 @@
+<header class="subhead" id="overview">
+  <h1>Verwaltung: Mitglieder</h1>
+  <hr />
+</header>
+
+<%= form_tag({:action => "createBerechtigungRollen"}, :class => "form-horizontal", :id=>"form_createSonderberechtigung") do %>
+
+	<%= render :partial => '/application/flash_notifier' %>
+	<%= render 'verwaltung/tabnavigation_verwaltung' %>
+
+	<% if !@errors.nil? && @errors.any? %>
+		<div class="alert alert-error" id="error_explanation">
+			<h3>Konnte keine Sonderberechtigung hinzufügen/löschen:</h3>  
+			<ul>
+				<% @errors.each do |error| %>
+					<% error.full_messages.each do |msg| %>
+						<li><%= msg %></li>
+					<% end %>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+
+	<h3>Neue Sonderberechtigung erstellen</h3>
+
+	<div class="well well">
+		<table align="center">
+			<thead> 
+		    <tr>
+		    	<th>Mnr.</th>
+	      	<th>Mitglied</th>
+	      	<th>Berechtigung</th>
+	      	<th>E-Mail</th>
+				</tr>
+			</thead>
+
+			</tbody>
+				<td width="50px"><%= text_field_tag :mnr, "",  :readonly => true, :style => 'width: 50px;', :placeholder => 'Mnr.' %></td>
+				<td><div><%= text_field_tag "test", "", :id => "suchFeld", :placeholder => 'Mitglied eingeben' %></div></td>
+				<td><%= select_tag :berechtigung, options_for_select(@Berechtigungen, @new_Sonderberechtigung.Berechtigung) %></td>
+				<td><%= email_field_tag :email, @new_Sonderberechtigung.Email, :placeholder => 'E-Mail eingeben' %></td>
+			</tbody>
+		</table>
+	</div>
+<% end %>
+
+
+<div class="form-actions">
+	<div class="row-fluid">
+		<div class="span6" align="left">
+			<a href="javascript:history.back(-1);" class="btn">Zurück</a>
+		</div> 
+		<div class="span6" align="right">
+			<%= link_to_function "Hinzufügen", "this.form.submit()", :onclick => "$('#form_createSonderberechtigung').submit(); return false;",
+			 :class => "btn btn-primary", :notice => "Sonderberechtigungen erfolgreich aktualisiert" %>	
+		</div> 
+	</div> 
+</div>
+
+<script>
+	$(function() {			
+		var names = [	
+			<% @DistinctPersonen.each do |person| %>
+			{
+				value: "<%= person.Pnr.to_s %>",
+				label: "<%= person.Name.to_s + ', ' + person.Vorname.to_s %>"
+			},
+			<% end %>
+		];
+				
+		$( "#suchFeld" ).autocomplete({
+			minLength: 1,
+			source: names,	
+			select: function( event, ui ) {
+				$( "#suchFeld" ).val( ui.item.label );
+				$( "#mnr" ).val( parseInt(ui.item.value) );
+				return false;
+			}
+		})
+		.data( "autocomplete" )._renderItem = function( ul, item ) {
+			return $( "<li></li>" )
+				.data( "item.autocomplete", item )
+				.append( "<a href='/Verwaltung/OZBPerson/" + item.value + "/Konten'>" + item.label + "</a>" )
+				.appendTo( ul );
+
+		};
+	});
+</script>
+
+
+
+
+

@@ -1,0 +1,64 @@
+<%= render :partial => '/application/flash_notifier' %>
+
+
+  
+  <% if !@errors.nil? && @errors.any? %>
+    <div class="alert alert-error" id="error_explanation">
+      <h3>Teilnahme konnte nicht hinzugefügt werden:</h3>  
+      <ul>
+        <% @errors.each do |error| %>
+          <% error.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h2>Neue Veranstaltung hinzufügen</h2>
+
+<%= form_tag({:action => "createVeranstaltung"}, :class => "form-horizontal", :id => "form_editVeranstaltung") do %>  
+  <div class="well well-small">
+    <table class="table-hover" width="100%" cellpadding="10" cellspacing="" align="center">
+      <tr>
+        <th align="left" style="width: 180px;"><font color="red">*</font>Veranstaltungsart:</th>
+        <td><%= select_tag 'vid', options_for_select(@Veranstaltungen, @new_Veranstaltung.vid) %></td>
+      </tr>
+      <tbody>
+        <tr>
+          <th align="left"><font color="red">*</font>Ort:</th>
+          <td><%= text_field_tag :vaort, @new_Veranstaltung.VAOrt, :placeholder => "Veranstaltungsort" %></td>
+        </tr>
+        <tr>
+          <th align="left"><font color="red">*</font>Datum:</th>
+          <td><%= text_field_tag :vadatum,@new_Veranstaltung.VADatum, :value => Time.now.strftime("%d.%m.%Y")%></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<%end%>
+
+<font color="red">* Pflichtfelder</font>
+<div class="form-actions">
+  <div class="row-fluid">
+    <div class="span2" align="left">
+      <a href="" class="btn" onclick="history.back();">Zurück</a>
+    </div>
+    <div class="span10" align="right">
+      <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#form_editVeranstaltung').submit(); return false;", :class => "btn btn-primary", :notice => "Veranstaltung erfolgreich aktualisiert" %> 
+    </div>    
+  </div>  
+</div>
+
+<script>
+
+$(function() {
+  $( "#vadatum" ).datepicker({
+    dateFormat: 'dd.mm.yy',
+    changeMonth: true,
+    changeYear: true    
+  });
+});
+</script>
+
+

@@ -1,0 +1,165 @@
+
+<!-- tabelle mit css ersetzen -->
+<!-- <input type="submit"> -->
+<!--
+<%= debug @summeDerPunkte %>
+<%= debug @Buchung %>
+<%= debug @vonDatum %>
+<%= debug @zeileDerPunkte %>
+<%= debug @saldoDesLetztenBuchdatums %>
+<%= debug @letztesBuchungsdatum %>
+<%= debug @buchungZumLeztenDatum %>
+<%= debug @differenzDerDaten %>
+<%= debug @punkteZwischenDenDaten %>
+<%= debug @bisDatum %>
+<%= debug @tagesSaldoAlt %>
+<%= debug @tagesSaldoAltHaben %>
+<%= debug @kklZhal %>
+<%= debug @tagesSaldoALtGesamtPunkte %>
+<%= debug @tagesSaldoSpalte %>
+<%= debug @kklVerlaufKlasse %>
+<%= debug @tagesSaldoAltPunkte %>
+<%= debug @tagesSaldoAltHaben %>
+<%= debug @vornameZurPerson %>
+<%= debug @vonDatum %>
+<%= debug @ersteZeilePunkte %>
+<%= debug @vorBuchung %>
+-->
+
+<!-- das eingabeformular für das neue datum-->
+	<div class="row-fluid">
+		<div class="span12">
+		    <%= form_tag("/Darlehensverlauf/" + params[:KtoNr] + "/" + params[:EEoZEkonto], :method => "post") do %>
+		    	<table>
+		    		<tr>
+		    			<td>von: </td>
+		    			<td><%= text_field_tag(:vonDatum, @vonDatum) %></td>
+		    			<td>bis: </td>
+		    			<td><%= text_field_tag(:bisDatum, @bisDatum) %></td>
+		    			<td><%= submit_tag("Anzeigen", :name => "anzeigen", :class => "btn btn-primary") %></td>
+		    		</tr>
+		    	</table>
+		    <% end  %>
+	    </div>
+	</div>
+<% if !@vornameZurPerson.nil? %>
+	<% if params[:EEoZEkonto] == "EE" %>
+		<h3>
+		<%= "Einlage-/Entnahmekonto Ktonr. " + params[:KtoNr] + " " + @vornameZurPerson + ", " + @nameZurPerson %> 
+		</h3>
+	<% else %>
+		<h3>
+		<%= "Zusatz-/Entnahmekonto Ktonr. " + params[:KtoNr] + " " + @vornameZurPerson + ", " + @nameZurPerson %>
+		</h3>
+	<% end %>
+<% end %>
+
+<% if @notice.blank?  %>
+	<% if @errors.empty? %>
+		<table class="table-striped" width="100%">
+			<thead>
+				<tr>
+					<th class="header">Buchungsdat</th>
+					<th class="header" align="left">Buchungstext</th>
+					<th class="header" align="right">Soll</th>
+					<th class="header" align="right">Haben</th>
+					<th class="header" align="right">Punkte</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @Buchung.each do |buchung| %>
+				<tr>
+					<td align="center"><%= buchung.Belegdatum.strftime("%d.%m.%Y") %></td>
+					<td align="left"><%= buchung.Buchungstext %></td>
+					<% if buchung.Typ == "w" %>
+						<td align="right">
+							<% if buchung.Sollbetrag != 0 %>
+								<%= number_with_precision(buchung.Sollbetrag, :precision => 2) %></td>
+							<% end %>
+						<td align="right">
+							<% if buchung.Habenbetrag != 0 %>
+								<%= number_with_precision(buchung.Habenbetrag, :precision => 2) %></td>
+							<% end %>
+						<td align="right"><%= buchung.PSaldoAcc %></td>
+					<% else %>
+						<% if buchung.Sollbetrag == 0 and buchung.Habenbetrag != 0%>
+							<td align="right"></td>
+							<td align="right"></td>
+							<td align="right"> <%=buchung.Habenbetrag.round %></td>
+						<% else %>
+							<td align="right"></td>
+							<td align="right"></td>
+							<td align="right"> <%=buchung.Sollbetrag.round %></td>
+						<% end %>
+					<% end %>
+				</tr>
+				<% end %>
+			</tbody>
+			</tfoot>
+					<td align="center"><b><%= @bisDatum %></b></td>
+					<td><b>Tagessaldo</b></td>
+					<% if @differenzSollHaben > 0 %>
+						<td></td>
+						<td align="right"><b><%= number_with_precision(@differenzSollHaben, :precision => 2) %><b></td>
+						<td align="right"><b><%= @summeDerPunkte.round %><b></td>
+					<% else %>
+						<% if @differenzSollHaben < 0 %>
+							<td align="right"><b><%= number_with_precision(@differenzSollHaben * -1, :precision => 2) %><b></td>
+							<td></td>
+							<td align="right"><b><%= @summeDerPunkte.round %><b></td>
+						<% else %>
+							<td></td>
+							<td align="right"><b><%= number_with_precision(@differenzSollHaben, :precision => 2) %><b></td>
+							<td align="right"><b><%= @summeDerPunkte.round %><b></td>
+						<% end %>		
+					<% end %>
+			<tfoot>
+		</table>
+	<% else  %>
+	    <div class="alert alert-error" id="error_explanation">
+		  <h3>Es konnte keine Suche gestartet werden:</h3>	
+		  <ul>
+		    <% @errors.each do |error| %>
+			    <li><%= error %></li>
+		    <% end %>
+		  </ul>
+	    </div>
+	<% end %>
+
+
+
+<% else %>
+	<div class="alert alert-notice" id="error_explanation">
+		<h3><%= @notice[0] %></h3>
+	</div>
+<% end %>
+
+<br>
+
+<div class="span12">
+	<!-- <a href="#" onclick="window.print();return false;" class="btn btn-primary">Kontoauszug</a> -->
+	<a href="/Darlehensverlauf/<%=params[:KtoNr]%>/<%=params[:EEoZEkonto]%>/<%=@nameZurPerson%>/<%= @vornameZurPerson %>/<%= @vonDatum.to_date %>/<%= @bisDatum.to_date %>/ktoAuszug" class="btn btn-primary">Kontoauszug</a>
+</div>
+
+<script>
+	$(function() {
+		$( "#vonDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+			changeMonth: true,
+			changeYear: true
+ 		});
+	});
+	$(function() {
+		$( "#bisDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+			changeMonth: true,
+			changeYear: true
+ 		});
+	});
+</script>
+
+<script>
+$(document).ready(function() { 
+	$("table.tablesorter").tablesorter(); 
+});
+</script>

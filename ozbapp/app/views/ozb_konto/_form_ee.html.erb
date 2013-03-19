@@ -1,0 +1,106 @@
+<%= render :partial => "form_ozbkonto", :locals => { :o => o } %>
+
+<br />
+
+<div class="row-fluid">
+	<div class="span6">
+
+		<header class="subhead">
+			<h4>EE-Konto</h4>
+			<hr />
+		</header>
+
+		<%= o.fields_for :ee_konto do |ee| %>
+			<table class="table-hover" cellpadding="3" cellspacing="">
+				<tr>
+					<th><label>Dispo-Limit*:</label></th>
+					<td>
+						<div class="input-prepend input-append">
+							<span class="add-on">€</span>
+							<%= ee.text_field :Kreditlimit, :value => (ee.object.Kreditlimit if ee.object.Kreditlimit != 0), :class => "span4" %>
+						</div>
+					</td>
+				</tr>
+			</table>
+
+	</div>
+</div>
+
+<br />
+
+<div class="row-fluid">
+	<div class="span6">
+
+		<header class="subhead">
+			<h4>Bankverbindung</h4>
+			<hr />
+		</header>
+
+		<%= ee.fields_for :Bankverbindung do |bv| %>
+			<%= bv.hidden_field :Pnr, :value => @Person.pnr %>
+
+			<%
+				blz       = ""
+				bic       = ""
+				bankname  = ""
+				bankktonr = ""
+				iban      = ""
+
+				# Falls manuell eine neue Bank eingegeben wurde 
+				if !params[:ozb_konto].nil?
+					blz       = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ]
+					bic       = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BIC]
+					bankname  = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BankName]
+					bankktonr = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:BankKtoNr]
+					iban      = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:IBAN]
+				# Bankverbindung und Bank besteht bereits
+				elsif !@bankverbindung.nil? && !@bank.nil?
+					blz       = @bank.BLZ
+					bic       = @bank.BIC
+					bankname  = @bank.BankName
+					bankktonr = @bankverbindung.BankKtoNr
+					iban      = @bankverbindung.IBAN
+				end
+			%>
+
+				<table class="table-hover" cellpadding="3" cellspacing="">
+					<tr>
+						<th><label>Konto-Nr*:</label></th>
+						<td><%= bv.text_field :BankKtoNr, :class => "span12", :value => bankktonr %></td>
+					</tr>
+
+					<%= bv.fields_for :Bank do |bank| %>
+						<tr>
+							<th><%= bank.label :BLZ %></th>
+							<td><%= bank.text_field :BLZ, :value => blz , :class => "span12" %></td>
+						</tr>
+						<tr>
+							<th><label>Kreditinstitut</label></th>
+							<td><%= bank.text_field :BankName, :class => "span12", :value => bankname %></td>
+						</tr>
+						<tr>
+							<th><%= bank.label :BIC %></th>
+							<td><%= bank.text_field :BIC, :class => "span12", :value => bic %></td>
+						</tr>
+					<% end %>
+
+					<tr>
+						<th><%= bv.label :IBAN %></th>
+						<td><%= bv.text_field :IBAN, :class => "span12", :value => iban %></td>
+					</tr>
+				</table>
+
+			<% end %>
+		<% end %>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$("#saldoDatum").datepicker({
+		dateFormat: 'dd.mm.yy',
+        changeMonth: true,
+        changeYear: true		
+	});
+});
+</script>

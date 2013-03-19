@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OZB</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<% if OZBPerson_signed_in? %> 
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">
+        <font color="white">
+          <font color="blue">B</font>esser 
+          <font color="red">o</font>hne 
+          <font color="blue">/ </font>
+          <font color="red">Z</font>ins
+        </font>
+      </a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li <% if getCurrentLocation == "/MeineKonten" %>class="active"<%end%>><a href="/MeineKonten">Meine Konten</a></li>
+          
+          <li <% if getCurrentLocation.include? "/MeineDaten" %>class="active"<%end%>><a href="/MeineDaten/Details">Meine Daten</a></li>
+          
+          <li><a href="#">Meine TAN</a></li>
+          <% if isCurrentUserAdmin %>
+            <li class="dropdown <% if getCurrentLocation.include? "Verwaltung" %>active<%end%>">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Verwaltung <b class="caret"></b></a>
+              <ul class="dropdown-menu"> 
+                <!---
+                <li><a href="/Verwaltung">Allg.</a></li>
+                <li class="divider"></li>
+                --->
+                <% if isCurrentUserInGroup("IT") || isCurrentUserInGroup("MV") %>
+                <li <% if getCurrentLocation == "/Verwaltung/Mitglieder" %>class="active"<%end%>><a href="/Verwaltung/Mitglieder">Mitglieder</a></li>
+                <% end %>
+                <% if isCurrentUserInGroup("IT") || isCurrentUserInGroup("RW") %>
+                <li <% if getCurrentLocation == "/Verwaltung/Finanzen" %>class="active"<%end%>><a href="#">Finanzen</a></li>
+                <% end %>
+                <% if isCurrentUserInGroup("IT") || isCurrentUserInGroup("ZE") %>
+                <li <% if getCurrentLocation == "/Verwaltung/Projekte" %>class="active"<%end%>><a href="#">Projekte</a></li>
+                <% end %>
+                <% if isCurrentUserInGroup("IT") || isCurrentUserInGroup("ÖA") %>
+                <li <% if getCurrentLocation == "/Verwaltung/Öffentlichkeit" %>class="active"<%end%>><a href="#">Öffentlichkeit</a></li>
+                <% end %>
+              </ul>
+            </li>
+
+          <% end %>
+          <li><a href="#">Protokolle</a></li>
+          <li><a href="#">o/ZBlick</a></li>
+        </ul>
+        <ul class="nav pull-right">
+          <!---<i class="icon-off icon-white"></i>--->
+          <li><%= link_to raw("<i class=\"icon-off icon-white\"></i> Ausloggen"), destroy_OZBPerson_session_path, :method => :delete, :style => "color: #ff4500;" %></li>
+        </ul>
+      </div><!-- /.nav-collapse -->
+    </div><!-- /container -->
+  </div><!-- /navbar-inner -->
+</div><!-- /navbar -->
+<% end %>
+<br /><br /><br />
+
+<div class="container">
+<%= yield %>
+</div> <!-- /container -->
+
+</body>
+</html>

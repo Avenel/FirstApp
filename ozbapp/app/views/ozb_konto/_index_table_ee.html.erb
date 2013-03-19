@@ -1,0 +1,84 @@
+<h3>EE-Konten</h3>
+
+<div style="overflow: auto; width: 940px">
+	<table class="table table-striped tablesorter konto-list-table">
+	  <thead>
+	  <tr>
+	  	<!-- NU -->
+	    <th class="header">EE-Konto</th>
+	    <th class="header">Letzte Kontobewegung</th>
+	    <th class="header">Währungssaldo</th>
+	    <th class="header">Punktesaldo</th>
+	    <th class="header">Einrichtungsdatum</th>
+	    <th class="header">Dispo-Limit</th>
+	    <th class="header">Konto-Nr.</th>
+	    <th class="header">BLZ</th>
+	    <th class="header">Kreditinstitut</th>
+	    <th style="text-align: center">Aktion</th>
+	    <!-- NU -->
+	  </tr>
+	  </thead>
+	  
+	  <tbody>
+	  <% if @ee_konten.count == 0 %>
+		<tr>
+		  <td colspan="6">Es sind noch keine EE-Konten vorhanden.</td>
+		</tr>
+	  <% end %>
+	 
+	  <% if @ee_konten.count > 0 %>
+		  <% @ee_konten.each do |ee_konto| %>
+		    <tr>
+				<td class="zentriert"><a href="/Darlehensverlauf/<%= ee_konto.KtoNr %>/EE"><%= ee_konto.KtoNr %></a></td>
+				<td class="zentriert"><%= ee_konto.ozb_konto.saldoDatum.strftime("%d.%m.%Y") %></td>
+				<td class="rechtsbuendig"><%= number_with_precision(ee_konto.ozb_konto.wSaldo, :precision => 2, :delimiter => ".") %></td>
+				<td class="rechtsbuendig"><%= number_with_precision(ee_konto.ozb_konto.pSaldo, :precision => 0, :delimiter => ".") %></td>
+				<td class="zentriert"><%= ee_konto.ozb_konto.ktoEinrDatum.strftime("%d.%m.%Y") %></td>
+				<td class="rechtsbuendig"><%= number_with_precision(ee_konto.kreditlimit, :precision => 2, :delimiter => ".") %></td>				
+				
+				<% bv = ee_konto.Bankverbindung %>
+				<% if !bv.nil?%>
+					<td><%= bv.BankKtoNr %></td>
+					<td class="zentriert"><%= bv.BLZ %></td>
+					<td><%= bv.Bank.nil? ? '-' : bv.Bank.BankName %></td>
+				<% else %>
+					<td></td>
+					<td class="zentriert"></td>
+					<td></td>
+				<% end %>
+
+				<td style="text-align: center">
+		          <div style="width: 200px">
+		          <% if is_allowed(current_OZBPerson, 12) %>
+		            <%= link_to "KKL-Verlauf", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/#{ee_konto.KtoNr.to_s}/KKLVerlauf", :class => "btn btn-mini btn-success" %>
+		          <% end %>
+		          
+		          <% if is_allowed(current_OZBPerson, 14) %>
+		            <%= link_to "Ändern", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/EE/#{ee_konto.KtoNr.to_s}/Aendern", :class => "btn btn-mini btn-warning" %>
+		          <% end %>
+
+      	          <% if is_allowed(current_OZBPerson, 14) %>
+		            <%= button_to "Löschen", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/EE/#{ee_konto.KtoNr.to_s}/Loeschen", :class => "btn btn-mini btn-danger", :confirm => "Möchten Sie das EE-Konto #{ee_konto.KtoNr} einschließlich aller zugehörigen ZE-Konten unwiderruflich löschen? Dieser Vorgang kann nicht mehr rückgängig gemacht werden." %>
+		          <% end %>
+		          </div>
+		        </td>
+			</tr>
+		  <% end %>
+		<% end %>
+	  </tbody>
+	</table>
+</div>
+
+<div class="form-actions">
+  <div class="row-fluid">
+    <div class="span6" align="left">
+      <a href="javascript:history.back(-1);" class="btn">Zurück</a>
+    </div>
+    
+    <div class="span6" align="right">
+      <% if is_allowed(current_OZBPerson, 13) %>
+        <%= link_to 'EE-Konto hinzufügen', "/Verwaltung/OZBPerson/" + params[:Mnr] +  "/Konten/EE/Neu", :class => "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

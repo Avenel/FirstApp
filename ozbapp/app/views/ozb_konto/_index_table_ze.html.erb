@@ -1,0 +1,86 @@
+<h3>ZE-Konten</h3>
+
+<div style="overflow: auto; width: 940px;">
+	<table class="table table-striped tablesorter konto-list-table">
+	  <thead>
+	  <tr>
+	  	<!-- NU -->
+	    <th data-ptcolumn="ktonr" class="header">ZE-Konto</th>
+	    <th class="header">ZE-Nr.</th>
+	    <th class="header">ZE-Betrag</th>
+		<th class="header">Rest-ZE</th>
+		<th class="header">Punktesaldo</th>
+		<th class="header">Letzte Kontenbewegung</th>
+	    <th class="header">Laufzeit Jahre</th>
+	    <th class="header">Modus</th>
+	    <th class="header">Tilgung</th>
+	    <th class="header">Sparen</th>
+	    <th class="header">RDU</th>
+	    <th class="header">KDU</th>
+	    <th class="header">kalkulierte Leihpunkte</th>
+	    <th class="header">tatsächliche Leihpunkte</th>
+	    <th style="text-align: center">Aktion</th>
+	    <!-- NU -->
+	  </tr>
+	  </thead>
+	  
+	  <tbody>
+	  <% if @ze_konten.count == 0 %>
+		<tr>
+		  <td colspan="8" class="record_listing_empty">Es sind noch keine ZE-Konten vorhanden.</td>
+		</tr>
+	  <% end %>
+	  
+	  <% if @ze_konten.count > 0 %>
+		  <% @ze_konten.each do |ze_konto| %>
+		      <tr>
+		        <td class="zentriert"><a href="/Darlehensverlauf/<%= ze_konto.KtoNr %>/ZE"><%= ze_konto.KtoNr %></a></td>
+		        <td class="zentriert"><%= ze_konto.zeNr %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.zeBetrag, :precision => 2, :delimiter => ".") %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.ozb_konto.wSaldo, :precision => 2, :delimiter => ".") %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.ozb_konto.pSaldo, :delimiter => ".", :precision => 0) %></td>
+		        <td class="zentriert"><%= (!ze_konto.ozb_konto.saldoDatum.nil?) ? ze_konto.ozb_konto.saldoDatum.strftime("%d.%m.%Y") : nil %></td>
+		        <td class="zentriert"><%= ze_konto.laufzeit %> Monate</td>
+		        <td class="zentriert"><%= ze_konto.zahlModus %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.tilgRate, :precision => 2, :delimiter => ".") %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.ansparRate, :precision => 2, :delimiter => ".") %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.kduRate, :precision => 2, :delimiter => ".") %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.rduRate, :precision => 2, :delimiter => ".") %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.Kalk_Leihpunkte, :precision => 0, :delimiter => ".") %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.Tats_Leihpunkte, :precision => 0, :delimiter => ".") %></td>
+		      
+		        <td style="text-align: center">
+		        	<div style="width: 200px">
+			          <% if is_allowed(current_OZBPerson, 12) %>
+			            <%= link_to "KKL-Verlauf", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/#{ze_konto.KtoNr.to_s}/KKLVerlauf", :class => "btn btn-mini btn-success" %>
+			          <% end %>
+			          
+			          <% if is_allowed(current_OZBPerson, 14) %>
+			            <%= link_to "Ändern", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/ZE/#{ze_konto.KtoNr.to_s}/Aendern", :class => "btn btn-mini btn-warning" %>
+			          <% end %>
+
+	      	          <% if is_allowed(current_OZBPerson, 14) %>
+			            <%= button_to "Löschen", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/ZE/#{ze_konto.KtoNr.to_s}/Loeschen", :class => "btn btn-mini btn-danger", :confirm => "Möchten Sie das EE-Konto #{ze_konto.KtoNr} einschließlich aller zugehörigen ZE-Konten unwiderruflich löschen? Dieser Vorgang kann nicht mehr rückgängig gemacht werden." %>
+	          		<% end %>
+			      	</div>
+			    </td>
+		    </tr>
+		  <% end %>
+	  <% end %>
+	  </tbody>
+	</table>
+</div>
+
+<div class="form-actions">
+  <div class="row-fluid">
+    <div class="span6" align="left">
+      <a href="javascript:history.back(-1);" class="btn">Zurück</a>
+    </div>
+    
+    <div class="span6" align="right">
+      <% if is_allowed(current_OZBPerson, 15) %>
+        <%= link_to 'ZE-Konto hinzufügen', "/Verwaltung/OZBPerson/"  + params[:Mnr] +  "/Konten/ZE/Neu", :class => "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

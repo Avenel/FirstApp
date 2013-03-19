@@ -1,0 +1,19 @@
+
+<div class="well form-horizontal">
+<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
+  <fieldset>
+    <legend>Passwort vergessen?</legend>
+	  <%= devise_error_messages! %>
+    <div class="control-group">
+	  <%= f.label :email, :class =>  "control-label" %>
+      <div class="controls">
+        <%= f.email_field :email, :class => "input-xlarge" %>
+      </div>
+      <br />
+      <div class="controls">
+	  <%= f.submit "Instruktionen anfordern", :class => "btn btn-primary" %>
+	  </div>
+    </div>   
+  </fieldset>
+<% end %>
+</div> 

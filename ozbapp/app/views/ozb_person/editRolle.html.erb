@@ -1,0 +1,282 @@
+<%= render 'navigation' %>
+
+<%= render :partial => '/application/flash_notifier' %>
+
+<%= form_tag({:action => "updateRolle"}, :class => "form-horizontal", :id=>"form_editRolle") do %>
+
+	<% if !@errors.nil? && @errors.any? %>
+    <div class="alert alert-error" id="error_explanation">
+	  <h3>Konnte keine Rolle aktuallisieren:</h3>	
+	  <ul>
+	    <% @errors.each do |error| %>
+		  <% error.full_messages.each do |msg| %>
+		    <li><%= msg %></li>
+		  <% end %>
+	    <% end %>
+	  </ul>
+    </div>
+  	<% end %>
+
+<div class="row-fluid" style="">
+ <div class="span8">
+  <h4>Rolle bearbeiten</h4>
+  <table class="table-hover" width="100%" cellpadding="10" cellspacing="">
+ <tr>
+  <th align="left" style="width: 180px;"><font color="red">*</font>Rolle:</th>
+  <td>
+  	<%= text_field_tag :rolle, @Rollen.fetch(@Person.Rolle), :disabled => true %>
+    <%= hidden_field_tag :rolle, @Rollen.fetch(@Person.Rolle) %>
+  	
+  </td>
+ </tr>
+
+<tbody id="Student">
+ <tr>
+  <th align="left"><font color="red">*</font>Ausbildungsbez.:</th>
+  <td><%= text_field_tag :ausbildBez, @Student.AusbildBez, :disabled => false, :class => "" %></td>
+ </tr>
+ <tr>
+  <th align="left"><font color="red">*</font>Institut:</th>
+  <td><%= text_field_tag :institutName, @Student.InstitutName %></td>
+ </tr>
+ <tr>
+  <th align="left"><font color="red">*</font>Studienort:</th>
+  <td><%= text_field_tag :studienort, @Student.Studienort %></td>
+ </tr>
+ <tr>
+  <th align="left"><font color="red">*</font>Studienbeginn:</th>
+  <td><%= text_field_tag :studienbeginn, @Student.Studienbeginn %></td>
+ </tr>
+ <tr>
+  <th align="left">Studienende:</th>
+  <td><%= text_field_tag :studienende, @Student.Studienende %></td>
+ </tr>
+ <tr>
+  <th align="left"><font color="red">*</font>Abschluss:</th>
+  <td><%= text_field_tag :abschluss, @Student.Abschluss %></td>
+ </tr> 
+</tbody>
+
+
+<tbody id="Gesellschafter">
+ <tr>
+  <th align="left"><font color="red">*</font>FA Steuernummer:</th>
+  <td><%= text_field_tag :faSteuerNr, @Gesellschafter.FASteuerNr %></td>
+ </tr>
+ <tr>
+  <th align="left">FA ID Nr.:</th>
+  <td><%= text_field_tag :faIdNr, @Gesellschafter.FAIdNr %></td>
+ </tr>
+ <tr>
+  <th align="left"><font color="red">*</font>FA Lfd. Nr.:</th>
+  <td><%= text_field_tag :faLfdNr, @Gesellschafter.FALfdNr %></td>
+ </tr>
+ <tr>
+  <th align="left"><font color="red">*</font>Wohnsitzfinanzamt</th>
+  <td><%= text_field_tag :wohnsitzFinanzamt, @Gesellschafter.Wohnsitzfinanzamt %></td>
+ </tr> 
+ <tr>
+  <th align="left">Notar (Mnr.):</th>
+    <td><%= text_field_tag :notarPnr, @Gesellschafter.NotarPnr %>
+  	<a class="" id="searchNotarFrame" data-toggle="modal" href="#searchPerson" >Suchen...</a></td>
+ </tr>
+ <tr>
+  <th align="left">Beurkundungsdatum:</th>
+  <td><%= text_field_tag :beurkDatum, (!@Gesellschafter.beurkDatum.nil?) ? @Gesellschafter.beurkDatum.strftime("%d.%m.%Y") : nil %></td>
+ </tr>
+</tbody> 
+
+
+<tbody id="Foerdermitglied">
+ <tr>
+  <th align="left"><font color="red">*</font>Region:</th>
+  <td><%= text_field_tag :region, @Foerdermitglied.Region %></td>
+ </tr> 
+ <tr>
+  <th align="left"><font color="red">*</font>Förderbeitrag:</th>
+  <td><%= text_field_tag :foerderbeitrag, @Foerdermitglied.Foerderbeitrag %></td>
+ </tr>
+</tbody>
+
+
+<tbody id="Mitglied">
+ <tr>
+  <th align="left"><font color="red">*</font>RV Datum:</th>
+  <td><%= text_field_tag :rvDatum, (!@Mitglied.RVDatum.nil?) ? @Mitglied.RVDatum.strftime("%d.%m.%Y") : nil %></td>
+ </tr>
+</tbody>
+
+<tbody id="Partner">
+ <tr>
+  <th align="left"><font color="red">*</font>Partner (Mnr.):</th>
+  <td>
+  	<%= text_field_tag :partner, @Partner.MnrO %>
+  	<a class="" id="searchPartnerFrame" data-toggle="modal" href="#searchPerson" >Suchen...</a>
+  </td>
+ </tr>
+ <tr>
+  <th align="left"><font color="red">*</font>Berechtigung:</th>
+  <td><%= text_field_tag :berechtigung, @Partner.Berechtigung %></td>
+ </tr>
+</tbody>
+
+</table>
+
+ </div>
+</div>
+
+
+
+<% end %>
+
+
+<font color="red">* Pflichtfelder</font>
+<div class="form-actions">
+ <div class="row-fluid">
+  <div class="span2" align="left">
+   <a href="" class="btn" onclick="history.back();">Zurück</a>
+  </div>
+  <div class="span10" align="right">
+   <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#form_editRolle').submit(); return false;", :class => "btn btn-primary", :notice => "Rolle erfolgreich aktualisiert" %>	
+  </div>		
+ </div>	
+</div>
+  	
+
+
+<div class="modal hide fade" id="searchPerson">
+ <div class="modal-header">
+  <button class="close" data-dismiss="modal">×</button>
+  <h3>Schnellsuche einer Person</h3>
+ </div>
+ <div class="modal-body">
+  <div class="alert alert-info">
+  	Die Mitglied-Nr. wird automatisch übernommen, sobald Sie einen Namen ausgewählt haben.
+  </div>		
+  <label>Name:</label>
+  <input type="text" id="suchFeld" class="span4" />
+ </div>
+ <div class="modal-footer">
+  <a href="#" class="btn" data-dismiss="modal">Schliessen</a>
+ </div>
+</div>
+
+
+
+<!-- jQuery Autocomplete -->
+<script>
+	
+	$(function() {			
+		var names = [	
+			<% @DistinctPersonen.each do |person| %>
+			{
+				value: "<%= person.Pnr.to_s %>",
+				label: "<%= person.Name.to_s + ', ' + person.Vorname.to_s + ' (' + person.Pnr.to_s + ')' %>"
+			},
+			<% end %>
+		];
+				
+		$( "#suchFeld" ).autocomplete({
+			minLength: 0,
+			source: names,			
+			select: function( event, ui ) {
+				$( "#suchFeld" ).val( ui.item.label );
+				$( "#partner" ).val( ui.item.value );
+				$( "#notarPnr" ).val( ui.item.value );
+				return false;
+			}
+		})
+		.data( "autocomplete" )._renderItem = function( ul, item ) {
+			return $( "<li></li>" )
+				.data( "item.autocomplete", item )
+				.append( "<a>" + item.label + "</a>" )
+				.appendTo( ul );
+		};
+	});
+	function clearAutocompleteFields(){
+		$( "#suchfeld" ).val( "" );
+		$( "#partner" ).val( "" );
+		$( "#notarPnr" ).val( "" );
+	}
+</script>
+<script>
+	$(function() {
+		$( "#studienbeginn" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+ 	});
+	$(function() {
+		$( "#studienende" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+	});
+	$(function() {
+		$( "#beurkDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+	});
+	$(function() {
+		$( "#antragsdatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+ 		});
+	});
+	$(function() {
+		$( "#aufnahmedatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+		});
+	});
+	$(function() {
+		$( "#austrittsdatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+		});
+	});
+	$(function() {
+		$( "#rvDatum" ).datepicker({
+			dateFormat: 'dd.mm.yy',
+	        changeMonth: true,
+	        changeYear: true		
+		});
+	});		
+	
+	function switch_role()
+	{
+		$("tbody#Foerdermitglied").hide();
+	    $("tbody#Student").hide();
+    	$("tbody#Mitglied").hide();
+    	$("tbody#Partner").hide();
+    	$("tbody#Gesellschafter").hide();
+	    var role = $('#rolle').val();
+	    switch (role) {
+		    case "Fördermitglied":
+		    	$("tbody#Foerdermitglied").show();
+		    	break;
+		    case "Student":
+		    	$("tbody#Student").show();
+		    	break;
+		    case "Gesellschafter":
+		    	$("tbody#Gesellschafter").show();
+		    	break;
+		    case "Partner":
+		    	$("tbody#Partner").show();
+		    	break;
+		    case "Mitglied":
+		    	$("tbody#Mitglied").show();
+		    	break;
+		    default:
+		}		
+	}
+	switch_role();
+</script>
+
