@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.3.19)  20 MAR 2013 10:09
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.3.19)  20 MAR 2013 10:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -714,14 +714,14 @@ e
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(99.58464pt, 455.24411pt, 42.67912pt)
+* h-part:(L,W,R)=(56.9055pt, 483.69687pt, 56.9055pt)
 * v-part:(T,H,B)=(71.13188pt, 672.50832pt, 101.40665pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
-* \textwidth=455.24411pt
+* \textwidth=483.69687pt
 * \textheight=672.50832pt
-* \oddsidemargin=27.31465pt
-* \evensidemargin=27.31465pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
 * \topmargin=-41.0131pt
 * \headheight=18.125pt
 * \headsep=21.75pt
@@ -767,11 +767,11 @@ File: "Media/hskalogo".jpg Graphic file (type jpg)
 
 <use "Media/hskalogo".jpg>
 Package pdftex.def Info: "Media/hskalogo".jpg used on input line 50.
-(pdftex.def)             Requested size: 318.66948pt x 110.22482pt.
+(pdftex.def)             Requested size: 338.58632pt x 117.11406pt.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Media/hskalogo.jpg>]
-LaTeX Font Info:    Try loading font information for T1+lmss on input line 82.
+LaTeX Font Info:    Try loading font information for T1+lmss on input line 83.
  (/usr/share/texmf/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -826,7 +826,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.98 \clearpage
+l.99 \clearpage
                 [1
 
 
@@ -879,7 +879,7 @@ Class scrbook Warning: Usage of deprecated \float@listhead!
 (scrbook)              instead of \float@listhead.
 (scrbook)              Definition of \float@listhead my be removed from
 (scrbook)              `scrbook' soon, so it should not be used  on input line 
-125.
+126.
 
 (./Documentation.lol)
 \tf@lol=\write7
@@ -890,27 +890,27 @@ Class scrbook Warning: Usage of deprecated \float@listhead!
 
 ]
 No file Documentation.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 131.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 131.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 132.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 132.
 (./Documentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 131.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 131.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 132.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 132.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
 (rerunfilecheck)             Checksum: 504C6A390965D6CA83C1D4B1F58F270B;552.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 131.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 132.
  ) 
 Here is how much of TeX's memory you used:
- 9403 strings out of 495059
- 139469 string characters out of 3182030
- 255612 words of memory out of 3000000
- 12411 multiletter control sequences out of 15000+200000
- 38402 words of font info for 34 fonts, out of 3000000 for 9000
+ 9405 strings out of 495059
+ 139502 string characters out of 3182030
+ 255616 words of memory out of 3000000
+ 12413 multiletter control sequences out of 15000+200000
+ 43992 words of font info for 36 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  38i,6n,49p,279b,367s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/
 public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/s
 hare/texmf/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on Documentation.pdf (12 pages, 533167 bytes).
+Output written on Documentation.pdf (12 pages, 534045 bytes).
 PDF statistics:
  137 PDF objects out of 1000 (max. 8388607)
  117 compressed objects within 2 object streams
