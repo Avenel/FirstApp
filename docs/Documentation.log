@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.3.19)  20 MAR 2013 10:38
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.3.19)  20 MAR 2013 11:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -762,7 +762,7 @@ LaTeX Info: Redefining \nameref on input line 43.
 
 LaTeX Info: Redefining \Ref on input line 43.
 
-<"Media/hskalogo".jpg, id=48, 569.0058pt x 196.8153pt>
+<"Media/hskalogo".jpg, id=64, 569.0058pt x 196.8153pt>
 File: "Media/hskalogo".jpg Graphic file (type jpg)
 
 <use "Media/hskalogo".jpg>
@@ -776,31 +776,31 @@ LaTeX Font Info:    Try loading font information for T1+lmss on input line 83.
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 (./Documentation.toc
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 7.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 3.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 7.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 3.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 7.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 3.
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 7.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 3.
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 7.
+(Font)              <12> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 7.
+(Font)              <8> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 7.
+(Font)              <6> on input line 3.
 )
 \tf@toc=\write4
 \openout4 = `Documentation.toc'.
@@ -826,8 +826,8 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.99 \clearpage
-                [1
+l.103 \clearpage
+                 [1
 
 
 ]
@@ -836,40 +836,44 @@ Kapitel 2.
 
 
 
+] [3
+
 ]
 Kapitel 3.
-[3
-
-
-
-]
-Kapitel 4.
 [4
 
 
 
 ]
-Kapitel 5.
+Kapitel 4.
 [5
+
+
+
+]
+Kapitel 5.
+[6
+
 
 
 ]
 Kapitel 6.
-[6
+[7
+
 
 
 ] (./Documentation.lof)
 \tf@lof=\write5
 \openout5 = `Documentation.lof'.
 
- [7
+ [8
 
 
 ] (./Documentation.lot)
 \tf@lot=\write6
 \openout6 = `Documentation.lot'.
 
- [8
+ [9
 
 
 ]
@@ -879,41 +883,48 @@ Class scrbook Warning: Usage of deprecated \float@listhead!
 (scrbook)              instead of \float@listhead.
 (scrbook)              Definition of \float@listhead my be removed from
 (scrbook)              `scrbook' soon, so it should not be used  on input line 
-126.
+151.
 
 (./Documentation.lol)
 \tf@lol=\write7
 \openout7 = `Documentation.lol'.
 
- [9
+ [10
 
 
 ]
 No file Documentation.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 132.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 132.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 157.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 157.
 (./Documentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 132.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 132.
-Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: 504C6A390965D6CA83C1D4B1F58F270B;552.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 132.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 157.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 157.
+
+
+Package rerunfilecheck Warning: File `Documentation.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Documentation.out':
+(rerunfilecheck)             Before: 1F603F7D40C61E3A5F12F0C25328D08E;807
+(rerunfilecheck)             After:  1CA765E6FEF8125CE61CBAA046316BF0;921.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 157.
  ) 
 Here is how much of TeX's memory you used:
- 9405 strings out of 495059
- 139502 string characters out of 3182030
- 255616 words of memory out of 3000000
- 12413 multiletter control sequences out of 15000+200000
- 43992 words of font info for 36 fonts, out of 3000000 for 9000
+ 9423 strings out of 495059
+ 139719 string characters out of 3182030
+ 256616 words of memory out of 3000000
+ 12419 multiletter control sequences out of 15000+200000
+ 46760 words of font info for 37 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  38i,6n,49p,279b,367s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/
 public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/s
 hare/texmf/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on Documentation.pdf (12 pages, 534045 bytes).
+Output written on Documentation.pdf (13 pages, 538497 bytes).
 PDF statistics:
- 137 PDF objects out of 1000 (max. 8388607)
- 117 compressed objects within 2 object streams
- 26 named destinations out of 1000 (max. 500000)
- 94 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 173 PDF objects out of 1000 (max. 8388607)
+ 152 compressed objects within 2 object streams
+ 38 named destinations out of 1000 (max. 500000)
+ 126 words of extra memory for PDF output out of 10000 (max. 10000000)
 
