@@ -1,0 +1,132 @@
+\documentclass[12pt,             % Schriftgroesse
+               a4paper,          % Papierformat
+               %liststotoc,      % (alt) Tabellen- und Abbildungsverzeichnis im Inhaltsverz.
+               listof=totoc,     % Tabellen- und Abbildungsverzeichnis im Inhaltsverz.
+               %idxtotoc,        % (alt) Index im Inhaltsverz. auffuehren
+               index=totoc,      % Index im Inhaltsverz. auffuehren
+               %bibtotoc,        % (alt) Literaturverzeichnis im Inhaltsverz. auffuehren
+               bibliography=totoc,% Literaturverzeichnis im Inhaltsverz. auffuehren
+               oneside,         % auskommentieren, wenn beidseitig gedruckt wird
+                                 % default ist 'twoside'
+               BCOR1cm,          % zusaetzlicher Bindungsrand
+               english   %  Englisch als weitere Sprache, Deutsch als Hauptsprache
+               ]{scrbook}
+
+\usepackage[utf8]{inputenc}  
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}         
+%\usepackage{eurosym}  
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage[left=35mm, right=15mm, top=25mm]{geometry}
+\usepackage{listings} \lstset{numbers=left, numberstyle=\tiny, numbersep=5pt, basicstyle =\footnotesize} 
+\lstset{language=[sharp]C}
+\usepackage{url}
+\setlength\parindent{0pt} 
+\usepackage{float}
+
+\usepackage{hyperref}
+\linespread{1.3}
+\usepackage{multicol}
+\usepackage[german]{varioref}
+
+\bibliographystyle{alphadin}
+
+\setcounter{tocdepth}{1}
+
+\usepackage[]{acronym}
+
+\title{Testdriven Development am Beispiel der ozb Webapplikation}
+\author{Martin Briewig, Michael Leibel}
+
+
+\begin{document}
+
+\pagestyle{empty}
+\begin{center}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.70\textwidth]{\string"Media/hskalogo\string".jpg}
+	\end{center}
+	\label{fig:hska_logo}
+\end{figure} 
+
+\vspace{5\baselineskip}
+
+\textsc{\LARGE Testdriven Development\\am Beispiel der o/zb Webapplikation}\\[2.0cm]
+
+
+\vspace{2\baselineskip}
+
+\textsc{\LARGE Projektarbeit}\\[1.5cm]
+
+
+\vspace{5\baselineskip}
+
+vorgelegt von\\
+Briewig, Martin, B.Sc.\\
+Leibel, Michael, B.Sc.
+
+\vspace{\baselineskip}
+
+Betreuer: Professor Dr. Frank Schaefer
+
+Fachbereich: Informatik (Master)
+\end{center}
+
+\clearpage{}
+
+\pagenumbering{roman} 
+
+\tableofcontents{}
+
+\clearpage{}
+
+%\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
+\chapter*{Abkürzungsverzeichnis}
+
+\begin{acronym}[SQL]
+	\acro{AP}{Arbeitspaket}
+\end{acronym}
+
+\newpage
+
+\pagenumbering{arabic} 
+\chapter{Einleitung}
+
+\clearpage
+\chapter{Hintergrundwissen}
+
+\clearpage
+\chapter{Analyse}
+
+\clearpage
+\chapter{Implementierung}
+
+\chapter{Ergebnis und Ausblick}
+
+\section{Ergebnis}
+
+\section{Ausblick}
+
+\chapter{Anhang}
+
+\newpage
+%\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+\listoffigures
+
+\newpage
+%\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+\listoftables
+
+\newpage
+%\addcontentsline{toc}{chapter}{Listingsverzeichnis}
+\lstlistoflistings
+
+\newpage
+%\addcontentsline{toc}{chapter}{Literatur}
+\bibliography{sources}
+
+\end{document}
+
