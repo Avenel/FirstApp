@@ -1,0 +1,2 @@
+Belegdatum;Buchungsdatum;Belegnummernkreis;Belegnummer;Buchungstext;Buchungsbetrag Euro;Sollkonto;Habenkonto
+18.03.2013;08.04.2013;B-;1118;0013 Kienle Tassilo Einlage;100,00;1200;70013

@@ -27,7 +27,7 @@ class WebimportController < ApplicationController
       # $buchungsdatum, $wertstellungsdatum, $belegnummernkreis, $belegnummer, $buchungstext, $betrag, $sollkontonummer, $habenkontonummer
       
       # delete CSV-File
-      require 'FileUtils'
+      require 'fileutils'
       FileUtils.rm(uploaded_disk)
       
       # sort rows by ...
@@ -378,10 +378,12 @@ class WebimportController < ApplicationController
       end
       
       # berechnen der Saldo und Punktesaldo für Konten
-      if (collect_konten.size == 0)
+      if (collect_konten.size == 0 )
         @error = "Keine der zu importierenden Konten in der Datenbank eingetragen"
       else
-        collect_konten.uniq!.each do |ktoNr|
+        puts collect_konten.inspect
+        puts collect_konten.uniq.inspect
+        collect_konten.uniq.each do |ktoNr|
           b = Buchung.find(
             :all, 
             :conditions => { :KtoNr => ktoNr }, 
