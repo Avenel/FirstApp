@@ -3,7 +3,7 @@ set :application, "ozbapp"
 server "188.64.45.50", :web, :app, :db, :primary => true
 
 set :scm, "git"
-set :repository, "https://github.com/Avenel/FirstApp.git"
+set :repository, "git://github.com/Avenel/FirstApp.git"
 set :branch, "master"
 
 set :user, "ozbapp"

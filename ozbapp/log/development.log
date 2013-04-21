@@ -15930,3 +15930,94 @@ Served asset /willkommen.js - 304 Not Modified (0ms)
 
 Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-04-21 17:45:26 +0100
 Served asset /application.js - 304 Not Modified (3ms)
+
+
+Started GET "/MeineKonten" for 127.0.0.1 at 2013-04-21 18:23:45 +0100
+Processing by WillkommenController#index as HTML
+  [1m[36mOZBPerson Load (0.0ms)[0m  [1mSELECT `ozbperson`.* FROM `ozbperson` WHERE `ozbperson`.`Mnr` = 13 LIMIT 1[0m
+DEPRECATION WARNING: Calling set_primary_keys is deprecated. Please use `self.primary_keys = keys` instead. (called from <class:Person> at D:/Projects/FirstApp/ozbapp/app/models/person.rb:7)
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE (Pnr = 13) ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mOzbKonto Load (0.0ms)[0m  [1mSELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`Mnr` = 13 AND `ozbkonto`.`GueltigBis` = '9999-12-31 23:59:59' ORDER BY KtoNr ASC[0m
+  [1m[35mEeKonto Load (1.0ms)[0m  SELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 10013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mEeKonto Load (1.0ms)[0m  [1mSELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 20013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mEeKonto Load (1.0ms)[0m  SELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 30013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mEeKonto Load (1.0ms)[0m  [1mSELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 50013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mEeKonto Load (0.0ms)[0m  SELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 60013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mEeKonto Load (0.0ms)[0m  [1mSELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 70013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`Mnr` = 13 AND `ozbkonto`.`GueltigBis` = '9999-12-31 23:59:59' ORDER BY KtoNr ASC
+  [1m[36mZeKonto Load (1.0ms)[0m  [1mSELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 10013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mZeKonto Load (0.0ms)[0m  SELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 20013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mZeKonto Load (0.0ms)[0m  [1mSELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 30013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mZeKonto Load (1.0ms)[0m  SELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 50013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mZeKonto Load (0.0ms)[0m  [1mSELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 60013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mZeKonto Load (0.0ms)[0m  SELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 70013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+DEPRECATION WARNING: Calling set_primary_key is deprecated. Please use `self.primary_key = 'the_name'` instead. (called from <class:Sonderberechtigung> at D:/Projects/FirstApp/ozbapp/app/models/sonderberechtigung.rb:19)
+  [1m[36m (0.0ms)[0m  [1mSELECT COUNT(*) FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13[0m
+  [1m[35mOzbKonto Load (0.0ms)[0m  SELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`KtoNr` = 50013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT COUNT(*) FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13[0m
+  [1m[35mBankverbindung Load (0.0ms)[0m  SELECT `bankverbindung`.* FROM `bankverbindung` WHERE `bankverbindung`.`ID` = 9 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mBank Load (0.0ms)[0m  [1mSELECT `bank`.* FROM `bank` WHERE `bank`.`BLZ` = 12030000 LIMIT 1[0m
+  [1m[35mOzbKonto Load (1.0ms)[0m  SELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`KtoNr` = 60013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT COUNT(*) FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT `bankverbindung`.* FROM `bankverbindung` WHERE `bankverbindung`.`ID` = 9 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT `bank`.* FROM `bank` WHERE `bank`.`BLZ` = 12030000 LIMIT 1[0m
+  [1m[35mOzbKonto Load (0.0ms)[0m  SELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`KtoNr` = 70013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT COUNT(*) FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT `bankverbindung`.* FROM `bankverbindung` WHERE `bankverbindung`.`ID` = 9 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT `bank`.* FROM `bank` WHERE `bank`.`BLZ` = 12030000 LIMIT 1[0m
+  Rendered willkommen/_index_table_ee.html.erb (93.0ms)
+  [1m[35mOzbKonto Load (0.0ms)[0m  SELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`KtoNr` = 10013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mOzbKonto Load (1.0ms)[0m  [1mSELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`KtoNr` = 20013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mOzbKonto Load (0.0ms)[0m  SELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`KtoNr` = 30013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  Rendered willkommen/_index_table_ze.html.erb (9.0ms)
+  Rendered willkommen/index.html.erb within layouts/application (131.0ms)
+DEPRECATION WARNING: Calling set_table_name is deprecated. Please use `self.table_name = 'the_name'` instead. (called from <class:Geschaeftsprozess> at D:/Projects/FirstApp/ozbapp/app/models/geschaeftsprozess.rb:2)
+DEPRECATION WARNING: Calling set_primary_key is deprecated. Please use `self.primary_key = 'the_name'` instead. (called from <class:Geschaeftsprozess> at D:/Projects/FirstApp/ozbapp/app/models/geschaeftsprozess.rb:3)
+  [1m[36mGeschaeftsprozess Load (1.0ms)[0m  [1mSELECT `geschaeftsprozess`.* FROM `geschaeftsprozess` WHERE `geschaeftsprozess`.`ID` = 20 LIMIT 1[0m
+  [1m[35mSonderberechtigung Load (0.0ms)[0m  SELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13 AND `sonderberechtigung`.`Berechtigung` = 'IT' LIMIT 1
+  [1m[36mSonderberechtigung Load (0.0ms)[0m  [1mSELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13[0m
+Completed 200 OK in 442ms (Views: 227.0ms | ActiveRecord: 34.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /application.css - 304 Not Modified (13ms)
+
+
+Started GET "/assets/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /bootstrap.min.css - 304 Not Modified (18ms)
+
+
+Started GET "/assets/willkommen.css?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /willkommen.css - 304 Not Modified (2ms)
+
+
+Started GET "/assets/bootstrap-responsive.min.css?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /bootstrap-responsive.min.css - 304 Not Modified (2ms)
+
+
+Started GET "/assets/jquery-ui-1.9.1.custom.min.css?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /jquery-ui-1.9.1.custom.min.css - 304 Not Modified (17ms)
+
+
+Started GET "/assets/tablesorter.css?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /tablesorter.css - 304 Not Modified (3ms)
+
+
+Started GET "/assets/willkommen.js?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /willkommen.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /application.js - 304 Not Modified (33ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /jquery.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /jquery_ujs.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/jquery-ui.js?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
+Served asset /jquery-ui.js - 304 Not Modified (22ms)
