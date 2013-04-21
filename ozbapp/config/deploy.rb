@@ -14,8 +14,8 @@ set :deploy_via, :remote_cache
 set :use_sudo, false
 
 set :scm, "mercurial"
-set :repository, "ssh://nazz@5.9.94.144/ozbapp"
-set :scm_password, "this is nice."
+set :repository, "ssh://***"
+set :scm_password, "***"
 #set :branch, "master"
 
 default_run_options[:pty] = true
