@@ -17,7 +17,7 @@ namespace :deploy do
 
   desc "Tell Passenger to restart the app."
   task :restart do
-    run "touch #{current_path}/tmp/restart.txt"
+    run "touch #{current_path}/ozbapp/tmp/restart.txt"
   end
 
   desc "Renew SymLink"
