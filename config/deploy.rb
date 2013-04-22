@@ -20,4 +20,12 @@ namespace :deploy do
     run "touch #{current_path}/tmp/restart.txt"
   end
 
+  desc "Renew SymLink"
+  task :renew_symlink do
+  	run "rm -rf /home/ozbapp/ozbapp"
+  	run "ln -s /home/ozbapp/apps/ozbapp/current/ozbapp /home/ozbapp/ozbapp"
+  end
+
 end
+
+after 'deploy:update_code', 'deploy:renew_symlink'
