@@ -16021,3 +16021,77 @@ Served asset /jquery_ujs.js - 304 Not Modified (3ms)
 
 Started GET "/assets/jquery-ui.js?body=1" for 127.0.0.1 at 2013-04-21 18:23:46 +0100
 Served asset /jquery-ui.js - 304 Not Modified (22ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-04-23 11:52:38 +0200
+Processing by WillkommenController#index as HTML
+Completed   in 1ms
+
+
+Started GET "/OZBPerson/Anmeldung" for 127.0.0.1 at 2013-04-23 11:52:38 +0200
+Processing by Devise::SessionsController#new as HTML
+  Rendered devise/shared/_links.erb (1.1ms)
+  Rendered devise/sessions/new.html.erb within layouts/application (29.4ms)
+Compiled application.js  (114ms)  (pid 3129)
+Completed 200 OK in 364ms (Views: 339.0ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /application.css - 200 OK (5ms)
+
+
+Started GET "/assets/bootstrap-responsive.min.css?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /bootstrap-responsive.min.css - 200 OK (1ms)
+
+
+Started GET "/assets/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /bootstrap.min.css - 200 OK (1ms)
+
+
+Started GET "/assets/jquery-ui-1.9.1.custom.min.css?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /jquery-ui-1.9.1.custom.min.css - 200 OK (1ms)
+
+
+Started GET "/assets/tablesorter.css?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /tablesorter.css - 200 OK (1ms)
+
+
+Started GET "/assets/willkommen.css?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /willkommen.css - 200 OK (1ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /jquery.js - 200 OK (9ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /jquery_ujs.js - 200 OK (8ms)
+
+
+Started GET "/assets/jquery-ui.js?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /jquery-ui.js - 200 OK (4ms)
+
+
+Started GET "/assets/jquery.fixedtable.js?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /jquery.fixedtable.js - 200 OK (5ms)
+
+
+Started GET "/assets/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /bootstrap.min.js - 200 OK (1ms)
+
+
+Started GET "/assets/jquery.tablesorter.min.js?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /jquery.tablesorter.min.js - 200 OK (2ms)
+
+
+Started GET "/assets/willkommen.js?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /willkommen.js - 200 OK (1ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-04-23 11:52:39 +0200
+Served asset /application.js - 200 OK (13ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-04-23 14:30:30 +0200
+Processing by WillkommenController#index as HTML
+Completed   in 1ms

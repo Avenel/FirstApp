@@ -1,7 +1,8 @@
 #################
 ## OZB App Specific
 #################
-ozbapp/tmp/*
+ozbapp/tmp/**
+ozbapp/log/*
 
 #################
 ## Eclipse
