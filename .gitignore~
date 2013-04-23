@@ -3,7 +3,6 @@
 #################
 ozbapp/tmp/**
 ozbapp/log/*
-config/deploy (proxy).rb
 
 #################
 ## Eclipse

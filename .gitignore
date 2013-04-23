@@ -3,6 +3,7 @@
 #################
 ozbapp/tmp/**
 ozbapp/log/*
+config/deploy.rb
 
 #################
 ## Eclipse
