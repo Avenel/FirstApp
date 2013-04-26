@@ -1,9 +1,13 @@
 #################
 ## OZB App Specific
 #################
-ozbapp/tmp/**
-ozbapp/log/*
+ozbapp/tmp/
+ozbapp/log/
 config/deploy.rb
+ozbapp/log/development.log
+ozbapp/log/production.log
+
+
 
 #################
 ## Eclipse
