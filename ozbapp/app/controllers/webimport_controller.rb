@@ -112,14 +112,12 @@ class WebimportController < ApplicationController
                   
                   begin 
                     b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
                   rescue Exception => e
-                    @error = "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
                   end
-                                    
-                  collect_konten << kontonummer
-                  imported_records += 1
-
                   next
                 end
                 
@@ -161,20 +159,21 @@ class WebimportController < ApplicationController
                   
                   begin 
                     b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
                   rescue Exception => e
-                    @error = "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
                   end
                   
-                  collect_konten << kontonummer
-                  imported_records += 1
+                  
 
                   next
                 end
                 
                 # Punkteüberweisung-Buchung
                 if (habenkontonummer[0] == "8" && sollkontonummer[0] == "8" && sollkontonummer != 88888 && habenkontonummer != 88888)
-                  # Eine Punkteüberweisung-Buchung.Buchung wird in DB eingetragen.
+                  # Eine Punkteüberweisung-Buchung. Buchung wird in DB eingetragen.
                   
                   # Erste Buchung
                   temp         = buchungstext.split(" ")
@@ -204,13 +203,12 @@ class WebimportController < ApplicationController
                   
                   begin 
                     b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
                   rescue Exception => e
-                    @error = "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
                   end
-                  
-                  collect_konten << kontonummer
-                  imported_records += 1
                   
                   # Zweite Buchung
                   
@@ -238,14 +236,14 @@ class WebimportController < ApplicationController
                   
                   begin 
                     b.save
+                    collect_konten << kontonummer
+                    # Nur 1x zählen!
+                    # imported_records += 1
                   rescue Exception => e
-                    @error = "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
                   end
                   
-                  collect_konten << kontonummer
-                  imported_records += 1
-
                   next
                 end
                 
@@ -279,13 +277,14 @@ class WebimportController < ApplicationController
                   
                   begin 
                     b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
                   rescue Exception => e
-                    @error = "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
                   end
                   
-                  collect_konten << kontonummer
-                  imported_records += 1
+                  
                   
                   # Zweite Buchung
                   kontonummer = habenkontonummer
@@ -313,13 +312,14 @@ class WebimportController < ApplicationController
                   
                   begin 
                     b.save
+                    collect_konten << kontonummer
+                    # Nur 1x zählen!
+                    #imported_records += 1
                   rescue Exception => e
-                    @error = "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
                   end
-                  
-                  collect_konten << kontonummer
-                  imported_records += 1
+
                   next
                 end
               # Gewöhnliche Buchung oder Storno-Buchung
@@ -370,13 +370,13 @@ class WebimportController < ApplicationController
 
                   begin 
                     b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
                   rescue Exception => e
-                    @error = "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
                   end
-                  
-                  collect_konten << kontonummer
-                  imported_records += 1
+                
                   next
                 elsif (s == 5)
                   kontonummer = sollkontonummer
@@ -402,13 +402,13 @@ class WebimportController < ApplicationController
 
                   begin 
                     b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
                   rescue Exception => e
-                    @error = "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
                   end
                   
-                  collect_konten << kontonummer
-                  imported_records += 1
                   next
                 end
               end
@@ -421,7 +421,7 @@ class WebimportController < ApplicationController
       
       # berechnen der Saldo und Punktesaldo für Konten
       if (collect_konten.size == 0 )
-        @error = "Keine der zu importierenden Konten in der Datenbank eingetragen"
+        @error += "Keine der zu importierenden Konten in der Datenbank eingetragen"
       else
         puts collect_konten.inspect
         puts collect_konten.uniq.inspect
@@ -465,8 +465,8 @@ class WebimportController < ApplicationController
                 begin
                    bu.save
                 rescue Exception => e
-                   @error = "Etwas ist schiefgelaufen.<br /><br />"
-                   @error += e.message
+                   @error += "Etwas ist schiefgelaufen.<br /><br />"
+                   @error += e.message + "<br /><br />"
                 end
                 
               end
@@ -493,8 +493,8 @@ class WebimportController < ApplicationController
                 begin
                    bu.save
                 rescue Exception => e
-                   @error = "Etwas ist schiefgelaufen.<br /><br />"
-                   @error += e.message
+                   @error += "Etwas ist schiefgelaufen.<br /><br />"
+                   @error += e.message + "<br /><br />"
                 end
             end
           end
@@ -510,8 +510,8 @@ class WebimportController < ApplicationController
             begin
               konto.save
             rescue Exception => e
-               @error = "Etwas ist schiefgelaufen.<br /><br />"
-               @error += e.message
+               @error += "Etwas ist schiefgelaufen.<br /><br />"
+               @error += e.message + "<br /><br />"
             end
           end
 
