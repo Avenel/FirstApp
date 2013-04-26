@@ -10,7 +10,7 @@ class WebimportController < ApplicationController
   
   def csvimport_buchungen
     if !params[:webimport].nil? && !params[:webimport][:file].nil?
-      # save CSV-File
+      # CSV-File
       uploaded_io = params[:webimport][:file]
       
       uploaded_disk = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
@@ -110,8 +110,12 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
-                  
+                  begin
+                    b.save
+                  rescue
+                    @error = "Etwas ist schiefgelaufen."
+                  end
+                                    
                   collect_konten << kontonummer
                   imported_records += 1
 
@@ -154,7 +158,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
+                  begin
+                    b.save
+                  rescue
+                    @error = "Etwas ist schiefgelaufen."
+                  end
                   
                   collect_konten << kontonummer
                   imported_records += 1
@@ -192,7 +200,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
+                  begin
+                    b.save
+                  rescue
+                    @error = "Etwas ist schiefgelaufen."
+                  end
                   
                   collect_konten << kontonummer
                   imported_records += 1
@@ -221,7 +233,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
+                  begin
+                    b.save
+                  rescue
+                    @error = "Etwas ist schiefgelaufen."
+                  end
                   
                   collect_konten << kontonummer
                   imported_records += 1
@@ -257,7 +273,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
+                  begin
+                    b.save
+                  rescue
+                    @error = "Etwas ist schiefgelaufen."
+                  end
                   
                   collect_konten << kontonummer
                   imported_records += 1
@@ -286,7 +306,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
+                  begin
+                    b.save
+                  rescue
+                    @error = "Etwas ist schiefgelaufen."
+                  end
                   
                   collect_konten << kontonummer
                   imported_records += 1
@@ -336,8 +360,12 @@ class WebimportController < ApplicationController
                     :WSaldoAcc    => 0.0,
                     :Punkte       => nil,
                     :PSaldoAcc    => 0
-                  )
-                  b.save
+                  
+                  begin)
+                    b.save
+                  rescue
+                    @error = "Etwas ist schiefgelaufen."
+                  end
                   
                   collect_konten << kontonummer
                   imported_records += 1
@@ -362,8 +390,12 @@ class WebimportController < ApplicationController
                     :WSaldoAcc    => 0.0,
                     :Punkte       => nil,
                     :PSaldoAcc    => 0
-                  )
-                  b.save
+                  
+                  begin)
+                    b.save
+                  rescue
+                    @error = "Etwas ist schiefgelaufen."
+                  end
                   
                   collect_konten << kontonummer
                   imported_records += 1
@@ -420,7 +452,11 @@ class WebimportController < ApplicationController
                 bu.PSaldoAcc = pkte_acc
                 bu.Punkte    = end_pkte_acc
 
-                bu.save
+                begin
+                  bu.save
+                rescue
+                  @error = "Etwas ist schiefgelaufen."
+                end
               end
 
               first_time      = second_time
@@ -442,7 +478,11 @@ class WebimportController < ApplicationController
                 bu.PSaldoAcc = 0.00
                 bu.Punkte    = end_pkte_acc
 
-                bu.save
+                begin
+                  bu.save
+                rescue
+                  @error = "Etwas ist schiefgelaufen."
+                end
               end
               
             end
@@ -456,7 +496,11 @@ class WebimportController < ApplicationController
             konto.PSaldo     = end_pkte_acc
             konto.SaldoDatum = last_saldo_data 
 
-            konto.save
+            begin
+              konto.save
+            rescue
+              @error = "Etwas ist schiefgelaufen."
+            end
           end
         end
       end

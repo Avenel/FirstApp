@@ -16095,3 +16095,195 @@ Served asset /application.js - 200 OK (13ms)
 Started GET "/" for 127.0.0.1 at 2013-04-23 14:30:30 +0200
 Processing by WillkommenController#index as HTML
 Completed   in 1ms
+
+
+Started GET "/" for 127.0.0.1 at 2013-04-26 16:01:20 +0100
+Processing by WillkommenController#index as HTML
+Completed   in 1ms
+
+
+Started GET "/OZBPerson/Anmeldung" for 127.0.0.1 at 2013-04-26 16:01:20 +0100
+Processing by Devise::SessionsController#new as HTML
+  Rendered devise/shared/_links.erb (1.0ms)
+  Rendered devise/sessions/new.html.erb within layouts/application (18.0ms)
+Compiled application.js  (60ms)  (pid 1752)
+Completed 200 OK in 251ms (Views: 229.0ms | ActiveRecord: 5.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /application.css - 200 OK (10ms)
+
+
+Started GET "/assets/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /bootstrap.min.css - 200 OK (25ms)
+
+
+Started GET "/assets/bootstrap-responsive.min.css?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /bootstrap-responsive.min.css - 200 OK (7ms)
+
+
+Started GET "/assets/jquery-ui-1.9.1.custom.min.css?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /jquery-ui-1.9.1.custom.min.css - 200 OK (2ms)
+
+
+Started GET "/assets/tablesorter.css?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /tablesorter.css - 200 OK (3ms)
+
+
+Started GET "/assets/willkommen.css?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /willkommen.css - 200 OK (2ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /jquery.js - 200 OK (5ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /jquery_ujs.js - 200 OK (6ms)
+
+
+Started GET "/assets/jquery-ui.js?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /jquery-ui.js - 200 OK (6ms)
+
+
+Started GET "/assets/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /bootstrap.min.js - 200 OK (2ms)
+
+
+Started GET "/assets/jquery.fixedtable.js?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /jquery.fixedtable.js - 200 OK (3ms)
+
+
+Started GET "/assets/willkommen.js?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /willkommen.js - 200 OK (2ms)
+
+
+Started GET "/assets/jquery.tablesorter.min.js?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /jquery.tablesorter.min.js - 200 OK (1ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-04-26 16:01:21 +0100
+Served asset /application.js - 200 OK (32ms)
+
+
+Started POST "/OZBPerson/Anmeldung" for 127.0.0.1 at 2013-04-26 16:01:23 +0100
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"0z6CE9Yfp4k0FTnFUBIG1JDs93ptWLZnz3GM92yB3+w=", "OZBPerson"=>{"Mnr"=>"13", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Einloggen"}
+  [1m[36mOZBPerson Load (1.0ms)[0m  [1mSELECT `ozbperson`.* FROM `ozbperson` WHERE `ozbperson`.`Mnr` = 13 LIMIT 1[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (1.0ms)[0m  [1mUPDATE `ozbperson` SET `last_sign_in_at` = '2013-04-26 15:01:23', `current_sign_in_at` = '2013-04-26 15:01:23', `last_sign_in_ip` = '127.0.0.1', `current_sign_in_ip` = '127.0.0.1', `sign_in_count` = 1, `updated_at` = '2013-04-26 15:01:23' WHERE `ozbperson`.`Mnr` = 13[0m
+  [1m[35m (4.0ms)[0m  COMMIT
+Redirected to http://localhost:3000/
+Completed 302 Found in 325ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-04-26 16:01:24 +0100
+Processing by WillkommenController#index as HTML
+  [1m[36mOZBPerson Load (0.0ms)[0m  [1mSELECT `ozbperson`.* FROM `ozbperson` WHERE `ozbperson`.`Mnr` = 13 LIMIT 1[0m
+DEPRECATION WARNING: Calling set_primary_key is deprecated. Please use `self.primary_key = 'the_name'` instead. (called from <class:Sonderberechtigung> at D:/Projects/FirstApp/ozbapp/app/models/sonderberechtigung.rb:19)
+  [1m[35mSonderberechtigung Load (0.0ms)[0m  SELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13
+Redirected to http://localhost:3000/Verwaltung/Mitglieder
+DEPRECATION WARNING: Calling set_primary_keys is deprecated. Please use `self.primary_keys = keys` instead. (called from <class:Person> at D:/Projects/FirstApp/ozbapp/app/models/person.rb:7)
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE (Pnr = 13) ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mOzbKonto Load (1.0ms)[0m  SELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`Mnr` = 13 AND `ozbkonto`.`GueltigBis` = '9999-12-31 23:59:59' ORDER BY KtoNr ASC
+  [1m[36mEeKonto Load (0.0ms)[0m  [1mSELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 10013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mEeKonto Load (0.0ms)[0m  SELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 20013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mEeKonto Load (0.0ms)[0m  [1mSELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 30013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mEeKonto Load (0.0ms)[0m  SELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 50013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mEeKonto Load (0.0ms)[0m  [1mSELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 60013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mEeKonto Load (0.0ms)[0m  SELECT `eekonto`.* FROM `eekonto` WHERE `eekonto`.`KtoNr` = 70013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT `ozbkonto`.* FROM `ozbkonto` WHERE `ozbkonto`.`Mnr` = 13 AND `ozbkonto`.`GueltigBis` = '9999-12-31 23:59:59' ORDER BY KtoNr ASC[0m
+  [1m[35mZeKonto Load (0.0ms)[0m  SELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 10013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mZeKonto Load (0.0ms)[0m  [1mSELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 20013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mZeKonto Load (1.0ms)[0m  SELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 30013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mZeKonto Load (0.0ms)[0m  [1mSELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 50013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+  [1m[35mZeKonto Load (0.0ms)[0m  SELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 60013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1
+  [1m[36mZeKonto Load (0.0ms)[0m  [1mSELECT `zekonto`.* FROM `zekonto` WHERE `zekonto`.`KtoNr` = 70013 AND (GueltigBis = '9999-12-31 23:59:59') LIMIT 1[0m
+Completed 302 Found in 196ms (ActiveRecord: 20.0ms)
+
+
+Started GET "/Verwaltung/Mitglieder" for 127.0.0.1 at 2013-04-26 16:01:24 +0100
+Processing by VerwaltungController#listOZBPersonen as HTML
+  [1m[35mOZBPerson Load (0.0ms)[0m  SELECT `ozbperson`.* FROM `ozbperson` WHERE `ozbperson`.`Mnr` = 13 LIMIT 1
+  [1m[36mSonderberechtigung Load (0.0ms)[0m  [1mSELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13[0m
+  Rendered application/_flash_notifier.html.erb (1.0ms)
+DEPRECATION WARNING: Calling set_table_name is deprecated. Please use `self.table_name = 'the_name'` instead. (called from <class:Geschaeftsprozess> at D:/Projects/FirstApp/ozbapp/app/models/geschaeftsprozess.rb:2)
+DEPRECATION WARNING: Calling set_primary_key is deprecated. Please use `self.primary_key = 'the_name'` instead. (called from <class:Geschaeftsprozess> at D:/Projects/FirstApp/ozbapp/app/models/geschaeftsprozess.rb:3)
+  [1m[35mGeschaeftsprozess Load (0.0ms)[0m  SELECT `geschaeftsprozess`.* FROM `geschaeftsprozess` WHERE `geschaeftsprozess`.`ID` = 1 LIMIT 1
+  [1m[36mSonderberechtigung Load (0.0ms)[0m  [1mSELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13 AND `sonderberechtigung`.`Berechtigung` = 'IT' LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT `geschaeftsprozess`.* FROM `geschaeftsprozess` WHERE `geschaeftsprozess`.`ID` = 1 LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13 AND `sonderberechtigung`.`Berechtigung` = 'IT' LIMIT 1[0m
+  [1m[35mGeschaeftsprozess Load (1.0ms)[0m  SELECT `geschaeftsprozess`.* FROM `geschaeftsprozess` WHERE `geschaeftsprozess`.`ID` = 3 LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13 AND `sonderberechtigung`.`Berechtigung` = 'IT' LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT `geschaeftsprozess`.* FROM `geschaeftsprozess` WHERE `geschaeftsprozess`.`ID` = 1 LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13 AND `sonderberechtigung`.`Berechtigung` = 'IT' LIMIT 1[0m
+  Rendered verwaltung/_tabnavigation_verwaltung.html.erb (19.0ms)
+  [1m[35mOZBPerson Load (1.0ms)[0m  SELECT `ozbperson`.* FROM `ozbperson` INNER JOIN `person` ON `person`.`Pnr` = `ozbperson`.`Mnr` WHERE (GueltigBis LIKE '%9999%') ORDER BY mnr asc LIMIT 25 OFFSET 0
+  [1m[36m (0.0ms)[0m  [1mSELECT COUNT(*) FROM `ozbperson` INNER JOIN `person` ON `person`.`Pnr` = `ozbperson`.`Mnr` WHERE (GueltigBis LIKE '%9999%')[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 5 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 6 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 7 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 8 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 9 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 10 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (1.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 11 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 12 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 13 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 14 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 15 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (1.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 16 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 17 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (1.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 18 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 19 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 20 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 21 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 22 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 23 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (1.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 24 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 25 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (0.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 26 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 27 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mPerson Load (1.0ms)[0m  [1mSELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 28 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1[0m
+  [1m[35mPerson Load (0.0ms)[0m  SELECT `person`.* FROM `person` WHERE `person`.`Pnr` = 29 ORDER BY person.Pnr DESC, person.GueltigVon DESC LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT `geschaeftsprozess`.* FROM `geschaeftsprozess` WHERE `geschaeftsprozess`.`ID` = 3 LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13 AND `sonderberechtigung`.`Berechtigung` = 'IT' LIMIT 1
+  Rendered verwaltung/listOZBPersonen.html.erb within layouts/application (109.0ms)
+  [1m[36mGeschaeftsprozess Load (0.0ms)[0m  [1mSELECT `geschaeftsprozess`.* FROM `geschaeftsprozess` WHERE `geschaeftsprozess`.`ID` = 20 LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13 AND `sonderberechtigung`.`Berechtigung` = 'IT' LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13[0m
+Completed 200 OK in 124ms (Views: 110.0ms | ActiveRecord: 11.0ms)
+
+
+Started GET "/assets/glyphicons-halflings-white.png" for 127.0.0.1 at 2013-04-26 16:01:24 +0100
+Served asset /glyphicons-halflings-white.png - 200 OK (1ms)
+
+
+Started GET "/Verwaltung/WebImport" for 127.0.0.1 at 2013-04-26 16:01:29 +0100
+Processing by WebimportController#index as HTML
+  Rendered webimport/index.html.erb within layouts/application (2.0ms)
+  [1m[35mOZBPerson Load (0.0ms)[0m  SELECT `ozbperson`.* FROM `ozbperson` WHERE `ozbperson`.`Mnr` = 13 LIMIT 1
+  [1m[36mGeschaeftsprozess Load (0.0ms)[0m  [1mSELECT `geschaeftsprozess`.* FROM `geschaeftsprozess` WHERE `geschaeftsprozess`.`ID` = 20 LIMIT 1[0m
+  [1m[35mSonderberechtigung Load (0.0ms)[0m  SELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13 AND `sonderberechtigung`.`Berechtigung` = 'IT' LIMIT 1
+  [1m[36mSonderberechtigung Load (0.0ms)[0m  [1mSELECT `sonderberechtigung`.* FROM `sonderberechtigung` WHERE `sonderberechtigung`.`Mnr` = 13[0m
+Completed 200 OK in 20ms (Views: 20.0ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/Verwaltung/WebImport/Buchungen" for 127.0.0.1 at 2013-04-26 16:01:52 +0100
+Processing by WebimportController#csvimport_buchungen as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"0z6CE9Yfp4k0FTnFUBIG1JDs93ptWLZnz3GM92yB3+w=", "webimport"=>{"file"=>#<ActionDispatch::Http::UploadedFile:0x402be08 @original_filename="buchungen.txt", @content_type="text/plain", @headers="Content-Disposition: form-data; name=\"webimport[file]\"; filename=\"buchungen.txt\"\r\nContent-Type: text/plain\r\n", @tempfile=#<File:D:/Cygwin/tmp/RackMultipart20130426-1752-1orvam>>}, "commit"=>"importieren"}
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO `buchung` (`BelegNr`, `Belegdatum`, `BnKreis`, `BuchDatum`, `BuchJahr`, `Buchungstext`, `HabenKtoNr`, `Habenbetrag`, `KtoNr`, `PSaldoAcc`, `Punkte`, `SollKtoNr`, `Sollbetrag`, `Typ`, `WSaldoAcc`) VALUES (775, '2012-12-04', 'B-', '2012-12-04', 2012, '0108 Szilagyi Helga Einlage S090930', 70108, 150.0, 70108, 0, NULL, 1200, 0.0, 'w', 0.0)[0m
+Mysql2::Error: Duplicate entry '2012-70108-B--775-w' for key 'PRIMARY': INSERT INTO `buchung` (`BelegNr`, `Belegdatum`, `BnKreis`, `BuchDatum`, `BuchJahr`, `Buchungstext`, `HabenKtoNr`, `Habenbetrag`, `KtoNr`, `PSaldoAcc`, `Punkte`, `SollKtoNr`, `Sollbetrag`, `Typ`, `WSaldoAcc`) VALUES (775, '2012-12-04', 'B-', '2012-12-04', 2012, '0108 Szilagyi Helga Einlage S090930', 70108, 150.0, 70108, 0, NULL, 1200, 0.0, 'w', 0.0)
+  [1m[35m (0.0ms)[0m  ROLLBACK
+Completed 500 Internal Server Error in 54ms
+
+ActiveRecord::RecordNotUnique (Mysql2::Error: Duplicate entry '2012-70108-B--775-w' for key 'PRIMARY': INSERT INTO `buchung` (`BelegNr`, `Belegdatum`, `BnKreis`, `BuchDatum`, `BuchJahr`, `Buchungstext`, `HabenKtoNr`, `Habenbetrag`, `KtoNr`, `PSaldoAcc`, `Punkte`, `SollKtoNr`, `Sollbetrag`, `Typ`, `WSaldoAcc`) VALUES (775, '2012-12-04', 'B-', '2012-12-04', 2012, '0108 Szilagyi Helga Einlage S090930', 70108, 150.0, 70108, 0, NULL, 1200, 0.0, 'w', 0.0)):
+  app/controllers/webimport_controller.rb:340:in `block (2 levels) in csvimport_buchungen'
+  app/controllers/webimport_controller.rb:46:in `block in csvimport_buchungen'
+  app/controllers/webimport_controller.rb:44:in `each'
+  app/controllers/webimport_controller.rb:44:in `csvimport_buchungen'
+
+
+  Rendered C:/Ruby193/lib/ruby/gems/1.9.1/gems/actionpack-3.2.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (3.0ms)
+  Rendered C:/Ruby193/lib/ruby/gems/1.9.1/gems/actionpack-3.2.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (1.0ms)
+  Rendered C:/Ruby193/lib/ruby/gems/1.9.1/gems/actionpack-3.2.3/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (32.0ms)
