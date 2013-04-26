@@ -360,8 +360,9 @@ class WebimportController < ApplicationController
                     :WSaldoAcc    => 0.0,
                     :Punkte       => nil,
                     :PSaldoAcc    => 0
+                  )
                   
-                  begin)
+                  begin
                     b.save
                   rescue
                     @error = "Etwas ist schiefgelaufen."
@@ -390,8 +391,9 @@ class WebimportController < ApplicationController
                     :WSaldoAcc    => 0.0,
                     :Punkte       => nil,
                     :PSaldoAcc    => 0
-                  
-                  begin)
+                  )
+
+                  begin
                     b.save
                   rescue
                     @error = "Etwas ist schiefgelaufen."
