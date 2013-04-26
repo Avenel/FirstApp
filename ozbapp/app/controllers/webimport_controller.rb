@@ -110,10 +110,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  begin
+                  begin 
                     b.save
-                  rescue
-                    @error = "Etwas ist schiefgelaufen."
+                  rescue Exception => e
+                    @error = "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message
                   end
                                     
                   collect_konten << kontonummer
@@ -158,10 +159,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  begin
+                  begin 
                     b.save
-                  rescue
-                    @error = "Etwas ist schiefgelaufen."
+                  rescue Exception => e
+                    @error = "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message
                   end
                   
                   collect_konten << kontonummer
@@ -200,10 +202,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  begin
+                  begin 
                     b.save
-                  rescue
-                    @error = "Etwas ist schiefgelaufen."
+                  rescue Exception => e
+                    @error = "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message
                   end
                   
                   collect_konten << kontonummer
@@ -233,10 +236,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  begin
+                  begin 
                     b.save
-                  rescue
-                    @error = "Etwas ist schiefgelaufen."
+                  rescue Exception => e
+                    @error = "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message
                   end
                   
                   collect_konten << kontonummer
@@ -273,10 +277,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  begin
+                  begin 
                     b.save
-                  rescue
-                    @error = "Etwas ist schiefgelaufen."
+                  rescue Exception => e
+                    @error = "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message
                   end
                   
                   collect_konten << kontonummer
@@ -306,10 +311,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  begin
+                  begin 
                     b.save
-                  rescue
-                    @error = "Etwas ist schiefgelaufen."
+                  rescue Exception => e
+                    @error = "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message
                   end
                   
                   collect_konten << kontonummer
@@ -361,11 +367,12 @@ class WebimportController < ApplicationController
                     :Punkte       => nil,
                     :PSaldoAcc    => 0
                   )
-                  
-                  begin
+
+                  begin 
                     b.save
-                  rescue
-                    @error = "Etwas ist schiefgelaufen."
+                  rescue Exception => e
+                    @error = "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message
                   end
                   
                   collect_konten << kontonummer
@@ -393,10 +400,11 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
 
-                  begin
+                  begin 
                     b.save
-                  rescue
-                    @error = "Etwas ist schiefgelaufen."
+                  rescue Exception => e
+                    @error = "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message
                   end
                   
                   collect_konten << kontonummer
@@ -455,10 +463,12 @@ class WebimportController < ApplicationController
                 bu.Punkte    = end_pkte_acc
 
                 begin
-                  bu.save
-                rescue
-                  @error = "Etwas ist schiefgelaufen."
+                   bu.save
+                rescue Exception => e
+                   @error = "Etwas ist schiefgelaufen.<br /><br />"
+                   @error += e.message
                 end
+                
               end
 
               first_time      = second_time
@@ -481,12 +491,11 @@ class WebimportController < ApplicationController
                 bu.Punkte    = end_pkte_acc
 
                 begin
-                  bu.save
-                rescue
-                  @error = "Etwas ist schiefgelaufen."
+                   bu.save
+                rescue Exception => e
+                   @error = "Etwas ist schiefgelaufen.<br /><br />"
+                   @error += e.message
                 end
-              end
-              
             end
           end
           
@@ -500,9 +509,12 @@ class WebimportController < ApplicationController
 
             begin
               konto.save
-            rescue
-              @error = "Etwas ist schiefgelaufen."
+            rescue Exception => e
+               @error = "Etwas ist schiefgelaufen.<br /><br />"
+               @error += e.message
             end
+          end
+
           end
         end
       end
