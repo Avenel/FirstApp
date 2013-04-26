@@ -109,11 +109,11 @@ CREATE TABLE IF NOT EXISTS `veranstaltungsart` (
 
 CREATE TABLE IF NOT EXISTS `veranstaltung` (
   `Vnr` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `vid` int(11) NOT NULL,
+  `VANr` int(11) NOT NULL,
   `VADatum` date NOT NULL,
   `VAOrt` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `SachPnr` int(10) unsigned ,
-  FOREIGN KEY (vid) REFERENCES veranstaltungsart(VANr),
+  FOREIGN KEY (VANr) REFERENCES veranstaltungsart(VANr),
   PRIMARY KEY (Vnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -284,8 +284,8 @@ CREATE TABLE IF NOT EXISTS `buchung` (
   `SollKtoNr` int(5) unsigned NOT NULL DEFAULT '0',
   `HabenKtoNr` int(5) unsigned NOT NULL DEFAULT '0',
   `WSaldoAcc` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `Punkte` int(10) DEFAULT NULL,
   `PSaldoAcc` int(10) NOT NULL DEFAULT '0',  
+  `Punkte` int(10) DEFAULT NULL,
   PRIMARY KEY (BuchJahr,KtoNr,BnKreis,BelegNr,Typ),
   KEY KtoNr(KtoNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
