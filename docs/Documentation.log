@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2013.4.6)  28 APR 2013 14:21
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2013.4.6)  28 APR 2013 20:36
 entering extended mode
 **D:/Projects/FirstApp/docs/Documentation.tex
 (D:/Projects/FirstApp/docs/Documentation.tex
@@ -910,7 +910,7 @@ Class scrbook Warning: Usage of deprecated \float@listhead!
 (scrbook)              instead of \float@listhead.
 (scrbook)              Definition of \float@listhead my be removed from
 (scrbook)              `scrbook' soon, so it should not be used  on input line 
-217.
+228.
 
 (D:\Projects\FirstApp\docs\Documentation.lol)
 \tf@lol=\write8
@@ -919,30 +919,31 @@ Class scrbook Warning: Usage of deprecated \float@listhead!
 
 ]
 No file Documentation.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 223.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 223.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 234.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 234.
 (D:\Projects\FirstApp\docs\Documentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 223.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 223.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 234.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 234.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: FC2FF6B1B959FF31BBE1148B3C86B949;1631.
+(rerunfilecheck)             Checksum: AA9DB3D203DED74AC34282983E6C49BE;1631.
  ) 
 Here is how much of TeX's memory you used:
- 9560 strings out of 494045
- 142626 string characters out of 3145967
+ 9569 strings out of 494045
+ 142751 string characters out of 3145967
  264689 words of memory out of 3000000
- 12646 multiletter control sequences out of 15000+200000
- 46760 words of font info for 37 fonts, out of 3000000 for 9000
+ 12648 multiletter control sequences out of 15000+200000
+ 51022 words of font info for 38 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  38i,6n,49p,642b,529s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}<C:/Program F
 iles (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files (x86)/
 MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb><C:/Program Files (x86)/MiKTeX 2.9
 /fonts/type1/public/lm/lmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
-/public/lm/lmssbx10.pfb>
-Output written on Documentation.pdf (16 pages, 594005 bytes).
+/public/lm/lmri12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/
+lmssbx10.pfb>
+Output written on Documentation.pdf (16 pages, 610720 bytes).
 PDF statistics:
- 253 PDF objects out of 1000 (max. 8388607)
- 57 named destinations out of 1000 (max. 500000)
+ 264 PDF objects out of 1000 (max. 8388607)
+ 63 named destinations out of 1000 (max. 500000)
  222 words of extra memory for PDF output out of 10000 (max. 10000000)
 
