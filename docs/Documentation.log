@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2013.4.6)  6 APR 2013 21:29
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2013.4.6)  28 APR 2013 12:48
 entering extended mode
-**Documentation.tex
-(D:\Projects\FirstApp\docs\Documentation.tex
+**D:/Projects/FirstApp/docs/Documentation.tex
+(D:/Projects/FirstApp/docs/Documentation.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -757,7 +757,7 @@ LaTeX Info: Redefining \nameref on input line 43.
 \@outlinefile=\write4
 LaTeX Info: Redefining \Ref on input line 43.
 
-<"Media/hskalogo".jpg, id=71, 569.0058pt x 196.8153pt>
+<"Media/hskalogo".jpg, id=103, 569.0058pt x 196.8153pt>
 File: "Media/hskalogo".jpg Graphic file (type jpg)
 
 <use "Media/hskalogo".jpg>
@@ -799,13 +799,13 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <8> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <6> on input line 3.
-)
-\tf@toc=\write5
  [1
 
 
 
-] [2
+])
+\tf@toc=\write5
+ [2] [3
 
 
 
@@ -822,7 +822,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.106 \clearpage
+l.118 \clearpage
                  [1
 
 
@@ -857,16 +857,27 @@ Kapitel 6.
 [7
 
 
+]
+Kapitel 7.
+[8
+
+
+
+]
+Kapitel 8.
+[9
+
+
 
 ] (D:\Projects\FirstApp\docs\Documentation.lof)
 \tf@lof=\write6
- [8
+ [10
 
 
 ]
 (D:\Projects\FirstApp\docs\Documentation.lot)
 \tf@lot=\write7
- [9
+ [11
 
 
 ]
@@ -876,38 +887,38 @@ Class scrbook Warning: Usage of deprecated \float@listhead!
 (scrbook)              instead of \float@listhead.
 (scrbook)              Definition of \float@listhead my be removed from
 (scrbook)              `scrbook' soon, so it should not be used  on input line 
-154.
+193.
 
 (D:\Projects\FirstApp\docs\Documentation.lol)
 \tf@lol=\write8
- [10
+ [12
 
 
 ]
 No file Documentation.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 160.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 160.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 199.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 199.
 (D:\Projects\FirstApp\docs\Documentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 160.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 160.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 199.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 199.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: 50900E30F0F9C80662AEB40C3A239B18;938.
+(rerunfilecheck)             Checksum: 37C247B17134DF393BA42D46E11F7F0B;1479.
  ) 
 Here is how much of TeX's memory you used:
- 9531 strings out of 494045
- 142276 string characters out of 3145967
- 261689 words of memory out of 3000000
- 12636 multiletter control sequences out of 15000+200000
+ 9553 strings out of 494045
+ 142530 string characters out of 3145967
+ 263689 words of memory out of 3000000
+ 12644 multiletter control sequences out of 15000+200000
  46760 words of font info for 37 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 38i,6n,49p,431b,367s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,6n,49p,453b,529s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}<C:/Program F
 iles (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb><C:/Program Files (x86)
 /MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/
 fonts/type1/public/lm/lmssbx10.pfb>
-Output written on Documentation.pdf (13 pages, 557290 bytes).
+Output written on Documentation.pdf (16 pages, 566425 bytes).
 PDF statistics:
- 178 PDF objects out of 1000 (max. 8388607)
- 38 named destinations out of 1000 (max. 500000)
- 142 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 235 PDF objects out of 1000 (max. 8388607)
+ 52 named destinations out of 1000 (max. 500000)
+ 206 words of extra memory for PDF output out of 10000 (max. 10000000)
 
