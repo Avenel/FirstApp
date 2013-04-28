@@ -90,6 +90,7 @@ Fachbereich: Informatik (Master)
 \begin{acronym}[SQL]
 	\acro{AP}{Arbeitspaket}
 	\acro{o/ZB}{Ohne Zins Bewegung}
+     \acro{RoR}{Ruby on Rails}
 \end{acronym}
 
 \newpage
@@ -152,20 +153,25 @@ Zusätzlich soll in dieser Phase ein kritischer Fehler bereinigt werden. Der Web
 
 \clearpage
 \chapter{Allgemeine Dokumentationen}
-\section{Das aktuelle ER-Diagramm}
+\section{Das korrigierte ER-Diagramm}
 % Wie sieht es aus?
 % Was wurde angepasst?
 % Beschreibung der Veränderungen am Code
 
-\section{Das aktuelle Relationenmodell}
+\section{Das korrigierte Relationenmodell}
 % Darstellung des ER-Diagramms in Tabellenform
 
 \section{Deployment und Versionskontrolle}
-In diesem Abschnitt werden die Begriffe \textit{Deployment} und \textit{Versionskontrolle} erläutert. Im Anschluss wird die aktuelle Umsetzung beschrieben.
+In diesem Abschnitt werden die Begriffe \textit{Deployment} und \textit{Versionskontrolle} erläutert. In jedem Teilabschnitt wird die aktuelle Umsetzung beschrieben. Der letzte Teil dieses Abschnitts beschäftigt sich mit dem \textit{Commit \& Deployment Workflow}.
 
 \subsection{Deployment}
 % Was ist das? Deployment - Capistrano, Versionskontrolle - Git
+In der Softwareentwicklung wird unter dem Begriff \textit{Deployment} der Prozess zur \textit{Bereitstellung} und \textit{Verteilung} einer Software verstanden. Der Prozess ist von Software zu Software unterschiedlich, da z.B. die Konfiguration einer Software immer an die Umgebung angepasst werden muss, in der diese zum Einsatz kommt.\\
 
+Im Falle der o/zb muss der Deployment Prozess die Bereitstellung der o/zb Webanwendung auf einem Server bewerkstelligen. Dies wirft die folgenden Fragen auf: Welcher Webserver wird eingesetzt? Wie gelangt die RoR Webanwendung auf den Server? Und wie arbeiten Anwendungsserver und Webserver auf dem Server zusammen? Diese Fragen werden die nun folgenden Teilabschnitte klären.
+
+\subsubsection{Webserver - Apache}
+\subsubsection{Application Server - Passenger}
 \subsubsection{Capistrano}
 \subsubsection{Das Deploymentskript}
 

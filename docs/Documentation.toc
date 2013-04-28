@@ -14,31 +14,33 @@
 \contentsline {subsection}{\numberline {2.3.4}Integration-Tests}{3}{subsection.2.3.4}
 \contentsline {section}{\numberline {2.4}o/ZB Darlehensvertrag}{3}{section.2.4}
 \contentsline {chapter}{\numberline {3}Allgemeine Dokumentationen}{4}{chapter.3}
-\contentsline {section}{\numberline {3.1}Das aktuelle ER-Diagramm}{4}{section.3.1}
-\contentsline {section}{\numberline {3.2}Das aktuelle Relationenmodell}{4}{section.3.2}
+\contentsline {section}{\numberline {3.1}Das korrigierte ER-Diagramm}{4}{section.3.1}
+\contentsline {section}{\numberline {3.2}Das korrigierte Relationenmodell}{4}{section.3.2}
 \contentsline {section}{\numberline {3.3}Deployment und Versionskontrolle}{4}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Deployment}{4}{subsection.3.3.1}
-\contentsline {subsubsection}{Capistrano}{4}{section*.3}
-\contentsline {subsubsection}{Das Deploymentskript}{4}{section*.4}
-\contentsline {subsection}{\numberline {3.3.2}Versionskontrolle}{4}{subsection.3.3.2}
-\contentsline {subsubsection}{Git}{4}{section*.5}
-\contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{4}{subsection.3.3.3}
-\contentsline {section}{\numberline {3.4}Datenbank Migration}{4}{section.3.4}
-\contentsline {chapter}{\numberline {4}Korrekturen, Bugfixes}{5}{chapter.4}
-\contentsline {section}{\numberline {4.1}WebImport}{5}{section.4.1}
-\contentsline {section}{\numberline {4.2}Punkteberechnung}{5}{section.4.2}
-\contentsline {chapter}{\numberline {5}Testdriven Development}{6}{chapter.5}
-\contentsline {section}{\numberline {5.1}Analyse}{6}{section.5.1}
-\contentsline {section}{\numberline {5.2}Implementierung}{6}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}RSpec}{6}{subsection.5.2.1}
-\contentsline {chapter}{\numberline {6}Neue Features}{7}{chapter.6}
-\contentsline {section}{\numberline {6.1}Dokumenten-Export}{7}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}Analyse}{7}{subsection.6.1.1}
-\contentsline {subsection}{\numberline {6.1.2}Implementierung}{7}{subsection.6.1.2}
-\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{8}{chapter.7}
-\contentsline {section}{\numberline {7.1}Ergebnis}{8}{section.7.1}
-\contentsline {section}{\numberline {7.2}Ausblick}{8}{section.7.2}
-\contentsline {chapter}{\numberline {8}Anhang}{9}{chapter.8}
-\contentsline {chapter}{Abbildungsverzeichnis}{10}{chapter*.6}
-\contentsline {chapter}{Tabellenverzeichnis}{11}{chapter*.7}
-\contentsline {chapter}{Listings}{12}{chapter*.8}
+\contentsline {subsubsection}{Webserver - Apache}{5}{section*.3}
+\contentsline {subsubsection}{Application Server - Passenger}{5}{section*.4}
+\contentsline {subsubsection}{Capistrano}{5}{section*.5}
+\contentsline {subsubsection}{Das Deploymentskript}{5}{section*.6}
+\contentsline {subsection}{\numberline {3.3.2}Versionskontrolle}{5}{subsection.3.3.2}
+\contentsline {subsubsection}{Git}{5}{section*.7}
+\contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{5}{subsection.3.3.3}
+\contentsline {section}{\numberline {3.4}Datenbank Migration}{5}{section.3.4}
+\contentsline {chapter}{\numberline {4}Korrekturen, Bugfixes}{6}{chapter.4}
+\contentsline {section}{\numberline {4.1}WebImport}{6}{section.4.1}
+\contentsline {section}{\numberline {4.2}Punkteberechnung}{6}{section.4.2}
+\contentsline {chapter}{\numberline {5}Testdriven Development}{7}{chapter.5}
+\contentsline {section}{\numberline {5.1}Analyse}{7}{section.5.1}
+\contentsline {section}{\numberline {5.2}Implementierung}{7}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}RSpec}{7}{subsection.5.2.1}
+\contentsline {chapter}{\numberline {6}Neue Features}{8}{chapter.6}
+\contentsline {section}{\numberline {6.1}Dokumenten-Export}{8}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Analyse}{8}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Implementierung}{8}{subsection.6.1.2}
+\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{9}{chapter.7}
+\contentsline {section}{\numberline {7.1}Ergebnis}{9}{section.7.1}
+\contentsline {section}{\numberline {7.2}Ausblick}{9}{section.7.2}
+\contentsline {chapter}{\numberline {8}Anhang}{10}{chapter.8}
+\contentsline {chapter}{Abbildungsverzeichnis}{11}{chapter*.8}
+\contentsline {chapter}{Tabellenverzeichnis}{12}{chapter*.9}
+\contentsline {chapter}{Listings}{13}{chapter*.10}
