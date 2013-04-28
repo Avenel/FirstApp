@@ -18,7 +18,7 @@
 \contentsline {section}{\numberline {3.2}Das korrigierte Relationenmodell}{4}{section.3.2}
 \contentsline {section}{\numberline {3.3}Deployment und Versionskontrolle}{4}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Deployment}{4}{subsection.3.3.1}
-\contentsline {subsubsection}{Webserver - Apache}{5}{section*.3}
+\contentsline {subsubsection}{Webserver - Apache}{4}{section*.3}
 \contentsline {subsubsection}{Application Server - Passenger}{5}{section*.4}
 \contentsline {subsubsection}{Capistrano}{5}{section*.5}
 \contentsline {subsubsection}{Das Deploymentskript}{5}{section*.6}

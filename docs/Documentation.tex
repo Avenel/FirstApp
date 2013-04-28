@@ -139,7 +139,7 @@ Zusätzlich soll in dieser Phase ein kritischer Fehler bereinigt werden. Der Web
 \chapter{Hintergrundwissen}
 \section{Das o/ZB Projekt}
 
-\section{Das Testsystem}
+\section{Das Testsystem}\label{sec:Das_Testsystem}
 % URL, Maschine, Versionen... 
 
 \section{Test-Driven Development}
@@ -168,9 +168,13 @@ In diesem Abschnitt werden die Begriffe \textit{Deployment} und \textit{Versions
 % Was ist das? Deployment - Capistrano, Versionskontrolle - Git
 In der Softwareentwicklung wird unter dem Begriff \textit{Deployment} der Prozess zur \textit{Bereitstellung} und \textit{Verteilung} einer Software verstanden. Der Prozess ist von Software zu Software unterschiedlich, da z.B. die Konfiguration einer Software immer an die Umgebung angepasst werden muss, in der diese zum Einsatz kommt.\\
 
-Im Falle der o/zb muss der Deployment Prozess die Bereitstellung der o/zb Webanwendung auf einem Server bewerkstelligen. Dies wirft die folgenden Fragen auf: Welcher Webserver wird eingesetzt? Wie gelangt die RoR Webanwendung auf den Server? Und wie arbeiten Anwendungsserver und Webserver auf dem Server zusammen? Diese Fragen werden die nun folgenden Teilabschnitte klären.
+Im Falle der o/zb muss der Deployment Prozess die Bereitstellung der o/zb Webanwendung auf einem Server bewerkstelligen. Dies wirft die folgenden Fragen auf: Welcher Webserver wird eingesetzt? Wie gelangt die RoR Webanwendung auf den Server? Und wie arbeiten Anwendungsserver und Webserver auf dem Server zusammen? Diese Fragen werden die nun folgenden Teilabschnitte (kurz) klären.
 
 \subsubsection{Webserver - Apache}
+Ein Webserver überträgt Daten an einen Client. Dabei kann dieser die Daten nur lokal oder auch weltweit zur Verfügung stellen. Er dient im Falle der o/zb Webanwendung dazu, die von RoR erzeugten Webseiten an den Clienten auszuliefern. Sobald er die Anfrage eines Clienten aufgenommen und an die RoR Anwendung weitergeleitet hat, verarbeitet die RoR Anwendung diese und präsentiert dem Webserver das Ergebnis. Der Webserver sendet nun diese Daten an den Clienten.\\
+
+Auf dem Testsystem der o/zb (s. \vref{sec:Das_Testsystem}) kommt ein Apache Webserver in der Version 2.2.16 zum Einsatz. Auf dem Testsystem laufen bis zu vier Apache Instanzen gleichzeitig, um die Anfragen der Benutzer bedienen zu können. 
+
 \subsubsection{Application Server - Passenger}
 \subsubsection{Capistrano}
 \subsubsection{Das Deploymentskript}
