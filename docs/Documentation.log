@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2013.4.6)  29 APR 2013 18:13
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2013.4.6)  29 APR 2013 18:25
 entering extended mode
 **D:/Projects/FirstApp/docs/Documentation.tex
 (D:/Projects/FirstApp/docs/Documentation.tex
@@ -671,7 +671,14 @@ Package: xstring 2013/2/28  v1.7a  String manipulations (C Tellechea)
 )
 \AC@clearlist=\toks21
 )
-(D:\Projects\FirstApp\docs\Documentation.aux)
+(D:\Projects\FirstApp\docs\Documentation.aux
+
+LaTeX Warning: Label `listing:webimport_nil' multiply defined.
+
+
+LaTeX Warning: Label `listing:webimport_nil' multiply defined.
+
+)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
 LaTeX Font Info:    ... okay on input line 43.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
@@ -687,8 +694,7 @@ LaTeX Font Info:    ... okay on input line 43.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
 LaTeX Font Info:    ... okay on input line 43.
 LaTeX Font Info:    Try loading font information for T1+lmr on input line 43.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 (C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
@@ -983,39 +989,50 @@ Underfull \hbox (badness 10000) in paragraph at lines 305--306
 
 
 ]
-[13]
+Underfull \hbox (badness 10000) in paragraph at lines 311--312
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
+
+ []
+
+(D:\Projects\FirstApp\ozbapp\app\controllers\webimport_controller.rb)
+(D:\Projects\FirstApp\ozbapp\app\controllers\webimport_controller.rb [13])
+[14]
 Kapitel 5.
-[14
+[15
 
 
 
 ]
 Kapitel 6.
-[15
+[16
 
 
-] [16
+] [17
 
 ]
 Kapitel 7.
-[17
+[18
 
 
 ]
 Kapitel 8.
-[18
+[19
 
 
 
 ] (D:\Projects\FirstApp\docs\Documentation.lof)
 \tf@lof=\write6
- [19
+ [20
 
 
 ]
 (D:\Projects\FirstApp\docs\Documentation.lot)
 \tf@lot=\write7
- [20
+ [21
 
 
 ]
@@ -1025,28 +1042,32 @@ Class scrbook Warning: Usage of deprecated \float@listhead!
 (scrbook)              instead of \float@listhead.
 (scrbook)              Definition of \float@listhead my be removed from
 (scrbook)              `scrbook' soon, so it should not be used  on input line 
-357.
+363.
 
 (D:\Projects\FirstApp\docs\Documentation.lol)
 \tf@lol=\write8
- [21
+ [22
 
 
 ]
 No file Documentation.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 363.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 363.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 369.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 369.
 (D:\Projects\FirstApp\docs\Documentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 363.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 363.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 369.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 369.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
 (rerunfilecheck)             Checksum: D53B9CA833DD442C0DF168818D2DE184;1720.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 10331 strings out of 494045
- 152140 string characters out of 3145967
- 312832 words of memory out of 3000000
- 13277 multiletter control sequences out of 15000+200000
+ 10361 strings out of 494045
+ 152776 string characters out of 3145967
+ 312886 words of memory out of 3000000
+ 13283 multiletter control sequences out of 15000+200000
  75044 words of font info for 55 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  38i,8n,49p,1060b,1953s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1064,9 +1085,9 @@ blic/lm/lmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmt
 k10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb><C:
 /Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtt12.pfb><C:/Program Fi
 les (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Documentation.pdf (25 pages, 947915 bytes).
+Output written on Documentation.pdf (26 pages, 954225 bytes).
 PDF statistics:
- 486 PDF objects out of 1000 (max. 8388607)
- 148 named destinations out of 1000 (max. 500000)
+ 514 PDF objects out of 1000 (max. 8388607)
+ 168 named destinations out of 1000 (max. 500000)
  245 words of extra memory for PDF output out of 10000 (max. 10000000)
 

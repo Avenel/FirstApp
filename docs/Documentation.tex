@@ -308,10 +308,16 @@ Bei diesem Fehler akzeptierte der Webimport scheinbar keine Datei. Der Grund hie
 
 In Zeile 4 (bzw. Zeile 426) wurde ursprünglich der Befehl \textit{uniq!} verwendet. Methoden mit einem Ausrufezeichen (!) benutzen meistens eine unsichere Implementierungsweise der Methode. Dieser Befehl gibt laut der offiziellen RubyDoc \footnote{vgl. \url{http://www.ruby-doc.org/core-1.9.3/Array.html\#method-i-uniq-21}} entweder ein \textit{Array} oder \textit{nil} zurück. Der Rückgabewert \textit{nil} tritt ein, sobald das Array keine Elemente vorweisen kann. Da dieser Fall nicht abgefangen worden ist, kommt es in der Zeile 4 (bzw. 426) zu einem Fehler. Abhilfe schafft hier die Methode \textit{uniq}. Diese gibt in jedem Fall ein (ggf. leeres) \textit{Array} zurück. 
 \subsection{Laufzeitfehler}
+Konnte ein Datensatz z.B. aufgrund eines MySql Fehlers nicht importiert werden, wird eine Exception geworfen. Aufgrund dieser Exception wurde der Importvorgang nicht korrekt zu Ende geführt, sondern direkt abgebrochen. Der Benutzer sieht in diesem Moment eine Fehlerseite und kann nicht mehr agieren, da er keine Informationen darüber erhält, was schiefgegangen ist. Der häufigste Fehler tritt auf, wenn versucht worden ist eine Buchung noch ein weiteres Mal zu importieren (MySql Fehler: \textit{duplicate key error}). Dies gilt es mit Hilfe des Exception Handlings zu korrigieren.\\
+
+Die Exceptions treten beim Speichervorgang auf, dem zur Folge wurde um jeden Speichervorgang ein \textit{begin-rescue} Block gesetzt. Dieser fängt die Exception auf und hängt die Fehlermeldung der \textit{@error} Variable an. Diese stellt dem Benutzer ggf. die Informationen darüber, was schiefgelaufen ist, dar.\\
+
+\lstinputlisting[language=Ruby, frame=single, caption=webimport\_controller.rb, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=278, lastline=285]{\string"../ozbapp/app/controllers/webimport_controller\string".rb}\label{listing:webimport_nil}
+
 
 \subsection{Anzahl der importierten Datensätze}
 
-
+\lstinputlisting[language=Ruby, frame=single, caption=webimport\_controller.rb, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=313, lastline=321]{\string"../ozbapp/app/controllers/webimport_controller\string".rb}\label{listing:webimport_nil}
 
 % Punkteberechnung
 \section{Punkteberechnung}

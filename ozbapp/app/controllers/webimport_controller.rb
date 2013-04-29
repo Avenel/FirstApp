@@ -313,7 +313,7 @@ class WebimportController < ApplicationController
                   begin 
                     b.save
                     collect_konten << kontonummer
-                    # Nur 1x zählen!
+                    # Nur 1x zaehlen!
                     #imported_records += 1
                   rescue Exception => e
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
