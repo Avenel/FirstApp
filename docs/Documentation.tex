@@ -177,23 +177,28 @@ Auf dem Testsystem der o/zb (s. \vref{sec:Das_Testsystem}) kommt ein Apache Webs
 
 \subsubsection{Anwendungsserver - Phusion Passenger}
 Ein \textit{Anwendungsserver} bietet einer Anwendung die benötigte Laufzeitumgebung, damit diese auch ausgeführt werden kann. Dazu stellt der Anwendungsserver der Anwendung spezielle Dienste zur Verfügung, die die Anwendung zur Ausführung benötigt.\\
-Im Fall der o/zb Webanwendung wird der weit verbreitete und leistungsstarke \textit{Phusion Passenger} Anwendungsserver in der Version 3.0.19 genutzt. Phusion Passenger ist ein Modul für den Apache Webserver und ist als ein sogenanntes \textit{RubyGem} (entspricht etwa einem Softwarepaket speziell für Ruby) verfügbar. Zudem ist es auch unter dem Namen \textit{mod\_rails} oder \textit{mod\_rack} bekannt. Weitere Informationen können auf der Webseite von Phusion \url{https://www.phusionpassenger.com/} entnommen werden.
+Im Fall der o/zb Webanwendung wird der weit verbreitete und leistungsstarke \textit{Phusion Passenger} Anwendungsserver in der Version 3.0.19 genutzt. Phusion Passenger ist ein Modul für den Apache Webserver und ist als ein sogenanntes \textit{RubyGem} (entspricht etwa einem Softwarepaket speziell für Ruby) verfügbar. Zudem ist es auch unter dem Namen \textit{mod\_rails} oder \textit{mod\_rack} bekannt. Weitere Informationen können auf der Webseite von Phusion \url{https://www.phusionpassenger.com/} entnommen werden. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Phusion_Passenger}}
+
+\subsubsection{Capistrano}
+Wie Eingangs dieses Abschnittes erwähnt worden ist, sind bei einem Deployment Prozess die Schritte notwendig, die die Bereitstellung der Software bewerkstelligen. Diese Schritte müssen nicht immer manuell ausgeführt werden, sondern können automatisiert werden. Dafür eignet sich im Falle der o/zb Webanwendung die Software \textit{Capistrano}. Diese Software ist ein Open Source Werkzeug, das (Batch-) Skripte auf Servern, z.B. mit der Hilfe einer \textit{Secure Shell (SSH)}, ausführt. Dem zur Folge ist ihr Haupteinsatzzweck in der Softwareverteilung wiederzufinden. Capistrano ist genauso wie die o/zb Webanwendung auch in Ruby geschrieben und als RubyGem verfügbar. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Capistrano_(Software)}}\\
+
+Bei Capistrano bestimmen sogenannte Deployment Rezepte (\glqq Deployment Recipies\grqq) wie der Deployment Prozess verläuft. Auch für die o/zb Webanwendung wurde ein Rezept geschrieben, welches im Abschnitt \vref{subsec:deployment_recipe} beschrieben wird.
 
 \subsection{Versionsverwaltung}
 Für einen stabilen und guten Softwareentwicklungsprozess ist eine Versionsverwaltung in der heutigen Zeit unabdingbar. Die Hauptaufgaben bestehen aus der Protokollierung der vorgenommenen Änderungen an Quelltexten, Skripten und anderen Dokumenten. Der Wiederherstellung von alten Zuständen, sodass versehentliche Änderungen oder Änderungen, die z.B. zu Laufzeitfehlern führten, zurückgenommen werden können. Die Archivierung jedes neuen Proejktzustands. Die Koordinierung des gemeinsamen Datei-Zugriffs der am Projekt beteiligten Entwickler. Und zu guter Letzt ermöglicht eine Versionsverwaltung die gleichzeitige Erzeugung mehrerer Entwicklungszweige (sogenannter \glqq Branches\grqq) eines Projektes. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Versionsverwaltung}}
 
 \subsubsection{Git}
 % Wie sieht aktuelle Setup aus?
-Für das Projekt der o/zb Stuttgart wird die weit verbreitete, freie Software \textit{Git} verwendet. Es wurde ursprünglich für die Quelltext-Verwaltung des Linux Kernels entwickelt. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Git}}\\
-Git ist im Gegensatz zu den Traditionellen Versionsverwaltungen wie z.B. \textit{SVN} oder \textit{Mercurial} ein verteiltes Versionsverwaltungssystem. Es gibt keinen zentralen Server auf dem das Projekt gespeichert wird, sodass jeder Entwickler eine lokale Kopie des gesamten Repositorys vorliegen hat - \textit{clone}. Dem zur Folge hat der Entwickler die Möglichkeit auch ohne Netzwerkzugriff die einzelnen Zustände seiner Arbeit festzuhalten - \textit{commit}. Besteht wieder ein Netzwerkzugriff kann er seine Änderungen auf das von den Entwicklern gemeinsam genutztes Projekt-Depot (\textit{Repository}) hochladen - \textit{push}. Zuvor muss er sich jedoch mit dem gemeinsamen Repository wieder synchronisieren - \textit{pull}.\\
+Für das Projekt der o/zb Stuttgart wird die weit verbreitete, freie Software \textit{Git} verwendet. Es wurde ursprünglich für die Quelltext-Verwaltung des Linux Kernels entwickelt.\\
+Git ist im Gegensatz zu den Traditionellen Versionsverwaltungen wie z.B. \textit{SVN} oder \textit{Mercurial} ein verteiltes Versionsverwaltungssystem. Es gibt keinen zentralen Server auf dem das Projekt gespeichert wird, sodass jeder Entwickler eine lokale Kopie des gesamten Repositorys vorliegen hat - \textit{clone}. Dem zur Folge hat der Entwickler die Möglichkeit auch ohne Netzwerkzugriff die einzelnen Zustände seiner Arbeit festzuhalten - \textit{commit}. Besteht wieder ein Netzwerkzugriff kann er seine Änderungen auf das von den Entwicklern gemeinsam genutztes Projekt-Depot (\textit{Repository}) hochladen - \textit{push}. Zuvor muss er sich jedoch mit dem gemeinsamen Repository wieder synchronisieren - \textit{pull}. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Git}}\\
 
 Das aktuelle, gemeinsame Repository des o/zb Projektes wird von dem bekannten Git-Hoster \textit{GitHub} bereitgestellt. Die Adresse zum Repository lautet: \url{https://github.com/Avenel/FirstApp}.
 
 \subsection{Workflow, Umsetzung}
 % Workflow: Git add/commit/push, cap deploy
 
-\subsubsection{Capistrano}
-\subsubsection{Das Deploymentskript (Rezept)}
+
+\subsubsection{Das Deploymentskript (Rezept)}\label{subsec:deployment_recipe}
 
 
 
