@@ -215,7 +215,7 @@ Wurde das gemeinsame Repository nun auf den neuesten Stand gebracht, kann der le
 Das Capistrano Deploymentskript bzw. Rezept ist vorerst nicht im öffentlich zugänglichen Git Repository zu finden, da es durchaus sensible Informationen enthält. Ist es vorhanden befindet es sich hier: \textit{config/deploy.rb}.\\
 In dem Deploymentskript werden zuerst sämtliche Variablen festgelegt, der Name der Anwendung und die für einen sicheren SSH Zugriff notwendigen Daten (Serveradresse, sowie auch der Deployment-Benutzer: \glqq ozbapp\grqq). Darüber hinaus werden Informationen zum Repository angegeben, in dem die Projektdateien liegen. Im Anschluss wird der Deployment Ort auf dem Server, sowie eigene Aktionen während des Deployment Vorgangs festgelegt.
 
-\begin{lstlisting}[frame=single, caption=Capistranot Deployment Rezept, tabsize=2, flexiblecolumns=true, captionpos=b]{Deploy.rb}
+\begin{lstlisting}[frame=single, caption=Capistrano Deployment Rezept, tabsize=2, flexiblecolumns=true, captionpos=b]{Deploy.rb}
 # Name application
 set :application, "ozbapp"
 
@@ -257,13 +257,33 @@ after 'deploy:update_code', 'deploy:renew_symlink'
 \section{Datenbank Migration}
 % Welche Skript gibt es und was tun diese?
 % Wie wird das auf dem Server ausgeführt?
-In der vergangenen Zeit wurde ein Java Datenbank Migrationstool geschrieben, welches die Daten von dem aktuellen Produktivsystem in das neue System übertragen soll. Dabei wird auch das Datenbankenschema verändert, da die beiden Schemata nicht mehr dieselben sind. Um den Umgang mit diesem Tool zu erleichtern sind zwei Batch Skripte angefertigt worden. Diese Batch Skript sind im Ordner \textit{tools} des Git Repositorys zu finden. Im Folgenden werden die Funktionsweise und die Benutzung dieser beiden Batch Skripte beschrieben. 
+In der vergangenen Zeit wurde ein Java Datenbank Migrationstool geschrieben, welches die Daten von dem aktuellen Produktivsystem in das neue System übertragen soll. Um den Umgang mit diesem Tool zu erleichtern sind zwei Batch Skripte angefertigt worden. Diese Batch Skript sind im Ordner \textit{tools} des Git Repositorys und auch auf dem Server im \textit{Home Verzeichnis ozbapp} zu finden. Um die Batch Skripte ausführen zu können ist eine SSH Verbindung erforderlich. Diese kann unter Windows mit dem Programm \textit{Putty} (\url{http://www.putty.org/}) oder unter Linux mit dem Befehl \textit{ssh username@host} (\url{http://wiki.ubuntuusers.de/SSH}) geöffnet werden. Der Username bzw. der Hostname ist in beiden Fällen \textit{ozbapp} bzw. \textit{ozbapp.mooo.com}. Die benötigte Konfiguration für Putty ist der Abbildung \vref{fig:putty_config} zu entnehmen. Ist man verbunden befindet man sich automatisch schon im \textit{Home Verzeichnis} in dem die Batch Skripte vorliegen.\\ 
+
+\begin{figure}[H]
+     \begin{center}
+          \includegraphics[width=0.60\textwidth]{\string"Media/putty_configuration\string".png}
+     \end{center}
+     \caption{Putty Konfiguration}
+     \label{fig:putty_config}
+\end{figure} 
+
+\begin{figure}[H]
+     \begin{center}
+          \includegraphics[width=0.60\textwidth]{\string"Media/putty_open_session\string".png}
+     \end{center}
+     \caption{Offene SSH Session in Putty}
+     \label{fig:putty_open_session}
+\end{figure} 
+
+Im Folgenden werden die Funktionsweise und die Benutzung dieser beiden Batch Skripte beschrieben. 
 
 \subsection{Datenbank migrieren}
+Dieses Batch Skript importiert zunächst einen aktuellen Stand der Produktivdatenbank, der als MySql Dump zur Verfügung gestellt wird, in die auf dem Testserver liegende Produktivdatenbank \textit{ozb\_prod}. Im Anschluss wird die Testserver Testdatenbank \textit{ozb\_test} geleert und neu angelegt. Ist dies geschehen, werden mit Hilfe des Datenbank Migrationstools die Daten aus der Produktivdatenbank \textit{ozb\_prod} in die Testdatenbank \textit{ozb\_test} übertragen. Das neue Datenbankschema wird in der Datei \textit{create\_tables.txt} beschrieben. Sind Veränderungen am Datenbankschema vorgenommen worden, müssen diese in dieser Datei übernommen werden. Ausgeführt wird dieses Skript mit dem Befehl \textit{./datenbank\_migrieren.sh}.\\
 
 \lstinputlisting[language=bash, frame=single, caption=datenbank\_migrieren.sh, tabsize=2, flexiblecolumns=true, captionpos=b]{\string"../tools/datenbank_migrieren\string".sh}
 
 \subsection{Datenbank zurücksetzen}
+In diesem Batch Skript wird die Testdatenbank auf den ursprünglichen Zustand zurückgesetzt. Der ursprüngliche Zustand liegt in dem MySql Dump \textit{dump.sql}. Zur Ausführung genügt auch hier der folgende Befehl \textit{./datenbank\_ruecksetzen.sh}. \\
 
 \lstinputlisting[language=bash, frame=single, caption=datenbank\_migrieren.sh, tabsize=2, flexiblecolumns=true, captionpos=b]{\string"../tools/datenbank_ruecksetzen\string".sh}
 
