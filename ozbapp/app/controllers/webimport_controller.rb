@@ -423,8 +423,6 @@ class WebimportController < ApplicationController
       if (collect_konten.size == 0 )
         @error += "Keine der zu importierenden Konten in der Datenbank eingetragen"
       else
-        puts collect_konten.inspect
-        puts collect_konten.uniq.inspect
         collect_konten.uniq.each do |ktoNr|
           b = Buchung.find(
             :all, 

@@ -290,7 +290,28 @@ In diesem Batch Skript wird die Testdatenbank auf den ursprünglichen Zustand zu
 \clearpage
 \chapter{Korrekturen, Bugfixes}
 % WebImport
-\section{WebImport}
+\section{Webimport}
+In der o/zb Webanwendung sorgt der sogenannte \textit{Webimport} für die Übertragung der in einer CSV Datei hinterlegten Kontobewegungen. Weitere Informationen zu dem Webimport kann der Projekt Dokuementation WS 12/13 (ab S.53) entnommen werden.\\
+
+Zum Zeitpunkt der Aufnahme der Arbeiten an diesem Projekt funktionierte der Webimport nicht korrekt. Die folgenden Punkte sind aufgefallen:
+
+\begin{itemize}
+     \item{Datei Upload auf dem Testsystem funktioniert nicht.}
+     \item{Laufzeitfehler müssen abgefangen werden.}
+     \item{Die Anzahl der importierten Datensätze stimmt nicht.} 
+\end{itemize}
+
+\subsection{Bugfix: Datei Upload}
+Bei diesem Fehler akzeptierte der Webimport scheinbar keine Datei. Der Grund hierfür liegt in den abgebildeten Zeilen in Listing \vref{listing:webimport_nil}.\\
+
+\lstinputlisting[language=Ruby, frame=single, caption=webimport\_controller.rb, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=423, lastline=427]{\string"../ozbapp/app/controllers/webimport_controller\string".rb}\label{listing:webimport_nil}
+
+In Zeile 4 (bzw. Zeile 426) wurde ursprünglich der Befehl \textit{uniq!} verwendet. Methoden mit einem Ausrufezeichen (!) benutzen meistens eine unsichere Implementierungsweise der Methode. Dieser Befehl gibt laut der offiziellen RubyDoc \footnote{vgl. \url{http://www.ruby-doc.org/core-1.9.3/Array.html\#method-i-uniq-21}} entweder ein \textit{Array} oder \textit{nil} zurück. Der Rückgabewert \textit{nil} tritt ein, sobald das Array keine Elemente vorweisen kann. Da dieser Fall nicht abgefangen worden ist, kommt es in der Zeile 4 (bzw. 426) zu einem Fehler. Abhilfe schafft hier die Methode \textit{uniq}. Diese gibt in jedem Fall ein (ggf. leeres) \textit{Array} zurück. 
+\subsection{Laufzeitfehler}
+
+\subsection{Anzahl der importierten Datensätze}
+
+
 
 % Punkteberechnung
 \section{Punkteberechnung}
@@ -313,6 +334,7 @@ In diesem Batch Skript wird die Testdatenbank auf den ursprünglichen Zustand zu
 % Muss er noch im Nachhinein verändert werden? -> Word oder PDF?
 \subsection{Implementierung}
 \clearpage
+\section{Deployment E-Mail Benachrichtigung}
 
 
 \chapter{Ergebnis und Ausblick}

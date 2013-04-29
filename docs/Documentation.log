@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2013.3.26)  29 APR 2013 15:32
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2013.4.6)  29 APR 2013 18:13
 entering extended mode
-**C:/Projects/FirstApp/docs/Documentation.tex
-(C:/Projects/FirstApp/docs/Documentation.tex
+**D:/Projects/FirstApp/docs/Documentation.tex
+(D:/Projects/FirstApp/docs/Documentation.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -13,34 +13,28 @@ an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese,
 romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
 sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
 senglishmax, welsh, loaded.
-
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrb
-ook.cls"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrbook.cls
 Document Class: scrbook 2012/07/29 v3.11b KOMA-Script document class (book)
-
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrk
-base.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrkbase.sty
 Package: scrkbase 2012/07/29 v3.11b KOMA-Script package (KOMA-Script-dependent 
 basics and keyval usage)
 
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrb
-ase.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrbase.sty
 Package: scrbase 2012/07/29 v3.11b KOMA-Script package (KOMA-Script-independent
  basics and keyval usage)
- ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrl
-file.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrlfile.sty
 Package: scrlfile 2012/06/15 v3.12 KOMA-Script package (loading files)
 
 Package scrlfile, 2012/06/15 v3.12 KOMA-Script package (loading files)
                   Copyright (C) Markus Kohm
 
 )))
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\tocb
-asic.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\tocbasic.sty
 Package: tocbasic 2012/04/04 v3.10b KOMA-Script package (handling toc-files)
 )
 Package tocbasic Info: omitting babel extension for `toc'
@@ -66,13 +60,12 @@ Class scrbook Info: You've used standard option `oneside'.
 Class scrbook Info: File `scrsize12pt.clo' used to setup font sizes on input li
 ne 1368.
 
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrs
-ize12pt.clo"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\scrsize12pt.c
+lo
 File: scrsize12pt.clo 2012/07/29 v3.11b KOMA-Script font size class option (12p
 t)
 )
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\type
-area.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\koma-script\typearea.sty
 Package: typearea 2012/07/29 v3.11b KOMA-Script package (type area)
 
 Package typearea, 2012/07/29 v3.11b KOMA-Script package (type area)
@@ -468,8 +461,7 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@dimlist=\toks17
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listing
-s.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listings.sty
 \lst@mode=\count94
 \lst@gtempboxa=\box27
 \lst@token=\toks18
@@ -483,27 +475,24 @@ s.sty"
 \lst@lineno=\count99
 \lst@maxwidth=\dimen117
 
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstmisc
-.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 \c@lstnumber=\count100
 \lst@skipnumbers=\count101
 \lst@framebox=\box28
 )
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listing
-s.cfg"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listings.cfg
 File: listings.cfg 2007/02/22 1.4 listings configuration
 ))
 Package: listings 2007/02/22 1.4 (Carsten Heinz)
 
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang
-1.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang
-2.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang2.sty
 File: lstlang2.sty 2004/09/05 1.3 listings language file
-) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\ltxmisc\url.sty"
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\ltxmisc\url.sty"
 \Urlmuskip=\muskip10
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
@@ -666,18 +655,14 @@ Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
 Package: varioref 2011/10/02 v1.4z package for extended references (FMi)
 \c@vrcnt=\count122
 )
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\acronym\acronym.
-sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\acronym\acronym.sty
 Package: acronym 2012/10/29 v1.38 Support for acronyms (Tobias Oetiker)
 
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\bigfoot\suffix.s
-ty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\bigfoot\suffix.sty
 Package: suffix 2006/07/15 1.5 Variant command support
 )
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\xstring\xstring.
-sty"
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\generic\xstring\xstrin
-g.tex"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\xstring\xstring.sty
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\generic\xstring\xstring.tex
 \@xs@message=\write3
 \integerpart=\count123
 \decimalpart=\count124
@@ -685,7 +670,8 @@ g.tex"
 Package: xstring 2013/2/28  v1.7a  String manipulations (C Tellechea)
 )
 \AC@clearlist=\toks21
-) (C:\Projects\FirstApp\docs\Documentation.aux)
+)
+(D:\Projects\FirstApp\docs\Documentation.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
 LaTeX Font Info:    ... okay on input line 43.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
@@ -705,8 +691,7 @@ LaTeX Font Info:    Try loading font information for T1+lmr on input line 43.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.
-mkii"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count125
 \scratchdimen=\dimen129
@@ -770,12 +755,12 @@ LaTeX Info: Redefining \ref on input line 43.
 LaTeX Info: Redefining \pageref on input line 43.
 LaTeX Info: Redefining \nameref on input line 43.
 
-(C:\Projects\FirstApp\docs\Documentation.out)
-(C:\Projects\FirstApp\docs\Documentation.out)
+(D:\Projects\FirstApp\docs\Documentation.out)
+(D:\Projects\FirstApp\docs\Documentation.out)
 \@outlinefile=\write4
 LaTeX Info: Redefining \Ref on input line 43.
 
-<"Media/hskalogo".jpg, id=111, 569.0058pt x 196.8153pt>
+<"Media/hskalogo".jpg, id=115, 569.0058pt x 196.8153pt>
 File: "Media/hskalogo".jpg Graphic file (type jpg)
 
 <use "Media/hskalogo".jpg>
@@ -783,14 +768,14 @@ Package pdftex.def Info: "Media/hskalogo".jpg used on input line 50.
 (pdftex.def)             Requested size: 338.58632pt x 117.11406pt.
  [1
 
-{C:/Users/Martin Briewig/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <C:
-/Projects/FirstApp/docs/Media/hskalogo.jpg>]
+{C:/Users/Avenel/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <D:/Project
+s/FirstApp/docs/Media/hskalogo.jpg>]
 LaTeX Font Info:    Try loading font information for T1+lmss on input line 83.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\t1lmss.fd"
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-(C:\Projects\FirstApp\docs\Documentation.toc
+(D:\Projects\FirstApp\docs\Documentation.toc
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 3.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
@@ -920,7 +905,7 @@ Overfull \hbox (22.00226pt too wide) in paragraph at lines 196--197
 App$[]\T1/lmr/m/n/12 . 
  []
 
-<"Media/Deployment Workflow".pdf, id=221, 712.6625pt x 245.91875pt>
+<"Media/Deployment Workflow".pdf, id=226, 712.6625pt x 245.91875pt>
 File: "Media/Deployment Workflow".pdf Graphic file (type pdf)
 
 <use "Media/Deployment Workflow".pdf>
@@ -932,7 +917,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 210--211
 
  []
 
-[7 <C:/Projects/FirstApp/docs/Media/Deployment Workflow.pdf>]
+[7 <D:/Projects/FirstApp/docs/Media/Deployment Workflow.pdf>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 223.
  [8]
@@ -940,7 +925,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 260--261
 
  []
 
-<"Media/putty_configuration".png, id=301, 350.81062pt x 337.26pt>
+<"Media/putty_configuration".png, id=306, 350.81062pt x 337.26pt>
 File: "Media/putty_configuration".png Graphic file (type png)
 
 <use "Media/putty_configuration".png>
@@ -948,7 +933,7 @@ Package pdftex.def Info: "Media/putty_configuration".png used on input line 264
 .
 (pdftex.def)             Requested size: 290.22107pt x 279.03029pt.
 
-<"Media/putty_open_session".png, id=302, 508.14844pt x 319.1925pt>
+<"Media/putty_open_session".png, id=307, 508.14844pt x 319.1925pt>
 File: "Media/putty_open_session".png Graphic file (type png)
 
 <use "Media/putty_open_session".png>
@@ -957,63 +942,80 @@ Package pdftex.def Info: "Media/putty_open_session".png used on input line 272.
 (pdftex.def)             Requested size: 290.22107pt x 182.30688pt.
  [9
 
- <C:/Projects/FirstApp/docs/Media/putty_configuration.png>]
+ <D:/Projects/FirstApp/docs/Media/putty_configuration.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 281--282
 
  []
 
-
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang
-1.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
-("C:\Users\Martin Briewig\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang
-1.sty"
+(C:\Users\Avenel\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
-) (C:\Projects\FirstApp\tools\datenbank_migrieren.sh) [10 <C:/Projects/FirstApp
-/docs/Media/putty_open_session.png>]
+)
+(D:\Projects\FirstApp\tools\datenbank_migrieren.sh) [10 <D:/Projects/FirstApp/d
+ocs/Media/putty_open_session.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 286--287
 
  []
 
-(C:\Projects\FirstApp\tools\datenbank_ruecksetzen.sh) [11]
+(D:\Projects\FirstApp\tools\datenbank_ruecksetzen.sh) [11]
 Kapitel 4.
-[12
+
+Underfull \hbox (badness 10000) in paragraph at lines 294--295
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+lmr on input line 299.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\omslmr.fd"
+File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 299.
+
+Underfull \hbox (badness 10000) in paragraph at lines 305--306
+
+ []
+
+(D:\Projects\FirstApp\ozbapp\app\controllers\webimport_controller.rb) [12
 
 
 
 ]
+[13]
 Kapitel 5.
-[13
+[14
 
 
 
 ]
 Kapitel 6.
-[14
+[15
 
+
+] [16
 
 ]
 Kapitel 7.
-[15
-
+[17
 
 
 ]
 Kapitel 8.
-[16
+[18
 
 
 
-] (C:\Projects\FirstApp\docs\Documentation.lof)
+] (D:\Projects\FirstApp\docs\Documentation.lof)
 \tf@lof=\write6
- [17
+ [19
 
 
 ]
-(C:\Projects\FirstApp\docs\Documentation.lot)
+(D:\Projects\FirstApp\docs\Documentation.lot)
 \tf@lot=\write7
- [18
+ [20
 
 
 ]
@@ -1023,46 +1025,48 @@ Class scrbook Warning: Usage of deprecated \float@listhead!
 (scrbook)              instead of \float@listhead.
 (scrbook)              Definition of \float@listhead my be removed from
 (scrbook)              `scrbook' soon, so it should not be used  on input line 
-335.
+357.
 
-(C:\Projects\FirstApp\docs\Documentation.lol)
+(D:\Projects\FirstApp\docs\Documentation.lol)
 \tf@lol=\write8
- [19
+ [21
 
 
 ]
 No file Documentation.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 341.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 341.
-(C:\Projects\FirstApp\docs\Documentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 341.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 341.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 363.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 363.
+(D:\Projects\FirstApp\docs\Documentation.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 363.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 363.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: BBCE73D16C486AF91059BAB5D45B7035;1638.
+(rerunfilecheck)             Checksum: D53B9CA833DD442C0DF168818D2DE184;1720.
  ) 
 Here is how much of TeX's memory you used:
- 10273 strings out of 494045
- 151402 string characters out of 3145942
- 312675 words of memory out of 3000000
- 13241 multiletter control sequences out of 15000+200000
+ 10331 strings out of 494045
+ 152140 string characters out of 3145967
+ 312832 words of memory out of 3000000
+ 13277 multiletter control sequences out of 15000+200000
  75044 words of font info for 55 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  38i,8n,49p,1060b,1953s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}<C:/Program F
-iles (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files (x86)/
-MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb><C:/Program Files (x86)/MiKTeX 2.9
-/fonts/type1/public/lm/lmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
-/public/lm/lmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/l
-mr6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/lm/lmri12.pfb><C:/Program Files (x86)/MiKTe
-X 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fon
-ts/type1/public/lm/lmtk10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pu
-blic/lm/lmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmt
-t12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Documentation.pdf (23 pages, 935640 bytes).
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Progr
+am Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}<C:/Program Files (x86)/
+MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/
+fonts/type1/public/lm/lmcsc10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
+1/public/lm/lmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/
+lmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C:
+/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb><C:/Program File
+s (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/public/lm/lmri12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
+/type1/public/lm/lmssbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pu
+blic/lm/lmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmt
+k10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb><C:
+/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtt12.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtti10.pfb>
+Output written on Documentation.pdf (25 pages, 947915 bytes).
 PDF statistics:
- 450 PDF objects out of 1000 (max. 8388607)
- 135 named destinations out of 1000 (max. 500000)
- 237 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 486 PDF objects out of 1000 (max. 8388607)
+ 148 named destinations out of 1000 (max. 500000)
+ 245 words of extra memory for PDF output out of 10000 (max. 10000000)
 
