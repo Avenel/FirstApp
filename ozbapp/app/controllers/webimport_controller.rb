@@ -10,7 +10,7 @@ class WebimportController < ApplicationController
   
   def csvimport_buchungen
     if !params[:webimport].nil? && !params[:webimport][:file].nil?
-      # save CSV-File
+      # CSV-File
       uploaded_io = params[:webimport][:file]
       
       uploaded_disk = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
@@ -110,11 +110,14 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
-                  
-                  collect_konten << kontonummer
-                  imported_records += 1
-
+                  begin 
+                    b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
+                  rescue Exception => e
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
+                  end
                   next
                 end
                 
@@ -154,17 +157,23 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
+                  begin 
+                    b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
+                  rescue Exception => e
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
+                  end
                   
-                  collect_konten << kontonummer
-                  imported_records += 1
+                  
 
                   next
                 end
                 
                 # Punkteüberweisung-Buchung
                 if (habenkontonummer[0] == "8" && sollkontonummer[0] == "8" && sollkontonummer != 88888 && habenkontonummer != 88888)
-                  # Eine Punkteüberweisung-Buchung.Buchung wird in DB eingetragen.
+                  # Eine Punkteüberweisung-Buchung. Buchung wird in DB eingetragen.
                   
                   # Erste Buchung
                   temp         = buchungstext.split(" ")
@@ -192,10 +201,14 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
-                  
-                  collect_konten << kontonummer
-                  imported_records += 1
+                  begin 
+                    b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
+                  rescue Exception => e
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
+                  end
                   
                   # Zweite Buchung
                   
@@ -221,11 +234,16 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
+                  begin 
+                    b.save
+                    collect_konten << kontonummer
+                    # Nur 1x zählen!
+                    # imported_records += 1
+                  rescue Exception => e
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
+                  end
                   
-                  collect_konten << kontonummer
-                  imported_records += 1
-
                   next
                 end
                 
@@ -257,10 +275,16 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
+                  begin 
+                    b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
+                  rescue Exception => e
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
+                  end
                   
-                  collect_konten << kontonummer
-                  imported_records += 1
+                  
                   
                   # Zweite Buchung
                   kontonummer = habenkontonummer
@@ -286,10 +310,16 @@ class WebimportController < ApplicationController
                     :PSaldoAcc    => 0
                   )
                   
-                  b.save
-                  
-                  collect_konten << kontonummer
-                  imported_records += 1
+                  begin 
+                    b.save
+                    collect_konten << kontonummer
+                    # Nur 1x zählen!
+                    #imported_records += 1
+                  rescue Exception => e
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
+                  end
+
                   next
                 end
               # Gewöhnliche Buchung oder Storno-Buchung
@@ -337,10 +367,16 @@ class WebimportController < ApplicationController
                     :Punkte       => nil,
                     :PSaldoAcc    => 0
                   )
-                  b.save
-                  
-                  collect_konten << kontonummer
-                  imported_records += 1
+
+                  begin 
+                    b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
+                  rescue Exception => e
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
+                  end
+                
                   next
                 elsif (s == 5)
                   kontonummer = sollkontonummer
@@ -363,10 +399,16 @@ class WebimportController < ApplicationController
                     :Punkte       => nil,
                     :PSaldoAcc    => 0
                   )
-                  b.save
+
+                  begin 
+                    b.save
+                    collect_konten << kontonummer
+                    imported_records += 1
+                  rescue Exception => e
+                    @error += "Etwas ist schiefgelaufen.<br /><br />"
+                    @error += e.message + "<br /><br />"
+                  end
                   
-                  collect_konten << kontonummer
-                  imported_records += 1
                   next
                 end
               end
@@ -379,7 +421,7 @@ class WebimportController < ApplicationController
       
       # berechnen der Saldo und Punktesaldo für Konten
       if (collect_konten.size == 0 )
-        @error = "Keine der zu importierenden Konten in der Datenbank eingetragen"
+        @error += "Keine der zu importierenden Konten in der Datenbank eingetragen"
       else
         puts collect_konten.inspect
         puts collect_konten.uniq.inspect
@@ -420,7 +462,13 @@ class WebimportController < ApplicationController
                 bu.PSaldoAcc = pkte_acc
                 bu.Punkte    = end_pkte_acc
 
-                bu.save
+                begin
+                   bu.save
+                rescue Exception => e
+                   @error += "Etwas ist schiefgelaufen.<br /><br />"
+                   @error += e.message + "<br /><br />"
+                end
+                
               end
 
               first_time      = second_time
@@ -442,9 +490,12 @@ class WebimportController < ApplicationController
                 bu.PSaldoAcc = 0.00
                 bu.Punkte    = end_pkte_acc
 
-                bu.save
-              end
-              
+                begin
+                   bu.save
+                rescue Exception => e
+                   @error += "Etwas ist schiefgelaufen.<br /><br />"
+                   @error += e.message + "<br /><br />"
+                end
             end
           end
           
@@ -456,7 +507,14 @@ class WebimportController < ApplicationController
             konto.PSaldo     = end_pkte_acc
             konto.SaldoDatum = last_saldo_data 
 
-            konto.save
+            begin
+              konto.save
+            rescue Exception => e
+               @error += "Etwas ist schiefgelaufen.<br /><br />"
+               @error += e.message + "<br /><br />"
+            end
+          end
+
           end
         end
       end

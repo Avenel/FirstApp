@@ -14,7 +14,7 @@ class VeranstaltungController < ApplicationController
     @Veranstaltungen ||= Array.new
     @Teilnahmen.each do |t|
       veranstaltung = Veranstaltung.find(t.Vnr)
-      veranstaltungsart = Veranstaltungsart.find(veranstaltung.vid)
+      veranstaltungsart = Veranstaltungsart.find(veranstaltung.VANr)
   
       case t.TeilnArt
       when "l"
@@ -119,7 +119,7 @@ class VeranstaltungController < ApplicationController
     
     
     @veranstaltung = Veranstaltung.find(@vnr)
-    @veranstaltungsart = Veranstaltungsart.find(@veranstaltung.vid)
+    @veranstaltungsart = Veranstaltungsart.find(@veranstaltung.VANr)
     @Teilnahmen = Teilnahme.find(:all, :conditions => {:Vnr => @veranstaltung.Vnr})
     @Teilnahmen.sort! { |a,b| a.Pnr <=> b.Pnr }
     @TeilnUndPerson = Array.new
@@ -200,7 +200,7 @@ class VeranstaltungController < ApplicationController
         ActiveRecord::Base.transaction do
           
           # Veranstaltung erstellen und validieren
-          @new_Veranstaltung = Veranstaltung.new(:Vnr => Veranstaltung.last.Vnr + 1, :vid => params[:vid], :VADatum => params[:vadatum], :VAOrt =>params[:vaort], :SachPnr => current_OZBPerson.Mnr)
+          @new_Veranstaltung = Veranstaltung.new(:Vnr => Veranstaltung.last.Vnr + 1, :VANr => params[:VANr], :VADatum => params[:vadatum], :VAOrt =>params[:vaort], :SachPnr => current_OZBPerson.Mnr)
           
           #Fehler aufgetreten?
           if !@new_Veranstaltung.valid? then
@@ -211,11 +211,11 @@ class VeranstaltungController < ApplicationController
           
           @EinzuladendeMitglieder = Array.new
           
-          if params[:vid] == '2' then
+          if params[:VANr] == '2' then
             @EinzuladendeMitglieder = OZBPerson.find(:all, :conditions => {:Schulungsdatum => nil, :Austrittsdatum => nil})
           end
           
-          if params[:vid] == '1' then
+          if params[:VANr] == '1' then
             @OZBPersonen = Array.new
             @OZBPersonen = OZBPerson.find(:all, :conditions => {:Austrittsdatum => nil})
             @OZBPersonen.each do |person|
@@ -282,7 +282,7 @@ class VeranstaltungController < ApplicationController
       @edit = false
       
       @Veranstaltung.each do |v|
-        veranstaltungsart = Veranstaltungsart.find(v.vid)
+        veranstaltungsart = Veranstaltungsart.find(v.VANr)
         @VeranstaltungenUndArt << [v,veranstaltungsart]  
       end
       
@@ -302,9 +302,9 @@ class VeranstaltungController < ApplicationController
       @new_Veranstaltung = Veranstaltung.new
       @new_Teilnahme = Teilnahme.new
       @VeranstaltungenUndArt = Array.new
-      
+
       @Veranstaltung.each do |v|
-        veranstaltungsart = Veranstaltungsart.find(v.vid)
+        veranstaltungsart = Veranstaltungsart.find(v.VANr)
         @VeranstaltungenUndArt << [v,veranstaltungsart]  
       end
       

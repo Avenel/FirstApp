@@ -22,7 +22,7 @@
     <table class="table-hover" width="100%" cellpadding="10" cellspacing="" align="center">
       <tr>
         <th align="left" style="width: 180px;"><font color="red">*</font>Veranstaltungsart:</th>
-        <td><%= select_tag 'vid', options_for_select(@Veranstaltungen, @new_Veranstaltung.vid) %></td>
+        <td><%= select_tag 'VANr', options_for_select(@Veranstaltungen, @new_Veranstaltung.VANr) %></td>
       </tr>
       <tbody>
         <tr>
@@ -42,7 +42,7 @@
 <div class="form-actions">
   <div class="row-fluid">
     <div class="span2" align="left">
-      <a href="" class="btn" onclick="history.back();">Zurück</a>
+      <a href="/Verwaltung/Veranstaltungen" class="btn" onclick="history.back();">Zurück</a>
     </div>
     <div class="span10" align="right">
       <%= link_to_function "Speichern", "this.form.submit()", :onclick => "$('#form_editVeranstaltung').submit(); return false;", :class => "btn btn-primary", :notice => "Veranstaltung erfolgreich aktualisiert" %> 

@@ -36,7 +36,7 @@
 
 \usepackage[]{acronym}
 
-\title{Testdriven Development am Beispiel der ozb Webapplikation}
+\title{Testdriven Development am Beispiel der o/zb Webapplikation}
 \author{Martin Briewig, Michael Leibel}
 
 
@@ -90,24 +90,58 @@ Fachbereich: Informatik (Master)
 \begin{acronym}[SQL]
 	\acro{AP}{Arbeitspaket}
 	\acro{o/ZB}{Ohne Zins Bewegung}
+     \acro{RoR}{Ruby on Rails}
 \end{acronym}
 
 \newpage
 
 \pagenumbering{arabic} 
 \chapter{Einleitung}
-Die ohne Zins Bewegung Stuttgart arbeitet nun seit einigen Jahren mit der Hochschule Karlsruhe zusammen an einer Webanwendung. Diese Webanwendung soll die Geschäftsprozesse der Bewegung unterstützen und verwalten. Im Laufe der letzten Jahre ist nun aus der ursprünglichen Idee eine komplexe Webanwendung entstanden, die nun gründlich auf Fehler überprüft und gegebenfalls ausgebessert werden soll. 
+Die ohne Zins Bewegung Stuttgart arbeitet nun seit einigen Jahren mit der Hochschule Karlsruhe zusammen an einer Webanwendung. Diese Webanwendung soll die Geschäftsprozesse der Bewegung unterstützen und verwalten. Im Laufe der letzten Jahre ist aus der ursprünglichen Idee eine komplexe Webanwendung entstanden, die nun gründlich auf Fehler überprüft und gegebenfalls ausgebessert werden soll. 
 Diese Aufgabe wird nun uns, Herr Briewig und Herr Leibel, anvertraut. Im Folgenden wird eine detaillierte Aufgabenstellung formuliert, an dieser sich diese Projektarbeit messen lassen wird.  
 
-\section{Aufgabe}
+\section{Aufgabenbeschreibung}
+Die Aufgaben dieser Projektarbeit sind recht vielfältig. Sie lassen sich in 3 Phasen einteilen. Darüber hinaus gibt es für jede Phase ein Zeitlimit von etwa 3 Wochen.
+
+\subsection{Phase 1: Korrekturen, Dokumentieren}
+\textbf {(Duedate: 02.05.2013)}\\
+% Korrekturen am ER Diagramm/Relationenmodell
+%    -    ER Diagramm soll der Implementierung entsprichen
+%    -    Darstellung aller PKs und FKs für den nicht historisierten Fall
+Die erste Phase wird von den Korrekturen am ER-Diagramm und dem dazugehörigen Relationsmodell dominiert. Das ER-Diagramm weißt noch ein paar Unstimmigkeiten auf, die im Laufe der Zeit entstanden sind. Diese gilt es zu bereinigen und die vorgenommenen Korrekturen in der Implementierung umzusetzen. Ziel ist ein ER-Diagramm, welches den nicht-historisierten Zustand darstellt. Dieses ER-Diagramm soll 1:1 in der Implementierung vorzufinden zu sein. Es soll vereinfacht dargestellt werden, lediglich die Primär- und Fremdschlüssel sollen den Entitäten als Zusatzinformationen dienen.\\
+
+% Dokumentieren:
+%    -    DB-Migration, wie geht das?
+%    -    Deployment, wie funktioniert das?
+Neben den Korrekturen am ER-Diagramm sind Dokumentationen der Vorgehens- und Funktionsweise des Datenbank Migrationstools notwendig. Hierfür sind zwei Batch-Skripte angefertigt worden, deren Nutzungs- und Funktionsweisen zu dokumentieren sind.\\
+
+Im Laufe der Zeit sind die verschiedensten Techniken zur Bereitstellung und Versionierung der o/zb Webanwendung verwendet worden. Es gilt nun, einen einheitlichen Vorgang zu definieren der für die nachfolgenden Projektgruppen verwendet werden soll. Basierend auf der anzufertigten Dokumentation, kann die Bereitstellung und Versionierung stetig verbessert werden.\\
+
+% Allgemeine Korrekturen:
+%    -    WebImport
+Zusätzlich soll in dieser Phase ein kritischer Fehler bereinigt werden. Der WebImport, welcher für den Import der Kontobewegungen verantwortlich ist, arbeitet nicht richtig. Zur Zeit ist der Datei-Upload auf dem Testsystem nicht möglich. Darüber hinaus kommt es bei einer lokalen Testumgebung zu Laufzeitfehlern. Auch die im Webfrontend angezeigte Anzahl der importierten Datensätze ist nicht korrekt.
+
+\subsection{Phase 2: Korrektur der Punkteberechnung, Word Export}
+\textbf {(Duedate: 23.05.2013)}\\
+% Allgemeine Korrekturen:
+%    -    Korrektur der Punkteberechnung
+% Feature:
+%    -    Dokumente (Word,PDF) generieren
+
+\subsection{Phase 3: Einrichtung Testdriven Development}
+\textbf {(Duedate: 13.06.2013)}\\
 % Tests
-% Dokumente (Word,PDF) generieren
+%    -    Beschreibung der Testumgebung mit Sublime 2(?) und RSpec
+%    -    Testfälle entwickeln
+
 
 \clearpage
 \chapter{Hintergrundwissen}
 \section{Das o/ZB Projekt}
 
-\clearpage
+\section{Das Testsystem}\label{sec:Das_Testsystem}
+% URL, Maschine, Versionen... 
+
 \section{Test-Driven Development}
 \subsection{Definition}
 \subsection{Unit-Tests}
@@ -118,22 +152,72 @@ Diese Aufgabe wird nun uns, Herr Briewig und Herr Leibel, anvertraut. Im Folgend
 % Wie sieht der aus?
 
 \clearpage
-\chapter{Analyse}
-\section{TDD}
+\chapter{Allgemeine Dokumentationen}
+\section{Das korrigierte ER-Diagramm}
+% Wie sieht es aus?
+% Was wurde angepasst?
+% Beschreibung der Veränderungen am Code
+
+\section{Das korrigierte Relationenmodell}
+% Darstellung des ER-Diagramms in Tabellenform
+
+\section{Deployment und Versionskontrolle}
+In diesem Abschnitt werden die Begriffe \textit{Deployment} und \textit{Versionskontrolle} erläutert. In jedem Teilabschnitt wird die aktuelle Umsetzung beschrieben. Der letzte Teil dieses Abschnitts beschäftigt sich mit dem \textit{Commit \& Deployment Workflow}.
+
+\subsection{Deployment}
+% Was ist das? Deployment - Capistrano, Versionskontrolle - Git
+In der Softwareentwicklung wird unter dem Begriff \textit{Deployment} der Prozess zur \textit{Bereitstellung} und \textit{Verteilung} einer Software verstanden. Der Prozess ist von Software zu Software unterschiedlich, da z.B. die Konfiguration einer Software immer an die Umgebung angepasst werden muss, in der diese zum Einsatz kommt.\\
+
+Im Falle der o/zb muss der Deployment Prozess die Bereitstellung der o/zb Webanwendung auf einem Server bewerkstelligen. Dies wirft die folgenden Fragen auf: Welcher Webserver wird eingesetzt? Wie gelangt die RoR Webanwendung auf den Server? Und wie arbeiten Anwendungsserver und Webserver auf dem Server zusammen? Diese Fragen werden die nun folgenden Teilabschnitte (kurz) klären.
+
+\subsubsection{Webserver - Apache}
+Ein Webserver überträgt Daten an einen Client. Dabei kann dieser die Daten nur lokal oder auch weltweit zur Verfügung stellen. Er dient im Falle der o/zb Webanwendung dazu, die von RoR erzeugten Webseiten an den Clienten auszuliefern. Sobald er die Anfrage eines Clienten aufgenommen und an die RoR Anwendung weitergeleitet hat, verarbeitet die RoR Anwendung diese und präsentiert dem Webserver das Ergebnis. Der Webserver sendet nun diese Daten an den Clienten.\\
+
+Auf dem Testsystem der o/zb (s. \vref{sec:Das_Testsystem}) kommt ein Apache Webserver in der Version 2.2.16 zum Einsatz. Auf dem Testsystem laufen bis zu vier Apache Instanzen gleichzeitig, um die Anfragen der Benutzer bedienen zu können. 
+
+\subsubsection{Application Server - Passenger}
+\subsubsection{Capistrano}
+\subsubsection{Das Deploymentskript}
+
+\subsection{Versionskontrolle}
+\subsubsection{Git}
+% Wie sieht aktuelle Setup aus?
+
+\subsection{Workflow, Umsetzung}
+% Workflow: Git add/commit/push, cap deploy
+
+\section{Datenbank Migration}
+% Welche Skript gibt es und was tun diese?
+% Wie wird das auf dem Server ausgeführt?
+
+\clearpage
+\chapter{Korrekturen, Bugfixes}
+% WebImport
+\section{WebImport}
+
+% Punkteberechnung
+\section{Punkteberechnung}
+
+\clearpage
+\chapter{Testdriven Development}
+\section{Analyse}
 % Ist-Analyse: Es gibt keine Tests, Fehlerbehaftete Anwendung
 % Soll-Analyse: bugfrei durch TDD. Was müssen wir dafür testen?
 % Auswertung der bisherigen manuellen Tests
 % Implementierte Geschäftsprozesse verstehen (für die spätere Entwicklung der Tests)
 % Vorgehensweise
+\section{Implementierung}
+\subsection{RSpec}
 
+\chapter{Neue Features}
 \section{Dokumenten-Export}
+\subsection{Analyse}
 % Was muss in den Darlehensvertrag? s.Hintergrundwissen
 % Muss er noch im Nachhinein verändert werden? -> Word oder PDF?
-
+\subsection{Implementierung}
 \clearpage
-\chapter{Implementierung}
 
-\clearpage
+
 \chapter{Ergebnis und Ausblick}
 \section{Ergebnis}
 \section{Ausblick}
