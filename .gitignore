@@ -6,7 +6,7 @@ ozbapp/log/
 config/deploy.rb
 ozbapp/log/development.log
 ozbapp/log/production.log
-
+config/cap_notify.rb
 
 
 #################
