@@ -19,7 +19,7 @@
 \usepackage[ngerman]{babel}
 \usepackage{graphicx}
 \usepackage[left=20mm, right=20mm, top=25mm]{geometry}
-\usepackage{listings} \lstset{numbers=left, numberstyle=\tiny, numbersep=5pt, basicstyle =\footnotesize} 
+\usepackage{listings} \lstset{numbers=left, numberstyle=\tiny, numbersep=5pt, basicstyle =\footnotesize\ttfamily, showspaces=false, showstringspaces=false} 
 \lstset{language=ruby}
 \usepackage{url}
 \setlength\parindent{0pt} 
@@ -91,6 +91,7 @@ Fachbereich: Informatik (Master)
 	\acro{AP}{Arbeitspaket}
 	\acro{o/ZB}{Ohne Zins Bewegung}
      \acro{RoR}{Ruby on Rails}
+     \acro{SSH}{Secure Shell}
 \end{acronym}
 
 \newpage
@@ -190,13 +191,13 @@ Für einen stabilen und guten Softwareentwicklungsprozess ist eine Versionsverwa
 \subsubsection{Git}
 % Wie sieht aktuelle Setup aus?
 Für das Projekt der o/zb Stuttgart wird die weit verbreitete, freie Software \textit{Git} verwendet. Es wurde ursprünglich für die Quelltext-Verwaltung des Linux Kernels entwickelt.\\
-Git ist im Gegensatz zu den Traditionellen Versionsverwaltungen wie z.B. \textit{SVN} oder \textit{Mercurial} ein verteiltes Versionsverwaltungssystem. Es gibt keinen zentralen Server auf dem das Projekt gespeichert wird, sodass jeder Entwickler eine lokale Kopie des gesamten Repositorys vorliegen hat - \textit{clone}. Dem zur Folge hat der Entwickler die Möglichkeit auch ohne Netzwerkzugriff die einzelnen Zustände seiner Arbeit festzuhalten - \textit{commit}. Besteht wieder ein Netzwerkzugriff kann er seine Änderungen auf das von den Entwicklern gemeinsam genutztes Projekt-Depot (\textit{Repository}) hochladen - \textit{push}. Zuvor muss er sich jedoch mit dem gemeinsamen Repository wieder synchronisieren - \textit{pull}. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Git}}\\
+Git ist im Gegensatz zu den Traditionellen Versionsverwaltungen wie z.B. \textit{SVN} oder \textit{Mercurial} ein verteiltes Versionsverwaltungssystem. Es gibt keinen zentralen Server auf dem das Projekt gespeichert wird, sodass jeder Entwickler eine lokale Kopie des gesamten Repositorys vorliegen hat - \textit{clone}. Dem zur Folge hat der Entwickler die Möglichkeit auch ohne Netzwerkzugriff die einzelnen Zustände seiner Arbeit festzuhalten - \textit{commit}. Besteht wieder ein Netzwerkzugriff kann er seine Änderungen auf das von den Entwicklern gemeinsam genutztes Projekt-Depot (\textit{Repository}) hochladen - \textit{push}. Zuvor muss er sich jedoch mit dem gemeinsamen Repository synchronisieren - \textit{pull}. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Git}}\\
 
 Das aktuelle, gemeinsame Repository des o/zb Projektes wird von dem bekannten Git-Hoster \textit{GitHub} bereitgestellt. Die Adresse zum Repository lautet: \url{https://github.com/Avenel/FirstApp}.
 
 \subsection{Workflow, Umsetzung}
 % Workflow: Git add/commit/push, cap deploy
-In diesem Teilabschnitt werden die vorher erläuterten Konzepte \textit{Deployment} und \textit{Versionsverwaltung} in Zusammenhang gebracht. Es wird ein simpler Arbeitsablauf (\glqq Workflow\grqq) defininert, der den Deployment Prozess beschreibt. Dieser Arbeitsablauf wird in Abbildung \vref{fig:deployment_workflow} dargestellt.
+In diesem Teilabschnitt werden die vorher erläuterten Konzepte \textit{Deployment} und \textit{Versionsverwaltung} in Zusammenhang gebracht. Es wird ein Arbeitsablauf (\glqq Workflow\grqq) defininert, der den Deployment Prozess beschreibt. Dieser Arbeitsablauf wird in Abbildung \vref{fig:deployment_workflow} dargestellt.
 
 \begin{figure}[H]
      \begin{center}
@@ -206,33 +207,38 @@ In diesem Teilabschnitt werden die vorher erläuterten Konzepte \textit{Deployme
      \label{fig:deployment_workflow}
 \end{figure} 
 
-Möchte der Entwickler seine Arbeit auf dem Server bereitstellen, ist er angehalten sich den aktuellen Projektstatus aus dem gemeinsamen Repository zu holen. Er ist dafür verantwortlich sein Projekt vor jedem Commit auf den neuesten Stand zu bringen. Dies geschieht mit der Anweisung \textit{git pull}. Kommt es zu (Datei-) Konflikten die Git nicht automatisch selber lösen kann, muss der Entwickler selber eingreifen (\textit{merge}). Er wiederholt diesen Vorgang solange, bis sein Projekt konfliktfrei und auf dem neuesten Stand ist. Erst dann kann er ausgewählte Änderungen am Projekt für einen neuen \textit{Commit} hinzufügen (\textit{git add}). Im Anschluss schließt er den Commit-Prozess mit dem Befehl \textit{git commit -am "Kommentar"} ab. Damit auch das gemeinsame Repository den aktuellsten Stand gebracht wird, erfolgt der Befehl \textit{git push}. Dieser lädt die neuesten Änderungen hoch.\\
+Möchte der Entwickler seine Arbeit auf dem Server bereitstellen, ist er angehalten sich den aktuellen Projektstatus aus dem gemeinsamen Repository zu holen. Er ist dafür verantwortlich sein Projekt vor jedem Commit auf den neuesten Stand zu bringen. Dies geschieht mit der Anweisung \textit{git pull}. Kommt es zu (Datei-) Konflikten die Git nicht automatisch selber lösen kann, muss der Entwickler selber eingreifen (\textit{merge}). Er wiederholt diesen Vorgang solange, bis sein Projekt konfliktfrei und auf dem neuesten Stand ist. Erst dann kann er ausgewählte Änderungen am Projekt für einen neuen \textit{Commit} hinzufügen (\textit{git add}). Im Anschluss schließt er den Commit-Prozess mit dem Befehl \textit{git commit -am "Kommentar"} ab. Damit auch das gemeinsame Repository auf den aktuellsten Stand gebracht wird, erfolgt der Befehl \textit{git push}. Dieser lädt die neuesten Änderungen hoch.\\
 
 Wurde das gemeinsame Repository nun auf den neuesten Stand gebracht, kann der letzte Schritt im Deployment Workflow durchgeführt werden. Mit \textit{cap deploy} wird das, im nächsten Abschnitt beschriebene, Deploymentskript ausgeführt. 
 
 \subsubsection{Das Capistrano Deploymentskript (Rezept)}\label{subsec:deployment_recipe}
+Das Capistrano Deploymentskript bzw. Rezept ist vorerst nicht im öffentlich zugänglichen Git Repository zu finden, da es durchaus sensible Informationen enthält. Ist es vorhanden befindet es sich hier: \textit{config/deploy.rb}.\\
+In dem Deploymentskript werden zuerst sämtliche Variablen festgelegt, der Name der Anwendung und die für einen sicheren SSH Zugriff notwendigen Daten (Serveradresse, sowie auch der Deployment-Benutzer: \glqq ozbapp\grqq). Darüber hinaus werden Informationen zum Repository angegeben, in dem die Projektdateien liegen. Im Anschluss wird der Deployment Ort auf dem Server, sowie eigene Aktionen während des Deployment Vorgangs festgelegt.
 
 \begin{lstlisting}[frame=single, caption=Capistranot Deployment Rezept, tabsize=2, flexiblecolumns=true, captionpos=b]{Deploy.rb}
+# Name application
 set :application, "ozbapp"
 
+# Setup deployment user and server ip
 server "188.64.45.50", :web, :app, :db, :primary => true
+set :user, "ozbapp"
+set :use_sudo, false
+ssh_options[:forward_agent] = true
 
+# Setup git repository information
 set :scm, "git"
 set :repository, "https://github.com/Avenel/FirstApp.git"
 set :branch, "master"
 
-set :user, "ozbapp"
+# Setup where to deploy the app on the server
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
-set :use_sudo, false
-
-ssh_options[:forward_agent] = true
 
 namespace :deploy do
 
      desc "Tell Passenger to restart the app."
      task :restart do
-          run "touch #{current_path}/ozbapp/tmp/restart.txt"
+          run touch "#{current_path}/ozbapp/tmp/restart.txt"
      end
 
      desc "Renew SymLink"
@@ -243,10 +249,11 @@ namespace :deploy do
 
 end
 
+# Execute renew_symlink after update_code
 after 'deploy:update_code', 'deploy:renew_symlink'
 \end{lstlisting}
 
-
+\clearpage
 \section{Datenbank Migration}
 % Welche Skript gibt es und was tun diese?
 % Wie wird das auf dem Server ausgeführt?

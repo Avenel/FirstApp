@@ -25,22 +25,22 @@
 \contentsline {subsubsection}{Git}{6}{section*.6}
 \contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{6}{subsection.3.3.3}
 \contentsline {subsubsection}{Das Capistrano Deploymentskript (Rezept)}{7}{section*.7}
-\contentsline {section}{\numberline {3.4}Datenbank Migration}{8}{section.3.4}
-\contentsline {chapter}{\numberline {4}Korrekturen, Bugfixes}{9}{chapter.4}
-\contentsline {section}{\numberline {4.1}WebImport}{9}{section.4.1}
-\contentsline {section}{\numberline {4.2}Punkteberechnung}{9}{section.4.2}
-\contentsline {chapter}{\numberline {5}Testdriven Development}{10}{chapter.5}
-\contentsline {section}{\numberline {5.1}Analyse}{10}{section.5.1}
-\contentsline {section}{\numberline {5.2}Implementierung}{10}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}RSpec}{10}{subsection.5.2.1}
-\contentsline {chapter}{\numberline {6}Neue Features}{11}{chapter.6}
-\contentsline {section}{\numberline {6.1}Dokumenten-Export}{11}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}Analyse}{11}{subsection.6.1.1}
-\contentsline {subsection}{\numberline {6.1.2}Implementierung}{11}{subsection.6.1.2}
-\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{12}{chapter.7}
-\contentsline {section}{\numberline {7.1}Ergebnis}{12}{section.7.1}
-\contentsline {section}{\numberline {7.2}Ausblick}{12}{section.7.2}
-\contentsline {chapter}{\numberline {8}Anhang}{13}{chapter.8}
-\contentsline {chapter}{Abbildungsverzeichnis}{14}{chapter*.8}
-\contentsline {chapter}{Tabellenverzeichnis}{15}{chapter*.9}
-\contentsline {chapter}{Listings}{16}{chapter*.10}
+\contentsline {section}{\numberline {3.4}Datenbank Migration}{9}{section.3.4}
+\contentsline {chapter}{\numberline {4}Korrekturen, Bugfixes}{10}{chapter.4}
+\contentsline {section}{\numberline {4.1}WebImport}{10}{section.4.1}
+\contentsline {section}{\numberline {4.2}Punkteberechnung}{10}{section.4.2}
+\contentsline {chapter}{\numberline {5}Testdriven Development}{11}{chapter.5}
+\contentsline {section}{\numberline {5.1}Analyse}{11}{section.5.1}
+\contentsline {section}{\numberline {5.2}Implementierung}{11}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}RSpec}{11}{subsection.5.2.1}
+\contentsline {chapter}{\numberline {6}Neue Features}{12}{chapter.6}
+\contentsline {section}{\numberline {6.1}Dokumenten-Export}{12}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Analyse}{12}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Implementierung}{12}{subsection.6.1.2}
+\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{13}{chapter.7}
+\contentsline {section}{\numberline {7.1}Ergebnis}{13}{section.7.1}
+\contentsline {section}{\numberline {7.2}Ausblick}{13}{section.7.2}
+\contentsline {chapter}{\numberline {8}Anhang}{14}{chapter.8}
+\contentsline {chapter}{Abbildungsverzeichnis}{15}{chapter*.8}
+\contentsline {chapter}{Tabellenverzeichnis}{16}{chapter*.9}
+\contentsline {chapter}{Listings}{17}{chapter*.10}
