@@ -20,7 +20,7 @@
 \usepackage{graphicx}
 \usepackage[left=20mm, right=20mm, top=25mm]{geometry}
 \usepackage{listings} \lstset{numbers=left, numberstyle=\tiny, numbersep=5pt, basicstyle =\footnotesize} 
-\lstset{language=[sharp]C}
+\lstset{language=ruby}
 \usepackage{url}
 \setlength\parindent{0pt} 
 \usepackage{float}
@@ -196,10 +196,55 @@ Das aktuelle, gemeinsame Repository des o/zb Projektes wird von dem bekannten Gi
 
 \subsection{Workflow, Umsetzung}
 % Workflow: Git add/commit/push, cap deploy
+In diesem Teilabschnitt werden die vorher erläuterten Konzepte \textit{Deployment} und \textit{Versionsverwaltung} in Zusammenhang gebracht. Es wird ein simpler Arbeitsablauf (\glqq Workflow\grqq) defininert, der den Deployment Prozess beschreibt. Dieser Arbeitsablauf wird in Abbildung \vref{fig:deployment_workflow} dargestellt.
 
+\begin{figure}[H]
+     \begin{center}
+          \includegraphics[width=0.90\textwidth]{\string"Media/Deployment Workflow\string".pdf}
+     \end{center}
+     \caption{Der Deployment Workflow}
+     \label{fig:deployment_workflow}
+\end{figure} 
 
-\subsubsection{Das Deploymentskript (Rezept)}\label{subsec:deployment_recipe}
+Möchte der Entwickler seine Arbeit auf dem Server bereitstellen, ist er angehalten sich den aktuellen Projektstatus aus dem gemeinsamen Repository zu holen. Er ist dafür verantwortlich sein Projekt vor jedem Commit auf den neuesten Stand zu bringen. Dies geschieht mit der Anweisung \textit{git pull}. Kommt es zu (Datei-) Konflikten die Git nicht automatisch selber lösen kann, muss der Entwickler selber eingreifen (\textit{merge}). Er wiederholt diesen Vorgang solange, bis sein Projekt konfliktfrei und auf dem neuesten Stand ist. Erst dann kann er ausgewählte Änderungen am Projekt für einen neuen \textit{Commit} hinzufügen (\textit{git add}). Im Anschluss schließt er den Commit-Prozess mit dem Befehl \textit{git commit -am "Kommentar"} ab. Damit auch das gemeinsame Repository den aktuellsten Stand gebracht wird, erfolgt der Befehl \textit{git push}. Dieser lädt die neuesten Änderungen hoch.\\
 
+Wurde das gemeinsame Repository nun auf den neuesten Stand gebracht, kann der letzte Schritt im Deployment Workflow durchgeführt werden. Mit \textit{cap deploy} wird das, im nächsten Abschnitt beschriebene, Deploymentskript ausgeführt. 
+
+\subsubsection{Das Capistrano Deploymentskript (Rezept)}\label{subsec:deployment_recipe}
+
+\begin{lstlisting}[frame=single, caption=Capistranot Deployment Rezept, tabsize=2, flexiblecolumns=true, captionpos=b]{Deploy.rb}
+set :application, "ozbapp"
+
+server "188.64.45.50", :web, :app, :db, :primary => true
+
+set :scm, "git"
+set :repository, "https://github.com/Avenel/FirstApp.git"
+set :branch, "master"
+
+set :user, "ozbapp"
+set :deploy_to, "/home/#{user}/apps/#{application}"
+set :deploy_via, :remote_cache
+set :use_sudo, false
+
+ssh_options[:forward_agent] = true
+
+namespace :deploy do
+
+     desc "Tell Passenger to restart the app."
+     task :restart do
+          run "touch #{current_path}/ozbapp/tmp/restart.txt"
+     end
+
+     desc "Renew SymLink"
+     task :renew_symlink do
+          run "rm /home/ozbapp/ozbapp"
+          run "ln -s /home/ozbapp/apps/ozbapp/current/ozbapp /home/ozbapp/ozbapp"
+     end
+
+end
+
+after 'deploy:update_code', 'deploy:renew_symlink'
+\end{lstlisting}
 
 
 \section{Datenbank Migration}
