@@ -257,6 +257,15 @@ after 'deploy:update_code', 'deploy:renew_symlink'
 \section{Datenbank Migration}
 % Welche Skript gibt es und was tun diese?
 % Wie wird das auf dem Server ausgeführt?
+In der vergangenen Zeit wurde ein Java Datenbank Migrationstool geschrieben, welches die Daten von dem aktuellen Produktivsystem in das neue System übertragen soll. Dabei wird auch das Datenbankenschema verändert, da die beiden Schemata nicht mehr dieselben sind. Um den Umgang mit diesem Tool zu erleichtern sind zwei Batch Skripte angefertigt worden. Diese Batch Skript sind im Ordner \textit{tools} des Git Repositorys zu finden. Im Folgenden werden die Funktionsweise und die Benutzung dieser beiden Batch Skripte beschrieben. 
+
+\subsection{Datenbank migrieren}
+
+\lstinputlisting[language=bash, frame=single, caption=datenbank\_migrieren.sh, tabsize=2, flexiblecolumns=true, captionpos=b]{\string"../tools/datenbank_migrieren\string".sh}
+
+\subsection{Datenbank zurücksetzen}
+
+\lstinputlisting[language=bash, frame=single, caption=datenbank\_migrieren.sh, tabsize=2, flexiblecolumns=true, captionpos=b]{\string"../tools/datenbank_ruecksetzen\string".sh}
 
 \clearpage
 \chapter{Korrekturen, Bugfixes}
