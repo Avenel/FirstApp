@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class ZeKonto < ActiveRecord::Base
-  self.table_name = "zekonto"
+  self.table_name = "ZEKonto"
   self.primary_keys = :KtoNr, :GueltigVon
   
   # aliases

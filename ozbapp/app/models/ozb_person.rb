@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class OZBPerson < ActiveRecord::Base
-  self.table_name = "ozbperson"
+  self.table_name = "OZBPerson"
   
   alias_attribute :mnr, :Mnr
   alias_attribute :ueberPnr, :UeberPnr

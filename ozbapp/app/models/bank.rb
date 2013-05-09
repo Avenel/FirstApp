@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class Bank < ActiveRecord::Base
-  self.table_name = "bank"
+  self.table_name = "Bank"
   self.primary_key = :BLZ
   
   alias_attribute :bic, :BIC

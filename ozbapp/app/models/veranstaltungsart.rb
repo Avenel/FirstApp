@@ -1,5 +1,5 @@
 class Veranstaltungsart < ActiveRecord::Base
-	set_table_name "veranstaltungsart"
+	set_table_name "Veranstaltungsart"
 	set_primary_key  :VANr
 	
 	

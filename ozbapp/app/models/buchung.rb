@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Buchung < ActiveRecord::Base
-  self.table_name = "buchung"
+  self.table_name = "Buchung"
   self.primary_keys = :BuchJahr, :KtoNr, :BnKreis, :BelegNr, :Typ
   
   # attributes

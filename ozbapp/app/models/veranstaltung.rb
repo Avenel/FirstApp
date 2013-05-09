@@ -1,5 +1,5 @@
 class Veranstaltung < ActiveRecord::Base
-	self.set_table_name "veranstaltung"
+	self.set_table_name "Veranstaltung"
 	set_primary_key  :Vnr
 	
 	

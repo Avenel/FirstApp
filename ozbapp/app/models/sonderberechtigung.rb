@@ -9,7 +9,7 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class Sonderberechtigung < ActiveRecord::Base
-   self.table_name = "sonderberechtigung"
+   self.table_name = "Sonderberechtigung"
    
    alias_attribute :id, :ID   
    alias_attribute :mnr, :Mnr

@@ -2,7 +2,7 @@
 # encoding: utf-8
 class Telefon < ActiveRecord::Base
 
-  set_table_name "telefon"
+  set_table_name "Telefon"
 
   attr_accessible :Pnr, :LfdNr, :TelefonNr, :TelefonTyp, :SachPnr
 

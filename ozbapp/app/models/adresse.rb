@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Adresse < ActiveRecord::Base
-	set_table_name "adresse"
+	set_table_name "Adresse"
   set_primary_keys :Pnr, :GueltigVon
   
 #  alias_attribute :pnr, :Pnr

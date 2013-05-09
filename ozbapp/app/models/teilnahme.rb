@@ -1,7 +1,7 @@
 
 class Teilnahme < ActiveRecord::Base
 
-  set_table_name "teilnahme"
+  set_table_name "Teilnahme"
 
   attr_accessible :Pnr, :Vnr, :TeilnArt, :SachPnr
 

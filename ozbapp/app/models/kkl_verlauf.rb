@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 class KklVerlauf < ActiveRecord::Base
-  self.table_name = "kklverlauf"
+  self.table_name = "KKLVerlauf"
   self.primary_keys = :KtoNr#, :KKLAbDatum
   
   # aliases

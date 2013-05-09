@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class Buergschaft < ActiveRecord::Base 
-  self.table_name = "buergschaft"
+  self.table_name = "Buergschaft"
   self.primary_keys = :Pnr_B, :Mnr_G, :SichEndDatum
   
   # attributes

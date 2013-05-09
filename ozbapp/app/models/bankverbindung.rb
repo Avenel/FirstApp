@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class Bankverbindung < ActiveRecord::Base
-  self.table_name = "bankverbindung"
+  self.table_name = "Bankverbindung"
   self.primary_keys = :ID, :GueltigVon
   
   # aliases

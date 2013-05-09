@@ -1,5 +1,5 @@
 
-CREATE TABLE IF NOT EXISTS `person` (
+CREATE TABLE IF NOT EXISTS `Person` (
   `Pnr` int(10) unsigned NOT NULL,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `person` (
   PRIMARY KEY (Pnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `adresse` (
+CREATE TABLE IF NOT EXISTS `Adresse` (
   `Pnr` int(10) unsigned NOT NULL,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `adresse` (
   PRIMARY KEY (Pnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `ozbperson` (
+CREATE TABLE IF NOT EXISTS `OZBPerson` (
   `Mnr` int(10) unsigned NOT NULL ,    
   `UeberPnr` int(10) unsigned ,
   `Passwort` varchar(35) DEFAULT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `ozbperson` (
   PRIMARY KEY (Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `mitglied` (
+CREATE TABLE IF NOT EXISTS `Mitglied` (
   `Mnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `mitglied` (
   PRIMARY KEY (Mnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `gesellschafter` (
+CREATE TABLE IF NOT EXISTS `Gesellschafter` (
   `Mnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `gesellschafter` (
   KEY Mnr (Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `student` (
+CREATE TABLE IF NOT EXISTS `Student` (
   `Mnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   PRIMARY KEY (Mnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `foerdermitglied` (
+CREATE TABLE IF NOT EXISTS `Foerdermitglied` (
   `Pnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -100,14 +100,14 @@ CREATE TABLE IF NOT EXISTS `foerdermitglied` (
   PRIMARY KEY Pnr (Pnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `veranstaltungsart` (
+CREATE TABLE IF NOT EXISTS `Veranstaltungsart` (
   `VANr` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `VABezeichnung` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
  
   PRIMARY KEY (VANr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `veranstaltung` (
+CREATE TABLE IF NOT EXISTS `Veranstaltung` (
   `Vnr` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `VANr` int(11) unsigned NOT NULL,
   `VADatum` date NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `veranstaltung` (
   PRIMARY KEY (Vnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `teilnahme` (
+CREATE TABLE IF NOT EXISTS `Teilnahme` (
   `Pnr` int(10) unsigned NOT NULL ,
   `Vnr` int(5) unsigned NOT NULL ,  
   `TeilnArt` enum ('a','e','u','l', 'm'), 
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `teilnahme` (
   KEY Pnr (Pnr) 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `partner` (
+CREATE TABLE IF NOT EXISTS `Partner` (
   `Mnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `partner` (
   KEY MnrO (MnrO)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `telefon` (
+CREATE TABLE IF NOT EXISTS `Telefon` (
   `Pnr` int(10) unsigned NOT NULL ,
   `LfdNr` tinyint(2) unsigned NOT NULL ,
   `TelefonNr` varchar(15)  DEFAULT NULL,  
@@ -146,14 +146,14 @@ CREATE TABLE IF NOT EXISTS `telefon` (
   PRIMARY KEY (Pnr,LfdNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `tanliste` (
+CREATE TABLE IF NOT EXISTS `Tanliste` (
   `Mnr` int(10) unsigned NOT NULL ,  
   `ListNr` tinyint(2) unsigned NOT NULL ,    
   `Status` enum ('n','d','a'),    
   PRIMARY KEY (Mnr,ListNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `tan` (
+CREATE TABLE IF NOT EXISTS `Tan` (
   `Mnr` int(10) unsigned NOT NULL ,
   `ListNr` tinyint(2) unsigned NOT NULL ,     
   `TanNr` int(10) unsigned NOT NULL ,
@@ -164,14 +164,14 @@ CREATE TABLE IF NOT EXISTS `tan` (
   PRIMARY KEY (Mnr,ListNr,TanNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `bank` (
+CREATE TABLE IF NOT EXISTS `Bank` (
   `BLZ` int(10) unsigned NOT NULL,
   `BIC` char(10),
   `BankName` varchar(35) DEFAULT NULL,      
   PRIMARY KEY (`BLZ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `bankverbindung` (
+CREATE TABLE IF NOT EXISTS `Bankverbindung` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `bankverbindung` (
   FOREIGN KEY (BLZ) REFERENCES bank(BLZ)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `ozbkonto` (
+CREATE TABLE IF NOT EXISTS `OZBKonto` (
   `KtoNr` int(5) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `ozbkonto` (
   PRIMARY KEY (KtoNr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `eekonto` (
+CREATE TABLE IF NOT EXISTS `EEKonto` (
   `KtoNr` int(5) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
@@ -209,13 +209,13 @@ CREATE TABLE IF NOT EXISTS `eekonto` (
   FOREIGN KEY (BankID) REFERENCES bankverbindung(ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `projektgruppe` (
+CREATE TABLE IF NOT EXISTS `ProjektGruppe` (
   `Pgnr` tinyint(2) unsigned,
   `ProjGruppenBez` varchar(50) ,          
   PRIMARY KEY (`Pgnr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='';
 
-CREATE TABLE IF NOT EXISTS `zekonto` (
+CREATE TABLE IF NOT EXISTS `ZEKonto` (
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
   `KtoNr` int(5) unsigned NOT NULL ,
@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `zekonto` (
   KEY EEKtoNr (EEKtoNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1; 
 
-CREATE TABLE IF NOT EXISTS `buergschaft` (
+CREATE TABLE IF NOT EXISTS `Buergschaft` (
   `Pnr_B` int(10) unsigned NOT NULL ,
   `Mnr_G` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
@@ -255,14 +255,14 @@ CREATE TABLE IF NOT EXISTS `buergschaft` (
   PRIMARY KEY (Pnr_B,Mnr_G,GueltigVon,SichEndDatum)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `kontenklasse` (
+CREATE TABLE IF NOT EXISTS `KontenKlasse` (
   `KKL` char(1) NOT NULL ,
   `KKLAbDatum` date NOT NULL ,
   `Prozent`  decimal(5,2) unsigned NOT NULL DEFAULT '0.00',        
   PRIMARY KEY (KKL)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `kklverlauf` (
+CREATE TABLE IF NOT EXISTS `KKLVerlauf` (
   `KtoNr` int(5) unsigned NOT NULL ,
   `KKLAbDatum` date NOT NULL ,
   `KKL`  char(1) NOT NULL , 
@@ -270,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `kklverlauf` (
   PRIMARY KEY (KtoNr,KKLAbDatum)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `buchung` (
+CREATE TABLE IF NOT EXISTS `Buchung` (
   `BuchJahr` int(4) unsigned NOT NULL ,
   `KtoNr` int(5) unsigned NOT NULL ,
   `BnKreis`  char(2) NOT NULL , 
@@ -290,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `buchung` (
   KEY KtoNr(KtoNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `buchungonline` (
+CREATE TABLE IF NOT EXISTS `BuchungOnline` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Mnr` int(10) unsigned NOT NULL ,
   `UeberwDatum` date NOT NULL,
@@ -313,7 +313,7 @@ CREATE  TABLE IF NOT EXISTS `temp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='';
 
 
-CREATE TABLE IF NOT EXISTS `sonderberechtigung` (
+CREATE TABLE IF NOT EXISTS `Sonderberechtigung` (
   `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `Mnr` int(11) unsigned NOT NULL,
   `Email` varchar(40) NOT NULL,
@@ -322,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `sonderberechtigung` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 INSERT INTO sonderberechtigung VALUES(0, 13, "tkienle@t-online.de", "IT");
 
-CREATE TABLE IF NOT EXISTS `geschaeftsprozess` (
+CREATE TABLE IF NOT EXISTS `Geschaeftsprozess` (
   `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `Beschreibung` varchar(200) NOT NULL,
   `IT` tinyint(1) unsigned NOT NULL,

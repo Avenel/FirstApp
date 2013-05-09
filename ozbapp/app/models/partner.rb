@@ -2,7 +2,7 @@
 # encoding: utf-8
 class Partner < ActiveRecord::Base
 
-  set_table_name "partner"
+  set_table_name "Partner"
 
   set_primary_keys :Mnr, :GueltigVon
   

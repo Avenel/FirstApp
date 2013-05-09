@@ -1,6 +1,6 @@
 class Mitglied < ActiveRecord::Base
 
-  set_table_name "mitglied"
+  set_table_name "Mitglied"
   
   set_primary_keys :Mnr, :GueltigVon
   

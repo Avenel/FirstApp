@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class EeKonto < ActiveRecord::Base
-  self.table_name = "eekonto"
+  self.table_name = "EEKonto"
   self.primary_keys = :KtoNr, :GueltigVon # two primary keys define an unique record
   
   # aliases

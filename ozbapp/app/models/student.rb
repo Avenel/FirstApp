@@ -2,7 +2,7 @@
 # encoding: utf-8
 class Student < ActiveRecord::Base
   
-  set_table_name "student"
+  set_table_name "Student"
   set_primary_keys :Mnr, :GueltigVon
 
   alias_attribute :mnr, :Mnr

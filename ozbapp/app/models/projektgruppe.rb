@@ -2,7 +2,7 @@
 # encoding: utf-8
 class Projektgruppe < ActiveRecord::Base
 
-  set_table_name "projektgruppe"
+  set_table_name "ProjektGruppe"
 
   set_primary_key :Pgnr
   
