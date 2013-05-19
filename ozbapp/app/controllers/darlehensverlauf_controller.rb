@@ -1,16 +1,15 @@
 class DarlehensverlaufController < ApplicationController
-
-
+  
   def new
     @anzeigen = params[:anzeigen]
     @summeDerPunkte = 0
     @summeSoll = 0
     @summeHaben = 0
-    @differenzSollHaben
+    @differenzSollHaben = 0
     @tagesSaldoAltHaben = 0
     @notice = Array.new
     @errors  = Array.new
-    @Buchung = nil
+    @Buchungen = nil
 
     
     #prüfen ob das anfangsdatum in richtigem format angegeben wurde
@@ -26,219 +25,120 @@ class DarlehensverlaufController < ApplicationController
     
     #wurde der anzeigen button noch nicht betätigt. erster klick auf einen kontolink
     if @anzeigen.to_s.empty?
-      @Buchung = Buchung.where("KtoNr = ?", params[:KtoNr]).order("Belegdatum Desc, SollBetrag ASC, Typ DESC, PSaldoAcc DESC").limit(10).reverse
-      #prüfung ob es überhaupt buchungen gibt
-      if !@Buchung.empty?
+      # Die letzten 10 Buchungen, chronologisch aufsteigend sortiert
+      @Buchungen = Buchung.where("KtoNr = ?", params[:KtoNr]).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag").limit(10).reverse
 
-        if params[:EEoZEkonto] == "EE"
-          @bankId = EeKonto.where("KtoNr = ?", params[:KtoNr]).first.bankId
-        else
-          @EeKtoNrZumZeKto = ZeKonto.where("KtoNr = ?", params[:KtoNr]).first.eeKtoNr
-          @bankId = EeKonto.where("KtoNr = ?", @EeKtoNrZumZeKto).first.bankId
-        end
-
-        @pnrDesInhabers = Bankverbindung.where("ID = ?", @bankId).first.pnr
-        @personZurPnr = Person.where("Pnr = ?", @pnrDesInhabers).first
-        @nameZurPerson = @personZurPnr.name
-        @vornameZurPerson = @personZurPnr.vorname
-
-        @vonDatum = @Buchung.first.Belegdatum.strftime("%d.%m.%Y")
-        @bisDatum = Date.current().strftime("%d.%m.%Y")
-        @vorBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = ?", params[:KtoNr], @vonDatum.to_date, "w").order("Belegdatum DESC").limit(1)
-
-        if @vorBuchung.empty?
-          @vorBuchung = @Buchung
-        end
-
-         @tagesSaldoSpalte = @vorBuchung.first.dup
-         @tagesSaldoAltHaben = @vorBuchung.first.WSaldoAcc
-         @tagesSaldoAltPunkte = @vorBuchung.first.Punkte
-
-         @kklVerlaufKlasse = KklVerlauf.where("KtoNr = ?", params[:KtoNr]).order("KKLAbDatum DESC").limit(1).first.KKL
-          @kklZhal = 1
-          case @kklVerlaufKlasse
-            when "A"
-              @kklZhal = 1
-            when "B"
-              @kklZhal = 0.75
-            when "C"
-              @kklZhal = 0.50
-            when "D"
-              @kklZhal = 0.25
-            when "E"
-              @kklZhal = 0
-          end
-
-          @tageVorbuchungBisVonDat = (@vonDatum.to_date - @vorBuchung.first.Belegdatum.to_date).to_i
-
-          @tagesSaldoALtGesamtPunkte = (((@tageVorbuchungBisVonDat * @tagesSaldoAltHaben) / 30) * @kklZhal) + @tagesSaldoAltPunkte
-        #bestimmen und festlegen des vorigen Tagessaldos oberste zeile in der anzeige
-        #bestimmung ob es soll oder haben ist
-        if @tagesSaldoAltHaben > 0
-            @tagesSaldoSpalte.Habenbetrag = @tagesSaldoAltHaben
-            @tagesSaldoSpalte.Sollbetrag = "0"
-          else
-            @tagesSaldoSpalte.Habenbetrag = "0"
-            @tagesSaldoSpalte.Sollbetrag = @tagesSaldoAltHaben * (-1)
-          end   
-
-        @tagesSaldoSpalte.Buchungstext = "Tagessaldo"
-        @tagesSaldoSpalte.Typ = "w"
-        @tagesSaldoSpalte.Belegdatum = @vonDatum
-        @tagesSaldoSpalte.PSaldoAcc = @tagesSaldoALtGesamtPunkte
-
-        #bestimmen der punkte in der ersten zeile
-          @ersteZeilePunkte = (@vorBuchung.first.WSaldoAcc * (@Buchung.first.Belegdatum-@tagesSaldoSpalte.Belegdatum).to_i)/30 * @kklZhal
-          @Buchung.first.PSaldoAcc = @ersteZeilePunkte
-        
-        @Buchung.push(@tagesSaldoSpalte)
-        @Buchung.rotate!(-1)
-
-        #bestimmen der zeile von tt.mm.yyyy bis tt.mm.yyyy
-        @letztesBuchungsdatum = (@Buchung.last.Belegdatum)
-          @buchungZumLeztenDatum = Buchung.where("KtoNr = ? AND Belegdatum <= ? AND Typ = ?", params[:KtoNr], @letztesBuchungsdatum, "w").order("Belegdatum DESC, HabenBetrag DESC")
-          @saldoDesLetztenBuchdatums = @buchungZumLeztenDatum.first.WSaldoAcc
-
-          @differenzDerDaten = (@bisDatum.to_date-@buchungZumLeztenDatum.first.Belegdatum.to_date).to_i
-
-          @punkteZwischenDenDaten = (((@differenzDerDaten * @saldoDesLetztenBuchdatums) / 30) * @kklZhal).to_i
-
-          @zeileDerPunkte = @Buchung.first.dup
-          @zeileDerPunkte.Buchungstext = "Punkte von " + @buchungZumLeztenDatum.first.Belegdatum.strftime("%d.%m.%Y") + " bis " + @bisDatum
-          @zeileDerPunkte.Belegdatum = @bisDatum
-          @zeileDerPunkte.Sollbetrag = 0
-          @zeileDerPunkte.Habenbetrag = 0
-          @zeileDerPunkte.PSaldoAcc = @punkteZwischenDenDaten
-          @zeileDerPunkte.WSaldoAcc = 0
-          @zeileDerPunkte.Typ = "w"
-
-          @Buchung.push(@zeileDerPunkte)
-
-      #gab es noch keine buchungen wird eine warnung ausgegeben
-      else
-        @notice.push("In dem angegebenen Zeitraum gibt es noch keine Buchungen.")
-      end
+      # Datum setzen (die letzten 10 Buchungen entscheiden)
+      @vonDatum = @Buchungen.first.Belegdatum.strftime("%d.%m.%Y")
+      @bisDatum = Date.current().strftime("%d.%m.%Y")
     #wurde der anzeigen button geklickt werden die buchungen in dem angegebenen zeitraum angezeigt
     else
       #prüfung ob ein ein datum in falschem format eingegeben wurde
-      if !@vonDatum.to_s.empty? || !@bisDatum.to_s.empty?
-        @Buchung = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], params[:vonDatum].to_date, params[:bisDatum].to_date).order("Belegdatum Desc, SollBetrag ASC, Typ DESC, PSaldoAcc DESC").reverse
-        #prüfung ob es überhaupt buchungen gab
-        if !@Buchung.empty?
-          @vorBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = ?", params[:KtoNr], @Buchung.first.Belegdatum, "w").order("BuchDatum DESC").limit(1)
-          if params[:EEoZEkonto] == "ZE"
-            if (@vorBuchung.empty? or @Buchung.first.PSaldoAcc == 0)
-              @vorBuchung = @Buchung
-              @wiederverwendungDesKontos = true
-            end
-          else
-            if @vorBuchung.empty?
-                @vorBuchung = @Buchung
-            end
-            @wiederverwendungDesKontos = false
-          end
-
-          if params[:EEoZEkonto] == "EE"
-            @bankId = EeKonto.where("KtoNr = ?", params[:KtoNr]).first.bankId
-          else
-            @EeKtoNrZumZeKto = ZeKonto.where("KtoNr = ?", params[:KtoNr]).first.eeKtoNr
-            @bankId = EeKonto.where("KtoNr = ?", @EeKtoNrZumZeKto).first.bankId
-          end
-
-          @pnrDesInhabers = Bankverbindung.where("ID = ?", @bankId).first.pnr
-          @personZurPnr = Person.where("Pnr = ?", @pnrDesInhabers).first
-          @nameZurPerson = @personZurPnr.name
-          @vornameZurPerson = @personZurPnr.vorname
-
-
-
-            #bestimmen und festlegen des vorigen Tagessaldos
-          @tagesSaldoSpalte = @vorBuchung.first.dup
-
-          @kklVerlaufKlasse = KklVerlauf.where("KtoNr = ?", params[:KtoNr]).order("KKLAbDatum DESC").limit(1).first.KKL
-          @kklZhal = 1
-          case @kklVerlaufKlasse
-            when "A"
-              @kklZhal = 1
-            when "B"
-              @kklZhal = 0.75
-            when "C"
-              @kklZhal = 0.50
-            when "D"
-              @kklZhal = 0.25
-            when "E"
-              @kklZhal = 0
-          end
-          
-
-          if !@wiederverwendungDesKontos
-            @tagesSaldoAltHaben = @vorBuchung.first.WSaldoAcc
-            @tagesSaldoAltPunkte = @vorBuchung.first.Punkte
-
-
-            @tageVorbuchungBisVonDat = (params[:vonDatum].to_date - @vorBuchung.first.Belegdatum).to_i
-
-            @tagesSaldoALtGesamtPunkte = (((@tageVorbuchungBisVonDat * @tagesSaldoAltHaben) / 30) * @kklZhal) + @tagesSaldoAltPunkte
-            #bestimmung ob es soll oder haben ist
-            if @tagesSaldoAltHaben > 0
-              @tagesSaldoSpalte.Habenbetrag = @tagesSaldoAltHaben
-              @tagesSaldoSpalte.Sollbetrag = "0"
-            else
-              @tagesSaldoSpalte.Habenbetrag = "0"
-              @tagesSaldoSpalte.Sollbetrag = @tagesSaldoAltHaben * (-1)
-            end  
-            @tagesSaldoSpalte.Buchungstext = "Tagessaldo"
-            @tagesSaldoSpalte.Typ = "w"
-            @tagesSaldoSpalte.Belegdatum = params[:vonDatum]
-            @tagesSaldoSpalte.PSaldoAcc = @tagesSaldoALtGesamtPunkte
-          else
-            @tagesSaldoSpalte.Habenbetrag = 0
-            @tagesSaldoSpalte.Sollbetrag = 0
-            @tagesSaldoSpalte.Buchungstext = "Tagessaldo"
-            @tagesSaldoSpalte.Typ = "w"
-            @tagesSaldoSpalte.Belegdatum = params[:vonDatum]
-            @tagesSaldoSpalte.PSaldoAcc = 0
-          end
-
-          #bestimmen der punkte in der ersten zeile
-          @ersteZeilePunkte = (@vorBuchung.first.WSaldoAcc * (@Buchung.first.Belegdatum-@tagesSaldoSpalte.Belegdatum).to_i)/30 * @kklZhal
-          @Buchung.first.PSaldoAcc = @ersteZeilePunkte
-
-          @Buchung.push(@tagesSaldoSpalte)
-          @Buchung.rotate!(-1)
-
-          #bestimmung der zeile punkte vom tt.mm.yyyy bis tt.mm.yyyy
-          @letztesBuchungsdatum = (@Buchung.last.Belegdatum)
-          @buchungZumLeztenDatum = Buchung.where("KtoNr = ? AND Belegdatum <= ? AND Typ = ?", params[:KtoNr], @letztesBuchungsdatum, "w").order("Belegdatum DESC, HabenBetrag DESC")
-          @saldoDesLetztenBuchdatums = @buchungZumLeztenDatum.first.WSaldoAcc
-
-          @differenzDerDaten = (params[:bisDatum].to_date-@buchungZumLeztenDatum.first.Belegdatum.to_date).to_i
-
-          @punkteZwischenDenDaten = (((@differenzDerDaten * @saldoDesLetztenBuchdatums) / 30) * @kklZhal).to_i
-
-          @zeileDerPunkte = @Buchung.first.dup
-          @zeileDerPunkte.Buchungstext = "Punkte von " + @buchungZumLeztenDatum.first.Belegdatum.strftime("%d.%m.%Y") + " bis " + params[:bisDatum]
-          @zeileDerPunkte.Belegdatum = params[:bisDatum]
-          @zeileDerPunkte.Sollbetrag = 0
-          @zeileDerPunkte.Habenbetrag = 0
-          @zeileDerPunkte.PSaldoAcc = @punkteZwischenDenDaten
-          @zeileDerPunkte.WSaldoAcc = 0
-          @zeileDerPunkte.Typ = "w"
-
-          @Buchung.push(@zeileDerPunkte)
-        #gab es keine buchungen wird eine warnung ausgegeben
-        else
-          @notice.push("In dem angegebenen Zeitraum gibt es noch keine Buchungen.")
-        end
+      if !@vonDatum.to_s.empty? && !@bisDatum.to_s.empty?
+        @Buchungen = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], @vonDatum.to_date, @bisDatum.to_date).order("Belegdatum DESC, Typ ASC, PSaldoAcc ASC, SollBetrag").reverse
       #wurde ein datum in falschem format eingegeben wird eine fehlermeldung ausgegeben
       else
         @errors.push("Geben sie bitte ein valides Datum ein.")
       end
     end
 
-    #wenn es buchungen gibt wird bestimmt ob es sich um eine währungs oder um eine punkte buchung handelt
-    if !@Buchung.nil? && !@Buchung.empty? 
-      @Buchung.each do |buchung|
+    # Falls der Zeitraum richtig angegeben wurde und Buchungen vorhanden sind, fahre fort
+    if @errors.empty? &&  !@Buchungen.nil? && !@Buchungen.empty? then
+
+      # Daten zum Kontoinhaber
+      if params[:EEoZEkonto] == "EE"
+          @bankId = EeKonto.where("KtoNr = ?", params[:KtoNr]).first.bankId
+      else
+        @EeKtoNrZumZeKto = ZeKonto.where("KtoNr = ?", params[:KtoNr]).first.eeKtoNr
+        @bankId = EeKonto.where("KtoNr = ?", @EeKtoNrZumZeKto).first.bankId
+      end
+
+      @pnrDesInhabers = Bankverbindung.where("ID = ?", @bankId).first.pnr
+      @personZurPnr = Person.where("Pnr = ?", @pnrDesInhabers).first
+      @nameZurPerson = @personZurPnr.name
+      @vornameZurPerson = @personZurPnr.vorname
+
+      # Die (Währungs) Buchung vor der ersten Buchung in Buchungen finden
+      @vorherigeBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC").limit(1).first
+
+      # Gueltige KKL
+      kkl = getKKL(params[:KtoNr])
+
+      # Prüfen ob es sich um ein wiederverwendetes ZE Konto handelt
+      wurdeWiederverwendet = checkReuse(params[:KtoNr], @vonDatum.to_date, params[:EEoZEkonto])
+
+      # Fallunterscheidung:
+      # => wurde nicht wiederverwendet: Ganz normal verfahren
+      # => wurde wiederverwendet: Finde Zeitpunkt heraus und berechne ab diesem Zeitpunkt die Punkteanzahl für den Tagessaldo. Dieser hat auch Einfluss auf den ersten weiteren PSaldoAcc
+      if !wurdeWiederverwendet then 
+        if !@vorherigeBuchung.nil? then
+          # Punkte für den Tagessaldo der ersten Buchung berechnen = ((DiffTage * WSaldoAcc) / 30) * KKL + Punkte vorherigeBuchung
+          @tagessaldoPunkte = (((@vonDatum.to_date - @vorherigeBuchung.Belegdatum.to_date).to_i * @vorherigeBuchung.WSaldoAcc) / 30 * kkl) + @vorherigeBuchung.Punkte
+        else
+          @tagessaldoPunkte = 0
+        end
+      else 
+        # Berechne ab dem Zeitpunkt die Punkte, ab dem das Konto wiederverwendet wurde
+        # => kummuliere alle PSaldi
+        wurdeWiederverwendetAm = findLastResetBooking(params[:KtoNr]).Belegdatum.to_date
+
+        kummuliertePSaldi = 0
+        if @vonDatum.to_date >= wurdeWiederverwendetAm.to_date then
+          buchungen = Buchung.where("ktoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], wurdeWiederverwendetAm.to_date, @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC")
+          
+          buchungen.each do |buchung|
+            kummuliertePSaldi += buchung.PSaldoAcc
+          end
+        end
+
+        @tagessaldoPunkte = (((@vonDatum.to_date - @vorherigeBuchung.Belegdatum.to_date).to_i * @vorherigeBuchung.WSaldoAcc) / 30 * kkl) + kummuliertePSaldi
+      end
+
+      # Lege Tagessaldo Zeile an
+      # => Falls es vorherige Buchungen gibt, übernehme deren Saldi
+      # => Falls es keine vorherigen Buchungen gibt, setze Saldi auf 0
+      if !@vorherigeBuchung.nil? then
+        @tagesSaldoZeile = @vorherigeBuchung.dup
+         # bestimmung ob es soll oder haben ist
+        if @tagesSaldoZeile.WSaldoAcc > 0
+          @tagesSaldoZeile.Habenbetrag = @tagesSaldoZeile.WSaldoAcc
+          @tagesSaldoZeile.Sollbetrag = "0"
+        else
+          @tagesSaldoZeile.Habenbetrag = "0"
+          @tagesSaldoZeile.Sollbetrag = @tagesSaldoZeile.WSaldoAcc * (-1)
+        end   
+      else
+        @tagesSaldoZeile = @Buchungen.first.dup
+        @tagesSaldoZeile.Habenbetrag = 0
+        @tagesSaldoZeile.Sollbetrag = 0
+      end
+
+      @tagesSaldoZeile.Buchungstext = "Tagessaldo"
+      @tagesSaldoZeile.Typ = "w"
+      @tagesSaldoZeile.Belegdatum = @vonDatum
+      @tagesSaldoZeile.PSaldoAcc = @tagessaldoPunkte
+
+
+      # In der Tagessaldozeile bereits berücksichtigte Buchungen mit 0 Punkten bewerten
+      @Buchungen.each do |buchung|
+        if buchung.Belegdatum.to_date == @vonDatum.to_date then
+          buchung.PSaldoAcc = 0
+        end
+      end
+
+      # Die nachfolgend erste Währungsbuchung muss korrigiert werden
+      # => Punkte der Buchung -= Punkte im Intervall: Buchung.Belegdatum -  vonDatum
+      if !@Buchungen.first.nil? && !@vorherigeBuchung.nil? then
+        diffTage = (@Buchungen.first.Belegdatum.to_date - @vonDatum.to_date).to_i
+        @Buchungen.first.PSaldoAcc = (diffTage * @vorherigeBuchung.WSaldoAcc) / 30 * kkl
+      end
+
+      # Tagessaldozeile den Buchungen oben einfügen
+      @Buchungen.push(@tagesSaldoZeile)
+      @Buchungen.rotate!(-1)
+
+      # Berechne WSaldo und PSaldo
+      @Buchungen.each do |buchung|
         #ist es eine währungsbuchung
         if buchung.Typ == "w"
           @summeDerPunkte += buchung.PSaldoAcc
@@ -250,128 +150,94 @@ class DarlehensverlaufController < ApplicationController
             @summeDerPunkte += buchung.Habenbetrag
           else
             @summeDerPunkte += buchung.Sollbetrag
+          end
         end
-        end
-      end
-      # @summeDerPunkte -= @Buchung.first.PSaldoAcc
-      # @summeSoll -= @Buchung.first.Sollbetrag
-      # @summeHaben -= @Buchung.first.HabenBetrag
-      
+      end      
       @differenzSollHaben = @summeHaben - @summeSoll
-    end
+  
+      # Berechne erreichte Punkte in dem gegebenen Intervall (von - bis)
+      # Die letzte (Währungs) Buchung vor dem bisDatum finden
+      @letzteWaehrungsBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @bisDatum.to_date).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC").limit(1).first
+
+      # Berechne Punkte
+      diffTage = (@bisDatum.to_date - @letzteWaehrungsBuchung.Belegdatum.to_date).to_i
+      @punkteImIntervall = ((diffTage * @differenzSollHaben) / 30) * kkl
+
+      # Lege Zeile für die erreichten Punkte an
+      @erreichtePunkteZeile = @Buchungen.first.dup
+      @erreichtePunkteZeile.Buchungstext = "Punkte von " + @letzteWaehrungsBuchung.Belegdatum.strftime("%d.%m.%Y") + " bis " + @bisDatum
+      @erreichtePunkteZeile.Belegdatum = @bisDatum
+      @erreichtePunkteZeile.Sollbetrag = 0
+      @erreichtePunkteZeile.Habenbetrag = 0
+      @erreichtePunkteZeile.PSaldoAcc = @punkteImIntervall
+      @erreichtePunkteZeile.WSaldoAcc = 0
+      @erreichtePunkteZeile.Typ = "w"
+
+      @Buchungen.push(@erreichtePunkteZeile)
+
+      # Summiere erreichte Punkte auf
+      @summeDerPunkte += @punkteImIntervall
+
+    #gab es noch keine buchungen wird eine warnung ausgegeben
+    else
+      @notice.push("In dem angegebenen Zeitraum gibt es noch keine Buchungen.")   
+    end 
   end
 
 
 
   def kontoauszug
-    @Buchung = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:ktoNr].to_i, params[:vonDat], params[:bisDat]).order("Belegdatum Desc, SollBetrag ASC, Typ DESC, PSaldoAcc DESC").reverse
-    @vorBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = ?", params[:ktoNr].to_i, params[:vonDat], "w").order("Belegdatum DESC").limit(1)
+  end
+  
 
-
-    if params[:EEoZEkonto] == "ZE"
-      if (@vorBuchung.empty? or @Buchung.first.PSaldoAcc == 0)
-        @vorBuchung = @Buchung
-        @wiederverwendungDesKontos = true
-      end
-    else
-      if @vorBuchung.empty?
-          @vorBuchung = @Buchung
-      end
-      @wiederverwendungDesKontos = false
-    end
-    @tagesSaldoSpalte = @vorBuchung.first.dup
-
-    @kklVerlaufKlasse = KklVerlauf.where("KtoNr = ?", params[:ktoNr].to_i).order("KKLAbDatum DESC").limit(1).first.KKL
-    @kklZhal = 1
-    case @kklVerlaufKlasse
+  # Liefert anhand einer gegebenen Kontonummer die richtige Kontoklasse zurueck.
+  def getKKL(ktoNr)
+    kklVerlaufKlasse = KklVerlauf.where("KtoNr = ?", ktoNr).order("KKLAbDatum DESC").limit(1).first.KKL
+    case kklVerlaufKlasse
       when "A"
-        @kklZhal = 1
+        return 1
       when "B"
-        @kklZhal = 0.75
+        return 0.75
       when "C"
-        @kklZhal = 0.50
+        return 0.50
       when "D"
-        @kklZhal = 0.25
+        return 0.25
       when "E"
-        @kklZhal = 0
+        return 0
     end
 
-    if !@wiederverwendungDesKontos
-    @tagesSaldoAltHaben = @vorBuchung.first.WSaldoAcc
-    @tagesSaldoAltPunkte = @vorBuchung.first.Punkte
-    @tageVorbuchungBisVonDat = (params[:vonDat].to_date - @vorBuchung.first.Belegdatum).to_i
-    @tagesSaldoALtGesamtPunkte = (((@tageVorbuchungBisVonDat * @tagesSaldoAltHaben) / 30) * @kklZhal) + @tagesSaldoAltPunkte
+    return 0
+  end
 
-    #bestimmung ob es soll oder haben ist
-    if @tagesSaldoAltHaben > 0
-      @tagesSaldoSpalte.Habenbetrag = @tagesSaldoAltHaben
-      @tagesSaldoSpalte.Sollbetrag = "0"
-    else
-      @tagesSaldoSpalte.Habenbetrag = "0"
-      @tagesSaldoSpalte.Sollbetrag = @tagesSaldoAltHaben * (-1)
-    end
 
-    @tagesSaldoSpalte.Buchungstext = "Tagessaldo"
-    @tagesSaldoSpalte.Typ = "w"
-    @tagesSaldoSpalte.Belegdatum = params[:vonDat]
-    @tagesSaldoSpalte.PSaldoAcc = @tagesSaldoALtGesamtPunkte
-    else
-      @tagesSaldoSpalte.Habenbetrag = 0
-      @tagesSaldoSpalte.Sollbetrag = 0
-      @tagesSaldoSpalte.Buchungstext = "Tagessaldo"
-      @tagesSaldoSpalte.Typ = "w"
-      @tagesSaldoSpalte.Belegdatum = params[:vonDat]
-      @tagesSaldoSpalte.PSaldoAcc = 0
-    end
-
-    #bestimmen der punkte in der ersten zeile
-          @ersteZeilePunkte = (@vorBuchung.first.WSaldoAcc * (@Buchung.first.Belegdatum-@tagesSaldoSpalte.Belegdatum).to_i)/30 * @kklZhal
-          @Buchung.first.PSaldoAcc = @ersteZeilePunkte
-
-    @Buchung.push(@tagesSaldoSpalte)
-    @Buchung.rotate!(-1)
-
-    #bestimmung der zeile punkte vom tt.mm.yyyy bis tt.mm.yyyy
-    @letztesBuchungsdatum = (@Buchung.last.Belegdatum)
-    @buchungZumLeztenDatum = Buchung.where("KtoNr = ? AND Belegdatum <= ? AND Typ = ?", params[:ktoNr], @letztesBuchungsdatum, "w").order("Belegdatum DESC, HabenBetrag DESC")
-    @saldoDesLetztenBuchdatums = @buchungZumLeztenDatum.first.WSaldoAcc
-
-    @differenzDerDaten = (params[:bisDat].to_date-@buchungZumLeztenDatum.first.Belegdatum.to_date).to_i
-
-    @punkteZwischenDenDaten = (((@differenzDerDaten * @saldoDesLetztenBuchdatums) / 30) * @kklZhal).to_i
-
-    @zeileDerPunkte = @Buchung.first.dup
-    @zeileDerPunkte.Buchungstext = "Punkte von " + @buchungZumLeztenDatum.first.Belegdatum.strftime("%d.%m.%Y") + " bis " + params[:bisDat]
-    @zeileDerPunkte.Belegdatum = params[:bisDat]
-    @zeileDerPunkte.Sollbetrag = 0
-    @zeileDerPunkte.Habenbetrag = 0
-    @zeileDerPunkte.PSaldoAcc = @punkteZwischenDenDaten
-    @zeileDerPunkte.WSaldoAcc = 0
-    @zeileDerPunkte.Typ = "w"
-
-    @Buchung.push(@zeileDerPunkte)
-
-    @summeDerPunkte = 0
-    @summeSoll = 0
-    @summeHaben = 0
-
-    if !@Buchung.nil? && !@Buchung.empty? 
-    @Buchung.each do |buchung|
-      #ist es eine währungsbuchung
-      if buchung.Typ == "w"
-        @summeDerPunkte += buchung.PSaldoAcc
-        @summeSoll += buchung.Sollbetrag
-        @summeHaben += buchung.Habenbetrag
-      #ist es eine punktebuchung
-      else
-        if buchung.Sollbetrag == 0 and buchung.Habenbetrag != 0
-          @summeDerPunkte += buchung.Habenbetrag
-        else
-          @summeDerPunkte += buchung.Sollbetrag
-        end
+  # Ein Konto wurde wiederverwendet falls:
+  # => es ein ZE Konto ist
+  # => es vor dem angegebenen Startzeitpunkt eine Buchung mit PSaldoAcc = 0 gegeben hat
+  def checkReuse(ktoNr, vonDatum, kontoTyp)
+    if (kontoTyp == "ZE") then
+      # Besorge alle Buchungen vor dem vonDatum
+      buchungen = Buchung.where("ktoNr = ? AND Belegdatum <= ? AND PSaldoAcc = 0", ktoNr, vonDatum).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC")
+      
+      # Schaue nach einer PSaldoAcc = 0 Buchung
+      if !buchungen.empty? then
+        return true
       end
     end
-    @differenzSollHaben = @summeHaben - @summeSoll
+
+    # Andernfalls handelt es sich nicht um ein wiederverwendetes Konto
+    return false
   end
+
+  # Findet die Buchung heraus, welche die letzte Wiederverwendung eingelauetet hat
+  def findLastResetBooking(ktoNr)
+    # Besorge alle Buchungen vor dem vonDatum
+    buchungen = Buchung.where("ktoNr = ? AND PSaldoAcc = 0", ktoNr).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC")
+
+    # Gebe die zuletzt gefundene Buchung zurueck
+    if !buchungen.empty? then
+      return buchungen.first
+    end
+      
   end
+
 end

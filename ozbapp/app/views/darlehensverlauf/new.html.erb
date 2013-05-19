@@ -67,7 +67,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<% @Buchung.each do |buchung| %>
+				<% @Buchungen.each do |buchung| %>
 				<tr>
 					<td align="center"><%= buchung.Belegdatum.strftime("%d.%m.%Y") %></td>
 					<td align="left"><%= buchung.Buchungstext %></td>
