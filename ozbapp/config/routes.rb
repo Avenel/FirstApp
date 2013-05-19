@@ -9,7 +9,7 @@ OZB::Application.routes.draw do
 
 ### Konten
   match '/Darlehensverlauf/:KtoNr/:EEoZEkonto' => 'darlehensverlauf#new'
-  match '/Darlehensverlauf/:ktoNr/:EEoZEkonto/:name/:vName/:vonDat/:bisDat/ktoAuszug' => 'darlehensverlauf#kontoauszug'
+  match '/Darlehensverlauf/:KtoNr/:EEoZEkonto/:name/:vName/:vonDatum/:bisDatum/ktoAuszug' => 'darlehensverlauf#kontoauszug'
   match '/Verwaltung/OZBPerson/:Mnr/Konten'                           => 'ozb_konto#index',             :via => :GET
   match '/Verwaltung/OZBPerson/:Mnr/Konten/:kontotyp/Neu'             => 'ozb_konto#new',               :via => :GET
   match '/Verwaltung/OZBPerson/:Mnr/Konten/:kontotyp/Neu'             => 'ozb_konto#create',            :via => :POST

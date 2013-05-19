@@ -13,18 +13,18 @@ class DarlehensverlaufController < ApplicationController
 
     
     #prüfen ob das anfangsdatum in richtigem format angegeben wurde
-    if (params[:vonDatum] =~ /[0-9]{2}.[0-9]{2}.[0-9]{4}/)
+    if (params[:vonDatum] =~ /[0-9]{2}.[0-9]{2}.[0-9]{4}/ || params[:vonDatum] =~ /[0-9]{4}-[0-9]{2}-[0-9]{2}/)
       @vonDatum = params[:vonDatum]
     end
 
     #prüfen ob das enddatum in richtigem format angegeben wurde
-    if (params[:vonDatum] =~ /[0-9]{2}.[0-9]{2}.[0-9]{4}/)
+    if (params[:vonDatum] =~ /[0-9]{2}.[0-9]{2}.[0-9]{4}/ || params[:vonDatum] =~ /[0-9]{4}-[0-9]{2}-[0-9]{2}/)
       @bisDatum = params[:bisDatum]
     end
 
     
     #wurde der anzeigen button noch nicht betätigt. erster klick auf einen kontolink
-    if @anzeigen.to_s.empty?
+    if @anzeigen.to_s.empty? && (params[:vonDatum].nil? || params[:bisDatum].nil?) then
       # Die letzten 10 Buchungen, chronologisch aufsteigend sortiert
       @Buchungen = Buchung.where("KtoNr = ?", params[:KtoNr]).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag").limit(10).reverse
 
@@ -165,7 +165,7 @@ class DarlehensverlaufController < ApplicationController
 
       # Lege Zeile für die erreichten Punkte an
       @erreichtePunkteZeile = @Buchungen.first.dup
-      @erreichtePunkteZeile.Buchungstext = "Punkte von " + @letzteWaehrungsBuchung.Belegdatum.strftime("%d.%m.%Y") + " bis " + @bisDatum
+      @erreichtePunkteZeile.Buchungstext = "Punkte von " + @letzteWaehrungsBuchung.Belegdatum.strftime("%d.%m.%Y") + " bis " + @bisDatum.to_date.strftime("%d.%m.%Y")
       @erreichtePunkteZeile.Belegdatum = @bisDatum
       @erreichtePunkteZeile.Sollbetrag = 0
       @erreichtePunkteZeile.Habenbetrag = 0
@@ -187,6 +187,7 @@ class DarlehensverlaufController < ApplicationController
 
 
   def kontoauszug
+    new()
   end
   
 

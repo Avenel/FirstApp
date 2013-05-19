@@ -1,87 +1,71 @@
-<!-- asdkfjh
-<%= debug params[:ktoNr] %>
-<%= debug params[:EEoZEkonto] %>
-<%= debug params[:name] %>
-<%= debug params[:vName] %>
-<%= debug params[:vonDat] %>
-<%= debug params[:bisDat] %>
-<%= debug @Buchung %>
-<%= debug @vorBuchung %>
- -->
-
-
-
 <% if params[:EEoZEkonto] == "EE" %>
 	<h3>
-		<font color="#0000ff"> <font color="#ff0000">o</font>/<font color="#ff0000">Z</font>B Stuttgart</font><%= "  Einlage-/Entnahmekonto Ktonr. " + params[:ktoNr] + " " + params[:vName] + ", " + params[:name] %> 
+		<font color="#0000ff"> <font color="#ff0000">o</font>/<font color="#ff0000">Z</font>B Stuttgart</font><%= "  Einlage-/Entnahmekonto Ktonr. " + params[:KtoNr] + " " + params[:vName] + ", " + params[:name] %> 
 	</h3>
 <% else %>
 	<h3>
-		<font color="#0000ff"> <font color="#ff0000">o</font>/<font color="#ff0000">Z</font>B Stuttgart</font><%= "  Zusatz-/Entnahmekonto Ktonr. " + params[:ktoNr] + " " + params[:vName] + ", " + params[:name] %>
+		<font color="#0000ff"> <font color="#ff0000">o</font>/<font color="#ff0000">Z</font>B Stuttgart</font><%= "  Zusatz-/Entnahmekonto Ktonr. " + params[:KtoNr] + " " + params[:vName] + ", " + params[:name] %>
 	</h3>
 <% end %>
 
 Datum des Kontoauszugs: <%= Date.today.strftime("%d.%m.%Y") %>
 
-
-
-
 <table class="table-striped" width="100%">
-			<thead>
-				<tr>
-					<th class="header">Datum</th>
-					<th class="header" align="left">Buchungstext</th>
-					<th class="header" align="right">Soll</th>
-					<th class="header" align="right">Haben</th>
-					<th class="header" align="right">Punkte</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% @Buchung.each do |buchung| %>
-				<tr>
-					<td align="center"><%= buchung.Belegdatum.strftime("%d.%m.%Y") %></td>
-					<td align="left"><%= buchung.Buchungstext %></td>
-					<% if buchung.Typ == "w" %>
-						<td align="right">
-							<% if buchung.Sollbetrag != 0 %>
-								<%= number_with_precision(buchung.Sollbetrag, :precision => 2) %></td>
-							<% end %>
-						<td align="right">
-							<% if buchung.Habenbetrag != 0 %>
-								<%= number_with_precision(buchung.Habenbetrag, :precision => 2) %></td>
-							<% end %>
-						<td align="right"><%= buchung.PSaldoAcc %></td>
-					<% else %>
-						<% if buchung.Sollbetrag == 0 and buchung.Habenbetrag != 0%>
-							<td align="right"></td>
-							<td align="right"></td>
-							<td align="right"> <%=buchung.Habenbetrag.round %></td>
-						<% else %>
-							<td align="right"></td>
-							<td align="right"></td>
-							<td align="right"> <%=buchung.Sollbetrag.round %></td>
-						<% end %>
+	<thead>
+		<tr>
+			<th class="header">Datum</th>
+			<th class="header" align="left">Buchungstext</th>
+			<th class="header" align="right">Soll</th>
+			<th class="header" align="right">Haben</th>
+			<th class="header" align="right">Punkte</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @Buchungen.each do |buchung| %>
+		<tr>
+			<td align="center"><%= buchung.Belegdatum.strftime("%d.%m.%Y") %></td>
+			<td align="left"><%= buchung.Buchungstext %></td>
+			<% if buchung.Typ == "w" %>
+				<td align="right">
+					<% if buchung.Sollbetrag != 0 %>
+						<%= number_with_precision(buchung.Sollbetrag, :precision => 2) %></td>
 					<% end %>
-				</tr>
+				<td align="right">
+					<% if buchung.Habenbetrag != 0 %>
+						<%= number_with_precision(buchung.Habenbetrag, :precision => 2) %></td>
+					<% end %>
+				<td align="right"><%= buchung.PSaldoAcc %></td>
+			<% else %>
+				<% if buchung.Sollbetrag == 0 and buchung.Habenbetrag != 0%>
+					<td align="right"></td>
+					<td align="right"></td>
+					<td align="right"> <%=buchung.Habenbetrag.round %></td>
+				<% else %>
+					<td align="right"></td>
+					<td align="right"></td>
+					<td align="right"> <%=buchung.Sollbetrag.round %></td>
 				<% end %>
-			</tbody>
-			<!-- </tfoot>
-					<td align="center"><b><%= params[:bisDat].to_date.strftime("%d.%m.%Y") %></b></td>
-					<td><b>Tagessaldo</b></td>
-					<% if @differenzSollHaben > 0 %>
-						<td></td>
-						<td align="right"><b><%= number_with_precision(@differenzSollHaben, :precision => 2) %><b></td>
-						<td align="right"><b><%= @summeDerPunkte.round %><b></td>
-					<% else %>
-						<% if @differenzSollHaben < 0 %>
-							<td align="right"><b><%= number_with_precision(@differenzSollHaben * -1, :precision => 2) %><b></td>
-							<td></td>
-							<td align="right"><b><%= @summeDerPunkte.round %><b></td>
-						<% else %>
-							<td></td>
-							<td align="right"><b><%= number_with_precision(@differenzSollHaben, :precision => 2) %><b></td>
-							<td align="right"><b><%= @summeDerPunkte.round %><b></td>
-						<% end %>		
-					<% end %>
-			<tfoot> -->
-		</table>
+			<% end %>
+		</tr>
+		<% end %>
+	</tbody>
+	</tfoot>
+		<td align="center"><b><%= @bisDatum.to_date.strftime("%d.%m.%Y") %></b></td>
+			<td><b>Tagessaldo</b></td>
+			<% if @differenzSollHaben > 0 %>
+				<td></td>
+				<td align="right"><b><%= number_with_precision(@differenzSollHaben, :precision => 2) %><b></td>
+				<td align="right"><b><%= @summeDerPunkte.round %><b></td>
+			<% else %>
+				<% if @differenzSollHaben < 0 %>
+					<td align="right"><b><%= number_with_precision(@differenzSollHaben * -1, :precision => 2) %><b></td>
+					<td></td>
+					<td align="right"><b><%= @summeDerPunkte.round %><b></td>
+				<% else %>
+					<td></td>
+					<td align="right"><b><%= number_with_precision(@differenzSollHaben, :precision => 2) %><b></td>
+					<td align="right"><b><%= @summeDerPunkte.round %><b></td>
+				<% end %>		
+			<% end %>
+	<tfoot>
+</table>
