@@ -2,9 +2,9 @@
 # encoding: utf-8
 class Projektgruppe < ActiveRecord::Base
 
-  set_table_name "ProjektGruppe"
+  self.table_name = "ProjektGruppe"
 
-  set_primary_key :Pgnr
+  self.primary_key = :Pgnr
   
   attr_accessible :Pgnr, :ProjGruppenBez
   

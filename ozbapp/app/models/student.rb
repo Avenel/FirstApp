@@ -2,8 +2,8 @@
 # encoding: utf-8
 class Student < ActiveRecord::Base
   
-  set_table_name "Student"
-  set_primary_keys :Mnr, :GueltigVon
+  self.table_name = "Student"
+  self.primary_keys = :Mnr, :GueltigVon
 
   alias_attribute :mnr, :Mnr
   alias_attribute :ausbildBez, :AusbildBez 

@@ -1,11 +1,7 @@
 class Veranstaltungsart < ActiveRecord::Base
-	set_table_name "Veranstaltungsart"
-	set_primary_key  :VANr
-	
-	
-	
-	
-	
+	self.table_name = "Veranstaltungsart"
+	self.primary_key =  :VANr
+
 	attr_accessible  :VANr,:VABezeichnung
 	
 	has_one :Veranstaltung, :foreign_key => :Vnr, :dependent => :destroy

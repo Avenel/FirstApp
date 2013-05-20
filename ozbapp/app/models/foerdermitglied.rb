@@ -2,8 +2,8 @@
 # encoding: utf-8
 class Foerdermitglied < ActiveRecord::Base
 
-  set_table_name "Foerdermitglied"
-  set_primary_keys :Pnr, :GueltigVon
+  self.table_name = "Foerdermitglied"
+  self.primary_keys = :Pnr, :GueltigVon
 
 	alias_attribute :pnr, :Pnr
 	alias_attribute :gueltigVon, :GueltigVon 

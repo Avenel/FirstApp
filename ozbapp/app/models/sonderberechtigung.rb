@@ -10,14 +10,13 @@ end
 
 class Sonderberechtigung < ActiveRecord::Base
    self.table_name = "Sonderberechtigung"
-   
+   self.primary_key = :ID
+
    alias_attribute :id, :ID   
    alias_attribute :mnr, :Mnr
    alias_attribute :berechtigung, :Berechtigung
    alias_attribute :email, :Email   
          
-   set_primary_key :ID
-   
    attr_accessible :ID, :Mnr, :Berechtigung, :Email, :SachPnr
    
    belongs_to :OZBPerson, :foreign_key => :Mnr

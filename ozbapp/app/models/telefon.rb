@@ -2,11 +2,10 @@
 # encoding: utf-8
 class Telefon < ActiveRecord::Base
 
-  set_table_name "Telefon"
+  self.table_name = "Telefon"
 
+  self.primary_keys = :Pnr, :LfdNr
   attr_accessible :Pnr, :LfdNr, :TelefonNr, :TelefonTyp, :SachPnr
-
-  set_primary_keys :Pnr, :LfdNr
 
   # column names
   HUMANIZED_ATTRIBUTES = {

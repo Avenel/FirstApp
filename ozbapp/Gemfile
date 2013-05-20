@@ -48,4 +48,7 @@ group :test do
 
   # Guard führt bei jedem speichern die Tests (Specs) aus
   gem "guard-rspec"
+
+  # Gem das fake Namen, Vorname, E-Mail Adressen und Co generiert
+  gem "faker"
 end

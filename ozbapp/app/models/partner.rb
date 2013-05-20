@@ -2,9 +2,9 @@
 # encoding: utf-8
 class Partner < ActiveRecord::Base
 
-  set_table_name "Partner"
+  self.table_name = "Partner"
 
-  set_primary_keys :Mnr, :GueltigVon
+  self.primary_keys = :Mnr, :GueltigVon
   
   alias_attribute :mnr, :Mnr
   alias_attribute :gueltigVon, :GueltigVon 

@@ -1,8 +1,8 @@
 class Mitglied < ActiveRecord::Base
 
-  set_table_name "Mitglied"
+  self.table_name = "Mitglied"
   
-  set_primary_keys :Mnr, :GueltigVon
+  self.primary_keys = :Mnr, :GueltigVon
   
   alias_attribute :mnr, :Mnr
   alias_attribute :rvDatum, :RVDatum

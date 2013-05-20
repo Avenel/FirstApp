@@ -1,6 +1,6 @@
 class Veranstaltung < ActiveRecord::Base
-	self.set_table_name "Veranstaltung"
-	set_primary_key  :Vnr
+	self.table_name = "Veranstaltung"
+	self.primary_key = :Vnr
 	
 	
   	attr_accessible :VADatum, :VAOrt, :VANr, :Vnr, :SachPnr

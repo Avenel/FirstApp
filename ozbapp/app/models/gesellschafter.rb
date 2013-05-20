@@ -2,9 +2,9 @@
 # encoding: utf-8
 class Gesellschafter < ActiveRecord::Base
   
-	set_table_name "Gesellschafter"
+	self.table_name = "Gesellschafter"
   
-  set_primary_keys :Mnr, :GueltigVon
+  self.primary_keys = :Mnr, :GueltigVon
   
   alias_attribute :mnr, :Mnr
   alias_attribute :gueltigVon, :GueltigVon 

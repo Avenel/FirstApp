@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class Kontenklasse < ActiveRecord::Base
-  set_table_name "KontenKlasse"
-  set_primary_key :KKL
+  self.table_name = "KontenKlasse"
+  self.primary_key = :KKL
   
   # aliases
   alias_attribute :kkl, :KKL

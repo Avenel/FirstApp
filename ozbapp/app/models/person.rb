@@ -1,10 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Person < ActiveRecord::Base
-
-   #set_table_name "Person"
-
-   set_primary_keys :Pnr, :GueltigVon
+   self.primary_keys = :Pnr, :GueltigVon
 
    alias_attribute :pnr, :Pnr
    alias_attribute :rolle, :Rolle
