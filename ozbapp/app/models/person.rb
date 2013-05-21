@@ -39,12 +39,9 @@ class Person < ActiveRecord::Base
 
 #   has_one :sachbearbeiter, :class_name => "Person", :foreign_key => :Pnr, :primary_key => :SachPNR, :order => "GueltigBis DESC"
 
-
-
-
-
   validates :Name, :presence => true
   validates :Vorname, :presence => true
+  validates :Pnr, :presence => true, :uniqueness => true, :format => { :with => /^([0-9]+)$/i }
 
   validates :Rolle, :presence => true, :inclusion => { :in => AVAILABLE_ROLES, :message => "%{value} is not a valid role" }
   validates :Email, :presence => true, :uniqueness => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }

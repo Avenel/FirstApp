@@ -9,6 +9,15 @@ describe Person do
 
 	# Valid/invalid attributes
 
+	# Pnr
+	it "is vaild with pnr" do
+		expect(FactoryGirl.create(:person, :Pnr => 99)).to be_valid
+	end
+
+	it "is invalid without a pnr" do
+		expect(FactoryGirl.build(:person, :Pnr => nil)).to be_invalid
+	end
+	
 	# Nachname
 	it "is valid with name" do
 		expect(FactoryGirl.build(:person, :Name => "Mustermann")).to be_valid
@@ -57,4 +66,5 @@ describe Person do
 		expect(FactoryGirl.create(:person, :Email => "hello@example.com")).to be_valid
 		expect(FactoryGirl.build(:person, :Email => "hello@example.com")).to have(1).errors_on(:Email)
 	end
+
 end	
