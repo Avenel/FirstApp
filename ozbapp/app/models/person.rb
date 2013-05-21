@@ -42,7 +42,7 @@ class Person < ActiveRecord::Base
 
 #  validates :Name, :Vorname, :presence => true
 #  validates :Name, :length => { :minimum => 2, :message => "Minimum 2 Zeichen" }
-  validates_presence_of :Name, :Vorname, :Rolle 
+  validates_presence_of :Name, :Vorname, :Rolle, :email
   
   def self.all_actual
     Person.find(:all, :conditions => { :GueltigBis => "9999-12-31 23:59:59" })
