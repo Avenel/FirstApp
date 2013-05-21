@@ -5,7 +5,7 @@ FactoryGirl.define do
 		sequence(:pnr) {|n| "#{n}" }
 		Name {Faker::Name.first_name}
 		Vorname {Faker::Name.last_name}
-		Rolle Person::AVAILABLE_ROLES[0]
+		Rolle "P"
 		email {Faker::Internet.email}
 	end
 end
