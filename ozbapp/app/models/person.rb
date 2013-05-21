@@ -40,9 +40,10 @@ class Person < ActiveRecord::Base
 
 
 
-#  validates :Name, :Vorname, :presence => true
-#  validates :Name, :length => { :minimum => 2, :message => "Minimum 2 Zeichen" }
-  validates_presence_of :Name, :Vorname, :Rolle, :email
+  validates :Name, :presence => true
+  validates :Vorname, :presence => true
+  validates :Email, :presence => true
+  validates :Rolle, :presence => true, :inclusion => { :in => %w(G M P S F), :message => "%{value} is not a valid role" }
   
   def self.all_actual
     Person.find(:all, :conditions => { :GueltigBis => "9999-12-31 23:59:59" })
