@@ -12,7 +12,10 @@ class Person < ActiveRecord::Base
    alias_attribute :sperrKZ, :SperrKZ
    alias_attribute :sachPnr, :SachPnr
 
-   attr_accessible :Pnr, :Rolle, :Name, :Vorname, :Geburtsdatum, :Email, :SperrKZ, :SachPnr, :GueltigVon, :GueltigBis
+   # Role enum
+   AVAILABLE_ROLES = %W(G M P S F)
+
+   attr_accessible :Pnr, :Rolle, :Name, :Vorname, :Geburtsdatum, :Email, :SperrKZ, :SachPnr, :GueltigVon, :GueltigBis, :AVAILABLE_ROLES
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -42,8 +45,9 @@ class Person < ActiveRecord::Base
 
   validates :Name, :presence => true
   validates :Vorname, :presence => true
-  validates :Email, :presence => true
-  validates :Rolle, :presence => true, :inclusion => { :in => %w(G M P S F), :message => "%{value} is not a valid role" }
+
+  validates :Rolle, :presence => true, :inclusion => { :in => AVAILABLE_ROLES, :message => "%{value} is not a valid role" }
+  validates :Email, :presence => true, :uniqueness => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
   
   def self.all_actual
     Person.find(:all, :conditions => { :GueltigBis => "9999-12-31 23:59:59" })
@@ -109,13 +113,5 @@ class Person < ActiveRecord::Base
   # Returns the full name of the current person
   def fullname
     self.Name + ", " + self.Vorname
-  end
-end
-
-class EmailValidator < ActiveModel::EachValidator
-  def validate_each(record, attribute, value)
-    unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-      record.errors[attribute] << (options[:message] || "is not an email")
-    end
   end
 end
