@@ -77,8 +77,8 @@ describe Person do
 		expect(Person.get(person.pnr).name).to eq "Mustermann"
 	end
 
-	# self.all_actual
-	it "returns all persons" do		
+	# self.latest_all
+	it "returns all persons in their latest version" do		
 		# Generate a couple of person entries
 		for i in 0...5 do
 			expect(FactoryGirl.create(:person)).to be_valid
@@ -93,21 +93,29 @@ describe Person do
 		person.save!
 
 		# check if there are 6 current versions of persons in the database
-		expect(Person.all_actual.size).to eq 6
+		expect(Person.latest_all.size).to eq 6
 
 		# check if there are over all 7 versions of persons in the databse
 		expect(Person.find(:all).size).to eq 7
-
-
 	end
 
-	# self.latest_all
-	it "self.latest_all"
-
 	# self.latest
-	it "self.latest"
+	it "returns a person in his latest version" do
+		person = FactoryGirl.create(:person, :Name => "Musterfrau")
+		expect(person.name).to eq "Musterfrau"
+
+		person.name = "Mustermann"
+
+		sleep(1.0)
+		person.save!
+
+		expect(Person.latest(person.Pnr).name).to eq "Mustermann"
+	end
 
 	# fullname
-	it "fullname"
+	it "returns the fullname of a person" do
+		person = FactoryGirl.create(:person, :Name => "Mustermann", :Vorname => "Max")
+		expect(person.fullname).to eq "Mustermann, Max"
+	end
 
 end	

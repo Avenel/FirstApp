@@ -1,21 +1,18 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Person < ActiveRecord::Base
-   self.primary_keys = :Pnr, :GueltigVon
+  self.primary_keys = :Pnr, :GueltigVon
 
-   alias_attribute :pnr, :Pnr
-   alias_attribute :rolle, :Rolle
-   alias_attribute :name, :Name
-   alias_attribute :vorname, :Vorname
-   alias_attribute :geburtsdatum, :Geburtsdatum
-   alias_attribute :email, :Email
-   alias_attribute :sperrKZ, :SperrKZ
-   alias_attribute :sachPnr, :SachPnr
+  alias_attribute :pnr, :Pnr
+  alias_attribute :rolle, :Rolle
+  alias_attribute :name, :Name
+  alias_attribute :vorname, :Vorname
+  alias_attribute :geburtsdatum, :Geburtsdatum
+  alias_attribute :email, :Email
+  alias_attribute :sperrKZ, :SperrKZ
+  alias_attribute :sachPnr, :SachPnr
 
-   # Role enum
-   AVAILABLE_ROLES = %W(G M P S F)
-
-   attr_accessible :Pnr, :Rolle, :Name, :Vorname, :Geburtsdatum, :Email, :SperrKZ, :SachPnr, :GueltigVon, :GueltigBis, :AVAILABLE_ROLES
+  attr_accessible :Pnr, :Rolle, :Name, :Vorname, :Geburtsdatum, :Email, :SperrKZ, :SachPnr, :GueltigVon, :GueltigBis, :AVAILABLE_ROLES
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -25,79 +22,70 @@ class Person < ActiveRecord::Base
     :GueltigBis => 'Gueltig bis'
   }
    
-   has_many :Partner, :foreign_key => :Mnr, :dependent => :destroy
-   has_many :Foerdermitglied, :foreign_key => :Pnr, :dependent => :destroy
-   # has_one :OZBPerson, :foreign_key => :Mnr, :dependent => :destroy
-   has_many :OZBPerson, :foreign_key => :UeberPnr, :dependent => :destroy # Done, getestet
-   #has_many :Partner, :foreign_key => :MnrO, :dependent => :destroy #:delete_all         # Done, getestet
-   #has_one :Foerdermitglied, :foreign_key => :Pnr, :dependent => :destroy
-   has_many :Adresse, :foreign_key => :Pnr, :dependent => :destroy
-   #has_one :Adresse, :foreign_key => :Pnr, :order => "GueltigBis DESC", :conditions => 
-   #   proc { "GueltigVon >= '#{self.GueltigVon.to_formatted_s(:db)}' AND " +
-   #          "GueltigBis <= '#{self.GueltigBis.to_formatted_s(:db)}' " }, :dependent => :destroy
-   has_many :Telefon, :foreign_key => :Pnr, :dependent => :destroy         # Done, getestet
+  has_many :Partner, :foreign_key => :Mnr, :dependent => :destroy
+  has_many :Foerdermitglied, :foreign_key => :Pnr, :dependent => :destroy
+  has_many :OZBPerson, :foreign_key => :UeberPnr, :dependent => :destroy 
+  has_many :Adresse, :foreign_key => :Pnr, :dependent => :destroy
+  has_many :Telefon, :foreign_key => :Pnr, :dependent => :destroy
 
-#   has_one :sachbearbeiter, :class_name => "Person", :foreign_key => :Pnr, :primary_key => :SachPNR, :order => "GueltigBis DESC"
-
+  validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
   validates :Name, :presence => true
   validates :Vorname, :presence => true
-  validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
-  validates :Rolle, :presence => true, :inclusion => { :in => AVAILABLE_ROLES, :message => "%{value} is not a valid role" }
   validates :Email, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
-  
-  def self.all_actual
-    Person.find(:all, :conditions => { :GueltigBis => "9999-12-31 23:59:59" })
+
+  # Role enum
+  AVAILABLE_ROLES = %W(G M P S F)
+  validates :Rolle, :presence => true, :inclusion => { :in => AVAILABLE_ROLES, :message => "%{value} is not a valid role" }
+    
+  before_save do 
+    unless(self.GueltigBis || self.GueltigVon)
+      self.GueltigVon = Time.now      
+      self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")      
+    end
   end
-  
-   before_save do 
-      unless(self.GueltigBis || self.GueltigVon)
-         self.GueltigVon = Time.now      
-         self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")      
-      end
-   end
 
-   #NU
-   @@copy = nil
+  #NU
+  @@copy = nil
 
-   before_update do     
-      if(self.Pnr)
-         if(self.GueltigBis > "9999-01-01 00:00:00")
-             @@copy            = Person.get(self.Pnr)
-             @@copy            = @@copy.dup
-             @@copy.Pnr        = self.Pnr
-             @@copy.GueltigVon = self.GueltigVon
-             @@copy.GueltigBis = Time.now      
+  before_update do     
+    if(self.Pnr)
+       if(self.GueltigBis > "9999-01-01 00:00:00")
+          @@copy            = Person.get(self.Pnr)
+          @@copy            = @@copy.dup
+          @@copy.Pnr        = self.Pnr
+          @@copy.GueltigVon = self.GueltigVon
+          @@copy.GueltigBis = Time.now      
 
-             self.GueltigVon   = Time.now      
-             self.GueltigBis   = Time.zone.parse("9999-12-31 23:59:59")      
-         end
-      end
-   end
+          self.GueltigVon   = Time.now      
+          self.GueltigBis   = Time.zone.parse("9999-12-31 23:59:59")      
+       end
+    end
+  end
 
-   #NU
-   after_update do
-      if !@@copy.nil?
-        @@copy.save(:validation => false)
-        @@copy = nil
-      end
-   end
+  #NU
+  after_update do
+    if !@@copy.nil?
+      @@copy.save(:validation => false)
+      @@copy = nil
+    end
+  end
 
 
-   # Returns nil if at the given time no person object was valid
-   def Person.get(pnr, date = Time.now)
-      Person.where(:Pnr => pnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
-   end
+  # Returns nil if at the given time no person object was valid
+  def Person.get(pnr, date = Time.now)
+    Person.where(:Pnr => pnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
+  end
    
-  # Returns the latest/newest OZBKonto Object
+  # Returns the latest/newest Person Object
   def self.latest(pnr)
     begin
-      self.find(pnr, "9999-12-31 23:59:59") # composite primary key gem
+      Person.where("Pnr = ? AND GueltigBis = ?", pnr, "9999-12-31 23:59:59").first # composite primary key gem
     rescue ActiveRecord::RecordNotFound
       nil
     end
   end
   
-  # Returns all the latest/newest OZBKonto Objects
+  # Returns all the latest/newest Person Objects
   def self.latest_all
     begin
       self.find(:all, :conditions => { :GueltigBis => "9999-12-31 23:59:59" }) # composite primary key gem

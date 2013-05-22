@@ -69,21 +69,28 @@ class OZBPersonController < ApplicationController
         @OZBPerson.Austrittsdatum = params[:austrittsdatum]
         @OZBPerson.SachPnr        = current_OZBPerson.Mnr
         
-       #Fehler aufgetreten?
-        if !@Person.valid? then
-          @errors.push(@Person.errors)
-        end
-        
-       #Fehler aufgetreten?
-        if !@OZBPerson.valid? then
-          @errors.push(@OZBPerson.errors)
-        end    
+        flash[:notice] = "Validieren"
 
-       # Datensaetze speichern 
-        @Person.save!
-        @OZBPerson.save!
+        begin 
+          #Fehler aufgetreten?
+          if !@Person.valid? then
+            @errors.push(@Person.errors)
+          end
+          
+          #Fehler aufgetreten?
+          if !@OZBPerson.valid? then
+            @errors.push(@OZBPerson.errors)
+          end    
+
+          # Datensaetze speichern 
+          @Person.save!
+          @OZBPerson.save!
+        rescue Exception => e
+          puts e.message
+          flash[:notice] = e.message
+        end
          
-       # Weiterleiten
+        # Weiterleiten
         flash[:notice] = "Personaldaten wurden erfolgreich aktuallisiert."
         redirect_to :action => "editPersonaldaten"
         # render "editPersonaldaten"
