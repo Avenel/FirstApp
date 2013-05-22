@@ -41,10 +41,9 @@ class Person < ActiveRecord::Base
 
   validates :Name, :presence => true
   validates :Vorname, :presence => true
-  validates :Pnr, :presence => true, :uniqueness => true, :format => { :with => /^([0-9]+)$/i }
-
+  validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
   validates :Rolle, :presence => true, :inclusion => { :in => AVAILABLE_ROLES, :message => "%{value} is not a valid role" }
-  validates :Email, :presence => true, :uniqueness => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
+  validates :Email, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
   
   def self.all_actual
     Person.find(:all, :conditions => { :GueltigBis => "9999-12-31 23:59:59" })
@@ -60,7 +59,7 @@ class Person < ActiveRecord::Base
    #NU
    @@copy = nil
 
-   before_update do      
+   before_update do     
       if(self.Pnr)
          if(self.GueltigBis > "9999-01-01 00:00:00")
              @@copy            = Person.get(self.Pnr)
