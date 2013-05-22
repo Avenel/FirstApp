@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `Person` (
   `Name` varchar(20) NOT NULL,
   `Vorname` varchar(15) NOT NULL DEFAULT '',
   `Geburtsdatum` date DEFAULT NULL,
-  `Email` varchar(40) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
   `SperrKZ` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Pnr,GueltigVon)
