@@ -119,11 +119,12 @@ CREATE TABLE IF NOT EXISTS `Veranstaltung` (
 
 CREATE TABLE IF NOT EXISTS `Teilnahme` (
   `Pnr` int(10) unsigned NOT NULL ,
-  `Vnr` int(5) unsigned NOT NULL ,  
+  `Vnr` int(11) unsigned NOT NULL ,  
+  `VANr` int(11) unsigned NOT NULL ,  
   `TeilnArt` enum ('a','e','u','l', 'm'), 
   `SachPnr` int(10) unsigned,
-  PRIMARY KEY (Pnr,Vnr),
-  FOREIGN KEY (Vnr) REFERENCES veranstaltung(Vnr),
+  PRIMARY KEY (Pnr,Vnr,VANr),
+  FOREIGN KEY (Vnr,VANr) REFERENCES veranstaltung(Vnr,VANr),
   KEY Pnr (Pnr) 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -278,14 +279,14 @@ CREATE TABLE IF NOT EXISTS `Buchung` (
   `Typ`  char(1) NOT NULL ,
   `Belegdatum` date NOT NULL,
   `BuchDatum` date NOT NULL,
-  `Buchungstext` varchar(50) NOT NULL DEFAULT '',
-  `Sollbetrag` decimal(10,2) DEFAULT NULL,
-  `Habenbetrag` decimal(10,2) DEFAULT NULL,
-  `SollKtoNr` int(5) unsigned NOT NULL DEFAULT '0',
-  `HabenKtoNr` int(5) unsigned NOT NULL DEFAULT '0',
-  `WSaldoAcc` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `PSaldoAcc` int(10) NOT NULL DEFAULT '0',  
-  `Punkte` int(10) DEFAULT NULL,
+  `Buchungstext` varchar(50) NOT NULL,
+  `Sollbetrag` decimal(10,2) NOT NULL,
+  `Habenbetrag` decimal(10,2) NOT NULL,
+  `SollKtoNr` int(5) unsigned NOT NULL,
+  `HabenKtoNr` int(5) unsigned NOT NULL,
+  `WSaldoAcc` decimal(10,2) NOT NULL,
+  `PSaldoAcc` int(10) NOT NULL,  
+  `Punkte` int(10) NOT NULL,
   PRIMARY KEY (BuchJahr,KtoNr,BnKreis,BelegNr,Typ),
   KEY KtoNr(KtoNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
