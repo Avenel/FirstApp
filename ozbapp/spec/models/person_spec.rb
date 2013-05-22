@@ -72,7 +72,7 @@ describe Person do
 
 		# wait 1sec to prevent PK validation error ("gueltigVon" should not be equal)
 		sleep(1.0)
-		person.save!
+		expect(person.save!).to eq true
 
 		expect(Person.get(person.pnr).name).to eq "Mustermann"
 	end
@@ -90,7 +90,7 @@ describe Person do
 
 		# wait 1sec to prevent PK validation error ("gueltigVon" should not be equal)
 		sleep(1.0)
-		person.save!
+		expect(person.save!).to eq true
 
 		# check if there are 6 current versions of persons in the database
 		expect(Person.latest_all.size).to eq 6
@@ -106,8 +106,9 @@ describe Person do
 
 		person.name = "Mustermann"
 
+		# wait 1sec to prevent PK validation error ("gueltigVon" should not be equal)
 		sleep(1.0)
-		person.save!
+		expect(person.save!).to eq true
 
 		expect(Person.latest(person.Pnr).name).to eq "Mustermann"
 	end
