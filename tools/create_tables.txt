@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS `Adresse` (
   `Nr` varchar(10) DEFAULT NULL,
   `PLZ` int(5) unsigned DEFAULT NULL,
   `Ort` varchar(50)  DEFAULT NULL,
+  `Vermerk` varchar(100) DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
-   `Vermerk` varchar(100) DEFAULT NULL,
   PRIMARY KEY (Pnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `Veranstaltung` (
   `VAOrt` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `SachPnr` int(10) unsigned ,
   FOREIGN KEY (VANr) REFERENCES veranstaltungsart(VANr),
-  PRIMARY KEY (Vnr)
+  PRIMARY KEY (Vnr,VANr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Teilnahme` (
@@ -216,11 +216,11 @@ CREATE TABLE IF NOT EXISTS `ProjektGruppe` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='';
 
 CREATE TABLE IF NOT EXISTS `ZEKonto` (
+  `KtoNr` int(5) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `KtoNr` int(5) unsigned NOT NULL ,
-  `EEKtoNr` int(5) unsigned NOT NULL ,
   `Pgnr`  tinyint(2) unsigned,
+  `EEKtoNr` int(5) unsigned NOT NULL ,
   `ZENr`  char(10) ,  
   `ZEAbDatum` date DEFAULT NULL,
   `ZEEndDatum` date DEFAULT NULL,
@@ -252,13 +252,13 @@ CREATE TABLE IF NOT EXISTS `Buergschaft` (
   `SichBetrag` decimal(10,2) DEFAULT NULL,
   `SichKurzbez` varchar(200) DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (Pnr_B,Mnr_G,GueltigVon,SichEndDatum)
+  PRIMARY KEY (Pnr_B,Mnr_G,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `KontenKlasse` (
   `KKL` char(1) NOT NULL ,
   `KKLAbDatum` date NOT NULL ,
-  `Prozent`  decimal(5,2) unsigned NOT NULL DEFAULT '0.00',        
+  `Prozent`  decimal(5,2) unsigned NOT NULL,        
   PRIMARY KEY (KKL)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
