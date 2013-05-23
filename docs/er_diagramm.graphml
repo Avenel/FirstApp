@@ -17,7 +17,7 @@
     <node id="n0">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="51.0" width="111.41326932891207" x="1249.5553621442684" y="-827.8251953124998"/>
+          <y:Geometry height="51.0" width="111.41326932891207" x="1249.5553621442684" y="-813.3251953124998"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="98.0546875" x="6.679290914456033" y="4.0">Veranstaltungsart</y:NodeLabel>
@@ -37,7 +37,7 @@
     <node id="n1">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="73.58105468750023" width="104.0" x="1086.753853488517" y="-839.1157226562499"/>
+          <y:Geometry height="73.58105468750023" width="104.0" x="1086.753853488517" y="-824.6157226562499"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="78.05078125" x="12.974609375" y="4.0">Veranstaltung</y:NodeLabel>
@@ -54,9 +54,8 @@
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="60.02734375" x="21.986328125" y="4.0">Teilnahme</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" modelName="custom" textColor="#000000" underlinedText="true" visible="true" width="59.330078125" x="2.0" y="30.701171875">Pnr
-Vnr (FK)
-VANr (FK)<y:LabelModel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="custom" textColor="#000000" underlinedText="true" visible="true" width="49.333984375" x="2.0" y="30.701171875">Pnr
+Vnr (FK)<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -538,7 +537,7 @@ TanNr<y:LabelModel>
     <node id="n27">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="17.96875" width="24.748046875" x="1088.753853488517" y="-805.3564453124998"/>
+          <y:Geometry height="17.96875" width="24.748046875" x="1088.753853488517" y="-794.1360142296973"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" underlinedText="true" visible="true" width="22.673828125" x="1.037109375" y="-0.3662109375">Vnr</y:NodeLabel>
@@ -549,10 +548,10 @@ TanNr<y:LabelModel>
     <node id="n28">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="17.96875" width="24.748046875" x="1105.988026977034" y="-787.3876953124998"/>
+          <y:Geometry height="17.96875" width="24.748046875" x="1105.988026977034" y="-769.0034179687497"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="b" textColor="#000000" underlinedText="true" visible="true" width="55.99609375" x="-15.6240234375" y="-4.732421875">VANr(FK)</y:NodeLabel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="b" textColor="#000000" visible="true" width="55.99609375" x="-15.6240234375" y="-4.732421875">VANr(FK)</y:NodeLabel>
           <y:Shape type="rectangle"/>
         </y:ShapeNode>
       </data>

@@ -114,17 +114,16 @@ CREATE TABLE IF NOT EXISTS `Veranstaltung` (
   `VAOrt` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `SachPnr` int(10) unsigned ,
   FOREIGN KEY (VANr) REFERENCES veranstaltungsart(VANr),
-  PRIMARY KEY (Vnr,VANr)
+  PRIMARY KEY (Vnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Teilnahme` (
   `Pnr` int(10) unsigned NOT NULL ,
   `Vnr` int(11) unsigned NOT NULL ,  
-  `VANr` int(11) unsigned NOT NULL ,  
   `TeilnArt` enum ('a','e','u','l', 'm'), 
   `SachPnr` int(10) unsigned,
-  PRIMARY KEY (Pnr,Vnr,VANr),
-  FOREIGN KEY (Vnr,VANr) REFERENCES veranstaltung(Vnr,VANr),
+  PRIMARY KEY (Pnr,Vnr),
+  FOREIGN KEY (Vnr) REFERENCES veranstaltung(Vnr),
   KEY Pnr (Pnr) 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
