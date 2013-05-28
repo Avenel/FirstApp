@@ -42,7 +42,7 @@ class OZBPerson < ActiveRecord::Base
   end
 
   ### Validierung
-  validates_presence_of :Antragsdatum
+  validates_presence_of :Mnr, :UeberPnr, :Antragsdatum, :email
 
   validate :password_complexity
  
@@ -56,7 +56,6 @@ class OZBPerson < ActiveRecord::Base
 
   ### Beziehungen
   has_many :Person, :foreign_key => :Pnr # Done, getestet  
-  # belongs_to :Person, :foreign_key => :Pnr # Done, getestet  
 
   has_one :Mitglied, :foreign_key => :Mnr, :dependent => :destroy  # Done, getestet
   has_one :Student, :foreign_key => :Mnr, :dependent => :destroy # Done, ungetestet
