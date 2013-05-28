@@ -45,12 +45,20 @@ class OZBPerson < ActiveRecord::Base
   validates_presence_of :Mnr, :UeberPnr, :Antragsdatum, :email
 
   validate :password_complexity
- 
+  validate :person_exists
+
   def password_complexity
     if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+/)
      errors.add :password, "sollte mindestens eine Ziffer und/oder Sonderzeichen wie +-_# usw. enthalten
                  Deutsche Umlaute erlaubt
                  Gross-/Kleinschreibung wird unterschieden"
+    end
+  end
+
+  def person_exists
+    person = Person.where("pnr = ?", ueberPnr)
+    if person.empty? then
+      errors.add :ueberPnr, "Es konnte keine zugehörige Person zu der angegebenen UeberPnr gefunden werden."
     end
   end
 
