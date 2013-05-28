@@ -92,11 +92,11 @@ GueltigVon<y:LabelModel>
     <node id="n4">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="66.0" width="104.0" x="988.2685546874999" y="-633.5402434458156"/>
+          <y:Geometry height="66.0" width="104.0" x="1023.4716796874999" y="-633.5402434458156"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="87.3671875" x="8.31640625" y="4.0">Foerdermitglied</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="custom" textColor="#000000" underlinedText="true" visible="true" width="63.373046875" x="2.0" y="30.701171875">Pnr 
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="custom" textColor="#000000" underlinedText="true" visible="true" width="63.373046875" x="2.0000000000001137" y="30.701171875">Pnr 
 GueltigVon<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
@@ -377,7 +377,7 @@ GueltigVon<y:LabelModel>
     <node id="n19">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="66.0" width="104.0" x="988.2685546875" y="-550.8251953124998"/>
+          <y:Geometry height="66.0" width="104.0" x="1023.4716796875" y="-550.8251953124998"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="80.69921875" x="11.650390625" y="4.0">Gesellschafter</y:NodeLabel>
@@ -398,7 +398,7 @@ GueltigVon<y:LabelModel>
     <node id="n20">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="66.0" width="104.0" x="988.2685546875" y="-440.48460514530234"/>
+          <y:Geometry height="66.0" width="104.0" x="1023.4716796875" y="-440.48460514530234"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="43.3515625" x="30.32421875" y="4.0">Partner</y:NodeLabel>
@@ -419,7 +419,7 @@ GueltigVon<y:LabelModel>
     <node id="n21">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="66.0" width="104.0" x="988.2685546875" y="-361.18029085390106"/>
+          <y:Geometry height="66.0" width="104.0" x="1023.4716796875" y="-361.18029085390106"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="45.349609375" x="29.3251953125" y="4.0">Mitglied</y:NodeLabel>
@@ -440,7 +440,7 @@ GueltigVon<y:LabelModel>
     <node id="n22">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="66.0" width="104.0" x="988.2685546875" y="-274.6259765624998"/>
+          <y:Geometry height="66.0" width="104.0" x="1023.4716796875" y="-274.6259765624998"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="45.3671875" x="29.31640625" y="4.0">Student</y:NodeLabel>
@@ -461,7 +461,7 @@ GueltigVon<y:LabelModel>
     <node id="n23">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="66.0" width="104.0" x="1071.2216796875" y="-171.37597656249977"/>
+          <y:Geometry height="66.0" width="104.0" x="1023.4716796875" y="-171.37597656249977"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="46.017578125" x="28.9912109375" y="4.0">Tanliste</y:NodeLabel>
@@ -559,7 +559,7 @@ TanNr<y:LabelModel>
     <node id="n29">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="31.9375" width="70.43359375" x="1228.1748046875" y="-678.3564453124998"/>
+          <y:Geometry height="31.9375" width="70.43359375" x="1226.1748046875" y="-678.3564453124998"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="internal" modelPosition="c" textColor="#000000" underlinedText="true" visible="true" width="63.373046875" x="3.5302734375" y="-0.732421875">ID
@@ -662,7 +662,7 @@ GueltigVon</y:NodeLabel>
     <node id="n38">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="31.9375" width="70.43359375" x="820.769109375" y="10.734780955000417"/>
+          <y:Geometry height="31.9375" width="70.43359375" x="821.5621164543292" y="10.734780955000417"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="51.326171875" x="9.5537109375" y="6.6181640625">Mnr (FK)</y:NodeLabel>
@@ -684,7 +684,7 @@ GueltigVon</y:NodeLabel>
     <node id="n40">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="31.9375" width="70.43359375" x="1033.9574396875" y="131.58511893750023"/>
+          <y:Geometry height="31.9375" width="70.43359375" x="1029.1612075485277" y="131.58511893750023"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="tr" textColor="#000000" visible="true" width="70.01171875" x="-3.578125" y="4.0">BankID (FK)</y:NodeLabel>
