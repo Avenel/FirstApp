@@ -13,6 +13,7 @@ class OZBPerson < ActiveRecord::Base
   alias_attribute :schulungsdatum, :Schulungsdatum
   alias_attribute :gesperrt, :Gesperrt
   alias_attribute :sachPnr, :SachPnr
+  alias_attribute :email, :Email
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -26,7 +27,7 @@ class OZBPerson < ActiveRecord::Base
   attr_accessible :Mnr, :UeberPnr, :PWAendDatum, 
                   :Antragsdatum, :Aufnahmedatum, :Austrittsdatum, :Schulungsdatum,
                   :Gesperrt, :SachPnr,
-                  :password, :email
+                  :password, :email, :remember_me
 
   # column names
   HUMANIZED_ATTRIBUTES = {

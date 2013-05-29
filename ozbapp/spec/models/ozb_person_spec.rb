@@ -3,9 +3,6 @@ require 'spec_helper'
 describe OZBPerson  do	
 	it "has a valid factory" do
 		ozbPerson = FactoryGirl.build(:OZBPerson)
-		
-		person = Person.where("pnr = ?", ozbPerson.UeberPnr)
-		expect(person.empty?).to be false
 
 		expect(ozbPerson).to be_valid
 		expect(ozbPerson.save).to eq true

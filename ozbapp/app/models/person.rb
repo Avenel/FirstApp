@@ -8,11 +8,11 @@ class Person < ActiveRecord::Base
   alias_attribute :name, :Name
   alias_attribute :vorname, :Vorname
   alias_attribute :geburtsdatum, :Geburtsdatum
-  alias_attribute :email, :Email
   alias_attribute :sperrKZ, :SperrKZ
   alias_attribute :sachPnr, :SachPnr
+  alias_attribute :email, :Email
 
-  attr_accessible :Pnr, :Rolle, :Name, :Vorname, :Geburtsdatum, :Email, :SperrKZ, :SachPnr, :GueltigVon, :GueltigBis, :AVAILABLE_ROLES
+  attr_accessible :Pnr, :Rolle, :Name, :Vorname, :Geburtsdatum, :email, :SperrKZ, :SachPnr, :GueltigVon, :GueltigBis, :AVAILABLE_ROLES
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -31,7 +31,7 @@ class Person < ActiveRecord::Base
   validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
   validates :Name, :presence => true
   validates :Vorname, :presence => true
-  validates :Email, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
+  validates :email, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
 
   # Role enum
   AVAILABLE_ROLES = %W(G M P S F)
