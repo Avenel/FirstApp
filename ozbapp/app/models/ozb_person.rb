@@ -13,7 +13,8 @@ class OZBPerson < ActiveRecord::Base
   alias_attribute :schulungsdatum, :Schulungsdatum
   alias_attribute :gesperrt, :Gesperrt
   alias_attribute :sachPnr, :SachPnr
-  
+  alias_attribute :email, :EMail
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable,
