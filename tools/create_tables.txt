@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `Person` (
   `Name` varchar(20) NOT NULL,
   `Vorname` varchar(15) NOT NULL DEFAULT '',
   `Geburtsdatum` date DEFAULT NULL,
-  `Email` varchar(255) DEFAULT NULL,
+  `EMail` varchar(255) DEFAULT NULL,
   `SperrKZ` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Pnr,GueltigVon)
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `OZBPerson` (
   `Mnr` int(10) unsigned NOT NULL ,    
   `UeberPnr` int(10) unsigned ,
   `Passwort` varchar(35) DEFAULT NULL,
-  `email` varchar(255) NOT NULL DEFAULT "hello@example.com",
+  `EMail` varchar(255) NOT NULL,
   `PWAendDatum` date DEFAULT NULL,
   `Antragsdatum` date DEFAULT NULL,
   `Aufnahmedatum` date DEFAULT NULL,
