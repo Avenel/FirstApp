@@ -8,6 +8,10 @@ ozbapp/log/development.log
 ozbapp/log/production.log
 config/cap_notify.rb
 
+tools/dump.sql
+tools/log.txt
+tools/ozb_prod.sql
+
 
 #################
 ## Eclipse
