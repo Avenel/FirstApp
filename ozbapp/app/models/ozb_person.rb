@@ -13,7 +13,6 @@ class OZBPerson < ActiveRecord::Base
   alias_attribute :schulungsdatum, :Schulungsdatum
   alias_attribute :gesperrt, :Gesperrt
   alias_attribute :sachPnr, :SachPnr
-  alias_attribute :email, :Email
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -43,24 +42,46 @@ class OZBPerson < ActiveRecord::Base
   end
 
   ### Validierung
-  validates_presence_of :Mnr, :UeberPnr, :Antragsdatum, :email
+  validates_presence_of :Mnr, :UeberPnr, :Antragsdatum
 
+  validates :email, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
+  
   validate :password_complexity
   validate :person_exists
+  validate :ueber_person_exists
 
+
+  # Wenn es produktiv geht, die minimale länge des passworts auf 6 oder höher Zeichen anseten
   def password_complexity
-    if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+/)
-     errors.add :password, "sollte mindestens eine Ziffer und/oder Sonderzeichen wie +-_# usw. enthalten
+    if password.present? and password.match(/^(?=.*[^a-zA-Z])(?=.*[a-z])(?=.*[A-Z])\S{2,}$/i) then
+      return true
+    else
+      errors.add :password, "sollte mindestens eine Ziffer und/oder Sonderzeichen wie +-_# usw. enthalten
                  Deutsche Umlaute erlaubt
-                 Gross-/Kleinschreibung wird unterschieden"
+                 Gross-/Kleinschreibung wird unterschieden
+                 Mindestens 2 Zeichen lang"
+      return false
     end
   end
 
   def person_exists
+    person = Person.where("pnr = ?", mnr)
+    if person.empty? then
+      errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen Mnr (#{mnr}) gefunden werden.")
+      errors.add :mnr, errorString
+      return false
+    end
+    return true
+  end
+
+  def ueber_person_exists
     person = Person.where("pnr = ?", ueberPnr)
     if person.empty? then
-      errors.add :ueberPnr, "Es konnte keine zugehörige Person zu der angegebenen UeberPnr gefunden werden."
+      errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen UeberPnr (#{ueberPnr}) gefunden werden.")
+      errors.add :ueberPnr, errorString 
+      return false
     end
+    return true
   end
 
   ### Beziehungen

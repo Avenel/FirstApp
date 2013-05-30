@@ -2,10 +2,17 @@ require 'faker'
 
 FactoryGirl.define do
 	factory :Person do
-		sequence(:Pnr) {|n| "#{n}" }
-		Name {Faker::Name.first_name}
-		Vorname {Faker::Name.last_name}
-		Rolle "P"
-		EMail {Faker::Internet.email}
+		sequence(:pnr) {|n| "#{n}" }
+		name {Faker::Name.first_name}
+		vorname {Faker::Name.last_name}
+		rolle "P"
+		email {Faker::Internet.email}
+
+		factory :person_with_ozbperson do 
+			after(:create) do |person|
+				FactoryGirl.create(:OZBPerson, :mnr => person.pnr, :ueberPnr => person.pnr)
+			end
+		end
+
 	end
 end
