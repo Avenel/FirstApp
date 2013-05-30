@@ -91,6 +91,18 @@ class OzbKonto < ActiveRecord::Base
   # GueltigVon und GueltigBis wird durch Model selbst gesetzt
   # Sachbearbeiter muss durch Controller gesetzt werden!
   
+  validate :ozbperson_exists
+
+  def ozbperson_exists
+    ozbperson = OZBPerson.where("mnr = ?", mnr)
+    if ozbperson.empty? then
+      errorString = String.new("Es konnte keine zugehörige OZBPerson zu der angegebenen Mnr (#{mnr}) gefunden werden.")
+      errors.add :mnr, errorString
+      return false
+    end
+    return true
+  end
+
   # callbacks
   before_save :set_assoc_attributes, :set_wsaldo_psaldo_to_zero, :set_saldo_datum
   before_create :set_valid_time
