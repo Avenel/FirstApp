@@ -10,7 +10,8 @@ class OzbKonto < ActiveRecord::Base
   alias_attribute :waehrung, :Waehrung
   alias_attribute :wSaldo, :WSaldo
   alias_attribute :pSaldo, :PSaldo
-  alias_attribute :saldoDatum, :SaldoDatum 
+  alias_attribute :saldoDatum, :SaldoDatum
+  alias_attribute :sachPnr, :SachPnr
   
   # associations
   belongs_to :ozb_person, :foreign_key => :Mnr
@@ -83,18 +84,20 @@ class OzbKonto < ActiveRecord::Base
   
   # validations
   # validate always things you will accept nested attributes for!
-  #validates_associated :ee_konto, :ze_konto
-  validates :KtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontonummer an." }
-  validates :Mnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Mitgliedsnummer an." }
-  #validates :SaldoDatum, :presence => { :format => { :with => /\d{4}-\d{2}-\d{2}/ }, :message => "Bitte geben Sie ein gültiges Saldodatum ein." }
-  validates :Waehrung, :presence => { :format => { :with => /[A-Z]+/ }, :message => "Bitte geben Sie eine gültige Währung an." }
-  # GueltigVon und GueltigBis wird durch Model selbst gesetzt
-  # Sachbearbeiter muss durch Controller gesetzt werden!
   
-  validate :ozbperson_exists
+  validates :KtoNr, :presence => { :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
+  validates :Mnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Mitgliedsnummer an." }  
+  validates :Waehrung, :presence => { :format => { :with => /[A-Z]+/ }, :message => "Bitte geben Sie eine gültige Währung an." }
+  
+  # GueltigVon und GueltigBis wird durch Model selbst gesetzt
+  
+  # Sachbearbeiter muss durch Controller gesetzt werden!
+  validates :SachPnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Mitgliedsnummer für den Sachbearbeiter an." }
+  
+  validate :ozbperson_exists, :sachPnr_exists
 
   def ozbperson_exists
-    ozbperson = OZBPerson.where("mnr = ?", mnr)
+    ozbperson = OZBPerson.where("Mnr = ?", mnr)
     if ozbperson.empty? then
       errorString = String.new("Es konnte keine zugehörige OZBPerson zu der angegebenen Mnr (#{mnr}) gefunden werden.")
       errors.add :mnr, errorString
@@ -102,6 +105,17 @@ class OzbKonto < ActiveRecord::Base
     end
     return true
   end
+
+  def sachPnr_exists
+    ozbperson = OZBPerson.where("Mnr = ?", sachPnr)
+    if ozbperson.empty? then
+      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{mnr}) gefunden werden.")
+      errors.add :mnr, errorString
+      return false
+    end
+    return true
+  end
+
 
   # callbacks
   before_save :set_assoc_attributes, :set_wsaldo_psaldo_to_zero, :set_saldo_datum
@@ -261,11 +275,10 @@ class OzbKonto < ActiveRecord::Base
       end
     end
 
-   after_update do
+    after_update do
       if !@@copy.nil?
         @@copy.save(:validation => false)
         @@copy = nil
       end
-   end
-
+    end
 end

@@ -5,6 +5,10 @@ describe Person do
 	# Valid factory
 	it "has a valid factory" do
 		expect(FactoryGirl.create(:Person)).to be_valid
+
+		person = FactoryGirl.create(:Person)
+		expect(person.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.now.strftime("%Y-%m-%d %H:%M:%S")
+		expect(person.GueltigBis.strftime("%Y-%m-%d %H:%M:%S")).to eq "9999-12-31 23:59:59"
 	end
 
 	# Valid/invalid attributes
