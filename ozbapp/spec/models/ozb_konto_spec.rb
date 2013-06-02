@@ -7,8 +7,6 @@ describe OzbKonto do
 		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		expect(ozbKonto).to be_valid
 
-		puts ozbKonto.inspect
-
 		expect(ozbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.now.strftime("%Y-%m-%d %H:%M:%S")
 		expect(ozbKonto.GueltigBis.strftime("%Y-%m-%d %H:%M:%S")).to eq "9999-12-31 23:59:59"
 	end
@@ -70,6 +68,7 @@ describe OzbKonto do
 		expect(FactoryGirl.create(:ozbkonto_with_ozbperson, :sachPnr => sachbearbeiter.mnr)).to be_valid		
 	end
 
+	# Ist nun der Sachbearbeiter pflicht, oder nicht?
 	it "is invalid without a Sachbearbeiter Personalnummer" do 
 		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :sachPnr => nil)).to be_invalid		
 	end
@@ -79,11 +78,55 @@ describe OzbKonto do
 		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :sachPnr => "hello")).to be_invalid
 	end
 
+	# Währung
+	it "is valid with a valid Waehrung" do
+		expect(FactoryGirl.create(:ozbkonto_with_ozbperson, :waehrung => "STR")).to be_valid
+	end
+
+	it "is invalid without a Waehrung" do
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :waehrung => nil)).to be_invalid
+	end
+
+	it "is invalid with an invalid Waehrung" do
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :waehrung => "12Asd")).to be_invalid
+	end
+
+
 	# Class and instance methods 
 
 	# ozbperson_exists
+	it "returns true if a valid person exists" do
+		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		
+		ozbperson = FactoryGirl.create(:ozbperson_with_person)
+		ozbkonto.mnr = ozbperson.mnr
+		
+		expect(ozbkonto.ozbperson_exists).to eq true
+	end
+
+	it "returns false if an invalid person exists" do
+		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		ozbkonto.mnr = 45
+		
+		expect(ozbkonto.ozbperson_exists).to eq false
+	end
 
 	# sachPnr_exists
+	it "returns true if a valid sachPnr exists" do
+		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		
+		ozbperson = FactoryGirl.create(:ozbperson_with_person)
+		ozbkonto.sachPnr = ozbperson.mnr
+		
+		expect(ozbkonto.sachPnr_exists).to eq true
+	end
+
+	it "returns false if an invalid sachPnr exists" do
+		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		ozbkonto.sachPnr = 45
+		
+		expect(ozbkonto.sachPnr_exists).to eq false
+	end
 
 	# self.get_all_ee_for(mnr)
 
