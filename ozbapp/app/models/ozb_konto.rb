@@ -92,7 +92,7 @@ class OzbKonto < ActiveRecord::Base
   # GueltigVon und GueltigBis wird durch Model selbst gesetzt
   
   # Sachbearbeiter muss durch Controller gesetzt werden!
-  validates :SachPnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Mitgliedsnummer für den Sachbearbeiter an." }
+  validates :SachPnr, :format => { :with => /[0-9]+/, :message => "Bitte geben Sie eine gültige Mitgliedsnummer für den Sachbearbeiter an." }
   
   validate :ozbperson_exists, :sachPnr_exists
 
@@ -180,7 +180,7 @@ class OzbKonto < ActiveRecord::Base
   end
 
   # Returns the OZBKonto Object for ktoNr and date
-  def self.get(ktoNr, date = Time.now)
+  def get(ktoNr, date = Time.now)
     #self.where(:KtoNr => ktoNr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
     OzbKonto.find(:last, :conditions => ["KtoNr = ? AND GueltigVon <= ? AND GueltigBis > ?", ktoNr, date, date])
   end
@@ -188,7 +188,7 @@ class OzbKonto < ActiveRecord::Base
   # Returns the latest/newest OZBKonto Object
   def self.latest(ktoNr)
     begin
-      self.find(:all, :conditions => ["KtoNr = ? AND GueltigBis >= ?", ktoNr, "9999-12-31 23:59:59"]).first # composite primary key gem
+      self.find(:all, :conditions => ["KtoNr = ? AND GueltigBis = ?", ktoNr, "9999-12-31 23:59:59"]).first # composite primary key gem
     rescue ActiveRecord::RecordNotFound
       nil
     end
