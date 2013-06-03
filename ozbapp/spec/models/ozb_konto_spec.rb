@@ -318,13 +318,65 @@ describe OzbKonto do
 	end
 
 	# destroy_historic_records
+	it "destroys all historic records except himself" do
+		# create valid ozbkonto, in different versions
+		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		for i in 0..1
+			sleep(1.0)
+			ozbKontoOrigin.WSaldo +=  1
+			ozbKontoOrigin.save!
+		end
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 3
+
+		# Private method, therfore using send methode
+		ozbKontoOrigin.send(:destroy_historic_records)
+
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+	end
+
+	it "destroys zero records, because there are no historic records" do
+		expect(OzbKonto.where("KtoNr = ?", 42).size).to eq 0
+
+		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 42)
+
+		expect(ozbKontoOrigin.ktoNr).to eq 42
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+
+		# Private method, therfore using send methode
+		ozbKontoOrigin.send(:destroy_historic_records)
+
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+	end
 
 	# set_assoc_attributes
+	it "sets the value of the SachPnr attribute in the associated EE Konto"
+
+	it "does not set the value of the SachPnr attribute in the associated EE Konto, if the EE Konto does not exists"
 
 	# set_valid_time
+	it "sets the valid time to GueltigVon = now and GueltigBis = 9999-12-32 23:59:59"
+
+	it "does not set the valid time, if it is already set"
+
 
 	# set_new_valid_time
+	it "sets the valid time of the new copy to GueltigVon = now and GueltigBis = 9999-12-32 23:59:59"
+
+	it "does not set the valid time of the new copy, if the Kontonummer not exists"
+
+	it "does not set the valid time of the new copy, if GuelityBis > 9999-01-01 00:00:00"
+
+	# Testing Callbacks
+	# before_create
+
+	# before_save
+
+	# before_update
 
 	# after_update
+
+	# after_destroy
+
+	
 
 end
