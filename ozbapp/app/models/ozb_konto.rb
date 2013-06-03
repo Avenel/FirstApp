@@ -180,7 +180,7 @@ class OzbKonto < ActiveRecord::Base
   end
 
   # Returns the OZBKonto Object for ktoNr and date
-  def get(ktoNr, date = Time.now)
+  def self.get(ktoNr, date = Time.now)
     #self.where(:KtoNr => ktoNr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
     OzbKonto.find(:last, :conditions => ["KtoNr = ? AND GueltigVon <= ? AND GueltigBis > ?", ktoNr, date, date])
   end

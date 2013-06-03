@@ -133,6 +133,47 @@ describe OzbKonto do
 	# self.get_all_ze_for(mnr)
 
 	# get(ktoNr, date = Time.now)
+	it "returns the OZBKonto for a valid Kontonummer and date (=now)" do 
+		# create valid ozbkonto, in different versions
+		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		createdAtOrigin = Time.now
+		createdAt = Time.now
+		for i in 0..1
+			sleep(1.0)
+			ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => ozbKontoOrigin.ktoNr)
+			createdAt = Time.now
+		end
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 3
+
+		latestOzbKonto = OzbKonto.get(ozbKontoOrigin.ktoNr)
+
+		expect(latestOzbKonto.nil?).to eq false
+		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
+		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to_not eq createdAtOrigin.strftime("%Y-%m-%d %H:%M:%S")
+	end
+
+	it "returns the OZBKonto for a valid Kontonummer and date (=now - 2 seconds)" do 
+		# create valid ozbkonto, in different versions
+		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		createdAtOrigin = Time.now
+		createdAt = Time.now
+		for i in 0..1
+			sleep(1.0)
+			ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => ozbKontoOrigin.ktoNr)
+			createdAt = Time.now
+		end
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 3
+
+		latestOzbKonto = OzbKonto.get(ozbKontoOrigin.ktoNr, createdAtOrigin)
+
+		expect(latestOzbKonto.nil?).to eq false
+		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to_not eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
+		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAtOrigin.strftime("%Y-%m-%d %H:%M:%S")
+	end	
+
+	it "returns nil, if there is no OZBKonto for a invalid Kontonummer" do
+		expect(OzbKonto.get(45, Time.now)).to eq nil
+	end
 
 	# self.latest(ktoNr)
 
