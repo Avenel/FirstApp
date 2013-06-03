@@ -43,7 +43,7 @@ public class Migratior {
 		System.out.println("-h \t Zeigt diese Hilfeseite");
 		System.out.println("-i \t Setzt den Pfad zur txt-Datei mit der Tabellendefiniton (Default: im gleichen Ordner wir die Jar-Datei die Datei create_tables.txt");
 		System.out.println("-s \t Setzt den Server (Default: localhost");
-		System.out.println("-u \t Setzt den Username fÃ¼r den Login");
+		System.out.println("-u \t Setzt den Username fÃƒÂ¼r den Login");
 		System.out.println("-p \t Setzt das Password");
 	}
 
@@ -90,10 +90,10 @@ public class Migratior {
 				 */
 				String queryInsertPerson = "INSERT INTO person " +
 						"(Pnr,Rolle,Name,Vorname,Geburtsdatum," +
-						"Email,GueltigVon,GueltigBis,SperrKZ) VALUES " +
+						"EMail,GueltigVon,GueltigBis,SperrKZ) VALUES " +
 						"(?,?,?,?,?,?,?,?,?);";
 				String queryInsertAdresse = "INSERT INTO adresse (Pnr,Strasse,Nr,PLZ,Ort,GueltigVon,GueltigBis,Vermerk) VALUES (?,?,?,?,?,?,?,?);";
-				String queryInsertOZBPerson = "INSERT INTO ozbperson (Mnr,UeberPnr,Passwort,PWAendDatum,Gesperrt,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum) VALUES (?,?,?,?,?,?,?,?,?);";
+				String queryInsertOZBPerson = "INSERT INTO ozbperson (Mnr,UeberPnr,Passwort,PWAendDatum,Gesperrt,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum,EMail) VALUES (?,?,?,?,?,?,?,?,?,?);";
 				String queryInsertPartner = "INSERT INTO partner (Mnr,MnrO,Berechtigung,GueltigVon,GueltigBis) VALUES (?,?,?,?,?);";
 				String queryInsertMitglied = "INSERT INTO mitglied (Mnr,RVDatum,GueltigVon,GueltigBis) VALUES (?,?,?,?);";
 				String queryInsertGesellschafter = "INSERT INTO gesellschafter (Mnr,FASteuerNr,FALfdNr,FAIdNr,Wohnsitzfinanzamt,GueltigVon,GueltigBis) VALUES (?,?,?,?,?,?,?);";
@@ -114,7 +114,7 @@ public class Migratior {
 				String queryInsertKKLVerlauf = "INSERT INTO kklverlauf (KtoNr,KKLAbDatum,KKL) VALUES (?,?,?)";
 				
 				String queryInsertVeranstalltungart = "INSERT INTO veranstaltungsart (VANr,VABezeichnung) VALUES (?,?)";
-				String queryInsertVeranstalltung = "INSERT INTO veranstaltung (Vnr,vid,VADatum,VAOrt) VALUES (?,?,?,?)";
+				String queryInsertVeranstalltung = "INSERT INTO veranstaltung (Vnr,VANr,VADatum,VAOrt) VALUES (?,?,?,?)";
 				String queryInsertTeilnahme= "INSERT INTO teilnahme (Pnr,Vnr,TeilnArt) VALUES (?,?,?)";
 				/**
 				 * Lesen, Trennung und Ausfuhrung SQl Aufrufe aus Datei
@@ -132,13 +132,15 @@ public class Migratior {
 					}
 				}
 				conOzbTest.commit();
+				
+				
 				// Person
 				/**
 				 * Aufruf Daten fur die Tabelle Person 
 				 */
 				ResultSet rs = stOzbProd.executeQuery(" SELECT `MNR`,`GM`,`NAME`,`VORNAME`, `GEBURTSDATUM`,`STRASSE-NR`, `PLZ`, `ORT`, `VERMERK`, `EMAIL`, `SPERRKZ` FROM Mitglied "
 						+"union "
-						+"select `MNR`,`GM`,`NAME`,`VORNAME`, `GEBURTSDATUM`,`STRASSE-NR`, `PLZ`, `ORT`, `VERMERK`, `EMAIL`, 0 from Fšrdermitglied;");
+						+"select `MNR`,`GM`,`NAME`,`VORNAME`, `GEBURTSDATUM`,`STRASSE-NR`, `PLZ`, `ORT`, `VERMERK`, `EMAIL`, 0 from Fördermitglied;");
 				
 				
 				while (rs.next()) {
@@ -196,10 +198,9 @@ public class Migratior {
 						pw.println("");
 					}
 				}
-			
 
 				// OZBPerson
-				String sql = "SELECT DISTINCT m.MNR, O.UEBER_MNR, m.PASSWORT, m.PW_AENDDAT, m.SPERRKZ, m.ANTRAGSDAT, m.AUFNAHMEDAT,m.AUS_DAT,m.SCHUL_DAT "
+				String sql = "SELECT DISTINCT m.MNR, O.UEBER_MNR, m.PASSWORT, m.PW_AENDDAT, m.SPERRKZ, m.ANTRAGSDAT, m.AUFNAHMEDAT, m.AUS_DAT, m.SCHUL_DAT, m.EMAIL "
 						+ "FROM Mitglied m, Konto k, "
 						+ "(select T.km1 MNR, MAX(T.km2) UEBER_MNR "
 						+ "from"
@@ -231,6 +232,7 @@ public class Migratior {
 					queryInsertStmt.setDate(7, rs.getDate("AUFNAHMEDAT"));
 					queryInsertStmt.setDate(8, rs.getDate("AUS_DAT"));
 					queryInsertStmt.setDate(9, rs.getDate("SCHUL_DAT"));
+					queryInsertStmt.setString(10, rs.getString("EMAIL"));
 					long oneDay = 1 * 24 * 60 * 60 * 1000;
 					//queryInsertStmt.setTimestamp(10, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
 					//queryInsertStmt.setTimestamp(11, endOfTime);
@@ -243,6 +245,7 @@ public class Migratior {
 						pw.println("");
 					}
 				}
+
 				// Mitglied
 				rs = stOzbProd
 						.executeQuery(" SELECT `MNR`,`RV_DAT` FROM Mitglied WHERE GM='M' ");
@@ -389,6 +392,8 @@ public class Migratior {
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
+						pw.println("Teilnahme : " + " Vnr: " + rs.getInt("Vnr") + " Mnr: " + rs.getInt("Mnr")
+								+ " " + e.getMessage());
 						pw.println("SQL-Query: " + queryInsertStmt.toString());
 						pw.println("");
 					}
