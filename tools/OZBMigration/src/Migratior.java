@@ -43,7 +43,7 @@ public class Migratior {
 		System.out.println("-h \t Zeigt diese Hilfeseite");
 		System.out.println("-i \t Setzt den Pfad zur txt-Datei mit der Tabellendefiniton (Default: im gleichen Ordner wir die Jar-Datei die Datei create_tables.txt");
 		System.out.println("-s \t Setzt den Server (Default: localhost");
-		System.out.println("-u \t Setzt den Username fÃ¼r den Login");
+		System.out.println("-u \t Setzt den Username f�r den Login");
 		System.out.println("-p \t Setzt das Password");
 	}
 
