@@ -3,16 +3,26 @@ class Bank < ActiveRecord::Base
   self.table_name = "Bank"
   self.primary_key = :BLZ
   
-  alias_attribute :bic, :BIC
-  
-  validates :BLZ, :numericality => { :only_integer => true }, :uniqueness => true, :presence => { :message => "Bitte geben Sie eine BLZ an." }
-  validates :BankName, :presence => { :message => "Bitte geben Sie einen Banknamen an." }
-  
   attr_accessible :BLZ, :BIC, :BankName
-  
+
   has_many :Bankverbindung,
     :foreign_key => :BLZ,
     :dependent => :destroy
+
+  # Validations
+  validates :BLZ, :uniqueness => true, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
+  validates :BankName, :presence => { :message => "Bitte geben Sie einen Banknamen an." }
+  
+  validate :valid_BIC
+
+  def valid_BIC 
+    if self.BIC.nil? or self.BIC.match(/(^.{8}$)|(^.{11}$)/i) then
+      return true
+    else
+      errors.add :BIC, "Bitte geben Sie eine valide BIC an."
+      return false
+    end
+  end
   
   # column names
   HUMANIZED_ATTRIBUTES = {

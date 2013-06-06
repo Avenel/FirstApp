@@ -171,9 +171,9 @@ CREATE TABLE IF NOT EXISTS `Tan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Bank` (
-  `BLZ` int(10) unsigned NOT NULL,
-  `BIC` char(10),
-  `BankName` varchar(35) DEFAULT NULL,      
+  `BLZ` int(8) unsigned NOT NULL,
+  `BIC` char(11),
+  `BankName` varchar(255) DEFAULT NULL,      
   PRIMARY KEY (`BLZ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
