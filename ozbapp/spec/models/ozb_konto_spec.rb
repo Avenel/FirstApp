@@ -250,8 +250,7 @@ describe OzbKonto do
 
 	it "does not destroy himself if there are more than 1 record for the given Kontonummer in the database" 
 
-
-	# set_wsaldo_psaldo_to_zero
+	# set_wsaldo_psaldo_to_zero (callback methode: before_save)
 	it "sets WSaldo and PSaldo to 0, even if they are nil" do 
 		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 
@@ -271,7 +270,6 @@ describe OzbKonto do
 		expect(ozbKonto.pSaldo).to eq 0
 	end
 
-	# set_wsaldo_psaldo_to_zero
 	it "does not set WSaldo and PSaldo to 0, if they != nil" do 
 		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :wSaldo => 42, :pSaldo => 42)
 
@@ -285,7 +283,7 @@ describe OzbKonto do
 		expect(ozbKonto.pSaldo).to_not eq 0
 	end
 
-	# set_saldo_datum
+	# set_saldo_datum (callback methode: before_save)
 	it "sets Saldo Datum to Kontoeinrichtungsdatum, if SaldoDatum is nil" do
 		originDate = Time.now
 		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoEinrDatum => originDate)
@@ -317,7 +315,7 @@ describe OzbKonto do
 		expect(ozbKonto.saldoDatum).to eq saldoDate
 	end
 
-	# destroy_historic_records
+	# destroy_historic_records (callback methode: after_destroy)
 	it "destroys all historic records except himself" do
 		# create valid ozbkonto, in different versions
 		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
@@ -348,35 +346,94 @@ describe OzbKonto do
 		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
 	end
 
-	# set_assoc_attributes
+	# set_assoc_attributes (callback methode: before_save)
 	it "sets the value of the SachPnr attribute in the associated EE Konto"
 
 	it "does not set the value of the SachPnr attribute in the associated EE Konto, if the EE Konto does not exists"
 
-	# set_valid_time
-	it "sets the valid time to GueltigVon = now and GueltigBis = 9999-12-32 23:59:59"
+	# set_valid_time (callback methode: before_create)
+	it "sets the valid time to GueltigVon = now and GueltigBis = 9999-12-31 23:59:59" do
+		ozbPerson = FactoryGirl.create(:ozbperson_with_person)
+		sachbearbeiter = FactoryGirl.create(:ozbperson_with_person)
+		ozbKonto = FactoryGirl.build(	:ozbkonto_with_ozbperson, :mnr => ozbPerson.mnr, 
+										:sachPnr => sachbearbeiter.mnr)
+		expect(ozbKonto).to be_valid
 
-	it "does not set the valid time, if it is already set"
+		expect(ozbKonto.GueltigVon).to eq nil		
+		expect(ozbKonto.GueltigBis).to eq nil
+
+		expect(ozbKonto.save!).to eq true
+		expect(ozbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.now.strftime("%Y-%m-%d %H:%M:%S")
+		expect(ozbKonto.GueltigBis.strftime("%Y-%m-%d %H:%M:%S")).to eq "9999-12-31 23:59:59"
+	end
+
+	it "does not set the valid time, if it is already set" do
+		ozbPerson = FactoryGirl.create(:ozbperson_with_person)
+		sachbearbeiter = FactoryGirl.create(:ozbperson_with_person)
+		ozbKonto = FactoryGirl.build(	:ozbkonto_with_ozbperson, :mnr => ozbPerson.mnr, 
+										:sachPnr => sachbearbeiter.mnr, 
+										:GueltigVon => Time.zone.parse("2013-01-01 23:59:59"), :GueltigBis => Time.zone.parse("2013-12-31 23:59:59"))
+		expect(ozbKonto).to be_valid
+
+		expect(ozbKonto.GueltigVon).to eq Time.zone.parse("2013-01-01 23:59:59")
+		expect(ozbKonto.GueltigBis).to eq Time.zone.parse("2013-12-31 23:59:59")
+
+		expect(ozbKonto.save!).to eq true
+
+		expect(ozbKonto.GueltigVon).to eq Time.zone.parse("2013-01-01 23:59:59")
+		expect(ozbKonto.GueltigBis).to eq Time.zone.parse("2013-12-31 23:59:59")		
+	end
 
 
-	# set_new_valid_time
-	it "sets the valid time of the new copy to GueltigVon = now and GueltigBis = 9999-12-32 23:59:59"
+	# set_new_valid_time (callback methode: before_update)
+	it "sets the valid time of the new copy to GueltigVon = self.GueltigVon and GueltigBis = Time.now and updates himself to the latest record" do
+		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		gueltigVon = Time.now
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
 
-	it "does not set the valid time of the new copy, if the Kontonummer not exists"
+		sleep(1.0)
 
-	it "does not set the valid time of the new copy, if GuelityBis > 9999-01-01 00:00:00"
+		ozbKontoOrigin.wSaldo += 1
+		
+		gueltigBis = Time.now
+		expect(ozbKontoOrigin.save!).to eq true
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 2
 
-	# Testing Callbacks
-	# before_create
+		oldOzbKonto = OzbKonto.where("KtoNr = ? AND GueltigBis < ?", ozbKontoOrigin.ktoNr, Time.zone.parse("9999-12-31 23:59:59")).first
+		expect(oldOzbKonto.nil?).to eq false
+		expect(oldOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq gueltigVon.strftime("%Y-%m-%d %H:%M:%S")
+		expect(oldOzbKonto.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq gueltigBis.strftime("%Y-%m-%d %H:%M:%S")
+	end
 
-	# before_save
+	it "does not set the valid time of the new copy, if the Kontonummer not exists" do
+		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		gueltigVon = Time.now
 
-	# before_update
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
 
-	# after_update
+		sleep(1.0)
 
-	# after_destroy
+		ozbKontoOrigin.ktoNr = nil
+		ozbKontoOrigin.wSaldo += 1
 
-	
+		# one cannot save an ozbkonto without a valid kontonummer
+		expect(ozbKontoOrigin.save).to eq false
+	end
 
+	it "does not set the valid time of the new copy, if GuelityBis < 9999-01-01 00:00:00" do 
+		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		gueltigVon = Time.now
+
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+		expect(ozbKontoOrigin.GueltigBis).to eq Time.zone.parse("9999-12-31 23:59:59")
+
+		sleep(1.0)
+
+		ozbKontoOrigin.GueltigBis = Time.zone.parse("9998-12-31 23:59:59")
+		expect(ozbKontoOrigin.save).to eq true
+
+		# change nothing, because one can only modify the latest version
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+		expect(ozbKontoOrigin.GueltigBis).to eq Time.zone.parse("9998-12-31 23:59:59")	
+	end
 end
