@@ -36,9 +36,19 @@ describe Bankverbindung do
 	end
 
 	# BLZ
-	it "is valid with a valid BLZ"
-	it "is invalid without a BLZ"
-	it "is invalid with an invalid BLZ"
+	it "is valid with a valid BLZ" do
+		expect(FactoryGirl.create(:bankverbindung_with_bank_and_person, :BLZ => 12345678)).to be_valid
+	end
+
+	it "is invalid without a BLZ" do
+		expect(FactoryGirl.build(:bankverbindung_with_bank_and_person, :BLZ => nil)).to be_invalid
+	end
+
+	it "is invalid with an invalid BLZ" do 
+		expect(FactoryGirl.build(:bankverbindung_with_bank_and_person, :BLZ => 1234)).to be_invalid
+		expect(FactoryGirl.build(:bankverbindung_with_bank_and_person, :BLZ => "Hello")).to be_invalid
+		expect(FactoryGirl.build(:bankverbindung_with_bank_and_person, :BLZ => "1234567890ABC")).to be_invalid
+	end
 
 	# KtoNr
 	it "is valid with a valid Kontonummer"
