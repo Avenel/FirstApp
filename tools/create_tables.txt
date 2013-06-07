@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `Bankverbindung` (
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
   `Pnr` int(10) unsigned NOT NULL ,
-  `BankKtoNr`  varchar(12) DEFAULT NULL,
+  `BankKtoNr`  varchar(12) NOT NULL,
   `IBAN` char(20),
   `BLZ` int(10) unsigned NOT NULL,   
   `SachPnr` int(10) unsigned DEFAULT NULL,

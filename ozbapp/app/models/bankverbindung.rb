@@ -41,9 +41,10 @@ class Bankverbindung < ActiveRecord::Base
   
   # validations
   validates :BankKtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Bankkonto-Nummer an (nur Zahlen 0-9)." }
-  #validates :BLZ, :presence => { :message => "Bitte geben Sie eine BLZ an!" }
+  validates :BLZ, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
   validates :Pnr, :presence => { :message => "Bitte geben Sie die Mitglieder-Nummer der Person an." }
-  #validates_associated :Bank
+
+  validate :bank_exists
   
   # callbacks
   #after_commit :set_id_for_eekonto
@@ -66,6 +67,14 @@ class Bankverbindung < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
   
+  def bank_exists 
+    if Bank.where("BLZ = ?", self.blz).empty? then
+      return false
+    else
+      return true
+    end
+  end
+
   # bound to callback
   def set_valid_id
     if (self.ID.nil?)

@@ -10,6 +10,7 @@ class Person < ActiveRecord::Base
   alias_attribute :geburtsdatum, :Geburtsdatum
   alias_attribute :sperrKZ, :SperrKZ
   alias_attribute :sachPnr, :SachPnr
+  alias_attribute :email, :EMail
 
   attr_accessible :Pnr, :Rolle, :Name, :Vorname, :Geburtsdatum, :email, :SperrKZ, :SachPnr, :GueltigVon, :GueltigBis, :AVAILABLE_ROLES
 
