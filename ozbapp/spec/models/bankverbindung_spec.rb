@@ -8,14 +8,32 @@ describe Bankverbindung do
 
 	# Valid/invalid attributes
 	# ID
-	it "is valid with a valid ID"
-	it "is invalid without a ID"
-	it "is invalid with an invalid ID"
+	it "is valid with a valid ID" do
+		expect(FactoryGirl.create(:bankverbindung_with_bank_and_person, :ID => 42)).to be_valid
+	end
+
+	it "is invalid without a ID" do
+		expect(FactoryGirl.build(:bankverbindung_with_bank_and_person, :ID => nil)).to be_invalid
+	end
+
+	it "is invalid with an invalid ID" do
+		expect(FactoryGirl.build(:bankverbindung_with_bank_and_person, :ID => "A2A")).to be_invalid
+	end
 
 	# Pnr
-	it "is valid with a valid pnr"
-	it "is invalid without a pnr"
-	it "is invalid with an invalid pnr"
+	it "is valid with a valid pnr" do
+		expect(FactoryGirl.create(:bankverbindung_with_bank_and_person, :Pnr => 42)).to be_valid
+	end
+
+	it "is invalid without a pnr" do
+		expect(FactoryGirl.build(:bankverbindung_with_bank_and_person, :Pnr => nil)).to be_invalid
+	end
+
+	it "is invalid with an invalid pnr" do
+		# set an invalid pnr (person does not exists)
+		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank, :Pnr => 45)
+		expect(bankverbindung).to be_invalid
+	end
 
 	# BLZ
 	it "is valid with a valid BLZ"

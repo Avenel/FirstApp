@@ -40,11 +40,13 @@ class Bankverbindung < ActiveRecord::Base
   accepts_nested_attributes_for :Bank, :reject_if => :bank_already_exists
   
   # validations
+  validates :ID, :presence => true, :format => { :with => /^[0-9]+$/, :message => "Bitte geben Sie eine gültige ID an."}
   validates :BankKtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Bankkonto-Nummer an (nur Zahlen 0-9)." }
   validates :BLZ, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
   validates :Pnr, :presence => { :message => "Bitte geben Sie die Mitglieder-Nummer der Person an." }
 
   validate :bank_exists
+  validate :pnr_exists
   
   # callbacks
   #after_commit :set_id_for_eekonto
@@ -69,6 +71,14 @@ class Bankverbindung < ActiveRecord::Base
   
   def bank_exists 
     if Bank.where("BLZ = ?", self.blz).empty? then
+      return false
+    else
+      return true
+    end
+  end
+
+  def pnr_exists 
+    if Person.where("Pnr = ?", self.pnr).empty? then
       return false
     else
       return true
