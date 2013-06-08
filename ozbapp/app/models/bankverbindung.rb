@@ -40,11 +40,11 @@ class Bankverbindung < ActiveRecord::Base
   accepts_nested_attributes_for :Bank, :reject_if => :bank_already_exists
   
   # validations
-  validates :ID, :presence => true, :format => { :with => /^[0-9]+$/, :message => "Bitte geben Sie eine gültige ID an."}
   validates :BankKtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Bankkonto-Nummer an (nur Zahlen 0-9)." }
   validates :BLZ, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
   validates :Pnr, :presence => { :message => "Bitte geben Sie die Mitglieder-Nummer der Person an." }
 
+  validate :valid_id
   validate :bank_exists
   validate :pnr_exists
   
@@ -85,11 +85,24 @@ class Bankverbindung < ActiveRecord::Base
     end
   end
 
-  # bound to callback
+  def valid_id
+    if !self.ID.nil? and !self.ID.to_s.match(/^[0-9]+$/) then
+      errors.add :ID, "Bitte geben Sie eine gültige ID an."
+      return false
+    else
+      return true
+    end
+  end
+
+  # valid_id to callback
   def set_valid_id
     if (self.ID.nil?)
       b = Bankverbindung.find(:all, :order => "ID ASC").last
-      self.ID = b.ID + 1
+      if b.nil? then
+        self.ID = 1
+      else
+        self.ID = b.ID + 1
+      end
     end
   end
   

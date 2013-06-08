@@ -13,6 +13,13 @@ FactoryGirl.define do
 			end
 		end
 
+		factory :bankverbindung_with_person do
+			before(:create) do |bankverbindung|
+				person = FactoryGirl.create(:Person)
+				bankverbindung.pnr = person.pnr
+			end	
+		end
+
 		factory :bankverbindung_with_bank_and_person do
 			before(:create) do |bankverbindung|
 				person = FactoryGirl.create(:Person)
