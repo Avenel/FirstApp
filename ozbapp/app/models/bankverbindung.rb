@@ -86,8 +86,8 @@ class Bankverbindung < ActiveRecord::Base
   end
 
   def valid_id
-    if !self.ID.nil? and !self.ID.to_s.match(/^[0-9]+$/) then
-      errors.add :ID, "Bitte geben Sie eine gültige ID an."
+    if !self.id.nil? and Float(id) then
+      errors.add :id, "Bitte geben Sie eine gültige ID an."
       return false
     else
       return true
@@ -96,12 +96,12 @@ class Bankverbindung < ActiveRecord::Base
 
   # valid_id to callback
   def set_valid_id
-    if (self.ID.nil?)
+    if (self.id.nil?)
       b = Bankverbindung.find(:all, :order => "ID ASC").last
       if b.nil? then
-        self.ID = 1
+        self.id = 1
       else
-        self.ID = b.ID + 1
+        self.id = b.id + 1
       end
     end
   end

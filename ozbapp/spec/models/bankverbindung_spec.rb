@@ -85,6 +85,23 @@ describe Bankverbindung do
 		expect(bankverbindung.bank_exists).to eq false
 	end
 
+	# valid_id
+	it "returns true, if id is nil or is valid" do
+		# nil
+		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => nil)
+		expect(bankverbindung.valid_id).to eq true
+		
+		# valid id
+		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => 42)
+		expect(bankverbindung.valid_id).to eq true
+	end
+
+	it "returns false, if id is not nil and invalid" do
+		# invalid id
+		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => "ABCDE")
+		expect(bankverbindung.valid_id).to eq false
+	end
+
 	# set_valid_id (callback methode: before_create)
 	it "sets a valid id, if id does not exists. (auto-increment)" do
 		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank_and_person, :id => nil)
@@ -93,6 +110,7 @@ describe Bankverbindung do
 	end
 
 	# set_valid_time
+
 	# set_new_valid_time
 	# get(id, date)
 	# self.latest(id)

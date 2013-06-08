@@ -3,7 +3,7 @@ require 'faker'
 FactoryGirl.define do
 
 	factory :Bankverbindung do
-		sequence(:ID){ |n| "#{n}" }
+		sequence(:id){ |n| "#{n}" }
 		sequence(:BankKtoNr) { |n| "#{n*100000000000}" }
 		
 		factory :bankverbindung_with_bank do
