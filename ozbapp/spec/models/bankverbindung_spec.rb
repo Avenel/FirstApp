@@ -86,19 +86,13 @@ describe Bankverbindung do
 	end
 
 	# valid_id
-	it "returns true, if id is nil or is valid" do
-		# nil
-		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => nil)
-		expect(bankverbindung.valid_id).to eq true
-		
-		# valid id
+	it "returns true if id is valid (a Number)" do
 		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => 42)
 		expect(bankverbindung.valid_id).to eq true
 	end
 
-	it "returns false, if id is not nil and invalid" do
-		# invalid id
-		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => "ABCDE")
+	it "returns false if id is invalid (a String)" do
+		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => "ABCD")
 		expect(bankverbindung.valid_id).to eq false
 	end
 
@@ -109,9 +103,97 @@ describe Bankverbindung do
 		expect(bankverbindung.id).to eq 1
 	end
 
-	# set_valid_time
+	# set_valid_time (callback methode: before_create)
+	it "sets the valid time to GueltigVon = now and GueltigBis = 9999-12-31 23:59:59" do
+		bank = FactoryGirl.create(:Bank)
+		person = FactoryGirl.create(:Person)
+		bankverbindung = FactoryGirl.build(:Bankverbindung, :Pnr => person.pnr, :BLZ => bank.BLZ)
+		expect(bankverbindung).to be_valid
 
-	# set_new_valid_time
+		expect(bankverbindung.GueltigVon).to eq nil		
+		expect(bankverbindung.GueltigBis).to eq nil
+
+		expect(bankverbindung.save!).to eq true
+		expect(bankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.now.strftime("%Y-%m-%d %H:%M:%S")
+		expect(bankverbindung.GueltigBis.strftime("%Y-%m-%d %H:%M:%S")).to eq "9999-12-31 23:59:59"
+	end
+
+	it "does not set the valid time, if it is already set" do
+		bank = FactoryGirl.create(:Bank)
+		person = FactoryGirl.create(:Person)
+		bankverbindung = FactoryGirl.build(	:Bankverbindung, :Pnr => person.pnr, 
+										:BLZ => bank.BLZ, 
+										:GueltigVon => Time.zone.parse("2013-01-01 23:59:59"), :GueltigBis => Time.zone.parse("2013-12-31 23:59:59"))
+		expect(bankverbindung).to be_valid
+
+		expect(bankverbindung.GueltigVon).to eq Time.zone.parse("2013-01-01 23:59:59")
+		expect(bankverbindung.GueltigBis).to eq Time.zone.parse("2013-12-31 23:59:59")
+
+		expect(bankverbindung.save!).to eq true
+
+		expect(bankverbindung.GueltigVon).to eq Time.zone.parse("2013-01-01 23:59:59")
+		expect(bankverbindung.GueltigBis).to eq Time.zone.parse("2013-12-31 23:59:59")		
+	end
+
+	# set_new_valid_time (callback methode: before_update)
+	it "sets the valid time of the new copy to GueltigVon = self.GueltigVon and GueltigBis = Time.now and updates himself to the latest record" do
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		gueltigVon = Time.now
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+
+		sleep(1.0)
+
+		bankverbindungOrigin.iban = "gueltigeIBAN"
+		
+		gueltigBis = Time.now
+		expect(bankverbindungOrigin.save!).to eq true
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 2
+
+		oldBankverbindung = Bankverbindung.where("ID = ? AND GueltigBis < ?", bankverbindungOrigin.id, Time.zone.parse("9999-12-31 23:59:59")).first
+		expect(oldBankverbindung.nil?).to eq false
+		expect(oldBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq gueltigVon.strftime("%Y-%m-%d %H:%M:%S")
+		expect(oldBankverbindung.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq gueltigBis.strftime("%Y-%m-%d %H:%M:%S")
+	end
+
+	it "does not set the valid time of the new copy, if the id not exists" do
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		gueltigVon = Time.now
+
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+
+		sleep(1.0)
+
+		bankverbindungOrigin.id = nil
+		bankverbindungOrigin.iban = "gueltigeIBAN"
+
+		# one cannot save a bankverbindung without a valid id
+		exceptionThrown = false
+		begin
+			bankverbindungOrigin.save!
+		rescue Exception => e
+			exceptionThrown = true
+		end
+
+		expect(exceptionThrown).to eq true
+	end
+
+	it "does not set the valid time of the new copy, if GuelitgBis < 9999-01-01 00:00:00" do 
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		gueltigVon = Time.now
+
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+		expect(bankverbindungOrigin.GueltigBis).to eq Time.zone.parse("9999-12-31 23:59:59")
+
+		sleep(1.0)
+
+		bankverbindungOrigin.GueltigBis = Time.zone.parse("9998-12-31 23:59:59")
+		expect(bankverbindungOrigin.save).to eq true
+
+		# change nothing, because one can only modify the latest version
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+		expect(bankverbindungOrigin.GueltigBis).to eq Time.zone.parse("9998-12-31 23:59:59")	
+	end
+
 	# get(id, date)
 	# self.latest(id)
 	# bank_already_exists(bank_attr)

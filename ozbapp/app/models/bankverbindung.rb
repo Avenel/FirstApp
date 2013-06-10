@@ -86,8 +86,11 @@ class Bankverbindung < ActiveRecord::Base
   end
 
   def valid_id
-    if !self.id.nil? and Float(id) then
-      errors.add :id, "Bitte geben Sie eine gültige ID an."
+    # return false, if id equals 0. an id is always greater than 0. in addition
+    # an id equals 0, if one tries to setup the id with a string value. therefore this
+    # check should be satisfying. 
+    if self.id == 0 then
+      errors.add :ID, "Bitte gebe eine valide ID an"
       return false
     else
       return true
@@ -118,6 +121,11 @@ class Bankverbindung < ActiveRecord::Base
 
   # bound to callback
   def set_new_valid_time
+    if (self.id.nil?) then
+      errors.add :ID, "Die ID darf nicht leer (nil) sein."
+      throw Exception.new("Die ID darf nicht leer (nil) sein.")
+    end
+
     if(self.GueltigBis > "9999-01-01 00:00:00")
       @@copy            = self.get(self.id)
       @@copy            = @@copy.dup
