@@ -209,11 +209,12 @@ CREATE TABLE IF NOT EXISTS `EEKonto` (
   `KtoNr` int(5) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `BankID` int(10) unsigned,
+  `BankID` int(10) unsigned NOT NULL,
   `Kreditlimit`  decimal(5,2) DEFAULT '0.00', 
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (KtoNr,GueltigVon),
-  FOREIGN KEY (BankID) REFERENCES Bankverbindung(ID)
+  FOREIGN KEY (BankID) REFERENCES Bankverbindung(ID),
+  FOREIGN KEY (SachPnr) REFERENCES Person(Pnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ProjektGruppe` (
