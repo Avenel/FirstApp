@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `EEKonto` (
 
 CREATE TABLE IF NOT EXISTS `ProjektGruppe` (
   `Pgnr` tinyint(2) unsigned,
-  `ProjGruppenBez` varchar(50) ,          
+  `ProjGruppenBez` varchar(50),          
   PRIMARY KEY (`Pgnr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='';
 
@@ -227,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `ZEKonto` (
   `KtoNr` int(5) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `Pgnr`  tinyint(2) unsigned,
+  `Pgnr`  tinyint(2) unsigned NOT NULL,
   `EEKtoNr` int(5) unsigned NOT NULL ,
   `ZENr`  char(10) ,  
   `ZEAbDatum` date DEFAULT NULL,
