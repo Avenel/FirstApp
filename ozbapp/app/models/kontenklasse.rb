@@ -15,9 +15,9 @@ class Kontenklasse < ActiveRecord::Base
     :foreign_key => :KKL # no one or many
   
   # validations
-  validates :KKL, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Klasse an." }
+  validates :KKL, :presence => { :format => { :with => /\d/ }, :message => "Bitte geben Sie eine gültige Klasse an." }
   validates :KKLAbDatum, :presence => { :format => { :with => /\d{4}-\d{2}-\d{2}/ }, :message => "Bitte geben Sie eine gültiges Kontenklassenverlaufdatum an." }
-  validates :Prozent, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie einen gültigen Prozentsatz an." }
+  validates :Prozent, :presence => { :format => { :with => /\d{1,5}[,]?\d{1,2}/ }, :message => "Bitte geben Sie einen gültigen Prozentsatz an." }
   
   # column names
   HUMANIZED_ATTRIBUTES = {
