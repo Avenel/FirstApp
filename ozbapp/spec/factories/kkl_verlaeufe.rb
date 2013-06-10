@@ -11,7 +11,7 @@ FactoryGirl.define do
 			before(:create) do |kklverlauf|
 				ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				kontenklasse = FactoryGirl.create(:kontenklasse_A)
-				kklverlauf.ktoNr = ozbkonto.ktoNr
+				kklverlauf.KtoNr = ozbkonto.ktoNr
 				kklverlauf.kkl = kontenklasse.kkl
 			end
 		end

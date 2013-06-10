@@ -19,7 +19,8 @@ class KklVerlauf < ActiveRecord::Base
     :foreign_key => :KKL
   
   # validations
-  validates :KtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontonummer an." }
+  validates :KtoNr, :presence => { :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
+  
   validates :KKL, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontenklasse an." }
   
   before_create :set_ab_datum
