@@ -17,7 +17,7 @@ FactoryGirl.define do
 				ozbperson = FactoryGirl.create(:ozbperson_with_person)
 				sachPerson = FactoryGirl.create(:ozbperson_with_person)
 				ozbkonto.mnr = ozbperson.mnr
-				ozbkonto.SachPnr = sachPerson.mnr
+				ozbkonto.sachPnr = sachPerson.mnr
 			end
 		end
 

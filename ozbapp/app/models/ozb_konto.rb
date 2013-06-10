@@ -106,10 +106,15 @@ class OzbKonto < ActiveRecord::Base
     return true
   end
 
+
+  # SachPnr should be an ozb member, so check if there is an OZBPerson with the given Pnr (=Mnr)
   def sachPnr_exists
     ozbperson = OZBPerson.where("Mnr = ?", sachPnr)
     if ozbperson.empty? then
-      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{mnr}) gefunden werden.")
+      ozbpersons = OZBPerson.all()
+      puts ozbpersons.inspect
+      
+      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{sachPnr}) gefunden werden.")
       errors.add :mnr, errorString
       return false
     end

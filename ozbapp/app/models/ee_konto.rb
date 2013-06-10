@@ -7,6 +7,7 @@ class EeKonto < ActiveRecord::Base
   alias_attribute :ktoNr, :KtoNr
   alias_attribute :bankId, :BankID
   alias_attribute :kreditlimit, :Kreditlimit
+  alias_attribute :sachPnr, :SachPnr
   
   # associations
   belongs_to :ozb_konto,
@@ -53,17 +54,62 @@ class EeKonto < ActiveRecord::Base
   accepts_nested_attributes_for :Bankverbindung
   attr_accessible :KtoNr, :BankId, :Kreditlimit, :GueltigVon, :GueltigBis, :Bankverbindung_attributes, :sachbearbeiter_attributes, :SachPnr
   
-  # validations
+  # Validations
   # validate always things you will accept nested attributes for!
   # do never validate things twice, this is silly for auto-error
-  #validates :KtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontonummer an." }
-  #validates_associated :Bankverbindung # only adds the <Model> is not valid to :errors!
-  # validate :valid_one_bankverbindung_given?
+  
+  validates :KtoNr, 
+    :presence => {
+      :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." 
+    }
+  
+  
   validates :Kreditlimit,
     :presence => {
-      :format => { :with => /[0-9]+/ }, 
+      :format => { :with => /^[0-9]+$/ }, 
       :message => "Bitte geben Sie ein gültiges Kreditlimit ein." 
     }
+
+  validate :kto_exists
+  validate :bankId_exists
+  validate :sachPnr_exists
+
+  def kto_exists
+    kto = OzbKonto.latest(self.ktoNr)
+    if kto.nil? then
+      errors.add :ktoNr, "Konto existiert nicht: {self.ktoNr}."
+      return false
+    else
+      return true
+    end
+  end
+
+  def bankId_exists
+    bankverbindung = Bankverbindung.latest(self.bankId)
+
+    if bankverbindung.nil? then
+      errors.add :bankId, "Bankverbindung existiert nicht: {self.bankId}."
+      return false
+    else
+      return true
+    end
+  end
+
+  # SachPnr should be an ozb member, so check if there is an OZBPerson with the given Pnr (=Mnr)
+  def sachPnr_exists
+    if self.SachPnr.nil? then
+      return true
+    end
+
+    ozbperson = OZBPerson.where("Mnr = ?", self.SachPnr)
+    if ozbperson.empty? then
+      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{self.SachPnr}) gefunden werden.")
+      errors.add :mnr, errorString
+      return false
+    end
+    return true
+  end
+
   # GueltigVon und GueltigBis wird durch Model selbst gesetzt
   # Sachbearbeiter muss durch Controller oder abhängiges Model gesetzt werden!
   
@@ -131,7 +177,7 @@ class EeKonto < ActiveRecord::Base
   
   def self.latest(ktoNr)
     begin
-      self.find(ktoNr, "9999-12-31 23:59:59")
+      self.find(:all, :conditions => ["KtoNr = ? AND GueltigBis = ?", ktoNr, "9999-12-31 23:59:59"]).first # composite primary key gem
     rescue ActiveRecord::RecordNotFound
       nil
     end
