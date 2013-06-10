@@ -2,22 +2,27 @@ require 'faker'
 
 FactoryGirl.define do
 
-	factory :EEKonto do
+	factory :EeKonto do
 		sequence(:ktoNr) {|n| "#{n}"} 
-		sequence(:mnr) {|n| "#{n}"}
-		sequence(:SachPnr) {|n| "#{n}"}
-		ktoEinrDatum Time.now
-		waehrung "STR"
-		wSaldo 0
-		pSaldo 0
-		saldoDatum Time.now
+		sequence(:bankId) {|n| "#{n}"} 
+		sequence(:SachPnr) {|n| "#{n}"} 
 
-		factory :eekonto_with_ozbkonto_with_ozbperson do
-			before(:create) do |ozbkonto|
-				ozbperson = FactoryGirl.create(:ozbperson_with_person)
+
+		factory :eekonto_with_ozbkonto_and_sachPerson_and_bankverbindung do
+			before(:create) do |eeKonto|
+				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				sachPerson = FactoryGirl.create(:ozbperson_with_person)
-				ozbkonto.mnr = ozbperson.mnr
-				ozbkonto.SachPnr = sachPerson.mnr
+				bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => ozbKonto.mnr)
+				eeKonto.ktoNr = ozbKonto.ktoNr
+				eeKonto.sachPnr = sachPerson.mnr
+				eeKonto.bankId = bankverbindung.id
+			end
+		end
+
+		factory :eekonto_with_sachPerson do
+			before(:create) do |eeKonto|
+				sachPerson = FactoryGirl.create(:ozbperson_with_person)
+				eeKonto.sachPnr = sachPerson.mnr
 			end
 		end
 
