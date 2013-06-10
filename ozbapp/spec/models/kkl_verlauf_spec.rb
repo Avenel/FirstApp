@@ -1,1 +1,5 @@
-kkl_verlauf_spec
+require 'spec_helper'
+
+describe KklVerlauf do
+
+end
