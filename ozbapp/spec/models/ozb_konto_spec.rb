@@ -222,7 +222,7 @@ describe OzbKonto do
 		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to_not eq createdAtOrigin.strftime("%Y-%m-%d %H:%M:%S")
 	end
 
-	it "returns nil, if there is no OZBKonto for a invalid Kontonummer" do
+	it "returns nil, if there is no OZBKonto for an invalid Kontonummer" do
 		expect(OzbKonto.latest(45)).to eq nil
 	end
 

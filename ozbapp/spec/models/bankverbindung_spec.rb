@@ -195,9 +195,177 @@ describe Bankverbindung do
 	end
 
 	# get(id, date)
+	it "returns the Bankverbindung for a valid ID and date (=now)" do 
+		# create valid ozbkonto, in different versions
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		createdAtOrigin = Time.now
+		createdAt = Time.now
+		for i in 0..1
+			sleep(1.0)
+			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.save!
+			createdAt = Time.now
+		end
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+
+		latestBankverbindung = bankverbindungOrigin.get(bankverbindungOrigin.id, Time.now)
+
+		expect(latestBankverbindung.nil?).to eq false
+		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
+		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to_not eq createdAtOrigin.strftime("%Y-%m-%d %H:%M:%S")
+	end
+
+	it "returns the Bankverbindung for a valid ID and date (=now - 2 seconds)" do 
+		# create valid ozbkonto, in different versions
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		createdAtOrigin = Time.now
+		createdAt = Time.now
+		for i in 0..1
+			sleep(1.0)
+			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.save!
+			createdAt = Time.now
+		end
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+
+		latestBankverbindung = bankverbindungOrigin.get(bankverbindungOrigin.id, createdAtOrigin)
+
+		expect(latestBankverbindung.nil?).to eq false
+		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to_not eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
+		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAtOrigin.strftime("%Y-%m-%d %H:%M:%S")
+	end	
+
+	it "returns nil, if there is no Bankverbindung for a invalid ID or date" do
+		# Test for an invalid ID
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		expect(bankverbindungOrigin.get(bankverbindungOrigin.id + 10, Time.now)).to eq nil
+
+		# create valid ozbkonto, in different versions
+		originTime = Time.now
+		sleep(1.0)
+
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		createdAtOrigin = Time.now
+		createdAt = Time.now
+		for i in 0..1
+			sleep(1.0)
+			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.save!
+			createdAt = Time.now
+		end
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+
+		latestBankverbindung = bankverbindungOrigin.get(bankverbindungOrigin.id, originTime)
+		expect(latestBankverbindung.nil?).to eq true
+	end
+
 	# self.latest(id)
+	it "returns the latest version of a given Bankverbindung, for a valid ID" do 
+		# create valid Bankverbindung, in different versions
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		createdAtOrigin = Time.now
+		createdAt = Time.now
+		for i in 0..1
+			sleep(1.0)
+			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.save!
+			createdAt = Time.now
+		end
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+
+		latestBankverbindung = Bankverbindung.latest(bankverbindungOrigin.id)
+
+		expect(latestBankverbindung.nil?).to eq false
+		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
+		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to_not eq createdAtOrigin.strftime("%Y-%m-%d %H:%M:%S")
+	end
+
+	it "returns nil, if there is no Bankverbindung for an invalid ID" do
+		expect(Bankverbindung.latest(45)).to eq nil
+	end
+
 	# bank_already_exists(bank_attr)
-	# destoy_historic_records
+	it "returns true, if there already exists a Bank for a given BLZ in the database" do
+		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		expect(bankverbindung).to be_valid
+
+		# Private method, therfore using send methode
+		expect(bankverbindung.send(:bank_already_exists, 'BLZ' => bankverbindung.BLZ)).to eq true
+	end
+
+	it "returns false, if there do not already exists a Bank for a given BLZ in the databse" do
+		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank_and_person, :BLZ => 42)
+		expect(bankverbindung).to be_valid
+
+		# Private method, therfore using send methode
+		expect(bankverbindung.send(:bank_already_exists, 'BLZ' => 45)).to eq false
+	end
+
+	# destroy_historic_records (callback methode: after_destroy)
+	it "destroys all historic records except himself" do
+		# create valid ozbkonto, in different versions
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		for i in 0..1
+			sleep(1.0)
+			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.save!
+		end
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+
+		# Private method, therfore using send methode
+		bankverbindungOrigin.send(:destroy_historic_records)
+
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+	end
+
+	it "destroys zero records, because there are no historic records" do
+		expect(Bankverbindung.where("ID = ?", 42).size).to eq 0
+
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person, :id => 42)
+
+		expect(bankverbindungOrigin.id).to eq 42
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+
+		# Private method, therfore using send methode
+		bankverbindungOrigin.send(:destroy_historic_records)
+
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+	end
+
 	# destroy_bank_if_this_is_last_bankverbindung
+	it "destroys bank, if this is the last bankverbindung" do
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		expect(bankverbindungOrigin).to be_valid
+
+		bank = Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).first
+		expect(bank.nil?).to eq false
+
+		bankverbindungOrigin.destroy
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 0
+		expect(Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).size).to eq 0
+	end
+
+	it "does not destroys bank, if this is not the last bankverbindung" do
+		# create valid ozbkonto, in different versions
+		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
+		expect(bankverbindungOrigin).to be_valid
+		createdAtOrigin = Time.now
+
+		bank = Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).first
+		expect(bank.nil?).to eq false
+
+		for i in 0..1
+			sleep(1.0)
+			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.save!
+		end
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+
+		# delete one of the three bankverbindungen
+		bankverbindungToDelete = bankverbindungOrigin.get(bankverbindungOrigin.id, createdAtOrigin)
+		bankverbindungToDelete.destroy
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 2
+		expect(Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).size).to eq 1
+	end
 
 end

@@ -40,7 +40,7 @@ class Bank < ActiveRecord::Base
   # lonely Bank object. The function destroys the record if
   # it's a record without any children.
   def self.destroy_yourself_if_you_are_alone(blz)
-    b = Bank.find(blz)
+    b = Bank.where("BLZ = ?", blz).first
       
     if !b.nil?
       # check if there are any more Bankverbindungen
