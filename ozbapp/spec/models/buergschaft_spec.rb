@@ -4,7 +4,7 @@ describe Buergschaft do
 
 	# Factory
 	it "has a valid factory" do
-		expect(FactoryGirl.create(:buergschaft_with_buerge_and_glaeubiger)).to be_valid
+		expect(FactoryGirl.create(:buergschaft_with_buerge_and_glaeubiger_and_zeKonto)).to be_valid
 	end
 
 	# Valid/invalid attributes
@@ -54,7 +54,7 @@ describe Buergschaft do
 	# get(pnr_b, mnr_g, date = Time.now)
 	it "returns the Buergschaft for a valid Buerger, Glauebiger and date (=now)"
 	it "returns the Buergschaft for a valid Buerger, Glauebiger and date (=now - 2 seconds)"
-	it "returns nil, if there is no Buergschaft for a Buerger and Glauebiger and date" do
+	it "returns nil, if there is no Buergschaft for a Buerger and Glauebiger and date"
 
 	# self.latest(pnr_b, mnr_g)
 	it "returns the latest version of a given OZBKonto, for a valid Buerger and Glauebiger" 
