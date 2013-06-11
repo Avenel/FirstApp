@@ -19,6 +19,15 @@ FactoryGirl.define do
 			end
 		end
 
+		factory :eekonto_with_sachPerson_and_bankverbindung do
+			before(:create) do |eeKonto|
+				sachPerson = FactoryGirl.create(:ozbperson_with_person)
+				bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => ozbKonto.mnr)
+				eeKonto.sachPnr = sachPerson.mnr
+				eeKonto.bankId = bankverbindung.id
+			end
+		end
+
 		factory :eekonto_with_sachPerson do
 			before(:create) do |eeKonto|
 				sachPerson = FactoryGirl.create(:ozbperson_with_person)
