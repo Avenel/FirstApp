@@ -260,7 +260,9 @@ CREATE TABLE IF NOT EXISTS `Buergschaft` (
   `SichBetrag` decimal(10,2) DEFAULT NULL,
   `SichKurzbez` varchar(200) DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (Pnr_B,Mnr_G,GueltigVon)
+  PRIMARY KEY (Pnr_B,Mnr_G,GueltigVon),
+  FOREIGN KEY (Pnr_B) REFERENCES Person(Pnr_B),
+  FOREIGN KEY (Mnr_G) REFERENCES Person(Mnr_G)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `KontenKlasse` (

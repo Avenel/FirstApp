@@ -1,10 +1,10 @@
 # encoding: UTF-8
 class Buergschaft < ActiveRecord::Base 
   self.table_name = "Buergschaft"
-  self.primary_keys = :Pnr_B, :Mnr_G, :SichEndDatum
+  self.primary_keys = :Pnr_B, :Mnr_G, :GueltigVon
   
   # attributes
-  attr_accessible :Pnr_B, :Mnr_G, :ZENr, :SichAbDatum, :SichEndDatum, :SichBetrag, :SichKurzbez, :Historisiert
+  attr_accessible :Pnr_B, :Mnr_G, :GueltigVon, :GueltigBis, :ZENr, :SichAbDatum, :SichEndDatum, :SichBetrag, :SichKurzbez, :SachPnr
 
   # associations
   belongs_to :person,
@@ -29,9 +29,32 @@ class Buergschaft < ActiveRecord::Base
   validates :SichEndDatum, :presence => true
   validates :SichBetrag, :presence => true,
                        :numericality =>{:greater_than_or_equal_to => 0.01 }
+
+  validate :sachPnr_exists
+
+  # SachPnr should be an ozb member, so check if there is an OZBPerson with the given Pnr (=Mnr)
+  def sachPnr_exists
+    if self.SachPnr.nil? then
+      return true
+    end
+
+    ozbperson = OZBPerson.where("Mnr = ?", self.SachPnr)
+    if ozbperson.empty? then
+      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{self.SachPnr}) gefunden werden.")
+      errors.add :mnr, errorString
+      return false
+    end
+    return true
+  end
   
  
+  # GueltigVon und GueltigBis wird durch Model selbst gesetzt
+  # Sachbearbeiter muss durch Controller oder abhängiges Model gesetzt werden!
   
+  # callbacks
+  before_create :set_valid_time
+  before_update :set_new_valid_time
+  after_destroy :destroy_historic_records
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -144,6 +167,54 @@ class Buergschaft < ActiveRecord::Base
       return person.pnr
     end
     
+  end
+
+  # Historization stuff
+  # bound to callback
+  def set_valid_time
+    unless(self.GueltigBis || self.GueltigVon)
+      self.GueltigVon = Time.now
+      self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")
+    end
+  end
+  
+  @@copy = nil
+
+  # bound to callback
+  def set_new_valid_time
+    if (self.KtoNr)
+      if (self.GueltigBis > "9999-01-01 00:00:00")
+        @@copy            = self.get(self.KtoNr)
+        @@copy            = @@copy.dup
+        @@copy.KtoNr      = self.KtoNr
+        @@copy.GueltigVon = self.GueltigVon
+        @@copy.GueltigBis = Time.now
+        
+        self.GueltigVon   = Time.now
+        self.GueltigBis   = Time.zone.parse("9999-12-31 23:59:59")
+      end
+    end
+  end
+
+ #NU
+   after_update do
+      if !@@copy.nil?
+        @@copy.save(:validation => false)
+        @@copy = nil
+      end
+   end
+
+  # Returns the EEKonto Object for ktoNr and date
+  def get(pnr_b, mnr_g, date = Time.now)
+    Buergschaft.find(:all, :conditions => ["Pnr_B = ? AND Mnr_G = ? AND GueltigVon <= ? AND GueltigBis > ?", pnr_b, mnr_g, date, date]).first
+  end
+  
+  def self.latest(pnr_b, mnr_g)
+    begin
+      self.find(:all, :conditions => ["Pnr_B = ? AND Mnr_G = ? AND GueltigBis = ?", pnr_b, mnr_g, "9999-12-31 23:59:59"]).first
+    rescue ActiveRecord::RecordNotFound
+      nil
+    end
   end
   
 end
