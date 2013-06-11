@@ -177,7 +177,7 @@ describe OzbKonto do
 		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAtOrigin.strftime("%Y-%m-%d %H:%M:%S")
 	end	
 
-	it "returns nil, if there is no OZBKonto for a invalid Kontonummer" do
+	it "returns nil, if there is no OZBKonto for an invalid Kontonummer" do
 		# Test for an invalid Kontonummer
 		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		expect(ozbKontoOrigin.get(ozbKontoOrigin.ktoNr + 10, Time.now)).to eq nil

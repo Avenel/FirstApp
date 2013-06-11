@@ -29,8 +29,11 @@ class Buergschaft < ActiveRecord::Base
   validates :SichEndDatum, :presence => true
   validates :SichBetrag, :presence => true,
                        :numericality =>{:greater_than_or_equal_to => 0.01 }
-
+  validates :ZENr, :presence => true
+  
+  validate :zeKonto_exists
   validate :sachPnr_exists
+  validate :valid_sichZeitraum
 
   # SachPnr should be an ozb member, so check if there is an OZBPerson with the given Pnr (=Mnr)
   def sachPnr_exists
@@ -46,8 +49,46 @@ class Buergschaft < ActiveRecord::Base
     end
     return true
   end
+
+  def zeKonto_exists 
+    if !self.ZENr.nil? then
+      zeKonto = ZeKonto.where("ZENr = ?", self.ZENr).first
+      if zeKonto.nil? then
+        errors.add :ZENr, "Kein zugehöriges ZEKonto gefunden."
+        return false
+      else 
+        return true
+      end
+    else 
+      return false
+    end
+  end
   
- 
+  def valid_sichZeitraum
+     # sichAbDatum
+    if !self.sichAbDatum.nil? then
+      if !self.sichAbDatum.strftime("%Y-%m-%d").match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/) then
+        return false
+        errors.add("", "Bitte geben sie das sichAbDatum im Format: yyyy-mm-dd an.")
+      end
+    end
+    
+    # sichEndDatum
+    if !self.sichEndDatum.nil? then
+      puts self.sichEndDatum.to_s
+      if !self.sichEndDatum.strftime("%Y-%m-%d").match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/) then
+        return false
+        errors.add("", "Bitte geben sie das sichEndDatum im Format: yyyy-mm-dd an.")
+      end
+    end
+
+    # test if sichAbDatum is after sichEndDatum
+    if sichAbDatum > sichEndDatum
+      errors.add("", 'must be possible')
+      return false
+    end
+  end
+
   # GueltigVon und GueltigBis wird durch Model selbst gesetzt
   # Sachbearbeiter muss durch Controller oder abhängiges Model gesetzt werden!
   
@@ -117,42 +158,7 @@ class Buergschaft < ActiveRecord::Base
         errors.add("", "Es sind nur Gesellschafter erlaubt.")
       end
     end
-    
-    # Kontonummer
-    if self.ktoNr.nil? then
-      errors.add("", "Die Kontonummer darf nicht leer sein.")
-    end
-    
-    # Sicherheitsbetrag
-    if self.sichBetrag.nil? then 
-      errors.add("", "Bitte geben Sie einen Sicherheitsbetrag größer 0 an.")
-    end
-    
-    if !self.sichBetrag.nil? && self.sichBetrag < 0 then 
-      errors.add("", "Bitte geben Sie einen Sicherheitsbetrag größer 0 an.")
-    end
-    
-    # sichAbDatum
-    if !self.sichAbDatum.nil? then
-      if self.sichAbDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/).nil? then
-        errors.add("", "Bitte geben sie das sichAbDatum im Format: yyyy-mm-dd an.")
-      end
-    end
-    
-    # sichEndDatum
-    if !self.sichEndDatum.nil? then
-      puts self.sichEndDatum.to_s
-      if self.sichEndDatum.to_s.match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/).nil? then
-        errors.add("", "Bitte geben sie das sichEndDatum im Format: yyyy-mm-dd an.")
-      end
-    end
-    
-    return if [sichEndDatum.blank?, sichAbDatum.blank?].any?
-    if sichAbDatum > sichEndDatum
-      errors.add("", 'must be possible')
-    end
-    
-    
+   
     return errors
   end
   
@@ -197,7 +203,7 @@ class Buergschaft < ActiveRecord::Base
   end
 
  #NU
-   after_update do
+  after_update do
       if !@@copy.nil?
         @@copy.save(:validation => false)
         @@copy = nil
