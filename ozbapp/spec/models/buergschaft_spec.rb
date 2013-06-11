@@ -8,7 +8,6 @@ describe Buergschaft do
 	end
 
 	# Valid/invalid attributes
-
 	# Pnr_B
 	it "is valid with a valid Pnr_B"
 	it "is invalid without a Pnr_B"

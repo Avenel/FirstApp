@@ -13,6 +13,11 @@ FactoryGirl.define do
 		kduRate 5.00
 		rduRate 5.00
 		zeStatus "A"
+
+		factory :zeKonto_with_ozbKonto do
+			# todo
+		end
+
 	end
 
 end

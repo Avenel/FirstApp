@@ -16,6 +16,18 @@ FactoryGirl.define do
 				buergschaft.Mnr_G = glaeubiger.mnr
 			end
 		end
+
+		factory :buergschaft_with_buerge_and_glaeubiger_and_zeKonto do
+			before(:create) do |buergschaft|
+				buerge = FactoryGirl.create(:Person)
+				glaeubiger = FactoryGirl.create(:ozbperson_with_person)
+				zeKonto = FactoryGirl.create(:zeKonto_with_ozbKonto)
+
+				buergschaft.Pnr_B = buerge.pnr
+				buergschaft.Mnr_G = glaeubiger.mnr
+				buergschaft.ZENr = zeKonto.zeNr
+			end
+		end
 	end
 
 end
