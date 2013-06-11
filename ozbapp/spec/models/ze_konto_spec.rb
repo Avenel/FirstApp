@@ -622,7 +622,7 @@ describe ZeKonto do
 		# non-existing eekonto
   		expect(ZeKonto.where("KtoNr = ?", 42).size).to eq 0
 
-  		# create one eekonto
+  		# create one zekonto
 		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 12345)
 		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => ozbKonto.mnr)
 		eeKonto = FactoryGirl.create(:eekonto_with_sachPerson, :ktoNr => 12345, :bankId => bankverbindung.id)

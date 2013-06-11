@@ -7,6 +7,8 @@ describe OzbKonto do
 		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		expect(ozbKonto).to be_valid
 
+		puts ozbKonto.inspect
+
 		expect(ozbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.now.strftime("%Y-%m-%d %H:%M:%S")
 		expect(ozbKonto.GueltigBis.strftime("%Y-%m-%d %H:%M:%S")).to eq "9999-12-31 23:59:59"
 	end
@@ -26,6 +28,8 @@ describe OzbKonto do
 		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => "a1234")).to be_invalid
 
 		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => 123456)).to be_invalid
+
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => 45)).to be_invalid
 
 		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => "hellow")).to be_invalid
 	end
@@ -129,12 +133,76 @@ describe OzbKonto do
 	end
 
 	# self.get_all_ee_for(mnr)
-	it "returns all EE-Konten for a given Mitgliedsnummer"
-	it "returns nil for an invalid Mitgliedsnummer"
+	it "returns all EE-Konten for a given Mitgliedsnummer" do
+		# create 1 OZBPerson
+		ozbPerson = FactoryGirl.create(:ozbperson_with_person)
+		pnr = ozbPerson.ueberPnr
+
+		sachPerson = FactoryGirl.create(:ozbperson_with_person)
+		sachPnr = sachPerson.ueberPnr
+		
+		expect(OZBPerson.where("Mnr = ?", pnr).size).to eq 1
+		expect(OZBPerson.where("Mnr = ?", sachPnr).size).to eq 1
+
+		# create 1 bankverbindung
+		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => pnr)
+
+		# create 3 EEKonten
+		ktoNr = 12345
+		for i in 0..2
+			ozbKonto = FactoryGirl.create(:OzbKonto, :ktoNr => ktoNr, :mnr => pnr, :sachPnr => sachPnr)
+			eeKonto = FactoryGirl.create(:EeKonto, :sachPnr => sachPnr, 
+													:bankId => bankverbindung.id, :ktoNr => ktoNr)
+			ktoNr += 1
+
+			# create more versions
+			sleep(1.0)
+			eeKonto.kreditlimit += 1
+			expect(eeKonto.save).to eq true
+		end
+
+		expect(EeKonto.find(:all).size).to eq 6
+
+		expect(OzbKonto.get_all_ee_for(pnr).size).to eq 3
+	end
+
+	it "returns nil for an invalid Mitgliedsnummer" do
+		expect(OzbKonto.get_all_ee_for(45).size).to eq 0
+	end
 
 	# self.get_all_ze_for(mnr)
-	it "returns all ZE-Konten for a given Mitgliedsnummer"
-	it "returns nil for an invalid Mitgliedsnummer"
+	it "returns all ZE-Konten for a given Mitgliedsnummer" do
+		ozbPerson = FactoryGirl.create(:ozbperson_with_person)
+		pnr = ozbPerson.ueberPnr
+
+		sachPerson = FactoryGirl.create(:ozbperson_with_person)
+		sachPnr = sachPerson.ueberPnr
+		
+		expect(OZBPerson.where("Mnr = ?", pnr).size).to eq 1
+		expect(OZBPerson.where("Mnr = ?", sachPnr).size).to eq 1
+
+		ktoNr = 12345
+		for i in 0..2
+			ozbKonto = FactoryGirl.create(:OzbKonto, :ktoNr => ktoNr, :mnr => pnr, :sachPnr => sachPnr)
+			zeKonto = FactoryGirl.create(:zeKonto_with_EEKonto_Projektgruppe, :ktoNr => ktoNr)
+			expect(zeKonto).to be_valid
+
+			#create more versions
+			sleep(1.0)
+			zeKonto.laufzeit += 1
+			expect(zeKonto.save).to eq true
+
+			ktoNr += 1
+		end
+
+		expect(ZeKonto.find(:all).size).to eq 6
+
+		expect(OzbKonto.get_all_ze_for(pnr).size).to eq 3
+	end
+
+	it "returns nil for an invalid Mitgliedsnummer" do
+		expect(OzbKonto.get_all_ze_for(45).size).to eq 0
+	end
 
 	# get(ktoNr, date = Time.now)
 	it "returns the OZBKonto for a valid Kontonummer and date (=now)" do 
@@ -248,7 +316,30 @@ describe OzbKonto do
 		expect(errorCount).to eq 0
 	end
 
-	it "does not destroy himself if there are more than 1 record for the given Kontonummer in the database" 
+	it "does not destroy himself if there are more than 1 record for the given Kontonummer in the database" do
+		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 42)
+		sachPersonOzbKonto = ozbKonto.sachPnr
+
+		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => ozbKonto.mnr)
+
+		sachPersonEEKonto = FactoryGirl.create(:ozbperson_with_person)
+
+  		eeKonto = FactoryGirl.create(:EeKonto, :ktoNr => ozbKonto.ktoNr, :sachPnr => sachPersonEEKonto.mnr, 
+  									:bankId => bankverbindung.id)
+
+  		expect(eeKonto.sachPnr).to eq sachPersonEEKonto.mnr
+		expect(eeKonto).to be_valid
+		expect(ozbKonto.ktoNr).to eq eeKonto.ktoNr
+		
+		expect(OzbKonto.where("KtoNr = ?", ozbKonto.ktoNr).size).to eq 1
+		expect(EeKonto.where("KtoNr = ?", ozbKonto.ktoNr).size).to eq 1
+
+		ktoNr = ozbKonto.ktoNr
+		OzbKonto.destroy_yourself_if_you_are_alone(ktoNr)
+
+		expect(OzbKonto.where("KtoNr = ?", ktoNr).size).to eq 1
+		expect(EeKonto.where("KtoNr = ?", ktoNr).size).to eq 1
+	end
 
 	# set_wsaldo_psaldo_to_zero (callback methode: before_save)
 	it "sets WSaldo and PSaldo to 0, even if they are nil" do 
@@ -347,7 +438,32 @@ describe OzbKonto do
 	end
 
 	# set_assoc_attributes (callback methode: before_save)
-	it "sets the value of the SachPnr attribute in the associated EE Konto"
+	it "sets the value of the SachPnr attribute in the associated EE Konto" #do
+		# create one eekonto
+		#ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 42)
+		#sachPersonOzbKonto = ozbKonto.sachPnr
+
+		#bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => ozbKonto.mnr)
+
+		#sachPersonEEKonto = FactoryGirl.create(:ozbperson_with_person)
+
+  		#eeKonto = FactoryGirl.create(:EeKonto, :ktoNr => ozbKonto.ktoNr, :sachPnr => sachPersonEEKonto.mnr, 
+  		#							:bankId => bankverbindung.id)
+
+  		#expect(eeKonto.sachPnr).to eq sachPersonEEKonto.mnr
+		#expect(eeKonto).to be_valid
+		#expect(ozbKonto.ktoNr).to eq eeKonto.ktoNr
+		#expect(EeKonto.where("KtoNr = ?", ozbKonto.ktoNr).size).to eq 1
+
+		#sleep(1.0)
+		#sachPersonNew = FactoryGirl.create(:ozbperson_with_person)
+		#ozbKonto.sachPnr = sachPersonNew.mnr
+
+		#expect(ozbKonto.save).to eq true
+		#expect(ozbKonto.sachPnr).to eq sachPersonNew.mnr
+
+		#expect(eeKonto.sachPnr).to eq ozbKonto.sachPnr
+	#end
 
 	it "does not set the value of the SachPnr attribute in the associated EE Konto, if the EE Konto does not exists"
 

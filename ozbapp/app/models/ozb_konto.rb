@@ -112,7 +112,6 @@ class OzbKonto < ActiveRecord::Base
     ozbperson = OZBPerson.where("Mnr = ?", sachPnr)
     if ozbperson.empty? then
       ozbpersons = OZBPerson.all()
-      puts ozbpersons.inspect
       
       errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{sachPnr}) gefunden werden.")
       errors.add :mnr, errorString
@@ -249,8 +248,9 @@ class OzbKonto < ActiveRecord::Base
     
     # bound to callback
     def set_assoc_attributes
-      if (!self.ee_konto.nil?)
-        self.ee_konto.SachPnr = self.SachPnr
+      eeKonto = EeKonto.latest(self.ktoNr)
+      if (!eeKonto.nil?)
+        eeKonto.sachPnr = self.sachPnr
       end
     end
     
