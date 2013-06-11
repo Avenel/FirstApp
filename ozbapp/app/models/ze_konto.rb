@@ -18,6 +18,7 @@ class ZeKonto < ActiveRecord::Base
   alias_attribute :kduRate, :KDURate
   alias_attribute :rduRate, :RDURate
   alias_attribute :zeStatus, :ZEStatus 
+  alias_attribute :sachPnr, :SachPnr
   
   # attributes
   attr_accessible :KtoNr, :EEKtoNr, :Pgnr, :ZENr, :ZEAbDatum, :ZEEndDatum, :ZEBetrag, 
@@ -64,14 +65,62 @@ class ZeKonto < ActiveRecord::Base
 
   # validations
   # validate always things you will accept nested attributes for!
-  #validates :KtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontonummer an." }
+  validates :KtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontonummer an." }
   validates :EEKtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige EE-Kontonummer an." }
   validates :Pgnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Projektgruppe an." }
-  validates :ZENr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige ZE-Nr. an." }
+  validates :ZENr, :presence => { :format => { :with => /^[A-Z]([0-9]){4}$/ }, :message => "Bitte geben Sie eine gültige ZE-Nr. an." }
   validates :Laufzeit, :presence => { :format => { :with => /[1-9]+/ }, :message => "Bitte geben Sie eine gültige Laufzeit an." }
-  
+  validates :TilgRate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
+  validates :AnsparRate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
+  validates :RDURate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
+  validates :KDURate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
+  validates :zeStatus, :presence => true, :format => {:with => /^(N|D|A)$/, :message => "Bitte geben Sie einen gültigen ZEStatus an."}
+
+  validate :kto_exists
+  validate :eeKonto_exists
+  validate :sachPnr_exists
+
+  def kto_exists
+    kto = OzbKonto.latest(self.ktoNr)
+    if kto.nil? then
+      errors.add :ktoNr, "Konto existiert nicht: {self.ktoNr}."
+      return false
+    else
+      return true
+    end
+  end
+
+
+  def eeKonto_exists
+    kto = EeKonto.latest(self.eeKtoNr)
+    if kto.nil? then
+      errors.add :ktoNr, "EEKonto existiert nicht: {self.eeKtoNr}."
+      return false
+    else
+      return true
+    end
+  end
+
+  def sachPnr_exists
+    if self.SachPnr.nil? then
+      return true
+    end
+
+    ozbperson = OZBPerson.where("Mnr = ?", self.SachPnr)
+    if ozbperson.empty? then
+      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{self.SachPnr}) gefunden werden.")
+      errors.add :mnr, errorString
+      return false
+    end
+    return true
+  end
+
+  # callbacks
+  before_create :set_valid_time
+  before_update :set_new_valid_time
   after_destroy :destroy_historic_records, :destroy_ozb_konto_if_this_is_last_konto
-  
+
+
   # column names
   HUMANIZED_ATTRIBUTES = {
     :GueltigVon => 'Gültig von',
@@ -97,7 +146,7 @@ class ZeKonto < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
   
-  before_save do
+  def set_valid_time
     unless(self.GueltigBis || self.GueltigVon)
       self.GueltigVon = Time.now
       self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")
@@ -106,7 +155,7 @@ class ZeKonto < ActiveRecord::Base
 
   @@copy = nil
 
-  before_update do
+  def set_new_valid_time 
     if(self.KtoNr)
       if(self.GueltigBis > "9999-01-01 00:00:00")
         @@copy            = self.get(self.KtoNr)
@@ -135,14 +184,14 @@ class ZeKonto < ActiveRecord::Base
   
   def self.latest(ktoNr)
     begin
-      self.find(ktoNr, "9999-12-31 23:59:59")
+      self.find(:all, :conditions => ["KtoNr = ? AND GueltigBis = ?", ktoNr, "9999-12-31 23:59:59"]).first # composite primary key gem
     rescue ActiveRecord::RecordNotFound
       nil
     end
   end
   
   def self.latest_all_for(mnr)
-    ozb = OzbKonto.find(:all, :conditions => { :Mnr => mnr })
+    ozb = OzbKonto.find(:all, :conditions => ["Mnr = ? AND GueltigBis = ?", mnr, "9999-12-31 23:59:59"]) # composite primary key gem
     
     k = Array.new
     ozb.each do |o|
