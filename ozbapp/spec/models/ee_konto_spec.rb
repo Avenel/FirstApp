@@ -193,7 +193,7 @@ describe EeKonto do
 		expect(latestEEKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAtOrigin.strftime("%Y-%m-%d %H:%M:%S")
 	end
 
-	it "returns nil, if there is no EEKonto for a invalid Kontonummer" do
+	it "returns nil, if there is no EEKonto for an invalid Kontonummer or date" do
 		# Test for an invalid Kontonummer
 		eeKontoOrigin = FactoryGirl.create(:eekonto_with_ozbkonto_and_sachPerson_and_bankverbindung)
 		expect(eeKontoOrigin.get(eeKontoOrigin.ktoNr + 10, Time.now)).to eq nil
