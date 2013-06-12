@@ -93,7 +93,7 @@ public class Migratior {
 						"EMail,GueltigVon,GueltigBis,SperrKZ) VALUES " +
 						"(?,?,?,?,?,?,?,?,?);";
 				String queryInsertAdresse = "INSERT INTO adresse (Pnr,Strasse,Nr,PLZ,Ort,GueltigVon,GueltigBis,Vermerk) VALUES (?,?,?,?,?,?,?,?);";
-				String queryInsertOZBPerson = "INSERT INTO ozbperson (Mnr,UeberPnr,Passwort,PWAendDatum,Gesperrt,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum,EMail) VALUES (?,?,?,?,?,?,?,?,?,?);";
+				String queryInsertOZBPerson = "INSERT INTO ozbperson (Mnr,UeberPnr,Passwort,PWAendDatum,Gesperrt,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum,email) VALUES (?,?,?,?,?,?,?,?,?,?);";
 				String queryInsertPartner = "INSERT INTO partner (Mnr,MnrO,Berechtigung,GueltigVon,GueltigBis) VALUES (?,?,?,?,?);";
 				String queryInsertMitglied = "INSERT INTO mitglied (Mnr,RVDatum,GueltigVon,GueltigBis) VALUES (?,?,?,?);";
 				String queryInsertGesellschafter = "INSERT INTO gesellschafter (Mnr,FASteuerNr,FALfdNr,FAIdNr,Wohnsitzfinanzamt,GueltigVon,GueltigBis) VALUES (?,?,?,?,?,?,?);";
