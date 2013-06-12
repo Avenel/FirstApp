@@ -10,7 +10,6 @@ class DarlehensverlaufController < ApplicationController
     @notice = Array.new
     @errors  = Array.new
     @Buchungen = nil
-
     
     #prüfen ob das anfangsdatum in richtigem format angegeben wurde
     if (params[:vonDatum] =~ /[0-9]{2}.[0-9]{2}.[0-9]{4}/ || params[:vonDatum] =~ /[0-9]{4}-[0-9]{2}-[0-9]{2}/)

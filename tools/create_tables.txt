@@ -294,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `Buchung` (
   `SollKtoNr` int(5) unsigned NOT NULL,
   `HabenKtoNr` int(5) unsigned NOT NULL,
   `WSaldoAcc` decimal(10,2) NOT NULL,
-  `Punkte` int(10) NOT NULL,
+  `Punkte` int(10),
   `PSaldoAcc` int(10) NOT NULL,  
   PRIMARY KEY (BuchJahr,KtoNr,BnKreis,BelegNr,Typ),
   KEY KtoNr(KtoNr),

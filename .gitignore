@@ -11,6 +11,9 @@ config/cap_notify.rb
 tools/dump.sql
 tools/log.txt
 tools/ozb_prod.sql
+tools/testdbDump.sql
+ozbapp/script/testdbDump.sql
+dump.sql
 
 
 #################

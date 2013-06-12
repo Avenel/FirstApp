@@ -1,4 +1,4 @@
-#1/bin/bash
+#!/bin/bash
 PASS=""
 echo "drop database ozb_test" | mysql -u root -p$PASS
 echo "create database ozb_test" | mysql -u root -p$PASS
