@@ -33,20 +33,48 @@ describe Buchung do
 	end
 
 	it "is invalid with a valid, but not existing OZBKonto KtoNr" do
-		buchung = FactoryGirl.build(:buchung_without_ozbkonto, :KtoNr => 51235) 
-		expect(buchung).to be_valid
+		ozbkonto_soll = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		ozbkonto_haben = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		buchung = FactoryGirl.build(:Buchung, :KtoNr => 51235, :SollKtoNr => ozbkonto_soll.ktoNr,
+			:HabenKtoNr => ozbkonto_haben.ktoNr)
+		expect(buchung).to be_invalid
 		expect(buchung.save).to eq false
 	end
 
 	it "is invalid without a KtoNr" do
-		expect(FactoryGirl.build(:buchung_without_ozbkonto, :KtoNr => nil)).to be_invalid 
+		ozbkonto_soll = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		ozbkonto_haben = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		buchung = FactoryGirl.build(:Buchung, :KtoNr => nil, :SollKtoNr => ozbkonto_soll.ktoNr,
+			:HabenKtoNr => ozbkonto_haben.ktoNr)
+		expect(buchung).to be_invalid
+		expect(buchung.save).to eq false
 	end
 
 	it "is invalid with a invalid KtoNr" do
-		expect(FactoryGirl.build(:buchung_without_ozbkonto, :KtoNr => "ABCD")).to be_invalid 
-		expect(FactoryGirl.build(:buchung_without_ozbkonto, :KtoNr => "1234X")).to be_invalid 
-		expect(FactoryGirl.build(:buchung_without_ozbkonto, :KtoNr => 0)).to be_invalid 
-		expect(FactoryGirl.build(:buchung_without_ozbkonto, :KtoNr => 100000)).to be_invalid 
+		ozbkonto_soll = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		ozbkonto_haben = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		
+		buchung1 = FactoryGirl.build(:Buchung, :KtoNr => "ABCD", :SollKtoNr => ozbkonto_soll.ktoNr,
+			:HabenKtoNr => ozbkonto_haben.ktoNr)
+		expect(buchung1).to be_invalid
+		expect(buchung1.save).to eq false
+		
+		buchung2 = FactoryGirl.build(:Buchung, :KtoNr => "1234X", :SollKtoNr => ozbkonto_soll.ktoNr,
+			:HabenKtoNr => ozbkonto_haben.ktoNr)
+		expect(buchung2).to be_invalid
+		expect(buchung2.save).to eq false
+		
+
+		buchung3 = FactoryGirl.build(:Buchung, :KtoNr => 0, :SollKtoNr => ozbkonto_soll.ktoNr,
+			:HabenKtoNr => ozbkonto_haben.ktoNr)
+		expect(buchung3).to be_invalid
+		expect(buchung3.save).to eq false
+		
+
+		buchung4 = FactoryGirl.build(:Buchung, :KtoNr => 100000, :SollKtoNr => ozbkonto_soll.ktoNr,
+			:HabenKtoNr => ozbkonto_haben.ktoNr)
+		expect(buchung4).to be_invalid
+		expect(buchung4.save).to eq false
 	end
 
 	# BnKreis
