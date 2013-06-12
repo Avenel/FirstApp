@@ -87,4 +87,49 @@ describe KklVerlauf do
 		expect(kkl_verlauf.save!).to eq true
 		expect(kkl_verlauf.KKLAbDatum).to eq test_date
 	end
+
+	# destroy_historic_records (callback methode: after_destroy)
+	it "destroys all historic records except himself" do
+		# create valid ozbkonto und a kkl_verlauf
+		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 23456)
+		kklVerlauf = FactoryGirl.create(:kklverlauf_with_kontenklasse, :KtoNr => ozbKonto.ktoNr)
+
+		# create more kkl_verlaeufe for the past for this ozbkonto
+		for i in 1..2
+			sleep(1.0)
+			expect(FactoryGirl.create(:KklVerlauf, 
+				:KtoNr => kklVerlauf.KtoNr, 
+				:KKL => kklVerlauf.KKL, 
+				:KKLAbDatum => (i).weeks.ago)).to be_valid
+		end
+
+		expect(KklVerlauf.where("KtoNr = ?", kklVerlauf.KtoNr).size).to eq 3
+
+		# Private method, therfore using send methode
+		kklVerlauf.send(:destroy_historic_records)
+
+		expect(KklVerlauf.where("KtoNr = ?", kklVerlauf.KtoNr).size).to eq 1
+	end
+
+	it "destroys zero records, because there are no historic records" do
+		# create valid ozbkonto und a kkl_verlauf
+		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 23456)
+		kklVerlauf = FactoryGirl.create(:kklverlauf_with_kontenklasse, :KtoNr => ozbKonto.ktoNr)
+
+		# create more kkl_verlaeufe for the future for this ozbkonto
+		for i in 1..2
+			sleep(1.0)
+			expect(FactoryGirl.create(:KklVerlauf, 
+				:KtoNr => kklVerlauf.KtoNr, 
+				:KKL => kklVerlauf.KKL, 
+				:KKLAbDatum => (-i).weeks.ago)).to be_valid
+		end
+
+		expect(KklVerlauf.where("KtoNr = ?", kklVerlauf.KtoNr).size).to eq 3
+
+		# Private method, therfore using send methode
+		kklVerlauf.send(:destroy_historic_records)
+
+		expect(KklVerlauf.where("KtoNr = ?", kklVerlauf.KtoNr).size).to eq 3
+	end
 end

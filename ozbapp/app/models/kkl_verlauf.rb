@@ -2,7 +2,7 @@
 # encoding: utf-8
 class KklVerlauf < ActiveRecord::Base
   self.table_name = "KKLVerlauf"
-  self.primary_keys = :KtoNr#, :KKLAbDatum
+  self.primary_keys = :KtoNr, :KKLAbDatum
   
   # aliases
   alias_attribute :kkl, :KKL
