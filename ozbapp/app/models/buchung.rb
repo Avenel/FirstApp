@@ -5,7 +5,9 @@ class Buchung < ActiveRecord::Base
   self.primary_keys = :BuchJahr, :KtoNr, :BnKreis, :BelegNr, :Typ
   
   # attributes
-  attr_accessible :BuchJahr, :KtoNr, :BnKreis, :BelegNr, :Typ, :Belegdatum, :BuchDatum, :Buchungstext, :Sollbetrag, :Habenbetrag, :SollKtoNr, :HabenKtoNr, :WSaldoAcc, :Punkte, :PSaldoAcc
+  attr_accessible :BuchJahr, :KtoNr, :BnKreis, :BelegNr, :Typ, :Belegdatum, 
+                  :BuchDatum, :Buchungstext, :Sollbetrag, :Habenbetrag, :SollKtoNr, 
+                  :HabenKtoNr, :WSaldoAcc, :Punkte, :PSaldoAcc
 
   # associations
   belongs_to :OZBKonto, :foreign_key => :KtoNr
