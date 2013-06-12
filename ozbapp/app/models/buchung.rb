@@ -11,16 +11,35 @@ class Buchung < ActiveRecord::Base
 
   # associations
   belongs_to :OZBKonto, 
-    :foreign_key => :KtoNr, 
+    :foreign_key => :KtoNr,
     :class_name => "OzbKonto"
   
+  # column names
+  HUMANIZED_ATTRIBUTES = {
+    :BuchJahr       => 'Jahr',
+    :KtoNr          => 'Konto-Nr.',
+    :BnKreis        => 'Belegnummernkreis',
+    :BelegNr        => 'Belegnummer',
+    :Typ            => 'Typ',
+    :Belegdatum     => 'Belegdatum',
+    :BuchDatum      => 'Buchungsdatum',
+    :Buchungstext   => 'Verwendungszweck',
+    :Sollbetrag     => 'Betrag (Soll)',
+    :Habenbetrag    => 'Betrag (Haben)',
+    :SollKtoNr      => 'Konto (Soll)',
+    :HabenKtoNr     => 'Konto (Haben)',
+    :WSaldoAcc      => 'wSaldoAcc',
+    :Punkte         => 'Punkte',
+    :PSaldoAcc      => 'pSaldoAcc'
+  }
+
   # validations
   validates :BuchJahr, 
-    :presence => {:message => "Bitte geben Sie ein {HUMANIZED_ATTRIBUTES[:BuchJahr]} an."},
+    :presence => {:message => "Bitte geben Sie ein #{HUMANIZED_ATTRIBUTES[:BuchJahr]} an."},
     :length => { :is => 4, 
-      :message => "Das {HUMANIZED_ATTRIBUTES[:BuchJahr]} muss 4-stellig sein."},
+      :message => "Das #{HUMANIZED_ATTRIBUTES[:BuchJahr]} muss 4-stellig sein."},
     :numericality => { :only_integer => true, 
-      :message => "Das Jahr darf nur aus Ziffern bestehen." }
+      :message => "Das #{HUMANIZED_ATTRIBUTES[:BuchJahr]} darf nur aus Ziffern bestehen." }
 
   validates :KtoNr, 
     :presence => { :format => { :with => /^[0-9]{5}$/i  },
@@ -96,27 +115,44 @@ class Buchung < ActiveRecord::Base
   #Nicht spezifiziert (außer DB-Einschraenkung)
   validates :PSaldoAcc, 
     :presence => {:message => "Bitte geben Sie die pSaldoAcc an." }
-    
-  # column names
-  HUMANIZED_ATTRIBUTES = {
-    :BuchJahr       => 'Jahr',
-    :KtoNr          => 'Konto-Nr.',
-    :BnKreis        => 'Belegnummernkreis',
-    :BelegNr        => 'Belegnummer',
-    :Typ            => 'Typ',
-    :Belegdatum     => 'Belegdatum',
-    :BuchDatum      => 'Buchungsdatum',
-    :Buchungstext   => 'Verwendungszweck',
-    :Sollbetrag     => 'Betrag (Soll)',
-    :Habenbetrag    => 'Betrag (Haben)',
-    :SollKtoNr      => 'Konto (Soll)',
-    :HabenKtoNr     => 'Konto (Haben)',
-    :WSaldoAcc      => 'wSaldoAcc',
-    :Punkte         => 'Punkte',
-    :PSaldoAcc      => 'pSaldoAcc'
-  }
+  
+  validate :kto_exists
+  validate :kto_soll_exists
+  validate :kto_haben_exists
+  
 
   def self.human_attribute_name(attr, options={})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
+
+  def kto_exists
+    kto = OzbKonto.latest(self.KtoNr)
+    if kto.nil? then
+      errors.add :KtoNr, "existiert nicht: #{self.KtoNr}."
+      return false
+    else
+      return true
+    end
+  end
+
+  def kto_soll_exists
+    kto = OzbKonto.latest(self.SollKtoNr)
+    if kto.nil? then
+      errors.add :SollKtoNr, "existiert nicht: #{self.SollKtoNr}."
+      return false
+    else
+      return true
+    end
+  end
+
+  def kto_haben_exists
+    kto = OzbKonto.latest(self.HabenKtoNr)
+    if kto.nil? then
+      errors.add :HabenKtoNr, "existiert nicht: #{self.HabenKtoNr}."
+      return false
+    else
+      return true
+    end
+  end
+
 end

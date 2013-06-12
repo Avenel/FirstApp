@@ -298,7 +298,9 @@ CREATE TABLE IF NOT EXISTS `Buchung` (
   `PSaldoAcc` int(10) NOT NULL,  
   PRIMARY KEY (BuchJahr,KtoNr,BnKreis,BelegNr,Typ),
   KEY KtoNr(KtoNr),
-  FOREIGN KEY (KtoNr) REFERENCES OZBKonto(KtoNr)
+  FOREIGN KEY (KtoNr) REFERENCES OZBKonto(KtoNr),
+  FOREIGN KEY (SollKtoNr) REFERENCES OZBKonto(KtoNr),
+  FOREIGN KEY (HabenKtoNr) REFERENCES OZBKonto(KtoNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `BuchungOnline` (
