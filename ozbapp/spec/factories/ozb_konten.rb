@@ -3,7 +3,7 @@ require 'faker'
 FactoryGirl.define do
 
 	factory :OzbKonto do
-		sequence(:ktoNr) {|n| "#{n}"} 
+		sequence(:ktoNr) {|n| "#{10000+n}"} 
 		sequence(:mnr) {|n| "#{n}"}
 		sequence(:SachPnr) {|n| "#{n}"}
 		ktoEinrDatum Time.now
