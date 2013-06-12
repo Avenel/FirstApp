@@ -20,6 +20,7 @@ public class Migratior {
 	private static String user;
 	private static String password;
 	private static String pathToLog = new File(AppWindow.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("migration.jar", ""), "log.txt").toString();
+	
 	public static void main(String[] args) {		
 		if(args.length == 0 ) {
 			new AppWindow();
