@@ -254,15 +254,15 @@ CREATE TABLE IF NOT EXISTS `Buergschaft` (
   `Mnr_G` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `ZENr` char(10) NOT NULL ,
+  `ZENr` char(10) NOT NULL,
   `SichAbDatum`   datetime DEFAULT NULL,
   `SichEndDatum` datetime DEFAULT NULL,
   `SichBetrag` decimal(10,2) DEFAULT NULL,
   `SichKurzbez` varchar(200) DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Pnr_B,Mnr_G,GueltigVon),
-  FOREIGN KEY (Pnr_B) REFERENCES Person(Pnr_B),
-  FOREIGN KEY (Mnr_G) REFERENCES Person(Mnr_G)
+  FOREIGN KEY (Pnr_B) REFERENCES Person(Pnr),
+  FOREIGN KEY (Mnr_G) REFERENCES Person(Pnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `KontenKlasse` (
@@ -297,7 +297,8 @@ CREATE TABLE IF NOT EXISTS `Buchung` (
   `Punkte` int(10) NOT NULL,
   `PSaldoAcc` int(10) NOT NULL,  
   PRIMARY KEY (BuchJahr,KtoNr,BnKreis,BelegNr,Typ),
-  KEY KtoNr(KtoNr)
+  KEY KtoNr(KtoNr),
+  FOREIGN KEY (KtoNr) REFERENCES OZBKonto(KtoNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `BuchungOnline` (
