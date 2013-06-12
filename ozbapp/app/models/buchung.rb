@@ -16,9 +16,8 @@ class Buchung < ActiveRecord::Base
   
   # validations
   validates :BuchJahr, 
-    :presence {
-      :message => "Bitte geben Sie ein {HUMANIZED_ATTRIBUTES[:BuchJahr]} an."},
-    :length { :is => 4, 
+    :presence => {:message => "Bitte geben Sie ein {HUMANIZED_ATTRIBUTES[:BuchJahr]} an."},
+    :length => { :is => 4, 
       :message => "Das {HUMANIZED_ATTRIBUTES[:BuchJahr]} muss 4-stellig sein."},
     :numericality => { :only_integer => true, 
       :message => "Das Jahr darf nur aus Ziffern bestehen." }
@@ -43,27 +42,29 @@ class Buchung < ActiveRecord::Base
     :presence => {:message => "Bitte geben Sie einen Typ an." }
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
-  validates_date :Belegdatum, 
-    :presence => {:message => "Bitte geben Sie einen Belegdatum an." }
+  validates :Belegdatum, 
+    :presence => { :format => { :with => /\d{4}-\d{2}-\d{2}/ }, 
+      :message => "Bitte geben Sie ein gültiges Belegdatum an." }
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
-  validates_date :BuchDatum, 
-    :presence => {:message => "Bitte geben Sie einen Buchungsdatum an." }
+  validates :BuchDatum, 
+    :presence => { :format => { :with => /\d{4}-\d{2}-\d{2}/ }, 
+      :message => "Bitte geben Sie ein gültiges Buchungsdatum an." }
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
-  validates :BuchungsText, 
+  validates :Buchungstext, 
     :presence => {:message => "Bitte geben Sie einen Verwendungszweck an." },
     :length => {:maximum => 50, 
       :message => "Der Verwendungszweck ist zu lang. Maximal 50 Zeichen erlaubt."}
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
-  validates :SollBetrag, 
+  validates :Sollbetrag, 
     :presence => {:message => "Bitte geben Sie einen Betrag (Soll) an." }, 
     :format => { :with => /^\d{,10}[.]?\d{0,2}$/, 
       :message => "Bitte geben Sie einen gültigen Betrag an." }
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
-  validates :HabenBetrag, 
+  validates :Habenbetrag, 
     :presence => {:message => "Bitte geben Sie einen Betrag (Haben) an." }, 
     :format => { :with => /^\d{,10}[.]?\d{0,2}$/, 
       :message => "Bitte geben Sie einen gültigen Betrag an." }
@@ -105,9 +106,9 @@ class Buchung < ActiveRecord::Base
     :Typ            => 'Typ',
     :Belegdatum     => 'Belegdatum',
     :BuchDatum      => 'Buchungsdatum',
-    :BuchungsText   => 'Verwendungszweck',
-    :SollBetrag     => 'Betrag (Soll)',
-    :HabenBetrag    => 'Betrag (Haben)',
+    :Buchungstext   => 'Verwendungszweck',
+    :Sollbetrag     => 'Betrag (Soll)',
+    :Habenbetrag    => 'Betrag (Haben)',
     :SollKtoNr      => 'Konto (Soll)',
     :HabenKtoNr     => 'Konto (Haben)',
     :WSaldoAcc      => 'wSaldoAcc',
