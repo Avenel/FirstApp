@@ -26,8 +26,8 @@ describe DarlehensverlaufController do
 
 					tagessaldoEndW = -474.16
 
-					# only for today, 2013-06-12
-					tagessaldoEndP = 17093
+					# only for today, 2013-06-13
+					tagessaldoEndP = 17081
 
 
 					# create points

@@ -847,8 +847,11 @@ public class Migratior {
 					queryInsertStmt.setInt(12, rs.getInt("HABENKTONR"));
 					queryInsertStmt.setBigDecimal(13, rs
 							.getBigDecimal("SALDO_ACC"));
-					queryInsertStmt.setInt(14, rs.getInt("PKTE"));
-					queryInsertStmt.setInt(15, rs.getInt("PKTE_ACC"));
+			
+
+					// Vertauscht, da in der Produktivdatenbank schon falsch benannt wurde (Punkte -> PSaldoACC)
+					queryInsertStmt.setInt(14, rs.getInt("PKTE_ACC"));
+					queryInsertStmt.setInt(15, rs.getInt("PKTE"));
 
 					try {
 						queryInsertStmt.executeUpdate();
