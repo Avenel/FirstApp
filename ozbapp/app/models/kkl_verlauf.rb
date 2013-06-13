@@ -28,6 +28,8 @@ class KklVerlauf < ActiveRecord::Base
   #validates :KtoNr, :presence => { :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
   validates :KKL, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontenklasse an." }
   
+  validate :kto_exists
+
   before_create :set_ab_datum
   after_destroy :destroy_historic_records
   
@@ -47,6 +49,16 @@ class KklVerlauf < ActiveRecord::Base
       self.KKLAbDatum = Date.today
     end
   end
+
+  def kto_exists
+    kto = OzbKonto.latest(self.KtoNr)
+    if kto.nil? then
+      errors.add :KtoNr, "existiert nicht: #{self.KtoNr}."
+      return false
+    else
+      return true
+    end
+  end
   
   private
     # bound to callback
@@ -60,4 +72,5 @@ class KklVerlauf < ActiveRecord::Base
         r.destroy
       end
     end
+
 end

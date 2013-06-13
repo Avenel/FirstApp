@@ -132,4 +132,35 @@ describe KklVerlauf do
 
 		expect(KklVerlauf.where("KtoNr = ?", kklVerlauf.KtoNr).size).to eq 3
 	end
+
+	# kto_exists
+	it "kto_exists is true when ozbkonto existing" do
+		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+		expect(ozbkonto).to be_valid
+
+		kklverlauf = FactoryGirl.create(:kklverlauf_with_kontenklasse, :KtoNr => ozbkonto.ktoNr)
+		expect(kklverlauf).to be_valid
+
+		expect(kklverlauf.KtoNr).to eq ozbkonto.ktoNr
+
+		expect(kklverlauf.kto_exists).to eq true
+	end
+
+	it "kto_exists is false when ozbkonto not exists" do
+		kklverlauf = FactoryGirl.create(:kklverlauf_with_ozbkonto_with_kontenklasse)
+		expect(kklverlauf).to be_valid
+
+		kklverlauf.KtoNr = 94832
+		expect(kklverlauf.kto_exists).to eq false
+
+		kklverlauf.KtoNr = nil
+		expect(kklverlauf.kto_exists).to eq false
+
+		kklverlauf.KtoNr = 0
+		expect(kklverlauf.kto_exists).to eq false
+
+		kklverlauf.KtoNr = -1
+		expect(kklverlauf.kto_exists).to eq false
+	end
+
 end
