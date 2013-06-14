@@ -28,9 +28,9 @@ class Buchung < ActiveRecord::Base
     :Habenbetrag    => 'Betrag (Haben)',
     :SollKtoNr      => 'Konto (Soll)',
     :HabenKtoNr     => 'Konto (Haben)',
-    :WSaldoAcc      => 'wSaldoAcc',
+    :WSaldoAcc      => 'WSaldoAcc',
     :Punkte         => 'Punkte',
-    :PSaldoAcc      => 'pSaldoAcc'
+    :PSaldoAcc      => 'PSaldoAcc'
   }
 
   # validations
