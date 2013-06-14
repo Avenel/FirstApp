@@ -74,7 +74,11 @@ class ZeKonto < ActiveRecord::Base
   validates :AnsparRate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
   validates :RDURate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
   validates :KDURate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
-  validates :zeStatus, :presence => true, :format => {:with => /^(N|D|A)$/, :message => "Bitte geben Sie einen gültigen ZEStatus an."}
+
+  # A= Aktiv, E = Beendet
+  validates :zeStatus, :presence => true, :format => {:with => /^(A|E)$/, :message => "Bitte geben Sie einen gültigen ZEStatus an."}
+
+  # validates: ZahlModus, moegliche Werte: M = monatlich, Q = quartalsweise, J = jährlich, O = offen
 
   validate :kto_exists
   validate :eeKonto_exists
