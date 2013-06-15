@@ -109,7 +109,7 @@ Die Aufgaben dieser Projektarbeit sind recht vielfältig. Sie lassen sich in 3 P
 % Korrekturen am ER Diagramm/Relationenmodell
 %    -    ER Diagramm soll der Implementierung entsprichen
 %    -    Darstellung aller PKs und FKs für den nicht historisierten Fall
-Die erste Phase wird von den Korrekturen am ER-Diagramm und dem dazugehörigen Relationsmodell dominiert. Das ER-Diagramm weißt noch ein paar Unstimmigkeiten auf, die im Laufe der Zeit entstanden sind. Diese gilt es zu bereinigen und die vorgenommenen Korrekturen in der Implementierung umzusetzen. Ziel ist ein ER-Diagramm, welches den nicht-historisierten Zustand darstellt. Dieses ER-Diagramm soll 1:1 in der Implementierung vorzufinden zu sein. Es soll vereinfacht dargestellt werden, lediglich die Primär- und Fremdschlüssel sollen den Entitäten als Zusatzinformationen dienen.\\
+Die erste Phase wird von den Korrekturen am ER-Diagramm und dem dazugehörigen Relationsmodell dominiert. Das ER-Diagramm weißt noch ein paar Unstimmigkeiten auf, die im Laufe der Zeit entstanden sind. Diese gilt es zu bereinigen und die vorgenommenen Korrekturen in der Implementierung umzusetzen. Ziel ist ein ER-Diagramm, dessen Entitäts-Beziehungen den nicht-historisierten Zustand darstellen. Dieses ER-Diagramm soll 1:1 in der Implementierung vorzufinden zu sein. Es soll vereinfacht dargestellt werden, lediglich die Primär- und Fremdschlüssel, die im historisierten Zustand gültig sind, sollen den Entitäten als Zusatzinformationen dienen.\\
 
 % Dokumentieren:
 %    -    DB-Migration, wie geht das?
@@ -122,18 +122,22 @@ Im Laufe der Zeit sind die verschiedensten Techniken zur Bereitstellung und Vers
 %    -    WebImport
 Zusätzlich soll in dieser Phase ein kritischer Fehler bereinigt werden. Der WebImport, welcher für den Import der Kontobewegungen verantwortlich ist, arbeitet nicht richtig. Zur Zeit ist der Datei-Upload auf dem Testsystem nicht möglich. Darüber hinaus kommt es bei einer lokalen Testumgebung zu Laufzeitfehlern. Auch die im Webfrontend angezeigte Anzahl der importierten Datensätze ist nicht korrekt.
 
-\subsection{Phase 2: Korrektur der Punkteberechnung, Word Export}
+\subsection{Phase 2: Korrektur der Darlehensverlaufsanzeige}
 \textbf {(Duedate: 23.05.2013)}\\
 % Allgemeine Korrekturen:
 %    -    Korrektur der Punkteberechnung
-% Feature:
-%    -    Dokumente (Word,PDF) generieren
+In der zweiten Phase soll das Hauptaugenmerk auf die Korrektur der Darlehensverlaufsanzeige gelegt werden. Diese Anzeige gilt als einer der Kerngeschäftsprozesse. Hier wird der Buchungsverlauf über einen, vom Benutzer festgelegten, Zeitraum dargestellt. Dabei ist es wichtig, die korrekten Punkte- und Währungs-Saldi zu berechnen. Dies funktioniert in der aktuellen Version nicht korrekt. Daher gilt es, die Fehler auszumerzen.  
 
-\subsection{Phase 3: Einrichtung Testdriven Development}
+
+\subsection{Phase 3: Einrichtung Testdriven Development, Word Export}
 \textbf {(Duedate: 13.06.2013)}\\
 % Tests
 %    -    Beschreibung der Testumgebung mit Sublime 2(?) und RSpec
 %    -    Testfälle entwickeln
+% Feature:
+%    -    Dokumente (Word,PDF) generieren
+
+Die letzte Phase steht im Zeichen der Einführung der Testgetriebenen Entwicklung (\glqq Testdriven Development\grqq). In der Vergangenheit ist die Webanwendung stark gewachsenen, es sind immer häufiger Fehler und Inkonsistenzen aufegfallen. Ziel ist es nun der Anwendung, mit Hilfe von Tests, zu einem konsistenten und möglichst fehlerlosen Zustand zu verhelfen. Auch sollen die Tests helfen, sich einen genaueren Überblick über den Zustand der Webanwendung zu verschaffen. Für eine erfolgreiche und effiziente Test-Entwicklung, ist eine gute Auswahl der Tools unabdingbar. Der Gebrauch dieser Tools soll auch festgehalten werden.
 
 
 \clearpage
@@ -145,6 +149,18 @@ Zusätzlich soll in dieser Phase ein kritischer Fehler bereinigt werden. Der Web
 
 \section{Test-Driven Development}
 \subsection{Definition}
+\textit{Test-driven Development} (eng. für \glqq Testgetriebene Entwicklung\grqq) ist eine Entwicklungsmethode die besonders in Unternehmen, die agile Softwareentwicklungsmethoden anwenden, zu Hause ist. Der Entwicklungsprozess ist recht klein gehalten und verfolgt einen festen definierten Ablauf. Der Ablauf sieht vor, dass zunächst der Test für eine gewünschte Funktionalität geschrieben wird und im Anschluss daran wird der Programmcode geschrieben, der dafür sorgen soll das der Test korrekt abgeschlossen wird. Die nachfolgende Figur \vref{fig:tdd_process} zeigt den gewünschten Ablauf noch einmal im Detail.
+
+\begin{figure}[H]
+     \begin{center}
+          \includegraphics[width=0.65\textwidth]{\string"Media/Test-driven_development\string".png}
+     \end{center}
+     \label{fig:tdd_process}
+     \caption{Testdriven Development Prozess}
+\end{figure} 
+
+Diese Entwicklungsmethode stiftet die Programmierer dazu an, sehr schlanken (engl. \glqq dry\grqq) Programmcode zu schreiben und einen anderen Blick auf die Anwendung zu erhalten. Darüber hinaus steigert es während der Entwicklungsphase das Selbstbewusstsein des Programmieres, denn er kann mit Hilfe der Tests den Zustand der Anwendung schnell überblicken und sich sicher sein das sein Programmcode funktioniert - auch wenn der Umfang der Anwendung ansteigt.
+
 \subsection{Unit-Tests}
 \subsection{Functional-Tests}
 \subsection{Integration-Tests}

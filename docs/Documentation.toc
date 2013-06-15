@@ -2,51 +2,51 @@
 \contentsline {chapter}{\numberline {1}Einleitung}{1}{chapter.1}
 \contentsline {section}{\numberline {1.1}Aufgabenbeschreibung}{1}{section.1.1}
 \contentsline {subsection}{\numberline {1.1.1}Phase 1: Korrekturen, Dokumentieren}{1}{subsection.1.1.1}
-\contentsline {subsection}{\numberline {1.1.2}Phase 2: Korrektur der Punkteberechnung, Word Export}{2}{subsection.1.1.2}
-\contentsline {subsection}{\numberline {1.1.3}Phase 3: Einrichtung Testdriven Development}{2}{subsection.1.1.3}
+\contentsline {subsection}{\numberline {1.1.2}Phase 2: Korrektur der Darlehensverlaufsanzeige}{2}{subsection.1.1.2}
+\contentsline {subsection}{\numberline {1.1.3}Phase 3: Einrichtung Testdriven Development, Word Export}{2}{subsection.1.1.3}
 \contentsline {chapter}{\numberline {2}Hintergrundwissen}{3}{chapter.2}
 \contentsline {section}{\numberline {2.1}Das o/ZB Projekt}{3}{section.2.1}
 \contentsline {section}{\numberline {2.2}Das Testsystem}{3}{section.2.2}
 \contentsline {section}{\numberline {2.3}Test-Driven Development}{3}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Definition}{3}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}Unit-Tests}{3}{subsection.2.3.2}
-\contentsline {subsection}{\numberline {2.3.3}Functional-Tests}{3}{subsection.2.3.3}
-\contentsline {subsection}{\numberline {2.3.4}Integration-Tests}{3}{subsection.2.3.4}
-\contentsline {section}{\numberline {2.4}o/ZB Darlehensvertrag}{3}{section.2.4}
-\contentsline {chapter}{\numberline {3}Allgemeine Dokumentationen}{4}{chapter.3}
-\contentsline {section}{\numberline {3.1}Das korrigierte ER-Diagramm}{4}{section.3.1}
-\contentsline {section}{\numberline {3.2}Das korrigierte Relationenmodell}{4}{section.3.2}
-\contentsline {section}{\numberline {3.3}Deployment und Versionskontrolle}{4}{section.3.3}
-\contentsline {subsection}{\numberline {3.3.1}Deployment}{4}{subsection.3.3.1}
-\contentsline {subsubsection}{Webserver - Apache}{4}{section*.3}
-\contentsline {subsubsection}{Anwendungsserver - Phusion Passenger}{5}{section*.4}
-\contentsline {subsubsection}{Capistrano}{5}{section*.5}
-\contentsline {subsection}{\numberline {3.3.2}Versionsverwaltung}{6}{subsection.3.3.2}
-\contentsline {subsubsection}{Git}{6}{section*.6}
-\contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{6}{subsection.3.3.3}
-\contentsline {subsubsection}{Das Capistrano Deploymentskript (Rezept)}{7}{section*.7}
-\contentsline {section}{\numberline {3.4}Datenbank Migration}{9}{section.3.4}
-\contentsline {subsection}{\numberline {3.4.1}Datenbank migrieren}{10}{subsection.3.4.1}
-\contentsline {subsection}{\numberline {3.4.2}Datenbank zur\IeC {\"u}cksetzen}{11}{subsection.3.4.2}
-\contentsline {chapter}{\numberline {4}Korrekturen, Bugfixes}{12}{chapter.4}
-\contentsline {section}{\numberline {4.1}Webimport}{12}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}Bugfix: Datei Upload}{12}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Laufzeitfehler}{13}{subsection.4.1.2}
-\contentsline {subsection}{\numberline {4.1.3}Anzahl der importierten Datens\IeC {\"a}tze}{13}{subsection.4.1.3}
-\contentsline {section}{\numberline {4.2}Punkteberechnung}{14}{section.4.2}
-\contentsline {chapter}{\numberline {5}Testdriven Development}{15}{chapter.5}
-\contentsline {section}{\numberline {5.1}Analyse}{15}{section.5.1}
-\contentsline {section}{\numberline {5.2}Implementierung}{15}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}RSpec}{15}{subsection.5.2.1}
-\contentsline {chapter}{\numberline {6}Neue Features}{16}{chapter.6}
-\contentsline {section}{\numberline {6.1}Dokumenten-Export}{16}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}Analyse}{16}{subsection.6.1.1}
-\contentsline {subsection}{\numberline {6.1.2}Implementierung}{16}{subsection.6.1.2}
-\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{17}{section.6.2}
-\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{18}{chapter.7}
-\contentsline {section}{\numberline {7.1}Ergebnis}{18}{section.7.1}
-\contentsline {section}{\numberline {7.2}Ausblick}{18}{section.7.2}
-\contentsline {chapter}{\numberline {8}Anhang}{19}{chapter.8}
-\contentsline {chapter}{Abbildungsverzeichnis}{20}{chapter*.8}
-\contentsline {chapter}{Tabellenverzeichnis}{21}{chapter*.9}
-\contentsline {chapter}{Listings}{22}{chapter*.10}
+\contentsline {subsection}{\numberline {2.3.2}Unit-Tests}{4}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Functional-Tests}{4}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.4}Integration-Tests}{4}{subsection.2.3.4}
+\contentsline {section}{\numberline {2.4}o/ZB Darlehensvertrag}{4}{section.2.4}
+\contentsline {chapter}{\numberline {3}Allgemeine Dokumentationen}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}Das korrigierte ER-Diagramm}{5}{section.3.1}
+\contentsline {section}{\numberline {3.2}Das korrigierte Relationenmodell}{5}{section.3.2}
+\contentsline {section}{\numberline {3.3}Deployment und Versionskontrolle}{5}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Deployment}{5}{subsection.3.3.1}
+\contentsline {subsubsection}{Webserver - Apache}{5}{section*.3}
+\contentsline {subsubsection}{Anwendungsserver - Phusion Passenger}{6}{section*.4}
+\contentsline {subsubsection}{Capistrano}{6}{section*.5}
+\contentsline {subsection}{\numberline {3.3.2}Versionsverwaltung}{7}{subsection.3.3.2}
+\contentsline {subsubsection}{Git}{7}{section*.6}
+\contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{7}{subsection.3.3.3}
+\contentsline {subsubsection}{Das Capistrano Deploymentskript (Rezept)}{8}{section*.7}
+\contentsline {section}{\numberline {3.4}Datenbank Migration}{10}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Datenbank migrieren}{11}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Datenbank zur\IeC {\"u}cksetzen}{12}{subsection.3.4.2}
+\contentsline {chapter}{\numberline {4}Korrekturen, Bugfixes}{13}{chapter.4}
+\contentsline {section}{\numberline {4.1}Webimport}{13}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Bugfix: Datei Upload}{13}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Laufzeitfehler}{14}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Anzahl der importierten Datens\IeC {\"a}tze}{14}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Punkteberechnung}{15}{section.4.2}
+\contentsline {chapter}{\numberline {5}Testdriven Development}{16}{chapter.5}
+\contentsline {section}{\numberline {5.1}Analyse}{16}{section.5.1}
+\contentsline {section}{\numberline {5.2}Implementierung}{16}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}RSpec}{16}{subsection.5.2.1}
+\contentsline {chapter}{\numberline {6}Neue Features}{17}{chapter.6}
+\contentsline {section}{\numberline {6.1}Dokumenten-Export}{17}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Analyse}{17}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Implementierung}{17}{subsection.6.1.2}
+\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{18}{section.6.2}
+\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{19}{chapter.7}
+\contentsline {section}{\numberline {7.1}Ergebnis}{19}{section.7.1}
+\contentsline {section}{\numberline {7.2}Ausblick}{19}{section.7.2}
+\contentsline {chapter}{\numberline {8}Anhang}{20}{chapter.8}
+\contentsline {chapter}{Abbildungsverzeichnis}{21}{chapter*.8}
+\contentsline {chapter}{Tabellenverzeichnis}{22}{chapter*.9}
+\contentsline {chapter}{Listings}{23}{chapter*.10}
