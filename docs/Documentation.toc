@@ -33,20 +33,21 @@
 \contentsline {subsection}{\numberline {4.1.1}Bugfix: Datei Upload}{14}{subsection.4.1.1}
 \contentsline {subsection}{\numberline {4.1.2}Laufzeitfehler}{15}{subsection.4.1.2}
 \contentsline {subsection}{\numberline {4.1.3}Anzahl der importierten Datens\IeC {\"a}tze}{15}{subsection.4.1.3}
-\contentsline {section}{\numberline {4.2}Punkteberechnung}{16}{section.4.2}
-\contentsline {chapter}{\numberline {5}Testdriven Development}{17}{chapter.5}
-\contentsline {section}{\numberline {5.1}Analyse}{17}{section.5.1}
-\contentsline {section}{\numberline {5.2}Implementierung}{17}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}RSpec}{17}{subsection.5.2.1}
-\contentsline {chapter}{\numberline {6}Neue Features}{18}{chapter.6}
-\contentsline {section}{\numberline {6.1}Dokumenten-Export}{18}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}Analyse}{18}{subsection.6.1.1}
-\contentsline {subsection}{\numberline {6.1.2}Implementierung}{18}{subsection.6.1.2}
-\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{19}{section.6.2}
-\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{20}{chapter.7}
-\contentsline {section}{\numberline {7.1}Ergebnis}{20}{section.7.1}
-\contentsline {section}{\numberline {7.2}Ausblick}{20}{section.7.2}
-\contentsline {chapter}{\numberline {8}Anhang}{21}{chapter.8}
-\contentsline {chapter}{Abbildungsverzeichnis}{22}{chapter*.8}
-\contentsline {chapter}{Tabellenverzeichnis}{23}{chapter*.9}
-\contentsline {chapter}{Listings}{24}{chapter*.10}
+\contentsline {subsection}{\numberline {4.1.4}Punkteberechnung}{16}{subsection.4.1.4}
+\contentsline {section}{\numberline {4.2}Darlehensverlauf}{16}{section.4.2}
+\contentsline {chapter}{\numberline {5}Testdriven Development}{18}{chapter.5}
+\contentsline {section}{\numberline {5.1}Analyse}{18}{section.5.1}
+\contentsline {section}{\numberline {5.2}Implementierung}{18}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}RSpec}{18}{subsection.5.2.1}
+\contentsline {chapter}{\numberline {6}Neue Features}{19}{chapter.6}
+\contentsline {section}{\numberline {6.1}Dokumenten-Export}{19}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Analyse}{19}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Implementierung}{19}{subsection.6.1.2}
+\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{20}{section.6.2}
+\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{21}{chapter.7}
+\contentsline {section}{\numberline {7.1}Ergebnis}{21}{section.7.1}
+\contentsline {section}{\numberline {7.2}Ausblick}{21}{section.7.2}
+\contentsline {chapter}{\numberline {8}Anhang}{22}{chapter.8}
+\contentsline {chapter}{Abbildungsverzeichnis}{23}{chapter*.8}
+\contentsline {chapter}{Tabellenverzeichnis}{24}{chapter*.9}
+\contentsline {chapter}{Listings}{25}{chapter*.10}

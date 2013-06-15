@@ -348,8 +348,28 @@ Einer der Fehler tritt in Zeile 318 auf. Dort werden bei einer bestimmten Kontob
 \lstinputlisting[language=Ruby, frame=single, caption=webimport\_controller.rb, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=313, lastline=321]{\string"../ozbapp/app/controllers/webimport_controller\string".rb}\label{listing:webimport_nil}
 
 
-% Punkteberechnung
-\section{Punkteberechnung}
+\subsection{Punkteberechnung}
+Beim Import der Buchungen werden zum Zeitpunkt der Übernahme noch keine Punkte berechnet. Im Zuge der Modul Tests wurden die mit dem Webimport verbundenen Module nochmals überarbeitet, somit muss die Punkteberechnung in diesem Teil der Webanwendung erneut implementiert werden.
+
+% Lösung 
+
+% Darlehensverlauf
+\section{Darlehensverlauf}
+Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zuge in den von Herrn Kienle angefertigten Tests, konnten die auftretenen Fehler analysiert und kategorisiert werden. Aufgrund des relativ unstrukturierten und unübersichtlichen Programmcodes, wurde beschlossen diese Funktionalität, basierend den Spezifikationen die sich aus den Tests und Dokumentationen ableiten ließen, neu zu implementieren.
+
+Fehlerursachen:
+
+\begin{itemize}
+     \item{Punkte wurde nicht richtig berechnet, wenn am Tage des abDatums noch Buchungen getätigt wurden}
+     \item{Die Sortierung der Buchungen stimmte nicht mit den Vorgaben überein}
+     \item{Wiederverwendete ZE Konten wurden nicht richtig berücksichtigt}
+     \item{Startsaldo wurde nicht korrekt berechnet, da die Tagesdifferenz zur letzten Währungsbuchung nicht berücksichtigt wurden}
+     \item{Die Punkte die bei der Buchung nach dem Startsaldo berechnet wurden, sind falsch da diese einfach aus der DB entnommen wurden}
+     \item{Variable KKL-Verläufe, KKL veränderte sich während des abgefragten Zeitraumes}
+\end{itemize} 
+
+% Lösung
+
 
 \clearpage
 \chapter{Testdriven Development}
@@ -368,9 +388,11 @@ Einer der Fehler tritt in Zeile 318 auf. Dort werden bei einer bestimmten Kontob
 % Was muss in den Darlehensvertrag? s.Hintergrundwissen
 % Muss er noch im Nachhinein verändert werden? -> Word oder PDF?
 \subsection{Implementierung}
-\clearpage
-\section{Deployment E-Mail Benachrichtigung}
 
+\clearpage
+
+\section{Deployment E-Mail Benachrichtigung}
+s. Capify Skript: \glqq cap\_notify.rb\grqq
 
 \chapter{Ergebnis und Ausblick}
 \section{Ergebnis}
