@@ -373,14 +373,26 @@ Fehlerursachen:
 
 \clearpage
 \chapter{Testdriven Development}
+In diesem Kapitel wird die Einführung und Durchführung der Eigenschaften der Testgetriebenen Entwicklung beschrieben. Im Zuge dessen wird zunächst eine Analyse des Ist und des Soll Standes durchgeführt, bevor mit der Umsetzung und Durchführung fortgefahren wird. Das Ziel ist die Einführung und Durchführung von Tests, um den Zustand der Webanwendung darzulegen und um die aufgezeigten Mängel zu beseitigen und mit Hilfe der Tests nicht wieder eintreten zu lassen.    
+
 \section{Analyse}
 % Ist-Analyse: Es gibt keine Tests, Fehlerbehaftete Anwendung
+\subsection{Ist-Stand}
+Der Ist-Zustand der vorliegenden Webanwendung ist zum Zeitpunkt der Übernahme nur schwer überschaubar. Es gibt viele neue Funktionalitäten und Testberichte die deutliche Mängel aufzeigen. Die vorliegenden Dokumentationen beschreiben die neuen Funktionalitäten und deren Umsetzung, allerdings fehlt ein Überblick über den Gesamtzustand der Webanwendung. Es wurden nur einzelne, wichtige, Funktionalitäten getestet. Allerdings handelt es sich hierbei um Frontend Tests, die jedoch keine ausreichenden Aussagen über die fachliche und technische Korrektheit der Module und deren Beziehungen untereinander liefern können.\\
+
+Um gültige Aussagen über den Zustand dieser Webanwendung treffen zu können, sind umfangreiche Modultests der erste Schritt. Diese liefern den Zustand über die einzelnen Module, bzw. Entitäten wie z.B. Person, OZBPerson, OZBKonto usw. zurück. Auch liefern diese, Aussagen über die Korrektheit der Umsetzung des vorgegeben Datenmodells. Hier sind auf dem ersten Blick bereits einige Unstimmigkeiten aufgefallen.\\
+
 % Soll-Analyse: bugfrei durch TDD. Was müssen wir dafür testen?
-% Auswertung der bisherigen manuellen Tests
-% Implementierte Geschäftsprozesse verstehen (für die spätere Entwicklung der Tests)
-% Vorgehensweise
+\subsection{Soll-Stand} 
+
+
 \section{Implementierung}
 \subsection{RSpec}
+
+% Auswertung der bisherigen manuellen Tests
+\section{Auswertung}
+s. Powerpoint Präsentation
+
 
 \chapter{Neue Features}
 \section{Dokumenten-Export}
