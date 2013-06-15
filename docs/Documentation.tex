@@ -159,11 +159,18 @@ Die letzte Phase steht im Zeichen der Einführung der Testgetriebenen Entwicklun
      \caption{Testdriven Development Prozess}
 \end{figure} 
 
-Diese Entwicklungsmethode stiftet die Programmierer dazu an, sehr schlanken (engl. \glqq dry\grqq) Programmcode zu schreiben und einen anderen Blick auf die Anwendung zu erhalten. Darüber hinaus steigert es während der Entwicklungsphase das Selbstbewusstsein des Programmieres, denn er kann mit Hilfe der Tests den Zustand der Anwendung schnell überblicken und sich sicher sein das sein Programmcode funktioniert - auch wenn der Umfang der Anwendung ansteigt.
+Diese Entwicklungsmethode stiftet die Programmierer dazu an, sehr schlanken (engl. \glqq dry\grqq) Programmcode zu schreiben und einen anderen Blick auf die Anwendung zu erhalten. Darüber hinaus steigert es während der Entwicklungsphase das Selbstbewusstsein des Programmieres, denn er kann mit Hilfe der Tests den Zustand der Anwendung schnell überblicken und sich sicher sein das sein Programmcode funktioniert - auch wenn der Umfang der Anwendung ansteigt. Außerdem steigert diese Entwicklungsmethode die Code-Qualität enorm und führt zu einer Steigerung der Produktivität des Entwicklerteams.\\
 
-\subsection{Unit-Tests}
-\subsection{Functional-Tests}
+Es gibt verschiedene Arten von Tests, die auf verschiedenen Ebenen agieren. In den nachfolgenden Abschnitten werden diese kurz dargestellt und in einen Zusammenhang gebracht.
+
+\subsection{Modul Tests}
+\textit{Modul Tests}, oder auch \textit{Unit Tests}, sind Tests die die einzelnen Komponenten, bzw. Entitäten einer Anwendung testen. Das Ziel dieser Tests ist es, die sowohl fachliche als auch technische korrekte Funktionalität sicherzustellen. Die Tests stellen einen Vertrag dar, die das zu testende Modul erfüllen muss. Diese Testart ist ganz nach vorn im Testprozess einzuordnen und ist die Voraussetzung dafür um mit den Integration Tests fortfahren zu können. Ein Modul ist somit die kleinst zu testendende Einheit in einer Anwendung. Ein Modul Test soll sicherstellen, dass jedes kleine Teil eines Ganzen für sich allein gesehen korrekt funktioniert, sodass das eine Anwendung auf einer soliden Basis aufbauen kann. Bei der Implementierung eines Modul Tests ist zu beachten, dass das zu testende Modul isoliert getestet wird. D.h. es dürfen keine Modulübergreifende Interaktionen implementiert werden. Außerdem testen Modul Tests gemäß des \glqq Design-by-Contract\grqq Prinzips nicht die interne Umsetzung des Moduls, sondern ihre Ausgaben bei verschiedenen Eingaben.
+
 \subsection{Integration-Tests}
+
+\subsection{Functional-Tests}
+
+
 
 \section{o/ZB Darlehensvertrag}
 % Wie sieht der aus?
