@@ -10,8 +10,8 @@
 \contentsline {section}{\numberline {2.3}Test-Driven Development}{3}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Definition}{3}{subsection.2.3.1}
 \contentsline {subsection}{\numberline {2.3.2}Modul Tests}{4}{subsection.2.3.2}
-\contentsline {subsection}{\numberline {2.3.3}Integration-Tests}{5}{subsection.2.3.3}
-\contentsline {subsection}{\numberline {2.3.4}Functional-Tests}{5}{subsection.2.3.4}
+\contentsline {subsection}{\numberline {2.3.3}Controller Tests}{5}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.4}Feature Tests}{5}{subsection.2.3.4}
 \contentsline {section}{\numberline {2.4}o/ZB Darlehensvertrag}{5}{section.2.4}
 \contentsline {chapter}{\numberline {3}Allgemeine Dokumentationen}{6}{chapter.3}
 \contentsline {section}{\numberline {3.1}Das korrigierte ER-Diagramm}{6}{section.3.1}
