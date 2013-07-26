@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `Adresse` (
   `GueltigBis` datetime NOT NULL,
   `Strasse` varchar(50) NOT NULL,
   `Nr` varchar(10) DEFAULT NULL,
-  `PLZ` varchar(10) unsigned DEFAULT NULL, -- Auch fuer auslaendische PLZen
+  `PLZ` varchar(10) DEFAULT NULL, -- Auch fuer auslaendische PLZen
   `Ort` varchar(20) NOT NULL,
   `Vermerk` varchar(30) DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `Mitglied` (
   `Mnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `RVDatum` date default NULL,
+  `RVDatum` date DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
   
   PRIMARY KEY (Mnr,GueltigVon),
@@ -69,9 +69,9 @@ CREATE TABLE IF NOT EXISTS `Gesellschafter` (
   `GueltigBis` datetime NOT NULL,
   `FALfdNr` int(20) NOT NULL,
   `FASteuerNr` varchar(15) NOT NULL,
-  `FAIdNr` varchar(15),
+  `FAIdNr` varchar(15) DEFAULT NULL,
   `Wohnsitzfinanzamt` varchar(50) NOT NULL,
-  `NotarPnr` int(10) unsigned,
+  `NotarPnr` int(10) unsigned DEFAULT NULL,
   `BeurkDatum` date,
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Mnr,GueltigVon),
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `Tan` (
 CREATE TABLE IF NOT EXISTS `Bank` (
   `BLZ` int(8) unsigned NOT NULL,
   `BIC` varchar(11) NOT NULL DEFAULT '###',
-  `BankName` varchar(50) DEFAULT NOT NULL,      
+  `BankName` varchar(50) NOT NULL,      
   PRIMARY KEY (`BLZ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -178,13 +178,19 @@ CREATE TABLE IF NOT EXISTS `Bankverbindung` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `Pnr` int(10) unsigned NOT NULL ,
+  `Pnr` int(10) unsigned NOT NULL,
   `BankKtoNr`  varchar(20) NOT NULL,
   `IBAN` varchar(22) NOT NULL,
   `BLZ` int(8) unsigned NOT NULL,   
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (ID, GueltigVon),
   FOREIGN KEY (BLZ) REFERENCES Bank(BLZ)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Waehrung` (
+  `Code` char(3) NOT NULL,
+  `Bezeichnung` varchar(30) NOT NULL,
+  PRIMARY KEY (Code)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `OZBKonto` (
@@ -199,13 +205,8 @@ CREATE TABLE IF NOT EXISTS `OZBKonto` (
   `SaldoDatum` date DEFAULT NULL,    
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (KtoNr,GueltigVon),
-  FOREIGN KEY (Waehrung) REFERENCES Waehrung(Code)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE IF NOT EXISTS `Waehrung` (
-  `Code` char(3) NOT NULL,
-  `Bezeichnung` varchar(30) NOT NULL,
-  PRIMARY KEY (Code)
+  FOREIGN KEY (Waehrung) REFERENCES Waehrung(Code),
+  FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `EEKonto` (
@@ -237,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `ZEKonto` (
   `Laufzeit` tinyint(2) unsigned NOT NULL,
   `ZahlModus` enum('m', 'q', 'j'), -- m = monatlich, q = quartal, j = jaehrlich
   `TilgRate` decimal(10,2) NOT NULL,
-  `AnsparRate` decimal(10,2) NOT NULL,
+  `NachsparRate` decimal(10,2) NOT NULL,
   `KDURate` decimal(10,2) NOT NULL,
   `RDURate` decimal(10,2) NOT NULL,
   `ZEStatus` enum('a', 'e', 'u'), -- a = aktiv, e = beendet, u = unterbrochen 
@@ -296,10 +297,7 @@ CREATE TABLE IF NOT EXISTS `Buchung` (
   `Punkte` int(10),
   `PSaldoAcc` int(10),  
   PRIMARY KEY (BuchJahr,KtoNr,BnKreis,BelegNr,Typ),
-  KEY KtoNr(KtoNr),
-  FOREIGN KEY (KtoNr) REFERENCES OZBKonto(KtoNr),
-  FOREIGN KEY (SollKtoNr) REFERENCES OZBKonto(KtoNr),
-  FOREIGN KEY (HabenKtoNr) REFERENCES OZBKonto(KtoNr)
+  KEY KtoNr(KtoNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `BuchungOnline` (
@@ -311,7 +309,8 @@ CREATE TABLE IF NOT EXISTS `BuchungOnline` (
   `Punkte` int(10),
   `Tan` int(5) unsigned NOT NULL,
   `BlockNr` int(5) NOT NULL DEFAULT '-1',   
-  PRIMARY KEY (ID)
+  PRIMARY KEY (ID),
+  FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Sonderberechtigung` (
@@ -322,7 +321,6 @@ CREATE TABLE IF NOT EXISTS `Sonderberechtigung` (
   PRIMARY KEY (`ID`),
   FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO sonderberechtigung VALUES(0, 13, "tkienle@t-online.de", "IT");
 
 CREATE TABLE IF NOT EXISTS `Geschaeftsprozess` (
   `ID` int(4) unsigned NOT NULL AUTO_INCREMENT,
@@ -338,8 +336,8 @@ CREATE TABLE IF NOT EXISTS `Geschaeftsprozess` (
 DROP TABLE IF EXISTS `Umlage`;
 CREATE TABLE IF NOT EXISTS `Umlage` (
   `Jahr` tinyint(4) unsigned NOT NULL,
-  `RDU` decimal(1,2) NOT NULL,
-  `KDU` decimal(1,2) NOT NULL,
+  `RDU` decimal(3,2) NOT NULL,
+  `KDU` decimal(3,2) NOT NULL,
   PRIMARY KEY (`Jahr`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
