@@ -3,12 +3,12 @@ CREATE TABLE IF NOT EXISTS `Person` (
   `Pnr` int(10) unsigned NOT NULL,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `Rolle` enum('G','M','P','S','F') DEFAULT NULL,
-  `Name` varchar(20) NOT NULL,
-  `Vorname` varchar(15) NOT NULL DEFAULT '',
+  `Rolle` enum('G','M','P','S','F') DEFAULT NULL, -- G = Gesellschafter, M = Mitglied, P = Partner, S = Student, F = Foerdermitglied
+  `Name` varchar(30) NOT NULL,
+  `Vorname` varchar(20) NOT NULL DEFAULT '',
   `Geburtsdatum` date DEFAULT NULL,
   `EMail` varchar(255) DEFAULT NULL,
-  `SperrKZ` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `SperrKZ` enum('0', '1') DEFAULT '0', -- 0 = Logon freigegeben, 1 = gesperrt
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Pnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -17,27 +17,26 @@ CREATE TABLE IF NOT EXISTS `Adresse` (
   `Pnr` int(10) unsigned NOT NULL,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `Strasse` varchar(50) DEFAULT NULL,
+  `Strasse` varchar(50) NOT NULL,
   `Nr` varchar(10) DEFAULT NULL,
-  `PLZ` int(5) unsigned DEFAULT NULL,
-  `Ort` varchar(50)  DEFAULT NULL,
-  `Vermerk` varchar(100) DEFAULT NULL,
+  `PLZ` varchar(10) unsigned DEFAULT NULL, -- Auch fuer auslaendische PLZen
+  `Ort` varchar(20) NOT NULL,
+  `Vermerk` varchar(30) DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Pnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `OZBPerson` (
-  `Mnr` int(10) unsigned NOT NULL ,    
-  `UeberPnr` int(10) unsigned ,
-  `Passwort` varchar(35) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `PWAendDatum` date DEFAULT NULL,
-  `Antragsdatum` date DEFAULT NULL,
+  `Mnr` int(10) unsigned NOT NULL,    
+  `UeberPnr` int(10) unsigned,
+  `PWAendDatum` date NOT NULL,
+  `Antragsdatum` date NOT NULL,
   `Aufnahmedatum` date DEFAULT NULL,
   `Austrittsdatum` date DEFAULT NULL,
   `Schulungsdatum` date DEFAULT NULL,
-  `Gesperrt` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `SachPnr` int(10) unsigned DEFAULT NULL,
+  
+-- Technische Attribute fuer das Login/Session Gem
   `encrypted_password` varchar(64) NOT NULL DEFAULT '$2a$10$qGrVqv4bHcfd4Ld649LoS.xIc/gK8GBdSXAS47AQpg1eVhPQL.H7K',
   `reset_password_token` varchar(128) DEFAULT NULL,
   `reset_password_sent_at` datetime DEFAULT NULL,
@@ -49,7 +48,8 @@ CREATE TABLE IF NOT EXISTS `OZBPerson` (
   `last_sign_in_ip` varchar(16) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (Mnr)
+ 
+ PRIMARY KEY (Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Mitglied` (
@@ -67,29 +67,27 @@ CREATE TABLE IF NOT EXISTS `Gesellschafter` (
   `Mnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `FALfdNr` char(20),
-  `FASteuerNr` char(15),
-  `FAIdNr` char(15),
-  `Wohnsitzfinanzamt` varchar(50),
-  `NotarPnr` int(10) unsigned  ,
+  `FALfdNr` int(20) NOT NULL,
+  `FASteuerNr` varchar(15) NOT NULL,
+  `FAIdNr` varchar(15),
+  `Wohnsitzfinanzamt` varchar(50) NOT NULL,
+  `NotarPnr` int(10) unsigned,
   `BeurkDatum` date,
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Mnr,GueltigVon),
-  FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr),
-  KEY NotarPnr (NotarPnr),
-  KEY Mnr (Mnr)
+  FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Student` (
   `Mnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `AusbildBez` varchar(30),
-  `InstitutName` varchar(30),
-  `Studienort` varchar(30),
-  `Studienbeginn` date,
-  `Studienende` date,
-  `Abschluss` char(20),
+  `AusbildBez` varchar(30) NOT NULL,
+  `InstitutName` varchar(30) NOT NULL,
+  `Studienort` varchar(30) NOT NULL,
+  `Studienbeginn` date NOT NULL,
+  `Studienende` date NOT NULL,
+  `Abschluss` varchar(20) NOT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Mnr,GueltigVon),
   FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
@@ -99,81 +97,80 @@ CREATE TABLE IF NOT EXISTS `Foerdermitglied` (
   `Pnr` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `Region` varchar(30),
-  `Foerderbeitrag` decimal(5,2),
+  `Region` varchar(30) NOT NULL,
+  `Foerderbeitrag` decimal(5,2) NOT NULL,
+  `MJ` enum('m', 'j'), -- m = monatlich, j = jaehrlich
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY Pnr (Pnr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Veranstaltungsart` (
-  `VANr` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `VABezeichnung` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
- 
+  `VANr` int(2) unsigned NOT NULL,
+  `VABezeichnung` varchar(30) COLLATE utf8_unicode_ci NOT NULL, 
   PRIMARY KEY (VANr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Veranstaltung` (
-  `Vnr` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `VANr` int(11) unsigned NOT NULL,
+  `Vnr` int(3) unsigned NOT NULL AUTO_INCREMENT,
+  `VANr` int(2) unsigned NOT NULL,
   `VADatum` date NOT NULL,
-  `VAOrt` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `SachPnr` int(10) unsigned ,
+  `VAOrt` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Vnr),
   FOREIGN KEY (VANr) REFERENCES Veranstaltungsart(VANr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Teilnahme` (
-  `Pnr` int(10) unsigned NOT NULL ,
-  `Vnr` int(11) unsigned NOT NULL ,  
-  `TeilnArt` enum ('a','e','u','l', 'm'), 
-  `SachPnr` int(10) unsigned,
+  `Pnr` int(10) unsigned NOT NULL,
+  `Vnr` int(3) unsigned NOT NULL,  
+  `TeilnArt` enum ('a','e','u','l'), -- a = anwesend, e = entschuldigt, u = unentschuldigt, l = eingeladen 
+  `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Pnr,Vnr),
-  FOREIGN KEY (Vnr) REFERENCES Veranstaltung(Vnr),
-  KEY Pnr (Pnr) 
+  FOREIGN KEY (Vnr) REFERENCES Veranstaltung(Vnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Partner` (
-  `Mnr` int(10) unsigned NOT NULL ,
+  `Mnr` int(10) unsigned NOT NULL,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `MnrO` int(10) unsigned NOT NULL ,  
-  `Berechtigung` char(1) NOT NULL DEFAULT '1' , 
+  `Pnr_P` int(10) unsigned NOT NULL,  
+  `Berechtigung` enum('l', 'v'), -- l = leseberechtigt, v = vollberechtigt 
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Mnr,GueltigVon),
-  FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr),  
-  KEY MnrO (MnrO)
+  FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)  
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Telefon` (
-  `Pnr` int(10) unsigned NOT NULL ,
-  `LfdNr` tinyint(2) unsigned NOT NULL ,
-  `TelefonNr` varchar(15)  DEFAULT NULL,  
-  `TelefonTyp` char(6) DEFAULT NULL,
+  `Pnr` int(10) unsigned NOT NULL,
+  `LfdNr` tinyint(2) unsigned NOT NULL,
+  `TelefonNr` varchar(15) NOT NULL,  
+  `TelefonTyp` enum('tel', 'mob', 'fax'), -- tel = Festnetz, mob = Mobilfunk, fax = FAX...
   PRIMARY KEY (Pnr,LfdNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Tanliste` (
-  `Mnr` int(10) unsigned NOT NULL ,  
-  `ListNr` tinyint(2) unsigned NOT NULL ,    
-  `Status` enum ('n','d','a'),    
+  `Mnr` int(10) unsigned NOT NULL,  
+  `ListNr` int(3) unsigned NOT NULL,  
+  `TanListDatum` date NOT NULL,  
+  `Status` enum ('n','d','a'), -- n = neu, a = aktiviert, d = deaktiviert
   PRIMARY KEY (Mnr,ListNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Tan` (
   `Mnr` int(10) unsigned NOT NULL ,
-  `ListNr` tinyint(2) unsigned NOT NULL ,     
-  `TanNr` int(10) unsigned NOT NULL ,
+  `ListNr` int(3) unsigned NOT NULL ,     
+  `TanNr` int(2) unsigned NOT NULL ,
   `Tan` int(5) unsigned NOT NULL,
   `VerwendetAm` date DEFAULT NULL,  
-  `Status` enum ('o','x'),     
+  `Status` enum ('o','x'), -- o = unbenutzt, x = benutzt     
   PRIMARY KEY (Mnr,ListNr,TanNr),
   FOREIGN KEY (Mnr, ListNr) REFERENCES Tanliste(Mnr, ListNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Bank` (
   `BLZ` int(8) unsigned NOT NULL,
-  `BIC` char(11),
-  `BankName` varchar(255) DEFAULT NULL,      
+  `BIC` varchar(11) NOT NULL DEFAULT '###',
+  `BankName` varchar(50) DEFAULT NOT NULL,      
   PRIMARY KEY (`BLZ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -182,27 +179,33 @@ CREATE TABLE IF NOT EXISTS `Bankverbindung` (
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
   `Pnr` int(10) unsigned NOT NULL ,
-  `BankKtoNr`  varchar(255) NOT NULL,
-  `IBAN` char(20),
-  `BLZ` int(10) unsigned NOT NULL,   
+  `BankKtoNr`  varchar(20) NOT NULL,
+  `IBAN` varchar(22) NOT NULL,
+  `BLZ` int(8) unsigned NOT NULL,   
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (ID, GueltigVon),
-  FOREIGN KEY (Pnr) REFERENCES Person(Pnr),
   FOREIGN KEY (BLZ) REFERENCES Bank(BLZ)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `OZBKonto` (
-  `KtoNr` int(5) unsigned NOT NULL ,
+  `KtoNr` int(5) unsigned NOT NULL,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `Mnr` int(10) unsigned NOT NULL ,
-  `KtoEinrDatum`  date DEFAULT NULL,
-  `Waehrung` char(3) NOT NULL DEFAULT 'STR',
+  `Mnr` int(10) unsigned NOT NULL,
+  `KtoEinrDatum` date NOT NULL,
+  `Waehrung` char(3) NOT NULL,
   `WSaldo` decimal(10,2) DEFAULT NULL,
   `PSaldo` int(11) DEFAULT NULL,
   `SaldoDatum` date DEFAULT NULL,    
   `SachPnr` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (KtoNr,GueltigVon)
+  PRIMARY KEY (KtoNr,GueltigVon),
+  FOREIGN KEY (Waehrung) REFERENCES Waehrung(Code)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Waehrung` (
+  `Code` char(3) NOT NULL,
+  `Bezeichnung` varchar(30) NOT NULL,
+  PRIMARY KEY (Code)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `EEKonto` (
@@ -212,14 +215,12 @@ CREATE TABLE IF NOT EXISTS `EEKonto` (
   `BankID` int(10) unsigned NOT NULL,
   `Kreditlimit`  decimal(5,2) NOT NULL DEFAULT '0.00', 
   `SachPnr` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (KtoNr,GueltigVon),
-  FOREIGN KEY (BankID) REFERENCES Bankverbindung(ID),
-  FOREIGN KEY (SachPnr) REFERENCES Person(Pnr)
+  PRIMARY KEY (KtoNr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ProjektGruppe` (
-  `Pgnr` tinyint(2) unsigned,
-  `ProjGruppenBez` varchar(50),          
+  `Pgnr` tinyint(2) unsigned NOT NULL,
+  `ProjGruppenBez` varchar(50) NOT NULL,          
   PRIMARY KEY (`Pgnr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='';
 
@@ -228,25 +229,24 @@ CREATE TABLE IF NOT EXISTS `ZEKonto` (
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
   `Pgnr`  tinyint(2) unsigned NOT NULL,
-  `EEKtoNr` int(5) unsigned NOT NULL ,
-  `ZENr`  char(10) ,  
-  `ZEAbDatum` date DEFAULT NULL,
-  `ZEEndDatum` date DEFAULT NULL,
-  `ZEBetrag` decimal(10,2) DEFAULT NULL,
-  `Laufzeit` tinyint(4) unsigned NOT NULL,
-  `ZahlModus` char(1) DEFAULT 'M',
-  `TilgRate` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `AnsparRate` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `KDURate` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `RDURate` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `ZEStatus` char(1) NOT NULL DEFAULT 'A', 
-  `SachPnr` int(10) unsigned DEFAULT NULL,
-  `Kalk_Leihpunkte` int(11) DEFAULT NULL,
+  `EEKtoNr` int(5) unsigned NOT NULL,
+  `ZENr` varchar(10) NOT NULL,  
+  `ZEAbDatum` date NOT NULL,
+  `ZEEndDatum` date NOT NULL,
+  `ZEBetrag` decimal(10,2) NOT NULL,
+  `Laufzeit` tinyint(2) unsigned NOT NULL,
+  `ZahlModus` enum('m', 'q', 'j'), -- m = monatlich, q = quartal, j = jaehrlich
+  `TilgRate` decimal(10,2) NOT NULL,
+  `AnsparRate` decimal(10,2) NOT NULL,
+  `KDURate` decimal(10,2) NOT NULL,
+  `RDURate` decimal(10,2) NOT NULL,
+  `ZEStatus` enum('a', 'e', 'u'), -- a = aktiv, e = beendet, u = unterbrochen 
+  `Kalk_Leihpunkte` int(11) NOT NULL,
   `Tats_Leihpunkte` int(11) DEFAULT NULL,
-  `Sicherung` varchar(200) DEFAULT NULL,
+  `Sicherung` varchar(50) DEFAULT NULL,
+  `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (KtoNr,GueltigVon),
-  FOREIGN KEY (Pgnr) REFERENCES Projektgruppe(Pgnr),
-  KEY EEKtoNr (EEKtoNr)
+  FOREIGN KEY (Pgnr) REFERENCES Projektgruppe(Pgnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1; 
 
 CREATE TABLE IF NOT EXISTS `Buergschaft` (
@@ -254,10 +254,10 @@ CREATE TABLE IF NOT EXISTS `Buergschaft` (
   `Mnr_G` int(10) unsigned NOT NULL ,
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
-  `ZENr` char(10) NOT NULL,
-  `SichAbDatum`   datetime DEFAULT NULL,
-  `SichEndDatum` datetime DEFAULT NULL,
-  `SichBetrag` decimal(10,2) DEFAULT NULL,
+  `ZENr` varchar(10) NOT NULL,
+  `SichAbDatum` date NOT NULL,
+  `SichEndDatum` date NOT NULL,
+  `SichBetrag` decimal(10,2) NOT NULL,
   `SichKurzbez` varchar(200) DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Pnr_B,Mnr_G,GueltigVon),
@@ -266,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `Buergschaft` (
 
 CREATE TABLE IF NOT EXISTS `KontenKlasse` (
   `KKL` char(1) NOT NULL ,
-  `KKLAbDatum` date NOT NULL ,
+  `KKLEinrDatum` date NOT NULL ,
   `Prozent`  decimal(5,2) unsigned NOT NULL,        
   PRIMARY KEY (KKL)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -283,8 +283,8 @@ CREATE TABLE IF NOT EXISTS `Buchung` (
   `BuchJahr` int(4) unsigned NOT NULL ,
   `KtoNr` int(5) unsigned NOT NULL ,
   `BnKreis`  char(2) NOT NULL , 
-  `BelegNr` int(10) unsigned NOT NULL ,
-  `Typ`  char(1) NOT NULL ,
+  `BelegNr` int(6) unsigned NOT NULL ,
+  `Typ`  enum('w', 'p'), -- w = Waehrungsbuchung, p = Punktebuchung
   `Belegdatum` date NOT NULL,
   `BuchDatum` date NOT NULL,
   `Buchungstext` varchar(50) NOT NULL,
@@ -294,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `Buchung` (
   `HabenKtoNr` int(5) unsigned NOT NULL,
   `WSaldoAcc` decimal(10,2) NOT NULL,
   `Punkte` int(10),
-  `PSaldoAcc` int(10) NOT NULL,  
+  `PSaldoAcc` int(10),  
   PRIMARY KEY (BuchJahr,KtoNr,BnKreis,BelegNr,Typ),
   KEY KtoNr(KtoNr),
   FOREIGN KEY (KtoNr) REFERENCES OZBKonto(KtoNr),
@@ -306,25 +306,26 @@ CREATE TABLE IF NOT EXISTS `BuchungOnline` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Mnr` int(10) unsigned NOT NULL ,
   `UeberwDatum` date NOT NULL,
-  `SollKtoNr` int(5) unsigned NOT NULL DEFAULT '0',
-  `HabenKtoNr` int(5) unsigned NOT NULL DEFAULT '0',
-  `Punkte` int(10) NOT NULL,
+  `SollKtoNr` int(5) unsigned NOT NULL,
+  `HabenKtoNr` int(5) unsigned NOT NULL,
+  `Punkte` int(10),
   `Tan` int(5) unsigned NOT NULL,
-  `BlockNr` tinyint(2) NOT NULL DEFAULT '-1',   
-  PRIMARY KEY (ID),
-  KEY Mnr (Mnr)
+  `BlockNr` int(5) NOT NULL DEFAULT '-1',   
+  PRIMARY KEY (ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE IF NOT EXISTS `Sonderberechtigung` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ID` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `Mnr` int(11) unsigned NOT NULL,
   `Email` varchar(40) NOT NULL,
   `Berechtigung` enum('IT','MV','RW','ZE','OeA') NOT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 INSERT INTO sonderberechtigung VALUES(0, 13, "tkienle@t-online.de", "IT");
 
 CREATE TABLE IF NOT EXISTS `Geschaeftsprozess` (
-  `ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ID` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `Beschreibung` varchar(200) NOT NULL,
   `IT` tinyint(1) unsigned NOT NULL,
   `MV` tinyint(1) unsigned NOT NULL,
@@ -337,8 +338,8 @@ CREATE TABLE IF NOT EXISTS `Geschaeftsprozess` (
 DROP TABLE IF EXISTS `Umlage`;
 CREATE TABLE IF NOT EXISTS `Umlage` (
   `Jahr` tinyint(4) unsigned NOT NULL,
-  `RDU` decimal(5,2) NOT NULL,
-  `KDU` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `RDU` decimal(1,2) NOT NULL,
+  `KDU` decimal(1,2) NOT NULL,
   PRIMARY KEY (`Jahr`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
