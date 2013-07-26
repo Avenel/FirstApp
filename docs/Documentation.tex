@@ -109,7 +109,7 @@ Die Aufgaben dieser Projektarbeit sind recht vielfältig. Sie lassen sich in 3 P
 % Korrekturen am ER Diagramm/Relationenmodell
 %    -    ER Diagramm soll der Implementierung entsprichen
 %    -    Darstellung aller PKs und FKs für den nicht historisierten Fall
-Die erste Phase wird von den Korrekturen am ER-Diagramm und dem dazugehörigen Relationsmodell dominiert. Das ER-Diagramm weißt noch ein paar Unstimmigkeiten auf, die im Laufe der Zeit entstanden sind. Diese gilt es zu bereinigen und die vorgenommenen Korrekturen in der Implementierung umzusetzen. Ziel ist ein ER-Diagramm, welches den nicht-historisierten Zustand darstellt. Dieses ER-Diagramm soll 1:1 in der Implementierung vorzufinden zu sein. Es soll vereinfacht dargestellt werden, lediglich die Primär- und Fremdschlüssel sollen den Entitäten als Zusatzinformationen dienen.\\
+Die erste Phase wird von den Korrekturen am ER-Diagramm und dem dazugehörigen Relationsmodell dominiert. Das ER-Diagramm weißt noch ein paar Unstimmigkeiten auf, die im Laufe der Zeit entstanden sind. Diese gilt es zu bereinigen und die vorgenommenen Korrekturen in der Implementierung umzusetzen. Ziel ist ein ER-Diagramm, dessen Entitäts-Beziehungen den nicht-historisierten Zustand darstellen. Dieses ER-Diagramm soll 1:1 in der Implementierung vorzufinden zu sein. Es soll vereinfacht dargestellt werden, lediglich die Primär- und Fremdschlüssel, die im historisierten Zustand gültig sind, sollen den Entitäten als Zusatzinformationen dienen.\\
 
 % Dokumentieren:
 %    -    DB-Migration, wie geht das?
@@ -122,18 +122,22 @@ Im Laufe der Zeit sind die verschiedensten Techniken zur Bereitstellung und Vers
 %    -    WebImport
 Zusätzlich soll in dieser Phase ein kritischer Fehler bereinigt werden. Der WebImport, welcher für den Import der Kontobewegungen verantwortlich ist, arbeitet nicht richtig. Zur Zeit ist der Datei-Upload auf dem Testsystem nicht möglich. Darüber hinaus kommt es bei einer lokalen Testumgebung zu Laufzeitfehlern. Auch die im Webfrontend angezeigte Anzahl der importierten Datensätze ist nicht korrekt.
 
-\subsection{Phase 2: Korrektur der Punkteberechnung, Word Export}
+\subsection{Phase 2: Korrektur der Darlehensverlaufsanzeige}
 \textbf {(Duedate: 23.05.2013)}\\
 % Allgemeine Korrekturen:
 %    -    Korrektur der Punkteberechnung
-% Feature:
-%    -    Dokumente (Word,PDF) generieren
+In der zweiten Phase soll das Hauptaugenmerk auf die Korrektur der Darlehensverlaufsanzeige gelegt werden. Diese Anzeige gilt als einer der Kerngeschäftsprozesse. Hier wird der Buchungsverlauf über einen, vom Benutzer festgelegten, Zeitraum dargestellt. Dabei ist es wichtig, die korrekten Punkte- und Währungs-Saldi zu berechnen. Dies funktioniert in der aktuellen Version nicht korrekt. Daher gilt es, die Fehler auszumerzen.  
 
-\subsection{Phase 3: Einrichtung Testdriven Development}
+
+\subsection{Phase 3: Einrichtung Testdriven Development, Word Export}
 \textbf {(Duedate: 13.06.2013)}\\
 % Tests
 %    -    Beschreibung der Testumgebung mit Sublime 2(?) und RSpec
 %    -    Testfälle entwickeln
+% Feature:
+%    -    Dokumente (Word,PDF) generieren
+
+Die letzte Phase steht im Zeichen der Einführung der Testgetriebenen Entwicklung (\glqq Testdriven Development\grqq). In der Vergangenheit ist die Webanwendung stark gewachsenen, es sind immer häufiger Fehler und Inkonsistenzen aufegfallen. Ziel ist es nun der Anwendung, mit Hilfe von Tests, zu einem konsistenten und möglichst fehlerlosen Zustand zu verhelfen. Auch sollen die Tests helfen, sich einen genaueren Überblick über den Zustand der Webanwendung zu verschaffen. Für eine erfolgreiche und effiziente Test-Entwicklung, ist eine gute Auswahl der Tools unabdingbar. Der Gebrauch dieser Tools soll auch festgehalten werden.
 
 
 \clearpage
@@ -145,9 +149,30 @@ Zusätzlich soll in dieser Phase ein kritischer Fehler bereinigt werden. Der Web
 
 \section{Test-Driven Development}
 \subsection{Definition}
-\subsection{Unit-Tests}
-\subsection{Functional-Tests}
-\subsection{Integration-Tests}
+\textit{Test-driven Development} (eng. für \glqq Testgetriebene Entwicklung\grqq) ist eine Entwicklungsmethode die besonders in Unternehmen, die agile Softwareentwicklungsmethoden anwenden, zu Hause ist. Der Entwicklungsprozess ist recht klein gehalten und verfolgt einen festen definierten Ablauf. Der Ablauf sieht vor, dass zunächst der Test für eine gewünschte Funktionalität geschrieben wird und im Anschluss daran wird der Programmcode geschrieben, der dafür sorgen soll das der Test korrekt abgeschlossen wird. Die nachfolgende Figur \vref{fig:tdd_process} zeigt den gewünschten Ablauf noch einmal im Detail.
+
+\begin{figure}[H]
+     \begin{center}
+          \includegraphics[width=0.65\textwidth]{\string"Media/Test-driven_development\string".png}
+     \end{center}
+     \label{fig:tdd_process}
+     \caption{Testdriven Development Prozess}
+\end{figure} 
+
+Diese Entwicklungsmethode stiftet die Programmierer dazu an, sehr schlanken (engl. \glqq dry\grqq) Programmcode zu schreiben und einen anderen Blick auf die Anwendung zu erhalten. Darüber hinaus steigert es während der Entwicklungsphase das Selbstbewusstsein des Programmieres, denn er kann mit Hilfe der Tests den Zustand der Anwendung schnell überblicken und sich sicher sein das sein Programmcode funktioniert - auch wenn der Umfang der Anwendung ansteigt. Außerdem steigert diese Entwicklungsmethode die Code-Qualität enorm und führt zu einer Steigerung der Produktivität des Entwicklerteams.\\
+
+Es gibt verschiedene Arten von Tests, die auf verschiedenen Ebenen agieren. In den nachfolgenden Abschnitten werden diese kurz dargestellt und in einen Zusammenhang gebracht. Dabei wird auf die Vorgehensweise bei einer Ruby on Rails Webanwendung Rücksicht genommen. 
+
+\subsection{Modul Tests}
+\textit{Modul Tests}, oder auch \textit{Unit Tests}, sind Tests die die einzelnen Komponenten, bzw. Entitäten einer Anwendung testen. Das Ziel dieser Tests ist es, die sowohl fachliche als auch technische korrekte Funktionalität sicherzustellen. Die Tests stellen einen Vertrag dar, die das zu testende Modul erfüllen muss. Diese Testart ist ganz nach vorn im Testprozess einzuordnen und ist die Voraussetzung dafür um mit den Controller Tests fortfahren zu können. Ein Modul ist somit die kleinst zu testendende Einheit in einer Anwendung. Ein Modul Test soll sicherstellen, dass jedes kleine Teil eines Ganzen für sich allein gesehen korrekt funktioniert, sodass das eine Anwendung auf einer soliden Basis aufbauen kann. Bei der Implementierung eines Modul Tests ist zu beachten, dass das zu testende Modul isoliert getestet wird. D.h. es dürfen keine Modulübergreifende Interaktionen implementiert werden. Außerdem testen Modul Tests gemäß des \glqq Design-by-Contract\grqq Prinzips nicht die interne Umsetzung des Moduls, sondern ihre Ausgaben bei verschiedenen Eingaben.
+
+\subsection{Controller Tests}
+Der nächste Schritt besteht darin, die Funktionen eines Controllers zu testen. Ein \glqq Controller Test\grqq ist im Grunde nicht viel anders als ein Modul Test, allerdings werden hierbei auch die Interaktionen der verschiedenen Module untereinander getestet, falls der Controller dies leisten soll. Das Ziel ist die Sicherstellung, dass bei fest definierten Benutzereingaben die gewünschte Reaktion geschieht. Auch bei einem Controller Test werden alle Funktionen isoliert getestet. In der Testhierarchie besetzt der Controller Test die mittlere Position, zwischen den Modul Tests und den nun dargestellten Feature Tests.
+
+
+\subsection{Feature Tests}
+Ein sogenannter \glqq Feature Test\grqq ist in etwa vergleichbar mit einem \glqq Integration Test\grqq. Der Feature Test überprüft das Zusammenspiel der verschiedenen Controller. Darüber hinaus werden Testszenarien festgelegt, in denen reale Benutzerinteraktionen beschrieben werden um zu sehen wie die Webanwendung auf diese reagiert. Somit können die Interaktionen eines Benutzers mit der Webanwendung vollständig nachvollzogen werden. Die Benutzerinteraktionen werden vom Testsystem emuliert und generieren Benutzereingaben, die von den Controllern verarbeitet werden. Hier zeigt sich der Unterschied zu den vorher vorgestellten Controller Tests, denn dort sind die Eingaben bereits festgelegt. Mit Hilfe der Feature Tests können somit weite Bereiche einer Webanwendung getestet werden und sind u.a. ein beliebtes Hilfsmittel um bei Bug-Reports ein Testszenario zu beschreiben.
+
 
 \section{o/ZB Darlehensvertrag}
 % Wie sieht der aus?
@@ -323,19 +348,51 @@ Einer der Fehler tritt in Zeile 318 auf. Dort werden bei einer bestimmten Kontob
 \lstinputlisting[language=Ruby, frame=single, caption=webimport\_controller.rb, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=313, lastline=321]{\string"../ozbapp/app/controllers/webimport_controller\string".rb}\label{listing:webimport_nil}
 
 
-% Punkteberechnung
-\section{Punkteberechnung}
+\subsection{Punkteberechnung}
+Beim Import der Buchungen werden zum Zeitpunkt der Übernahme noch keine Punkte berechnet. Im Zuge der Modul Tests wurden die mit dem Webimport verbundenen Module nochmals überarbeitet, somit muss die Punkteberechnung in diesem Teil der Webanwendung erneut implementiert werden.
+
+% Lösung 
+
+% Darlehensverlauf
+\section{Darlehensverlauf}
+Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zuge in den von Herrn Kienle angefertigten Tests, konnten die auftretenen Fehler analysiert und kategorisiert werden. Aufgrund des relativ unstrukturierten und unübersichtlichen Programmcodes, wurde beschlossen diese Funktionalität, basierend den Spezifikationen die sich aus den Tests und Dokumentationen ableiten ließen, neu zu implementieren.
+
+Fehlerursachen:
+
+\begin{itemize}
+     \item{Punkte wurde nicht richtig berechnet, wenn am Tage des abDatums noch Buchungen getätigt wurden}
+     \item{Die Sortierung der Buchungen stimmte nicht mit den Vorgaben überein}
+     \item{Wiederverwendete ZE Konten wurden nicht richtig berücksichtigt}
+     \item{Startsaldo wurde nicht korrekt berechnet, da die Tagesdifferenz zur letzten Währungsbuchung nicht berücksichtigt wurden}
+     \item{Die Punkte die bei der Buchung nach dem Startsaldo berechnet wurden, sind falsch da diese einfach aus der DB entnommen wurden}
+     \item{Variable KKL-Verläufe, KKL veränderte sich während des abgefragten Zeitraumes}
+\end{itemize} 
+
+% Lösung
+
 
 \clearpage
 \chapter{Testdriven Development}
+In diesem Kapitel wird die Einführung und Durchführung der Eigenschaften der Testgetriebenen Entwicklung beschrieben. Im Zuge dessen wird zunächst eine Analyse des Ist und des Soll Standes durchgeführt, bevor mit der Umsetzung und Durchführung fortgefahren wird. Das Ziel ist die Einführung und Durchführung von Tests, um den Zustand der Webanwendung darzulegen und um die aufgezeigten Mängel zu beseitigen und mit Hilfe der Tests nicht wieder eintreten zu lassen.    
+
 \section{Analyse}
 % Ist-Analyse: Es gibt keine Tests, Fehlerbehaftete Anwendung
+\subsection{Ist-Stand}
+Der Ist-Zustand der vorliegenden Webanwendung ist zum Zeitpunkt der Übernahme nur schwer überschaubar. Es gibt viele neue Funktionalitäten und Testberichte die deutliche Mängel aufzeigen. Die vorliegenden Dokumentationen beschreiben die neuen Funktionalitäten und deren Umsetzung, allerdings fehlt ein Überblick über den Gesamtzustand der Webanwendung. Es wurden nur einzelne, wichtige, Funktionalitäten getestet. Allerdings handelt es sich hierbei um Frontend Tests, die jedoch keine ausreichenden Aussagen über die fachliche und technische Korrektheit der Module und deren Beziehungen untereinander liefern können.\\
+
+Um gültige Aussagen über den Zustand dieser Webanwendung treffen zu können, sind umfangreiche Modultests der erste Schritt. Diese liefern den Zustand über die einzelnen Module, bzw. Entitäten wie z.B. Person, OZBPerson, OZBKonto usw. zurück. Auch liefern diese, Aussagen über die Korrektheit der Umsetzung des vorgegeben Datenmodells. Hier sind auf dem ersten Blick bereits einige Unstimmigkeiten aufgefallen.\\
+
 % Soll-Analyse: bugfrei durch TDD. Was müssen wir dafür testen?
-% Auswertung der bisherigen manuellen Tests
-% Implementierte Geschäftsprozesse verstehen (für die spätere Entwicklung der Tests)
-% Vorgehensweise
+\subsection{Soll-Stand} 
+
+
 \section{Implementierung}
 \subsection{RSpec}
+
+% Auswertung der bisherigen manuellen Tests
+\section{Auswertung}
+s. Powerpoint Präsentation
+
 
 \chapter{Neue Features}
 \section{Dokumenten-Export}
@@ -343,9 +400,11 @@ Einer der Fehler tritt in Zeile 318 auf. Dort werden bei einer bestimmten Kontob
 % Was muss in den Darlehensvertrag? s.Hintergrundwissen
 % Muss er noch im Nachhinein verändert werden? -> Word oder PDF?
 \subsection{Implementierung}
-\clearpage
-\section{Deployment E-Mail Benachrichtigung}
 
+\clearpage
+
+\section{Deployment E-Mail Benachrichtigung}
+s. Capify Skript: \glqq cap\_notify.rb\grqq
 
 \chapter{Ergebnis und Ausblick}
 \section{Ergebnis}

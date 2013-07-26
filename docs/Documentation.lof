@@ -1,10 +1,11 @@
 \select@language {ngerman}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {\relax 2.1}{\ignorespaces Testdriven Development Prozess}}{4}{figure.2.1}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {\relax 3.1}{\ignorespaces Der Deployment Workflow}}{7}{figure.3.1}
-\contentsline {figure}{\numberline {\relax 3.2}{\ignorespaces Putty Konfiguration}}{9}{figure.3.2}
-\contentsline {figure}{\numberline {\relax 3.3}{\ignorespaces Offene SSH Session in Putty}}{10}{figure.3.3}
+\contentsline {figure}{\numberline {\relax 3.1}{\ignorespaces Der Deployment Workflow}}{9}{figure.3.1}
+\contentsline {figure}{\numberline {\relax 3.2}{\ignorespaces Putty Konfiguration}}{11}{figure.3.2}
+\contentsline {figure}{\numberline {\relax 3.3}{\ignorespaces Offene SSH Session in Putty}}{12}{figure.3.3}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
