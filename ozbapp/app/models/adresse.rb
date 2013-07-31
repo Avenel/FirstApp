@@ -19,6 +19,11 @@ class Adresse < ActiveRecord::Base
     :Vermerk    => 'Vermerk'
   }
 
+  # Validations
+  validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
+  validates :Strasse, :presence => true
+  validates :Ort, :presence => true
+
   def self.human_attribute_name(attr, options={})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
