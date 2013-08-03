@@ -6,7 +6,7 @@ class Adresse < ActiveRecord::Base
   
 #  alias_attribute :pnr, :Pnr
    
-  attr_accessible :Pnr, :Strasse, :Nr, :PLZ, :Ort, :GueltigVon, :GueltigBis, :Vermerk, :SachPnr
+  attr_accessible :Pnr, :GueltigVon, :GueltigBis, :Strasse, :Nr, :PLZ, :Ort, :Vermerk, :SachPnr
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -21,7 +21,7 @@ class Adresse < ActiveRecord::Base
 
   # Validations
   validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
-  validates :Strasse, :presence => true
+  validates :Strasse, :presence => true  
   validates :Ort, :presence => true
 
   def self.human_attribute_name(attr, options={})

@@ -13,7 +13,9 @@ class Person < ActiveRecord::Base
   alias_attribute :email, :EMail
   alias_attribute :Email, :EMail
 
-  attr_accessible :Pnr, :Rolle, :Name, :Vorname, :Geburtsdatum, :email, :SperrKZ, :SachPnr, :GueltigVon, :GueltigBis, :AVAILABLE_ROLES
+  attr_accessible :Pnr, :GueltigVon, :GueltigBis, :Rolle, :Name, 
+                  :Vorname, :Geburtsdatum, :email, :SperrKZ, 
+                  :SachPnr, :AVAILABLE_ROLES
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -29,15 +31,21 @@ class Person < ActiveRecord::Base
   has_many :Adresse, :foreign_key => :Pnr, :dependent => :destroy
   has_many :Telefon, :foreign_key => :Pnr, :dependent => :destroy
 
+  # Validations
   validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
-  validates :Name, :presence => true
-  validates :Vorname, :presence => true
-  validates :email, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
-
+  
   # Role enum
   AVAILABLE_ROLES = %W(G M P S F)
   validates :Rolle, :presence => true, :inclusion => { :in => AVAILABLE_ROLES, :message => "%{value} is not a valid role" }
-    
+
+  validates :Name, :presence => true
+  validates :Vorname, :presence => true
+  validates :email, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
+  
+  # SperrKZ enum
+  AVAILABLE_STATES = %W(0 1)
+  validates :SperrKZ, :presence => true, :inclusion => { :in => AVAILABLE_STATES, :message => "%{value} is not a valid state (0, 1)" }  
+
   before_save do 
     unless(self.GueltigBis || self.GueltigVon)
       self.GueltigVon = Time.now      

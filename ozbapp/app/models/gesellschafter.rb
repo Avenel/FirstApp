@@ -1,9 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
-class Gesellschafter < ActiveRecord::Base
-  
+class Gesellschafter < ActiveRecord::Base  
 	self.table_name = "Gesellschafter"
-  
   self.primary_keys = :Mnr, :GueltigVon
   
   alias_attribute :mnr, :Mnr
@@ -17,7 +15,9 @@ class Gesellschafter < ActiveRecord::Base
   alias_attribute :beurkDatum, :BeurkDatum  
   alias_attribute :sachPnr, :SachPnr
   	
-  attr_accessible :Mnr, :GueltigVon, :GueltigBis, :FALfdNr, :FASteuerNr, :FAIdNr, :Wohnsitzfinanzamt, :NotarPnr, :BeurkDatum, :SachPnr
+  attr_accessible :Mnr, :GueltigVon, :GueltigBis, :FALfdNr, 
+                  :FASteuerNr, :FAIdNr, :Wohnsitzfinanzamt, 
+                  :NotarPnr, :BeurkDatum, :SachPnr
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -36,13 +36,15 @@ class Gesellschafter < ActiveRecord::Base
   def self.human_attribute_name(attr, options={})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
-    
-  validates_presence_of :FALfdNr, :FASteuerNr, :Wohnsitzfinanzamt
+  
+  # Validations
+  validates :Mnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
+  validates :FALfdNr, :presence => true
+  validates :FASteuerNr, :presence => true
+  validates :Wohnsitzfinanzamt, :presence => true
 
+  # Relations
   belongs_to :OZBPerson, :foreign_key => :Mnr
-#  has_one :sachbearbeiter, :class_name => "Person", :foreign_key => :Pnr, :primary_key => :SachPNR, :order => "GueltigBis DESC"
-#  has_one :notar, :class_name => "Person", :foreign_key => :Pnr, 
-#  		:primary_key => :NotarPnr, :order => "GueltigBis DESC"
 
   @@copy = nil
 

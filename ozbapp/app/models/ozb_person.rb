@@ -1,7 +1,6 @@
 # encoding: UTF-8
 class OZBPerson < ActiveRecord::Base
   self.table_name = "OZBPerson"
-
   self.primary_key = :Mnr
   
   alias_attribute :mnr, :Mnr
@@ -25,8 +24,7 @@ class OZBPerson < ActiveRecord::Base
   
   attr_accessible :Mnr, :UeberPnr, :PWAendDatum, 
                   :Antragsdatum, :Aufnahmedatum, :Austrittsdatum, :Schulungsdatum,
-                  :Gesperrt, :SachPnr,
-                  :password, :email, :remember_me
+                  :SachPnr, :email, :remember_me, :password
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -41,11 +39,11 @@ class OZBPerson < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
 
-  ### Validierung
-  validates_presence_of :Mnr, :UeberPnr, :Antragsdatum
-
-  validates :email, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
+  # Validations
+  validates :Mnr, :presence => true
+  validates :Antragsdatum, :presence => true
   
+  # technical attributes
   validate :password_complexity
   validate :person_exists
   validate :ueber_person_exists

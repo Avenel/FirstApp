@@ -1,7 +1,6 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Student < ActiveRecord::Base
-  
   self.table_name = "Student"
   self.primary_keys = :Mnr, :GueltigVon
 
@@ -14,7 +13,9 @@ class Student < ActiveRecord::Base
   alias_attribute :abschluss, :Abschluss 
   alias_attribute :sachPnr, :SachPnr
   
-  attr_accessible :Mnr, :AusbildBez, :InstitutName, :Studienort, :Studienbeginn, :Studienende, :Abschluss, :SachPnr, :GueltigVon   
+  attr_accessible :Mnr, :GueltigVon, :GueltigBis, :AusbildBez, 
+                  :InstitutName, :Studienort, :Studienbeginn,
+                  :Studienende, :Abschluss, :SachPnr   
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -28,11 +29,17 @@ class Student < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
     
-  validates_presence_of :AusbildBez, :InstitutName, :Studienort, :Studienbeginn, :Abschluss
+  # Validations
+  validates :Mnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
+  validates :AusbildBez, :presence => true
+  validates :InstitutName, :presence => true
+  validates :Studienort, :presence => true
+  validates :Studienbeginn, :presence => true
+  validates :Studienende, :presence => true
+  validates :Abschluss, :presence => true
   
+  # Relations
   belongs_to :OZBPerson, :foreign_key => :Mnr
-
-#  has_one :sachbearbeiter, :class_name => "Person", :foreign_key => :Pnr, :primary_key => :SachPNR, :order => "GueltigBis DESC"
 
   @@copy = nil
 

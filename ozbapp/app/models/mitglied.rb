@@ -1,14 +1,12 @@
 class Mitglied < ActiveRecord::Base
-
   self.table_name = "Mitglied"
-  
   self.primary_keys = :Mnr, :GueltigVon
   
   alias_attribute :mnr, :Mnr
   alias_attribute :rvDatum, :RVDatum
   alias_attribute :sachPnr, :SachPnr
   
-  attr_accessible :Mnr, :RVDatum, :SachPnr, :GueltigVon
+  attr_accessible :Mnr, :GueltigVon, :GueltigBis, :RVDatum, :SachPnr
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -21,6 +19,9 @@ class Mitglied < ActiveRecord::Base
   end  
 
   belongs_to :OZBPerson, :foreign_key => :Mnr
+
+  # Validations
+  validates :Mnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
 
   @@copy = nil
   

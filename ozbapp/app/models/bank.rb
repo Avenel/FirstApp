@@ -11,12 +11,11 @@ class Bank < ActiveRecord::Base
 
   # Validations
   validates :BLZ, :uniqueness => true, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
-  validates :BankName, :presence => { :message => "Bitte geben Sie einen Banknamen an." }
-  
-  validate :valid_BIC
+  validates :BankName, :presence => true
+  validates :valid_BIC, :presence => true
 
   def valid_BIC 
-    if self.BIC.nil? or self.BIC.match(/(^.{8}$)|(^.{11}$)/i) then
+    if self.BIC.match(/(^.{8}$)|(^.{11}$)/i) then
       return true
     else
       errors.add :BIC, "Bitte geben Sie eine valide BIC an."

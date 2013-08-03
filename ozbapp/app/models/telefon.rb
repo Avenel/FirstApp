@@ -1,11 +1,10 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Telefon < ActiveRecord::Base
-
   self.table_name = "Telefon"
-
   self.primary_keys = :Pnr, :LfdNr
-  attr_accessible :Pnr, :LfdNr, :TelefonNr, :TelefonTyp, :SachPnr
+  
+  attr_accessible :Pnr, :LfdNr, :TelefonNr, :TelefonTyp
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -19,7 +18,15 @@ class Telefon < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end  
 
-  #validates_presence_of :TelefonNr
-   
+  # Validations
+  validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
+  validates :LfdNr, :presence => true
+  validates :TelefonNr, :presence => true
+
+  # enum TelefonTyp
+  AVAILABLE_TYPES = %W(tel mob fax) # tel = Festnetz, mob = Mobilfunk, fax = FAX
+  validates :TelefonTyp, :presence => true, :inclusion => { :in => AVAILABLE_TYPES, :message => "%{value} is not a valid telephone type (tel, mob, fax" } 
+
+  # Relations 
   belongs_to :Person, :foreign_key => :Pnr
 end

@@ -1,24 +1,23 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Partner < ActiveRecord::Base
-
   self.table_name = "Partner"
-
   self.primary_keys = :Mnr, :GueltigVon
   
   alias_attribute :mnr, :Mnr
   alias_attribute :gueltigVon, :GueltigVon 
   alias_attribute :gueltigBis, :GueltigBis
-  alias_attribute :mnro, :MnrO
+  alias_attribute :pnrp, :Pnr_P
   alias_attribute :berechtigung, :Berechtigung 
   alias_attribute :sachPnr, :SachPnr
 
-  attr_accessible :Mnr, :GueltigVon, :GueltigBis, :MnrO, :Berechtigung, :SachPnr
+  attr_accessible :Mnr, :GueltigVon, :GueltigBis, :Pnr_P, 
+                  :Berechtigung, :SachPnr
 
   # column names
   HUMANIZED_ATTRIBUTES = {
     :Mnr        => 'Mitglied-Nr.',
-    :MnrO       => 'Partner (Mnr)',
+    :Pnr_P       => 'Partner (Mnr)',
     :SachPnr    => 'SachPnr',
     :GueltigVon => 'Gültig von',
     :GueltigBis => 'Gültig bis'
@@ -27,13 +26,19 @@ class Partner < ActiveRecord::Base
   def self.human_attribute_name(attr, options={})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
-    
-  validates_presence_of :MnrO, :Berechtigung
 
-  belongs_to :Person, :foreign_key => :Pnr
+  # Validations
+  validates :Mnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
+  validates :Pnr_P, :presence => true, :format => { :with => /^([0-9]+)$/i }
 
+  # enum Berechtigung
+  AVAILABLE_PERMISSIONS = %W(l v) # l = leseberechtigt, v = vollberechtigt 
+  validates :Berechtigung, :presence => true, :inclusion => { :in => AVAILABLE_PERMISSIONS, :message => "%{value} is not a valid permission (l, v)" }
 
-#	has_one :sachbearbeiter, :class_name => "Person", :foreign_key => :Pnr, :primary_key => :SachPNR, :order => "GueltigBis DESC"
+  # Relations
+  belongs_to :OZBPerson, :foreign_key => :Mnr
+  # Pnr vom Partner (eigentliche Mitglied)
+  belongs_to :Person, :foreign_key => :Pnr_P
 
   @@copy = nil
 
@@ -74,6 +79,6 @@ class Partner < ActiveRecord::Base
 
   # Returns nil if at the given time no person object was valid
   def Partner.get_all(mnrO, date = Time.now)
-	  Partner.where(:MnrO => mnrO).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date])
+	  Partner.where(:Pnr_P => mnrO).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date])
   end
 end

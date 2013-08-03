@@ -4,10 +4,14 @@ class Veranstaltungsart < ActiveRecord::Base
 
 	attr_accessible  :VANr,:VABezeichnung
 	
-	has_one :Veranstaltung, :foreign_key => :Vnr, :dependent => :destroy
+	# Validations
+	validates :VANr, :presence => true, :format => { :with => /^([0-9]+)$/i }
+	validates :VABezeichnung, :presence => true
+
+	# Relations 
+	has_many :Veranstaltung, :foreign_key => :Vnr
 	
 	def Veranstaltungsart.get(vanr)
-		#Veranstaltungsart.where(:id => id)
 		Veranstaltungsart.find(:all, :conditions => {:VANr => vanr})
 	end
 end
