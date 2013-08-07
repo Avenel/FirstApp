@@ -10,29 +10,6 @@ class KklVerlauf < ActiveRecord::Base
   # attributes
   attr_accessible :KtoNr, :KKLAbDatum, :KKL
   
-  # associations
-  belongs_to :ozb_konto,
-    :foreign_key => :KtoNr,
-    :class_name => "OzbKonto"
-    
-  belongs_to :kontenklasse,
-    :foreign_key => :KKL
-  
-  # validations
-  validates :KtoNr, 
-    :presence => { :format => { :with => /^[0-9]{5}$/i  },
-      :message => "Bitte geben Sie eine Kontonummer an." }, 
-    :length => { :is => 5, :message => "Die Kontonummer darf nur 5-stellig sein." }, 
-    :numericality => { :only_integer => true, 
-      :message => "Die Kontonummer darf nur Zahlen beinhalten." }
-  #validates :KtoNr, :presence => { :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
-  validates :KKL, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontenklasse an." }
-  
-  validate :kto_exists
-
-  before_create :set_ab_datum
-  after_destroy :destroy_historic_records
-  
   # column names
   HUMANIZED_ATTRIBUTES = {
     :KtoNr      => 'Konto-Nr.',
@@ -44,11 +21,17 @@ class KklVerlauf < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
   
-  def set_ab_datum
-    if (self.KKLAbDatum.blank?)
-      self.KKLAbDatum = Date.today
-    end
-  end
+  # Validations
+  validates :KtoNr, 
+    :presence => { :format => { :with => /^[0-9]{5}$/i  },
+      :message => "Bitte geben Sie eine Kontonummer an." }, 
+    :length => { :is => 5, :message => "Die Kontonummer darf nur 5-stellig sein." }, 
+    :numericality => { :only_integer => true, 
+      :message => "Die Kontonummer darf nur Zahlen beinhalten." }
+  validates :KKLAbDatum, :presence => true
+  validates :KKL, :presence => { :format => { :with => /^[A-Z]{1}$/i }, :message => "Bitte geben Sie eine gültige Kontenklasse an." }
+  
+  validate :kto_exists
 
   def kto_exists
     kto = OzbKonto.latest(self.KtoNr)
@@ -60,6 +43,25 @@ class KklVerlauf < ActiveRecord::Base
     end
   end
   
+  # Relations
+  belongs_to :ozb_konto,
+    :foreign_key => :KtoNr,
+    :class_name => "OzbKonto"
+    
+  belongs_to :kontenklasse,
+    :foreign_key => :KKL
+
+
+  # callbacks
+  before_create :set_ab_datum
+  after_destroy :destroy_historic_records
+
+  def set_ab_datum
+    if (self.KKLAbDatum.blank?)
+      self.KKLAbDatum = Date.today
+    end
+  end
+
   private
     # bound to callback
     def destroy_historic_records

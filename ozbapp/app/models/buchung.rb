@@ -9,10 +9,6 @@ class Buchung < ActiveRecord::Base
                   :BuchDatum, :Buchungstext, :Sollbetrag, :Habenbetrag, :SollKtoNr, 
                   :HabenKtoNr, :WSaldoAcc, :Punkte, :PSaldoAcc
 
-  # associations
-  belongs_to :OZBKonto, 
-    :foreign_key => :KtoNr,
-    :class_name => "OzbKonto"
   
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -33,7 +29,11 @@ class Buchung < ActiveRecord::Base
     :PSaldoAcc      => 'PSaldoAcc'
   }
 
-  # validations
+  def self.human_attribute_name(attr, options={})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+
+  # Validations
   validates :BuchJahr, 
     :presence => {:message => "Bitte geben Sie ein #{HUMANIZED_ATTRIBUTES[:BuchJahr]} an."},
     :length => { :is => 4, 
@@ -119,11 +119,7 @@ class Buchung < ActiveRecord::Base
   validate :kto_exists
   validate :kto_soll_exists
   validate :kto_haben_exists
-  
 
-  def self.human_attribute_name(attr, options={})
-    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
-  end
 
   def kto_exists
     kto = OzbKonto.latest(self.KtoNr)
@@ -154,5 +150,10 @@ class Buchung < ActiveRecord::Base
       return true
     end
   end
+
+   # Relations
+  belongs_to :OZBKonto, 
+    :foreign_key => :KtoNr,
+    :class_name => "OzbKonto"
 
 end

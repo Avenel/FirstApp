@@ -13,7 +13,52 @@ class OzbKonto < ActiveRecord::Base
   alias_attribute :saldoDatum, :SaldoDatum
   alias_attribute :sachPnr, :SachPnr
   
-  # associations
+  # attributes
+  # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
+  attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :Mnr, :KtoEinrDatum, :Waehrung, :WSaldo, 
+                  :PSaldo, :SaldoDatum, :SachPnr, :ee_konto_attributes, 
+                  :ze_konto_attributes, :kkl_verlauf_attributes
+  accepts_nested_attributes_for :ee_konto, :ze_konto, :kkl_verlauf
+  
+  # validations
+  # validate always things you will accept nested attributes for!
+  validates :KtoNr, :presence => { :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
+  validates :Mnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Mitgliedsnummer an." }  
+  validates :KtoEinrDatum, :presence => true
+  validates :Waehrung, :presence => { :format => { :with => /[a-zA-Z]{3}/ }, :message => "Bitte geben Sie eine gültige Währung an." }
+  
+  # GueltigVon und GueltigBis wird durch Model selbst gesetzt
+  
+  # Sachbearbeiter muss durch Controller gesetzt werden!
+  validates :SachPnr, :format => { :with => /[0-9]+/, :message => "Bitte geben Sie eine gültige Mitgliedsnummer für den Sachbearbeiter an." }
+  
+  validate :ozbperson_exists, :sachPnr_exists
+
+  def ozbperson_exists
+    ozbperson = OZBPerson.where("Mnr = ?", mnr)
+    if ozbperson.empty? then
+      errorString = String.new("Es konnte keine zugehörige OZBPerson zu der angegebenen Mnr (#{mnr}) gefunden werden.")
+      errors.add :mnr, errorString
+      return false
+    end
+    return true
+  end
+
+
+  # SachPnr should be an ozb member, so check if there is an OZBPerson with the given Pnr (=Mnr)
+  def sachPnr_exists
+    ozbperson = OZBPerson.where("Mnr = ?", sachPnr)
+    if ozbperson.empty? then
+      ozbpersons = OZBPerson.all()
+      
+      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{sachPnr}) gefunden werden.")
+      errors.add :mnr, errorString
+      return false
+    end
+    return true
+  end
+
+  # Relations
   belongs_to :ozb_person, :foreign_key => :Mnr
   has_many :buchung, :foreign_key => :KtoNr, :dependent => :destroy
   
@@ -76,49 +121,6 @@ class OzbKonto < ActiveRecord::Base
     :foreign_key => :Pnr, 
     :primary_key => :SachPnr, 
     :class_name => "Person"
-  
-  # attributes
-  # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
-  attr_accessible :KtoNr, :Mnr, :KtoEinrDatum, :Waehrung, :WSaldo, :PSaldo, :SaldoDatum, :GueltigBis, :SachPnr, :KtoEinrDatum, :ee_konto_attributes, :ze_konto_attributes, :kkl_verlauf_attributes
-  accepts_nested_attributes_for :ee_konto, :ze_konto, :kkl_verlauf
-  
-  # validations
-  # validate always things you will accept nested attributes for!
-  
-  validates :KtoNr, :presence => { :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
-  validates :Mnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Mitgliedsnummer an." }  
-  validates :Waehrung, :presence => { :format => { :with => /[A-Z]+/ }, :message => "Bitte geben Sie eine gültige Währung an." }
-  
-  # GueltigVon und GueltigBis wird durch Model selbst gesetzt
-  
-  # Sachbearbeiter muss durch Controller gesetzt werden!
-  validates :SachPnr, :format => { :with => /[0-9]+/, :message => "Bitte geben Sie eine gültige Mitgliedsnummer für den Sachbearbeiter an." }
-  
-  validate :ozbperson_exists, :sachPnr_exists
-
-  def ozbperson_exists
-    ozbperson = OZBPerson.where("Mnr = ?", mnr)
-    if ozbperson.empty? then
-      errorString = String.new("Es konnte keine zugehörige OZBPerson zu der angegebenen Mnr (#{mnr}) gefunden werden.")
-      errors.add :mnr, errorString
-      return false
-    end
-    return true
-  end
-
-
-  # SachPnr should be an ozb member, so check if there is an OZBPerson with the given Pnr (=Mnr)
-  def sachPnr_exists
-    ozbperson = OZBPerson.where("Mnr = ?", sachPnr)
-    if ozbperson.empty? then
-      ozbpersons = OZBPerson.all()
-      
-      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{sachPnr}) gefunden werden.")
-      errors.add :mnr, errorString
-      return false
-    end
-    return true
-  end
 
 
   # callbacks

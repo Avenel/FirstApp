@@ -9,69 +9,37 @@ class EeKonto < ActiveRecord::Base
   alias_attribute :kreditlimit, :Kreditlimit
   alias_attribute :sachPnr, :SachPnr
   
-  # associations
-  belongs_to :ozb_konto,
-    :primary_key => :KtoNr, 
-    :foreign_key => :KtoNr, 
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
-
-  belongs_to :Bankverbindung,
-    :primary_key => :ID,
-    :foreign_key => :BankID, # associated column in ee_konto table!
-    :class_name => "Bankverbindung", 
-    :autosave => true, 
-    #:dependent => :destroy, # does not work --> manually done via :after_destroy callback, see below!
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-    
-  has_one :ze_konto, 
-    :foreign_key => :KtoNr,
-    :dependent => :destroy, # must destroy the ze_konto, because it makes no sense that ze exists any longer
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
-
-  belongs_to :sachbearbeiter, 
-    :class_name => "Person", 
-    :foreign_key => :Pnr, 
-    :primary_key => :SachPnr, 
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
-
   # attributes
   # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
   accepts_nested_attributes_for :Bankverbindung
-  attr_accessible :KtoNr, :BankId, :Kreditlimit, :GueltigVon, :GueltigBis, :Bankverbindung_attributes, :sachbearbeiter_attributes, :SachPnr
+  attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :BankId, :Kreditlimit,  
+                  :SachPnr, :Bankverbindung_attributes, :sachbearbeiter_attributes
   
+
+   # column names
+  HUMANIZED_ATTRIBUTES = {
+    :KtoNr        => 'EE Konto-Nr.',
+    :BankID       => 'Bank ID',
+    :Kreditlimit  => 'Kreditlimit',
+    :SachPnr      => 'Sachbearbeiter',
+    :GueltigVon   => 'Gültig von',
+    :GueltigBis   => 'Gültig bis'
+  }
+
+  def self.human_attribute_name(attr, options={})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+
+
   # Validations
   # validate always things you will accept nested attributes for!
   # do never validate things twice, this is silly for auto-error
   
-  validates :KtoNr, 
-    :presence => {
-      :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." 
-    }
+  validates :KtoNr, :presence => true, :format => { :with => /^[0-9]{5}$/i, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
+  validates :Kreditlimit, :presence => true, :format => { :with => /^[0-9]+$/, :message => "Bitte geben Sie ein gültiges Kreditlimit ein." }
   
-  
-  validates :Kreditlimit,
-    :presence => {
-      :format => { :with => /^[0-9]+$/ }, 
-      :message => "Bitte geben Sie ein gültiges Kreditlimit ein." 
-    }
-
-  validate :kto_exists
   validate :bankId_exists
+  validate :kto_exists
   validate :sachPnr_exists
 
   def kto_exists
@@ -113,28 +81,52 @@ class EeKonto < ActiveRecord::Base
   # GueltigVon und GueltigBis wird durch Model selbst gesetzt
   # Sachbearbeiter muss durch Controller oder abhängiges Model gesetzt werden!
   
+  # Relations
+  belongs_to :ozb_konto,
+    :primary_key => :KtoNr, 
+    :foreign_key => :KtoNr, 
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
+                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
+                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
+                                                                # not the corresponding record for that association.
+                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
+                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+
+  belongs_to :Bankverbindung,
+    :primary_key => :ID,
+    :foreign_key => :BankID, # associated column in ee_konto table!
+    :class_name => "Bankverbindung", 
+    :autosave => true, 
+    #:dependent => :destroy, # does not work --> manually done via :after_destroy callback, see below!
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
+    
+  has_one :ze_konto, 
+    :foreign_key => :KtoNr,
+    :dependent => :destroy, # must destroy the ze_konto, because it makes no sense that ze exists any longer
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
+                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
+                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
+                                                                # not the corresponding record for that association.
+                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
+                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+
+  belongs_to :sachbearbeiter, 
+    :class_name => "Person", 
+    :foreign_key => :Pnr, 
+    :primary_key => :SachPnr, 
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
+                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
+                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
+                                                                # not the corresponding record for that association.
+                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
+                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+
+
   # callbacks
   before_create :set_valid_time
   before_update :set_new_valid_time
   after_destroy :destroy_historic_records, :destroy_ozb_konto_if_this_is_last_konto, :destroy_bankverbindung
   
-  # column names
-  HUMANIZED_ATTRIBUTES = {
-    :KtoNr        => 'EE Konto-Nr.',
-    :BankID       => 'Bank ID',
-    :Kreditlimit  => 'Kreditlimit',
-    :SachPnr      => 'Sachbearbeiter',
-    :GueltigVon   => 'Gültig von',
-    :GueltigBis   => 'Gültig bis'
-  }
-
-  def self.human_attribute_name(attr, options={})
-    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
-  end
-  
-  # def valid_one_bankverbindung_given?
-  #   errors.add(:Bankverbindung, "Keine Bankverbindung angegeben.") if self.Bankverbindung.nil?
-  # end
   
   # bound to callback
   def set_valid_time

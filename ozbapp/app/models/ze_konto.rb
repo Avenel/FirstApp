@@ -14,71 +14,72 @@ class ZeKonto < ActiveRecord::Base
   alias_attribute :laufzeit, :Laufzeit
   alias_attribute :zahlModus, :ZahlModus
   alias_attribute :tilgRate, :TilgRate
-  alias_attribute :ansparRate, :AnsparRate
+
+  # früher: ansparRate
+  alias_attribute :nachsparRate, :NachsparRate
+  
   alias_attribute :kduRate, :KDURate
   alias_attribute :rduRate, :RDURate
   alias_attribute :zeStatus, :ZEStatus 
   alias_attribute :sachPnr, :SachPnr
   
   # attributes
-  attr_accessible :KtoNr, :EEKtoNr, :Pgnr, :ZENr, :ZEAbDatum, :ZEEndDatum, :ZEBetrag, 
-                  :Laufzeit, :ZahlModus, :TilgRate, :AnsparRate, :KDURate, :RDURate, :ZEStatus, :GueltigVon, :GueltigBis, :SachPnr, :Kalk_Leihpunkte, :Tats_Leihpunkte
+  attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :Pgnr, :EEKtoNr, :ZENr, :ZEAbDatum,
+                  :ZEEndDatum, :ZEBetrag, :Laufzeit, :ZahlModus, :TilgRate, :NachsparRate, 
+                  :KDURate, :RDURate, :ZEStatus, :Kalk_Leihpunkte, :Tats_Leihpunkte, 
+                  :Sicherung, :SachPnr
   
-  # associations
-  belongs_to :ozb_konto,
-    :primary_key => :KtoNr,
-    :foreign_key => :KtoNr,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
 
-  belongs_to :ee_konto,
-    :foreign_key => :EEKtoNr,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+  # column names
+  HUMANIZED_ATTRIBUTES = {
+    :GueltigVon => 'Gültig von',
+    :GueltigBis => 'Gültig bis',
+    :KtoNr      => 'ZE Konto-Nr.',
+    :EEKtoNr    => 'EE Konto-Nr.',
+    :Pgnr       => 'Projekt',
+    :ZENr       => 'ZE-Nr.',
+    :ZEAbDatum  => 'Gültig ab',
+    :ZEEndDatum => 'Gültig bis',
+    :ZEBetrag   => 'ZE-Betrag',
+    :Laufzeit   => 'Laufzeit',
+    :ZahlModus  => 'Zahlungsmodus',
+    :TilgRate   => 'Tilgungsrate',
+    :NachsparRate => 'Nachspar Rate',
+    :KDURate    => 'KDU',
+    :RDURate    => 'RDU',
+    :ZEStatus   => 'Status',
+    :SachPnr    => 'Sachbearbeiter-Nr.'
+  }
 
-  has_many :buergschaft,
-    :foreign_key => :KtoNr # no one or many
+  def self.human_attribute_name(attr, options={})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
 
-  belongs_to :projektgruppe,
-    :inverse_of => :ZEKonto,
-    :foreign_key => :Pgnr
-
-  has_one :sachbearbeiter,
-    :class_name => "Person",
-    :foreign_key => :Pnr,
-    :primary_key => :SachPnr,
-    #:order => "GueltigBis DESC", # ????????????????????????????????????????????
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
-
-  # validations
+  # Validations
   # validate always things you will accept nested attributes for!
   validates :KtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Kontonummer an." }
-  validates :EEKtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige EE-Kontonummer an." }
   validates :Pgnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Projektgruppe an." }
+  validates :EEKtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige EE-Kontonummer an." }
   validates :ZENr, :presence => { :format => { :with => /^[A-Z]([0-9]){4}$/ }, :message => "Bitte geben Sie eine gültige ZE-Nr. an." }
+  validates :ZEAbDatum, :presence => true
+  validates :ZEEndDatum, :presence => true
+  validates :ZEBetrag, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie einen gültigen ZEBetrag an." } 
   validates :Laufzeit, :presence => { :format => { :with => /[1-9]+/ }, :message => "Bitte geben Sie eine gültige Laufzeit an." }
+  
+  # enum ZahlModus
+  AVAILABLE_ZAHLMODI = %W(m q j) # m = monatlich, q = quartal, j = jaehrlich
+  validates :ZahlModus, :presence => true, :inclusion => { :in => AVAILABLE_ZAHLMODI, :message => "%{value} is not a valid Zalhmodus (m, q, j)" }
+
+  validates :NachsparRate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
   validates :TilgRate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
-  validates :AnsparRate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
-  validates :RDURate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
   validates :KDURate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
+  validates :RDURate, :presence => true, :numericality =>{:greater_than_or_equal_to => 0.01 }
+  
+  # enum ZEStatus
+  AVAILABLE_ZESTATUS = %W(a e u) # a = aktiv, e = beendet, u = unterbrochen 
+  validates :ZahlModus, :presence => true, :inclusion => { :in => AVAILABLE_ZAHLMODI, :message => "%{value} is not a valid ZEStatus (a, e, u)" }
 
-  # A= Aktiv, E = Beendet
-  validates :zeStatus, :presence => true, :format => {:with => /^(A|E)$/, :message => "Bitte geben Sie einen gültigen ZEStatus an."}
-
-  # validates: ZahlModus, moegliche Werte: M = monatlich, Q = quartalsweise, J = jährlich, O = offen
+  validates :Kalk_Leihpunkte, :presence => true, :format => {:with => /^[\d]+$/i}
 
   validate :kto_exists
   validate :eeKonto_exists
@@ -119,36 +120,48 @@ class ZeKonto < ActiveRecord::Base
     return true
   end
 
-  # callbacks
+  # Relations
+  belongs_to :ozb_konto,
+    :primary_key => :KtoNr,
+    :foreign_key => :KtoNr,
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
+                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
+                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
+                                                                # not the corresponding record for that association.
+                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
+                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+
+  belongs_to :ee_konto,
+    :foreign_key => :EEKtoNr,
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
+                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
+                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
+                                                                # not the corresponding record for that association.
+                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
+                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+
+  has_many :buergschaft,
+    :foreign_key => :KtoNr # no one or many
+
+  belongs_to :projektgruppe,
+    :inverse_of => :ZEKonto,
+    :foreign_key => :Pgnr
+
+  has_one :sachbearbeiter,
+    :class_name => "Person",
+    :foreign_key => :Pnr,
+    :primary_key => :SachPnr,
+    #:order => "GueltigBis DESC", # ????????????????????????????????????????????
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
+                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
+                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
+                                                                # not the corresponding record for that association.
+                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
+                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+ # callbacks
   before_create :set_valid_time
   before_update :set_new_valid_time
   after_destroy :destroy_historic_records, :destroy_ozb_konto_if_this_is_last_konto
-
-
-  # column names
-  HUMANIZED_ATTRIBUTES = {
-    :GueltigVon => 'Gültig von',
-    :GueltigBis => 'Gültig bis',
-    :KtoNr      => 'ZE Konto-Nr.',
-    :EEKtoNr    => 'EE Konto-Nr.',
-    :Pgnr       => 'Projekt',
-    :ZENr       => 'ZE-Nr.',
-    :ZEAbDatum  => 'Gültig ab',
-    :ZEEndDatum => 'Gültig bis',
-    :ZEBetrag   => 'ZE-Betrag',
-    :Laufzeit   => 'Laufzeit',
-    :ZahlModus  => 'Zahlungsmodus',
-    :TilgRate   => 'Tilgungsrate',
-    :AnsparRate => 'Ansparrate',
-    :KDURate    => 'KDU',
-    :RDURate    => 'RDU',
-    :ZEStatus   => 'Status',
-    :SachPnr    => 'Sachbearbeiter-Nr.'
-  }
-
-  def self.human_attribute_name(attr, options={})
-    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
-  end
   
   def set_valid_time
     unless(self.GueltigBis || self.GueltigVon)

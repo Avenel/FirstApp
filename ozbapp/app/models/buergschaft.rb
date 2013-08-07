@@ -4,33 +4,34 @@ class Buergschaft < ActiveRecord::Base
   self.primary_keys = :Pnr_B, :Mnr_G, :GueltigVon
   
   # attributes
-  attr_accessible :Pnr_B, :Mnr_G, :GueltigVon, :GueltigBis, :ZENr, :SichAbDatum, :SichEndDatum, :SichBetrag, :SichKurzbez, :SachPnr
+  attr_accessible :Pnr_B, :Mnr_G, :GueltigVon, :GueltigBis, :ZENr, :SichAbDatum, 
+                  :SichEndDatum, :SichBetrag, :SichKurzbez, :SachPnr
+  
 
-  # associations
-  belongs_to :person,
-    :foreign_key => :Pnr_B
-  
-  belongs_to :OZBPerson,
-    :foreign_key => :Mnr_G
-    
-  belongs_to :ZEKonto,
-    :foreign_key => :ZENr
-  
-  has_one :sachbearbeiter,
-    :class_name => "Person",
-    :foreign_key => :Pnr,
-    :primary_key => :SachPNR,
-    :order => "GueltigBis DESC"
-  
+  # column names
+  HUMANIZED_ATTRIBUTES = {
+    :Pnr_B        => 'Bürgschafter',
+    :Mnr_G        => 'Gläubiger',
+    :ZENr        => 'ZE-Nr.',
+    :SichAbDatum  => 'Beginn',
+    :SichEndDatum => 'Ende',
+    :SichBetrag   => 'Betrag',
+    :SichKurzbez  => 'Kurzbezeichnung'
+  }
+
+  def self.human_attribute_name(attr, options={})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+
+
   # validations
   validates :Pnr_B, :presence => true
   validates :Mnr_G, :presence => true
+  validates :ZENr, :presence => true
   validates :SichAbDatum, :presence => true
   validates :SichEndDatum, :presence => true
   validates :SichBetrag, :presence => true,
                        :numericality =>{:greater_than_or_equal_to => 0.01 }
-  validates :ZENr, :presence => true
-  
   validate :zeKonto_exists
   validate :sachPnr_exists
   validate :valid_sichZeitraum
@@ -92,25 +93,26 @@ class Buergschaft < ActiveRecord::Base
   # GueltigVon und GueltigBis wird durch Model selbst gesetzt
   # Sachbearbeiter muss durch Controller oder abhängiges Model gesetzt werden!
   
+  # Relations
+  belongs_to :person,
+    :foreign_key => :Pnr_B
+  
+  belongs_to :OZBPerson,
+    :foreign_key => :Mnr_G
+    
+  belongs_to :ZEKonto,
+    :foreign_key => :ZENr
+  
+  has_one :sachbearbeiter,
+    :class_name => "Person",
+    :foreign_key => :Pnr,
+    :primary_key => :SachPNR,
+    :order => "GueltigBis DESC"
+
   # callbacks
   before_create :set_valid_time
   before_update :set_new_valid_time
   after_destroy :destroy_historic_records
-
-  # column names
-  HUMANIZED_ATTRIBUTES = {
-    :Pnr_B        => 'Bürgschafter',
-    :Mnr_G        => 'Gläubiger',
-    :ZENr        => 'ZE-Nr.',
-    :SichAbDatum  => 'Beginn',
-    :SichEndDatum => 'Ende',
-    :SichBetrag   => 'Betrag',
-    :SichKurzbez  => 'Kurzbezeichnung'
-  }
-
-  def self.human_attribute_name(attr, options={})
-    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
-  end
   
   def validate(bName, gName)!    
     errors = ActiveModel::Errors.new(self)
