@@ -5,24 +5,6 @@ class Bank < ActiveRecord::Base
   
   attr_accessible :BLZ, :BIC, :BankName
 
-  has_many :Bankverbindung,
-    :foreign_key => :BLZ,
-    :dependent => :destroy
-
-  # Validations
-  validates :BLZ, :uniqueness => true, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
-  validates :BankName, :presence => true
-  validates :valid_BIC, :presence => true
-
-  def valid_BIC 
-    if self.BIC.match(/(^.{8}$)|(^.{11}$)/i) then
-      return true
-    else
-      errors.add :BIC, "Bitte geben Sie eine valide BIC an."
-      return false
-    end
-  end
-  
   # column names
   HUMANIZED_ATTRIBUTES = {
     :BLZ      => 'BLZ',
@@ -33,6 +15,16 @@ class Bank < ActiveRecord::Base
   def self.human_attribute_name(attr, options={})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
+
+  # Validations
+  validates :BLZ, :uniqueness => true, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
+  validates :BankName, :presence => true
+  validates :BIC, :uniqueness => true, :presence => true, :format => { :with => /(^.{8}$)|(^.{11}$)/i, :message => "Bitte geben Sie eine valide BIC an." }
+
+  # Relations
+  has_many :Bankverbindung,
+    :foreign_key => :BLZ,
+    :dependent => :destroy
   
   # is called from Bankverbindung when it's deleted and
   # checks if the last Bankverbindung was deleted that corresponds to a

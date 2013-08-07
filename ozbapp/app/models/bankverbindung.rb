@@ -9,8 +9,46 @@ class Bankverbindung < ActiveRecord::Base
   alias_attribute :bankKtoNr, :BankKtoNr
   alias_attribute :blz, :BLZ
   alias_attribute :iban, :IBAN
+
+  # attributes
+  # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
+  attr_accessible :ID, :GueltigVon, :GueltigBis, :Pnr, :BankKtoNr, :IBAN, :BLZ,  
+                  :SachPnr, :Bank_attributes
+  accepts_nested_attributes_for :Bank, :reject_if => :bank_already_exists
   
-  # associations
+  # column names
+  HUMANIZED_ATTRIBUTES = {
+    :ID         => 'Bank ID',
+    :GueltigVon => 'Gültig von',
+    :GueltigBis => 'Gültig bis',
+    :Pnr        => 'Personen-Nr.',
+    :BankKtoNr  => 'Bank Konto-Nr.',
+    :IBAN       => 'IBAN',
+    :BLZ        => 'BLZ'
+  }
+
+  def self.human_attribute_name(attr, options={})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+  
+
+  # Validations
+  validates :Pnr, :presence => { :message => "Bitte geben Sie die Mitglieder-Nummer der Person an." }
+  validates :BankKtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Bankkonto-Nummer an (nur Zahlen 0-9)." }
+  validates :IBAN, :presence => true, :format => { :with => /^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
+  validates :BLZ, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
+
+  validate :valid_id
+  validate :bank_exists
+  validate :pnr_exists
+  
+  # callbacks
+  #after_commit :set_id_for_eekonto
+  before_create :set_valid_time, :set_valid_id
+  before_update :set_new_valid_time
+  after_destroy :destroy_historic_records, :destroy_bank_if_this_is_last_bankverbindung
+  
+   # Relations
   belongs_to :person,
     :foreign_key => :Pnr,
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
@@ -33,42 +71,8 @@ class Bankverbindung < ActiveRecord::Base
   belongs_to :Bank,
     :foreign_key => :BLZ,
     :autosave => true
-  
-  # attributes
-  # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
-  attr_accessible :ID, :Pnr, :BankKtoNr, :BLZ, :IBAN, :GueltigVon, :GueltigBis, :Bank_attributes
-  accepts_nested_attributes_for :Bank, :reject_if => :bank_already_exists
-  
-  # validations
-  validates :BankKtoNr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Bankkonto-Nummer an (nur Zahlen 0-9)." }
-  validates :BLZ, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
-  validates :Pnr, :presence => { :message => "Bitte geben Sie die Mitglieder-Nummer der Person an." }
 
-  validate :valid_id
-  validate :bank_exists
-  validate :pnr_exists
-  
-  # callbacks
-  #after_commit :set_id_for_eekonto
-  before_create :set_valid_time, :set_valid_id
-  before_update :set_new_valid_time
-  after_destroy :destroy_historic_records, :destroy_bank_if_this_is_last_bankverbindung
-  
-  # column names
-  HUMANIZED_ATTRIBUTES = {
-    :ID         => 'Bank ID',
-    :GueltigVon => 'Gültig von',
-    :GueltigBis => 'Gültig bis',
-    :Pnr        => 'Personen-Nr.',
-    :BankKtoNr  => 'Bank Konto-Nr.',
-    :IBAN       => 'IBAN',
-    :BLZ        => 'BLZ'
-  }
 
-  def self.human_attribute_name(attr, options={})
-    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
-  end
-  
   def bank_exists 
     if Bank.where("BLZ = ?", self.blz).empty? then
       return false
