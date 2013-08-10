@@ -268,6 +268,13 @@ ActiveRecord::Schema.define(:version => 20130810112346) do
     t.string  "TelefonTyp", :limit => 0
   end
 
+  create_table "temp", :primary_key => "KtoNr", :force => true do |t|
+    t.decimal "Kreditlimit",               :precision => 5, :scale => 2
+    t.string  "BankKtoNr",   :limit => 12
+    t.integer "BLZ"
+    t.string  "BankName",    :limit => 30
+  end
+
   create_table "umlage", :primary_key => "Jahr", :force => true do |t|
     t.decimal "RDU", :precision => 3, :scale => 2, :null => false
     t.decimal "KDU", :precision => 3, :scale => 2, :null => false

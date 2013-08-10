@@ -18,7 +18,6 @@ class OzbKonto < ActiveRecord::Base
   attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :Mnr, :KtoEinrDatum, :Waehrung, :WSaldo, 
                   :PSaldo, :SaldoDatum, :SachPnr, :ee_konto_attributes, 
                   :ze_konto_attributes, :kkl_verlauf_attributes
-  accepts_nested_attributes_for :ee_konto, :ze_konto, :kkl_verlauf
   
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -141,6 +140,8 @@ class OzbKonto < ActiveRecord::Base
     :primary_key => :SachPnr, 
     :class_name => "Person"
 
+
+  accepts_nested_attributes_for :ee_konto, :ze_konto, :kkl_verlauf
 
   # callbacks
   before_save :set_assoc_attributes, :set_wsaldo_psaldo_to_zero, :set_saldo_datum

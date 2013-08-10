@@ -14,7 +14,6 @@ class Bankverbindung < ActiveRecord::Base
   # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
   attr_accessible :ID, :GueltigVon, :GueltigBis, :Pnr, :BankKtoNr, :IBAN, :BLZ,  
                   :SachPnr, :Bank_attributes
-  accepts_nested_attributes_for :Bank, :reject_if => :bank_already_exists
   
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -71,6 +70,8 @@ class Bankverbindung < ActiveRecord::Base
   belongs_to :Bank,
     :foreign_key => :BLZ,
     :autosave => true
+
+  accepts_nested_attributes_for :Bank, :reject_if => :bank_already_exists
 
 
   def bank_exists 

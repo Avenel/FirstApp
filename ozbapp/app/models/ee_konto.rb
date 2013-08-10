@@ -11,7 +11,6 @@ class EeKonto < ActiveRecord::Base
   
   # attributes
   # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
-  accepts_nested_attributes_for :Bankverbindung
   attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :BankId, :Kreditlimit,  
                   :SachPnr, :Bankverbindung_attributes, :sachbearbeiter_attributes
   
@@ -121,6 +120,7 @@ class EeKonto < ActiveRecord::Base
                                                                 # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
                                                                 # record is updated, otherwise it would corrupt the underlying logic model.
 
+  accepts_nested_attributes_for :Bankverbindung
 
   # callbacks
   before_create :set_valid_time

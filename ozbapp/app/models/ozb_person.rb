@@ -88,5 +88,5 @@ class OZBPerson < ActiveRecord::Base
   #       with the db schema, but never the less exist. If necessesary
   #       there are ways to implement them, like in the OZBKonto model.
   has_many :BuchungOnline, :foreign_key => :Mnr
-  has_one :Sonderberechtigung, :foreign_key => :Mnr
+  has_many :Sonderberechtigung, :foreign_key => :Mnr
 end

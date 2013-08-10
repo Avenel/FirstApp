@@ -103,7 +103,7 @@ public class Migratior {
 				String queryInsertTelefon = "INSERT INTO telefon (Pnr,LfdNr,TelefonNr,TelefonTyp) VALUES (?,?,?,?);";
 				String queryInsertTanliste = "INSERT INTO tanliste (Mnr,ListNr,Status,TanListDatum) VALUES (?,?,?,?);";
 				String queryInsertTan = "INSERT INTO tan (Mnr,ListNr,TanNr,Tan,VerwendetAm,Status) VALUES (?,?,?,?,?,?);";
-				String queryInsertBankverbindung = "INSERT INTO bankverbindung (Pnr,BankKtoNr,BLZ,GueltigVon,GueltigBis) VALUES (?,?,?,?,?);";
+				String queryInsertBankverbindung = "INSERT INTO bankverbindung (Pnr,BankKtoNr,BLZ,GueltigVon,GueltigBis,IBAN) VALUES (?,?,?,?,?,?);";
 				String queryInsertBank = "INSERT INTO bank (BLZ,BankName) VALUES (?,?);";
 				
 				String queryInsertProjektgruppe = "INSERT INTO projektgruppe (Pgnr,ProjGruppenBez) VALUES (?,?);";
@@ -594,13 +594,16 @@ public class Migratior {
 					queryInsertStmt.setTimestamp(4, new java.sql.Timestamp(calendar.getTime().getTime() -1 * 24 * 60 * 60 * 1000));
 					queryInsertStmt.setTimestamp(5, endOfTime);
 
+					// TODO Es gibt noch keine IBAN, also dummy wert
+					queryInsertStmt.setString(6, "000");
+					
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
-//						pw.println("Bankverbindung : " + " MNR: "
-//								+ rs.getInt("MNR") + " " + e.getMessage());
-//						pw.println("SQL-Query: " + queryInsertStmt.toString());
-//						pw.println("");
+						pw.println("Bankverbindung : " + " MNR: "
+								+ rs.getInt("MNR") + " " + e.getMessage());
+						pw.println("SQL-Query: " + queryInsertStmt.toString());
+						pw.println("");
 					}
 
 				}
@@ -734,12 +737,13 @@ public class Migratior {
 					queryInsertStmt.setString(3, rs.getString("BANKKONTONR"));
 
 					try {
-						
-						queryInsertStmt.setInt(4,Integer.parseInt( rs.getString("BLZ").replaceAll(" ","")));
+						queryInsertStmt.setInt(4, Integer.parseInt( rs.getString("BLZ").replaceAll(" ","")));
 					} catch (Exception e) {
 						queryInsertStmt.setNull(4, java.sql.Types.INTEGER);
 					}
+					
 					queryInsertStmt.setString(5, rs.getString("BANK"));
+					
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -764,7 +768,7 @@ public class Migratior {
 
 					queryInsertStmt.setInt(1, rs.getInt("KtoNr"));
 					if (rs.getInt("ID") == 0) {
-						// TODO Falls keine Bank gefunden wurde, setze ich hier erstmal -1 ein.
+						// TODO Falls keine Bank gefunden wurde, setze ich hier erstmal 0 ein.
 						queryInsertStmt.setInt(2, 0);
 					} else {
 						queryInsertStmt.setInt(2, rs.getInt("ID"));
@@ -990,7 +994,7 @@ public class Migratior {
 				}
 				stOzbTest.executeUpdate("INSERT INTO `geschaeftsprozess` (`ID`, `Beschreibung`, `IT`, `MV`, `RW`, `ZE`, `OeA`) VALUES (1, 'Alle Mitglieder anzeigen', 1, 1, 1, 1, 1),(2, 'Details einer Person anzeigen', 1, 1, 1, 1, 1),(3, 'Mitglieder hinzufuegen', 1, 1, 0, 0, 0),(5, 'Mitglieder loeschen', 1, 1, 0, 0, 0),(6, 'Rolle eines Mitglieds zum Gesellschafter aendern', 1, 1, 0, 0, 0),(7, 'Mitglied Administratorrechte hinzufuegen', 1, 0, 0, 0, 0),(8, 'Kontenklassen hinzufuegen', 1, 0, 1, 0, 0),(9, 'Kontenklassen bearbeiten', 1, 0, 0, 0, 0),(11, 'Alle Konten anzeigen', 1, 1, 1, 1, 1),(12, 'Details eines Kontos anzeigen', 1, 1, 1, 1, 1),(13, 'Einlage/Entnahmekonten hinzufuegen', 1, 0, 1, 0, 0),(14, 'Einlage/Entnahmekonten bearbeiten', 1, 0, 1, 0, 0),(15, 'Zusatzentnahmekonten hinzufuegen', 1, 0, 1, 0, 0),(17, 'Buergschaften anzeigen', 1, 1, 1, 1, 1),(18, 'Buergschaften hinzufuegen', 1, 0, 0, 1, 0),(19, 'Buergschaften bearbeiten', 1, 0, 0, 1, 0),(20, 'Veranstaltung einsehen/bearbeiten',1,1,0,0,1);");
 				/**Loschen der Tabelle temp	 */
-				stOzbTest.executeUpdate("drop table temp");
+				//stOzbTest.executeUpdate("drop table temp");
 
 				conOzbTest.commit();
 
