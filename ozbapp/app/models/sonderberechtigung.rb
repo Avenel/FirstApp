@@ -25,7 +25,7 @@ class Sonderberechtigung < ActiveRecord::Base
 
    # enum Berechtigung
   AVAILABLE_PERMISSIONS = %W(IT MV RW ZE OeA) 
-  validates :Berechtigung, :presence => true, :inclusion => { :in => AVAILABLE_PERMISSIONSIODS, :message => "%{value} is not a valid permission (IT, MV, RW, ZE, OeA)" }  
+  validates :Berechtigung, :presence => true, :inclusion => { :in => AVAILABLE_PERMISSIONS, :message => "%{value} is not a valid permission (IT, MV, RW, ZE, OeA)" }  
 
   # Relations
   belongs_to :OZBPerson, :foreign_key => :Mnr

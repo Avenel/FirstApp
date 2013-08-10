@@ -7,3 +7,7 @@ echo "drop database ozb_test" | mysql -u root -p$PASS
 echo "create database ozb_test" | mysql -u root -p$PASS
 java -jar OZBMigration.jar -i ./create_tables.txt -u root -p $PASS
 mysqldump -u root -p$PASS ozb_test > dump.sql
+
+echo "add versions table"
+cd ../ozbapp/
+bundle exec rake db:migrate

@@ -89,14 +89,4 @@ class OZBPerson < ActiveRecord::Base
   #       there are ways to implement them, like in the OZBKonto model.
   has_many :BuchungOnline, :foreign_key => :Mnr
   has_one :Sonderberechtigung, :foreign_key => :Mnr
-
-  # this differs from the db schema!
-  has_many :OzbKonto, 
-    :foreign_key => :Mnr,
-    :primary_key => :KtoNr, 
-    :dependent => :destroy, 
-    :class_name => "OzbKonto",
-    :autosave => true,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
-
 end

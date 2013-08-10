@@ -32,7 +32,6 @@ class OzbKonto < ActiveRecord::Base
     :PSaldo         => 'Punktesaldo',
     :SaldoDatum     => 'Saldo Datum',
     :SachPnr        => 'Sachbearbeiter-Nr.',
-    
     :ee_konten      => 'EE-Konto (Bankverbindung)'
   }
 
