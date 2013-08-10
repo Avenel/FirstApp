@@ -13,8 +13,7 @@
 
 ActiveRecord::Schema.define(:version => 20130810112346) do
 
-  create_table "adresse", :id => false, :force => true do |t|
-    t.integer  "Pnr",                      :null => false
+  create_table "adresse", :primary_key => "Pnr", :force => true do |t|
     t.datetime "GueltigVon",               :null => false
     t.datetime "GueltigBis",               :null => false
     t.string   "Strasse",    :limit => 50, :null => false

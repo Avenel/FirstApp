@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `Adresse` (
   `Ort` varchar(20) NOT NULL,
   `Vermerk` varchar(30) DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (Pnr,GueltigVon)
+  PRIMARY KEY (Pnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `OZBPerson` (

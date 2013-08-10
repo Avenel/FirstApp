@@ -2,7 +2,7 @@
 # encoding: utf-8
 class Adresse < ActiveRecord::Base
 	self.table_name = "Adresse"
-  self.primary_keys = :Pnr, :GueltigVon
+  self.primary_keys = :Pnr
      
   attr_accessible :Pnr, :GueltigVon, :GueltigBis, :Strasse, :Nr, :PLZ, :Ort, :Vermerk, :SachPnr
 
@@ -34,6 +34,14 @@ class Adresse < ActiveRecord::Base
 
   # Returns nil if at the given time no person object was valid
   def Adresse.get(pnr, date = Time.now)
-    Adresse.where(:Pnr => pnr).first
+    # Test - bestanden! :)
+    #date = Time.zone.parse("2013-08-10 23:21:25")
+
+    if Adresse.where(:Pnr => pnr).first.versions.where('GueltigBis > ?', date).empty? then
+      return Adresse.where(:Pnr => pnr).first  
+    else 
+      Adresse.where(:Pnr => pnr).first.versions.where('GueltigBis <= ?', date).last.reify
+    end
   end
+
 end
