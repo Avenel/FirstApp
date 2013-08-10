@@ -37,4 +37,7 @@ OZB::Application.configure do
 
   # für devise wichtig
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+  # loglevel
+  config.log_level = :debug
 end

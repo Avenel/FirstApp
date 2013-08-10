@@ -7,7 +7,7 @@ class CreateVersions < ActiveRecord::Migration
       t.string   :whodunnit
       t.text     :object
       t.datetime :created_at
-      t.datetime :gueltig_bis
+      t.datetime :GueltigBis
     end
     add_index :versions, [:item_type, :item_id]
   end

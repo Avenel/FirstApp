@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+
+Rails.logger.level = 0
 #############NEU20.02.13##################
  
  after_filter :store_location
@@ -110,6 +112,13 @@ class ApplicationController < ActionController::Base
   end
 
 
+  # necessary for paper trail (whodunnit)
+  def current_user
+    return current_OZBPerson.Mnr
+  end
 
+  def info_for_paper_trail
+    { :GueltigBis => Time.now }
+  end
 
 end
