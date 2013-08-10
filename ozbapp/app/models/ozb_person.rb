@@ -44,9 +44,10 @@ class OZBPerson < ActiveRecord::Base
   validates :Antragsdatum, :presence => true
   
   # technical attributes
-  validate :password_complexity
+  # obsolet
+  # validate :password_complexity
   validate :person_exists
-  validate :ueber_person_exists
+
 
 
   # Wenn es produktiv geht, die minimale länge des passworts auf 6 oder höher Zeichen anseten
@@ -67,16 +68,6 @@ class OZBPerson < ActiveRecord::Base
     if person.empty? then
       errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen Mnr (#{mnr}) gefunden werden.")
       errors.add :mnr, errorString
-      return false
-    end
-    return true
-  end
-
-  def ueber_person_exists
-    person = Person.where("pnr = ?", ueberPnr)
-    if person.empty? then
-      errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen UeberPnr (#{ueberPnr}) gefunden werden.")
-      errors.add :ueberPnr, errorString 
       return false
     end
     return true

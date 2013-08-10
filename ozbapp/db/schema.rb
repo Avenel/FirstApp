@@ -176,6 +176,7 @@ ActiveRecord::Schema.define(:version => 20130810112346) do
     t.date     "Austrittsdatum"
     t.date     "Schulungsdatum"
     t.integer  "SachPnr"
+    t.string   "email",                  :limit => 40,  :default => "test@example.com"
     t.string   "encrypted_password",     :limit => 64,  :default => "$2a$10$qGrVqv4bHcfd4Ld649LoS.xIc/gK8GBdSXAS47AQpg1eVhPQL.H7K", :null => false
     t.string   "reset_password_token",   :limit => 128
     t.datetime "reset_password_sent_at"

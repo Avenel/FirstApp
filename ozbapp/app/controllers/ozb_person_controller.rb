@@ -114,18 +114,23 @@ class OZBPersonController < ApplicationController
 
   def updateKontaktdaten
     @errors = Array.new                                       
+    puts ">>>> DEBUGS Begin Transaction"
     begin    
      #Beginne Transaktion
       ActiveRecord::Base.transaction do   
+        puts ">>>> DEBUG Find OZBPerson und Person"
         @OZBPerson = OZBPerson.find(current_OZBPerson.Mnr)
         @Person    = Person.get(@OZBPerson.Mnr) 
 
+        puts ">>>> DEBUG EMAIL "
        # Email
-        @OZBPerson.email   = params[:email]
+       # OZBPerson soll in zukunft keine email adresse mehr enthalten, da devise es ausgelagert wird -> login table 
+        # @OZBPerson.email   = params[:email]
         @OZBPerson.SachPnr = current_OZBPerson.Mnr
         @Person.Email      = params[:email]
         @Person.SachPnr    = current_OZBPerson.Mnr
 
+        puts ">>>> DEBUG Adresse"
        # Adresse         
         @Adresse = Adresse.get(@Person.Pnr)
         if @Adresse != nil then         
@@ -151,6 +156,7 @@ class OZBPersonController < ApplicationController
           end
         end
 
+        puts ">>>> DEBUG Telefon"
        # Telefon, Mobil, Fax
         @last_LfdNr = Telefon.where("Pnr = ?", @Person.Pnr).order("LfdNr DESC").first
         if @last_LfdNr then
@@ -209,13 +215,23 @@ class OZBPersonController < ApplicationController
             )
         end
         
+        puts ">>>> DEBUGS save OZBPerson"
        # Email bei OZBPerson speichern         
         #Fehler aufgetreten?
+        puts ">>>> DEBUGS save in process 0 (OZBPerson)"
+        puts ">>>> DEBUG " + @OZBPerson.inspect
+        puts ">>>> DEBUG OZBPerson valid? " 
+        puts ">>>> DEBUG " + @OZBPerson.valid?.to_s
         if !@OZBPerson.valid? then
+          puts ">>>> DEBUGS save in process 1 (OZBPerson)"
           @errors.push(@OZBPerson.errors)
+          puts ">>>> Errors!"
+          puts @errors
         end    
+        puts ">>>> DEBUGS save in process 2 (OZBPerson)"
         @OZBPerson.save!
          
+         puts ">>>> DEBUGS save Person"
        # Email bei Person speichern       
         #Fehler aufgetreten?
         if !@Person.valid? then
@@ -223,6 +239,7 @@ class OZBPersonController < ApplicationController
         end
         @Person.save!
 
+        puts ">>>> DEBUGS save Adresse"
        # Adresse speichern
         if @Adresse != nil then
         #if params[:strasse].length > 0 || params[:hausnr].length > 0 || params[:plz].length > 0 || params[:ort].length > 0 then
@@ -234,18 +251,21 @@ class OZBPersonController < ApplicationController
           @Adresse.save!
         end
 
+        puts ">>>> DEBUGS save telefon"
        # Telefon, Mobil, Fax speichern
         if @Telefon[0] != nil && !params[:telefon].empty? then
-        #if params[:telefon].length > 0 then
-          @Telefon[0].SachPnr = current_OZBPerson.Mnr
           #Fehler aufgetreten?
+          puts ">>>> DEBUGS validate telefon"
           if !@Telefon[0].valid? then
+            puts ">>>> DEBUGS error telefon"
             @errors.push(@Telefon[0].errors)
+            puts ">>>> DEBUGS " + @errors.inspect
           end
           #Datensatz speichern
           @Telefon[0].save!
         end
 
+        puts ">>>> DEBUGS save mobil"
         if @Mobil[0] != nil && !params[:mobil].empty? then
         #if params[:mobil].length > 0 then
           @Mobil[0].SachPnr = current_OZBPerson.Mnr
@@ -257,6 +277,7 @@ class OZBPersonController < ApplicationController
           @Mobil[0].save!
         end
 
+        puts ">>>> DEBUGS save fax"
         if @Fax[0] != nil && !params[:fax].empty? then
         #if params[:fax].length > 0 then          
           @Fax[0].SachPnr = current_OZBPerson.Mnr
