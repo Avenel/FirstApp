@@ -20,6 +20,26 @@ class OzbKonto < ActiveRecord::Base
                   :ze_konto_attributes, :kkl_verlauf_attributes
   accepts_nested_attributes_for :ee_konto, :ze_konto, :kkl_verlauf
   
+  # column names
+  HUMANIZED_ATTRIBUTES = {
+    :KtoNr          => 'Konto-Nr.',
+    :GueltigVon     => 'Gültig von',
+    :GueltigBis     => 'Gültig bis',
+    :Mnr            => 'Mitglieder-Nr.',
+    :KtoEinrDatum   => 'Einrichtungsdatum',
+    :Waehrung       => 'Währung',
+    :WSaldo         => 'Währungssaldo',
+    :PSaldo         => 'Punktesaldo',
+    :SaldoDatum     => 'Saldo Datum',
+    :SachPnr        => 'Sachbearbeiter-Nr.',
+    
+    :ee_konten      => 'EE-Konto (Bankverbindung)'
+  }
+
+  def self.human_attribute_name(attr, options={})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+
   # validations
   # validate always things you will accept nested attributes for!
   validates :KtoNr, :presence => { :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
@@ -129,25 +149,6 @@ class OzbKonto < ActiveRecord::Base
   before_update :set_new_valid_time
   after_destroy :destroy_historic_records
   
-  # column names
-  HUMANIZED_ATTRIBUTES = {
-    :KtoNr          => 'Konto-Nr.',
-    :GueltigVon     => 'Gültig von',
-    :GueltigBis     => 'Gültig bis',
-    :Mnr            => 'Mitglieder-Nr.',
-    :KtoEinrDatum   => 'Einrichtungsdatum',
-    :Waehrung       => 'Währung',
-    :WSaldo         => 'Währungssaldo',
-    :PSaldo         => 'Punktesaldo',
-    :SaldoDatum     => 'Saldo Datum',
-    :SachPnr        => 'Sachbearbeiter-Nr.',
-    
-    :ee_konten      => 'EE-Konto (Bankverbindung)'
-  }
-
-  def self.human_attribute_name(attr, options={})
-    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
-  end
   
   # Static method
   # Returns all EE-Konten for the specified person which are valid AT THE MOMENT

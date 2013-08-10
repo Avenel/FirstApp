@@ -82,13 +82,21 @@ class OZBPerson < ActiveRecord::Base
     return true
   end
 
-  ### Beziehungen
-  has_many :Person, :foreign_key => :Pnr # Done, getestet  
+  # Relations
+  # Note: These are relations which correspond with the db schema. There 
+  #       are further relations (Person, OZBKonto) which don't work with 
+  #       with the db schema, but never the less exist. If necessesary
+  #       there are ways to implement them, like in the OZBKonto model.
+  has_many :BuchungOnline, :foreign_key => :Mnr
+  has_one :Sonderberechtigung, :foreign_key => :Mnr
 
-  has_one :Mitglied, :foreign_key => :Mnr, :dependent => :destroy  # Done, getestet
-  has_one :Student, :foreign_key => :Mnr, :dependent => :destroy # Done, ungetestet
-  has_one :Gesellschafter, :foreign_key => :Mnr, :dependent => :destroy # Done, getestet
-
-  has_many :Sonderberechtigung, :foreign_key => :Mnr, :dependent => :delete_all 
+  # this differs from the db schema!
+  has_many :OzbKonto, 
+    :foreign_key => :Mnr,
+    :primary_key => :KtoNr, 
+    :dependent => :destroy, 
+    :class_name => "OzbKonto",
+    :autosave => true,
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
 end

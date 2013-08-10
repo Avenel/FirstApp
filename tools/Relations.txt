@@ -1,0 +1,73 @@
+OZBPerson
+	BuchungOnline
+	PRIMARY KEY (ID),
+	FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
+
+	# Nur in eine Richtung: Buergschaft  belongs_to OZBPerson
+	Buergschaft
+	PRIMARY KEY (Pnr_B,Mnr_G,GueltigVon),
+	FOREIGN KEY (Mnr_G) REFERENCES OZBPerson(Mnr)
+
+	# Nur in eine Richtung: Gesellschafter belongs_to OZBPerson
+	Gesellschafter
+	PRIMARY KEY (Mnr,GueltigVon),
+	FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
+	
+	# Nur in eine Richtung: Mitglied belongs_to OZBPerson
+	Mitglied
+	PRIMARY KEY (Mnr,GueltigVon),
+	FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
+
+	# Nur in eine Richtung: OZBKonto belongs_to OZBPerson
+	OZBKonto
+	PRIMARY KEY (KtoNr,GueltigVon),
+	FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
+
+	# Nur in eine Richtung: Partner belongs_to OZBPerson
+	Partner
+	PRIMARY KEY (Mnr,GueltigVon),
+	FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
+
+	Sonderberechtigung
+	PRIMARY KEY (`ID`),
+	FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
+
+	# Nur in eine Richtung: Student belongs_to OZBPerson
+	Student
+	PRIMARY KEY (Mnr,GueltigVon),
+	FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)	
+
+Veranstaltungsart
+	Veranstaltung
+	PRIMARY KEY (Vnr),
+	FOREIGN KEY (VANr) REFERENCES Veranstaltungsart(VANr)
+
+Veranstaltung
+	Teilnahme
+	PRIMARY KEY (Pnr,Vnr),
+	FOREIGN KEY (Vnr) REFERENCES Veranstaltung(Vnr)
+
+Tanliste
+	Tan
+	PRIMARY KEY (Mnr,ListNr,TanNr),
+	FOREIGN KEY (Mnr, ListNr) REFERENCES Tanliste(Mnr, ListNr)
+
+Bank
+	Bankverbindung
+	PRIMARY KEY (ID, GueltigVon),
+	FOREIGN KEY (BLZ) REFERENCES Bank(BLZ)
+
+Projektgruppe
+	ZEKonto
+	PRIMARY KEY (KtoNr,GueltigVon),
+	FOREIGN KEY (Pgnr) REFERENCES Projektgruppe(Pgnr)
+
+Kontenklasse
+	KKLVerlauf
+	PRIMARY KEY (KtoNr,KKLAbDatum),
+	FOREIGN KEY (KKL) REFERENCES kontenklasse(KKL)
+
+Waehrung
+	OZBKonto
+	PRIMARY KEY (KtoNr,GueltigVon),
+	FOREIGN KEY (Waehrung) REFERENCES Waehrung(Code),

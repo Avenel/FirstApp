@@ -18,10 +18,12 @@ class Mitglied < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end  
 
-  belongs_to :OZBPerson, :foreign_key => :Mnr
-
   # Validations
   validates :Mnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
+
+
+  # Relations
+  belongs_to :OZBPerson, :foreign_key => :Mnr
 
   @@copy = nil
   

@@ -25,4 +25,7 @@ class BuchungOnline < ActiveRecord::Base
   validates :Tan, :presence => true, :format => { :with => /^([0-9]{5})$/i }
   validates :BlockNr, :presence => true, :format => { :with => /^([0-9]{1,5})$/i }
 
+  # Relations
+  belongs_to :OZBPerson, :foreign_key => :Mnr
+
 end
