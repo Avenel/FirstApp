@@ -994,7 +994,7 @@ public class Migratior {
 				}
 				stOzbTest.executeUpdate("INSERT INTO `geschaeftsprozess` (`ID`, `Beschreibung`, `IT`, `MV`, `RW`, `ZE`, `OeA`) VALUES (1, 'Alle Mitglieder anzeigen', 1, 1, 1, 1, 1),(2, 'Details einer Person anzeigen', 1, 1, 1, 1, 1),(3, 'Mitglieder hinzufuegen', 1, 1, 0, 0, 0),(5, 'Mitglieder loeschen', 1, 1, 0, 0, 0),(6, 'Rolle eines Mitglieds zum Gesellschafter aendern', 1, 1, 0, 0, 0),(7, 'Mitglied Administratorrechte hinzufuegen', 1, 0, 0, 0, 0),(8, 'Kontenklassen hinzufuegen', 1, 0, 1, 0, 0),(9, 'Kontenklassen bearbeiten', 1, 0, 0, 0, 0),(11, 'Alle Konten anzeigen', 1, 1, 1, 1, 1),(12, 'Details eines Kontos anzeigen', 1, 1, 1, 1, 1),(13, 'Einlage/Entnahmekonten hinzufuegen', 1, 0, 1, 0, 0),(14, 'Einlage/Entnahmekonten bearbeiten', 1, 0, 1, 0, 0),(15, 'Zusatzentnahmekonten hinzufuegen', 1, 0, 1, 0, 0),(17, 'Buergschaften anzeigen', 1, 1, 1, 1, 1),(18, 'Buergschaften hinzufuegen', 1, 0, 0, 1, 0),(19, 'Buergschaften bearbeiten', 1, 0, 0, 1, 0),(20, 'Veranstaltung einsehen/bearbeiten',1,1,0,0,1);");
 				/**Loschen der Tabelle temp	 */
-				//stOzbTest.executeUpdate("drop table temp");
+				stOzbTest.executeUpdate("drop table temp");
 
 				conOzbTest.commit();
 

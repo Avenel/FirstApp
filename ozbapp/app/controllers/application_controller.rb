@@ -114,7 +114,11 @@ Rails.logger.level = 0
 
   # necessary for paper trail (whodunnit)
   def current_user
-    return current_OZBPerson.Mnr
+    if !current_OZBPerson.nil? then
+        return current_OZBPerson.Mnr
+    else 
+      return nil
+    end
   end
 
   def info_for_paper_trail

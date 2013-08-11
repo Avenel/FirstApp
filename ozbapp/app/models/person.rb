@@ -17,6 +17,9 @@ class Person < ActiveRecord::Base
                   :Vorname, :Geburtsdatum, :email, :SperrKZ, 
                   :SachPnr, :AVAILABLE_ROLES
 
+  # TEMP enable paper trail for testing purposes
+  has_paper_trail
+
   # column names
   HUMANIZED_ATTRIBUTES = {
     :Pnr        => 'Personal-Nr.',
@@ -25,11 +28,6 @@ class Person < ActiveRecord::Base
     :GueltigBis => 'Gueltig bis'
   }
    
-  has_many :Partner, :foreign_key => :Mnr, :dependent => :destroy
-  has_many :Foerdermitglied, :foreign_key => :Pnr, :dependent => :destroy
-  has_many :OZBPerson, :foreign_key => :UeberPnr, :dependent => :destroy 
-  has_many :Adresse, :foreign_key => :Pnr, :dependent => :destroy
-  has_many :Telefon, :foreign_key => :Pnr, :dependent => :destroy
 
   # Validations
   validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }
@@ -45,6 +43,14 @@ class Person < ActiveRecord::Base
   # SperrKZ enum
   AVAILABLE_STATES = %W(0 1)
   validates :SperrKZ, :presence => true, :inclusion => { :in => AVAILABLE_STATES, :message => "%{value} is not a valid state (0, 1)" }  
+
+
+  # Relations
+  has_many :Partner, :foreign_key => :Mnr, :dependent => :destroy
+  has_many :Foerdermitglied, :foreign_key => :Pnr, :dependent => :destroy
+  has_many :OZBPerson, :foreign_key => :UeberPnr, :dependent => :destroy 
+  has_one :Adresse, :foreign_key => :Pnr, :dependent => :destroy
+  has_many :Telefon, :foreign_key => :Pnr, :dependent => :destroy
 
   before_save do 
     unless(self.GueltigBis || self.GueltigVon)
@@ -82,7 +88,14 @@ class Person < ActiveRecord::Base
 
   # Returns nil if at the given time no person object was valid
   def Person.get(pnr, date = Time.now)
-    Person.where(:Pnr => pnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
+    #Person.where(:Pnr => pnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
+    date = Time.zone.parse("2013-08-11 00:09:25")
+
+    if Person.where(:Pnr => pnr).first.versions.where('GueltigBis > ?', date).empty? then
+      return Person.where(:Pnr => pnr).first  
+    else 
+      Person.where(:Pnr => pnr).first.versions.where('GueltigBis <= ?', date).last.reify
+    end
   end
    
   # Returns the latest/newest Person Object
