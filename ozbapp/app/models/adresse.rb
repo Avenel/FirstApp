@@ -40,7 +40,7 @@ class Adresse < ActiveRecord::Base
     if Adresse.where(:Pnr => pnr).first.versions.where('GueltigBis > ?', date).empty? then
       return Adresse.where(:Pnr => pnr).first  
     else 
-      Adresse.where(:Pnr => pnr).first.versions.where('GueltigBis <= ?', date).last.reify
+      Adresse.where(:Pnr => pnr).first.versions.where('GueltigBis >= ?', date).order("GueltigBis ASC").last
     end
   end
 

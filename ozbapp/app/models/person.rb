@@ -88,13 +88,10 @@ class Person < ActiveRecord::Base
 
   # Returns nil if at the given time no person object was valid
   def Person.get(pnr, date = Time.now)
-    #Person.where(:Pnr => pnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
-    date = Time.zone.parse("2013-08-11 00:09:25")
-
     if Person.where(:Pnr => pnr).first.versions.where('GueltigBis > ?', date).empty? then
       return Person.where(:Pnr => pnr).first  
     else 
-      Person.where(:Pnr => pnr).first.versions.where('GueltigBis <= ?', date).last.reify
+      Person.where(:Pnr => pnr).first.versions.where('GueltigBis >= ?', date).order("GueltigBis ASC").last
     end
   end
    
