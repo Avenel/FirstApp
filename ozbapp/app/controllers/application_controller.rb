@@ -113,8 +113,8 @@ Rails.logger.level = 0
 
 
   # necessary for paper trail (whodunnit)
-  def info_for_paper_trail
-    { :GueltigBis => Time.now }
-  end
+  #def info_for_paper_trail
+   # { :GueltigBis => Time.now }
+  #end
 
 end

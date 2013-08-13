@@ -221,7 +221,14 @@ class OZBPersonController < ApplicationController
         puts ">>>> DEBUGS save in process 0 (OZBPerson)"
         puts ">>>> DEBUG " + @OZBPerson.inspect
         puts ">>>> DEBUG OZBPerson valid? " 
-        puts ">>>> DEBUG " + @OZBPerson.valid?.to_s
+        begin
+          puts ">>>> DEBUG " + @OZBPerson.valid?.to_s
+        rescue Exception => e
+          puts ">>>> DEBUG <<<<<<"
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
+
         if !@OZBPerson.valid? then
           puts ">>>> DEBUGS save in process 1 (OZBPerson)"
           @errors.push(@OZBPerson.errors)

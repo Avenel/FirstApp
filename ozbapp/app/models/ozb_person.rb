@@ -12,19 +12,9 @@ class OZBPerson < ActiveRecord::Base
   alias_attribute :schulungsdatum, :Schulungsdatum
   alias_attribute :gesperrt, :Gesperrt
   alias_attribute :sachPnr, :SachPnr
-
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable,
-         :registerable,
-         :recoverable,
-         :rememberable,
-         :trackable,
-         :validatable
   
   attr_accessible :Mnr, :UeberPnr, :PWAendDatum, 
-                  :Antragsdatum, :Aufnahmedatum, :Austrittsdatum, :Schulungsdatum,
-                  :SachPnr, :email, :remember_me, :password
+                  :Antragsdatum, :Aufnahmedatum, :Austrittsdatum, :Schulungsdatum, :SachPnr
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -47,21 +37,6 @@ class OZBPerson < ActiveRecord::Base
   # obsolet
   # validate :password_complexity
   validate :person_exists
-
-
-
-  # Wenn es produktiv geht, die minimale länge des passworts auf 6 oder höher Zeichen anseten
-  def password_complexity
-    if password.present? and password.match(/^(?=.*[^a-zA-Z])(?=.*[a-z])(?=.*[A-Z])\S{2,}$/i) then
-      return true
-    else
-      errors.add :password, "sollte mindestens eine Ziffer und/oder Sonderzeichen wie +-_# usw. enthalten
-                 Deutsche Umlaute erlaubt
-                 Gross-/Kleinschreibung wird unterschieden
-                 Mindestens 2 Zeichen lang"
-      return false
-    end
-  end
 
   def person_exists
     person = Person.where("pnr = ?", mnr)

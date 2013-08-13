@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130810112346) do
+ActiveRecord::Schema.define(:version => 20130813190332) do
 
   create_table "adresse", :primary_key => "Pnr", :force => true do |t|
     t.datetime "GueltigVon",               :null => false
