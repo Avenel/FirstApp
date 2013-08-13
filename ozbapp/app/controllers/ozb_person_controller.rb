@@ -106,7 +106,7 @@ class OZBPersonController < ApplicationController
   def editKontaktdaten
       @OZBPerson = OZBPerson.find(current_OZBPerson.Mnr)
       @Person    = Person.get(@OZBPerson.Mnr)
-      @Adresse   = Adresse.get(@Person.Pnr)
+      @Adresse   = @Person.Adresse #Adresse.get(@Person.Pnr)
       @Telefon   = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "tel"})
       @Fax       = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "fax"})
       @Mobil     = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "mob"})
