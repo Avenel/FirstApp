@@ -2,7 +2,7 @@
 # encoding: utf-8
 class VeranstaltungController < ApplicationController
 #  protect_from_forgery
-  before_filter :authenticate_OZBPerson!
+  before_filter :authenticate_user!
   
   
   def listTeilnahmen
@@ -33,7 +33,7 @@ class VeranstaltungController < ApplicationController
   
   
   def createDeleteTeilnahme
-    if is_allowed(current_OZBPerson, 20) then #ÄNern später geschäftsprozess anpassen
+    if is_allowed(current_user, 20) then #ÄNern später geschäftsprozess anpassen
       
       if (params[:delete] == "true") then
         
@@ -63,16 +63,16 @@ class VeranstaltungController < ApplicationController
           if !@Teilnahme.nil? then
             @update = true
             @Teilnahme.update_attribute(:TeilnArt, params[:teilnArt])
-            @Teilnahme.update_attribute(:SachPnr, current_OZBPerson.Mnr)
+            @Teilnahme.update_attribute(:SachPnr, current_user.Mnr)
             
           elsif !@Teilnahme2.nil? then
             @update = true
             @Teilnahme2.update_attribute(:TeilnArt, params[:teilnArt2])
-            @Teilnahme2.update_attribute(:SachPnr, current_OZBPerson.Mnr)
+            @Teilnahme2.update_attribute(:SachPnr, current_user.Mnr)
             
           else
             # Veranstaltung erstellen und validieren
-            @new_Teilnahme = Teilnahme.new(:Pnr => params[:pnr], :Vnr => params[:vnr], :TeilnArt => params[:teilnArt], :SachPnr => current_OZBPerson.Mnr)
+            @new_Teilnahme = Teilnahme.new(:Pnr => params[:pnr], :Vnr => params[:vnr], :TeilnArt => params[:teilnArt], :SachPnr => current_user.Mnr)
             
             #Fehler aufgetreten?
             if !@new_Teilnahme.valid? then
@@ -192,7 +192,7 @@ class VeranstaltungController < ApplicationController
   
   
   def createVeranstaltung
-    if is_allowed(current_OZBPerson, 20) then #ÄNern später geschäftsprozess anpassen
+    if is_allowed(current_user, 20) then #ÄNern später geschäftsprozess anpassen
         
       @errors = Array.new                                       
       begin    
@@ -200,7 +200,7 @@ class VeranstaltungController < ApplicationController
         ActiveRecord::Base.transaction do
           
           # Veranstaltung erstellen und validieren
-          @new_Veranstaltung = Veranstaltung.new(:Vnr => Veranstaltung.last.Vnr + 1, :VANr => params[:VANr], :VADatum => params[:vadatum], :VAOrt =>params[:vaort], :SachPnr => current_OZBPerson.Mnr)
+          @new_Veranstaltung = Veranstaltung.new(:Vnr => Veranstaltung.last.Vnr + 1, :VANr => params[:VANr], :VADatum => params[:vadatum], :VAOrt =>params[:vaort], :SachPnr => current_user.Mnr)
           
           #Fehler aufgetreten?
           if !@new_Veranstaltung.valid? then
@@ -239,7 +239,7 @@ class VeranstaltungController < ApplicationController
             @EinzuladendeMitglieder.each do |mitglied|
               begin
                 ActiveRecord::Base.transaction  do
-                  @new_Teilnahme = Teilnahme.new(:Vnr => @new_Veranstaltung.Vnr, :Pnr => mitglied.Mnr,  :TeilnArt => @teilnArt, :SachPnr => current_OZBPerson.Mnr)
+                  @new_Teilnahme = Teilnahme.new(:Vnr => @new_Veranstaltung.Vnr, :Pnr => mitglied.Mnr,  :TeilnArt => @teilnArt, :SachPnr => current_user.Mnr)
                   @new_Teilnahme.save
                 end
               rescue
@@ -271,7 +271,7 @@ class VeranstaltungController < ApplicationController
   @@Veranstaltungen = Hash["", "Nicht angegeben", "1", "Gesellschaftsversammlung","2","Schulung","3","Vortrag","4","Seminar"]
   
   def editVeranstaltungen
-    if is_allowed(current_OZBPerson, 7) then
+    if is_allowed(current_user, 7) then
       
       @Veranstaltungen = @@Veranstaltungen2.sort
       @VeranstaltungsName = @@Veranstaltungen
@@ -293,7 +293,7 @@ class VeranstaltungController < ApplicationController
   
   
   def newVeranstaltung
-    if is_allowed(current_OZBPerson, 7) then
+    if is_allowed(current_user, 7) then
       
       @Veranstaltungen = @@Veranstaltungen2.sort
       @VeranstaltungsName = @@Veranstaltungen

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class OZBPersonController < ApplicationController  
   #protect_from_forgery
-  before_filter :authenticate_OZBPerson!
+  before_filter :authenticate_user!
   
   @@sop_rollen = Hash["Alle Rollen", "", "Mitglied", "M", "Fördermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]
   
@@ -13,7 +13,7 @@ class OZBPersonController < ApplicationController
 
 ### Details MeineDaten
   def detailsOZBPerson
-      @OZBPerson = OZBPerson.find(current_OZBPerson.Mnr)
+      @OZBPerson = OZBPerson.find(current_user.Mnr)
       @Person    = Person.get(@OZBPerson.Mnr)
       @Adresse   = Adresse.get(@Person.Pnr)
       @Telefon   = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "tel"})
@@ -32,7 +32,7 @@ class OZBPersonController < ApplicationController
       @Foerdermitglied = Foerdermitglied.get(@Person.Pnr)
       when "P"
       @Partner         = Partner.get(@OZBPerson.Mnr)
-      @PartnerPerson   = Person.get(@Partner.MnrO)
+      @PartnerPerson   = Person.get(@Partner.Pnr_P)
       when "G"
       @Gesellschafter  = Gesellschafter.get(@OZBPerson.Mnr)
       when "S"
@@ -43,8 +43,8 @@ class OZBPersonController < ApplicationController
 
 ### Mitglieder bearbeiten: Personaldaten ###
   def editPersonaldaten
-      if is_allowed(current_OZBPerson, 3)
-        @OZBPerson = OZBPerson.find(current_OZBPerson.Mnr)
+      if is_allowed(current_user, 3)
+        @OZBPerson = OZBPerson.find(current_user.Mnr)
         @Person    = Person.get(@OZBPerson.Mnr)
       else
         redirect_to "/MeineKonten"
@@ -56,18 +56,18 @@ class OZBPersonController < ApplicationController
     begin    
      #Beginne Transaktion
       ActiveRecord::Base.transaction do   
-        @OZBPerson                = OZBPerson.find(current_OZBPerson.Mnr)
+        @OZBPerson                = OZBPerson.find(current_user.Mnr)
         @Person                   = Person.get(@OZBPerson.Mnr)
         
         @Person.Name              = params[:name]
         @Person.Vorname           = params[:vorname]
         @Person.Geburtsdatum      = params[:gebDatum]
-        @Person.SachPnr           = current_OZBPerson.Mnr
+        @Person.SachPnr           = current_user.Mnr
         
         @OZBPerson.Antragsdatum   = params[:antragsdatum]
         @OZBPerson.Aufnahmedatum  = params[:aufnahmedatum]    
         @OZBPerson.Austrittsdatum = params[:austrittsdatum]
-        @OZBPerson.SachPnr        = current_OZBPerson.Mnr
+        @OZBPerson.SachPnr        = current_user.Mnr
         
         flash[:notice] = "Validieren"
 
@@ -104,7 +104,7 @@ class OZBPersonController < ApplicationController
 
 ### Mitglieder bearbeiten: Kontaktdaten ###
   def editKontaktdaten
-      @OZBPerson = OZBPerson.find(current_OZBPerson.Mnr)
+      @OZBPerson = OZBPerson.find(current_user.Mnr)
       @Person    = Person.get(@OZBPerson.Mnr)
       @Adresse   = @Person.Adresse #Adresse.get(@Person.Pnr)
       @Telefon   = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "tel"})
@@ -119,16 +119,16 @@ class OZBPersonController < ApplicationController
      #Beginne Transaktion
       ActiveRecord::Base.transaction do   
         puts ">>>> DEBUG Find OZBPerson und Person"
-        @OZBPerson = OZBPerson.find(current_OZBPerson.Mnr)
+        @OZBPerson = OZBPerson.find(current_user.Mnr)
         @Person    = Person.get(@OZBPerson.Mnr) 
 
         puts ">>>> DEBUG EMAIL "
        # Email
        # OZBPerson soll in zukunft keine email adresse mehr enthalten, da devise es ausgelagert wird -> login table 
         # @OZBPerson.email   = params[:email]
-        @OZBPerson.SachPnr = current_OZBPerson.Mnr
+        @OZBPerson.SachPnr = current_user.Mnr
         @Person.Email      = params[:email]
-        @Person.SachPnr    = current_OZBPerson.Mnr
+        @Person.SachPnr    = current_user.Mnr
 
         puts ">>>> DEBUG Adresse"
        # Adresse         
@@ -140,7 +140,7 @@ class OZBPersonController < ApplicationController
           @Adresse.PLZ     = params[:plz]
           @Adresse.Ort     = params[:ort]
           @Adresse.Vermerk = params[:vermerk]
-          @Adresse.SachPnr = current_OZBPerson.Mnr
+          @Adresse.SachPnr = current_user.Mnr
         else
           if params[:strasse].length > 0 || params[:hausnr].length > 0 || params[:plz].length > 0 || params[:ort].length > 0 || params[:vermerk].length then
             # create
@@ -151,7 +151,7 @@ class OZBPersonController < ApplicationController
               :PLZ     => params[:plz], 
               :Ort     => params[:ort],
               :Vermerk => params[:vermerk],
-              :SachPnr => current_OZBPerson.Mnr
+              :SachPnr => current_user.Mnr
             )
           end
         end
@@ -268,7 +268,7 @@ class OZBPersonController < ApplicationController
         puts ">>>> DEBUGS save mobil"
         if @Mobil[0] != nil && !params[:mobil].empty? then
         #if params[:mobil].length > 0 then
-          @Mobil[0].SachPnr = current_OZBPerson.Mnr
+          @Mobil[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?        
           if !@Mobil[0].valid? then
             @errors.push(@Mobil[0].errors)
@@ -280,7 +280,7 @@ class OZBPersonController < ApplicationController
         puts ">>>> DEBUGS save fax"
         if @Fax[0] != nil && !params[:fax].empty? then
         #if params[:fax].length > 0 then          
-          @Fax[0].SachPnr = current_OZBPerson.Mnr
+          @Fax[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?
           if !@Fax[0].valid? then
             @errors.push(@Fax[0].errors)
@@ -303,8 +303,8 @@ class OZBPersonController < ApplicationController
 
 ### Mitglieder bearbeiten: Rolle ###
   def editRolle
-      if is_allowed(current_OZBPerson, 20)
-        @OZBPerson = OZBPerson.find(current_OZBPerson.Mnr)
+      if is_allowed(current_user, 20)
+        @OZBPerson = OZBPerson.find(current_user.Mnr)
         @Person    = Person.get(@OZBPerson.Mnr)
         
         @DistinctPersonen = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
@@ -324,7 +324,7 @@ class OZBPersonController < ApplicationController
         @Foerdermitglied = Foerdermitglied.get(@Person.Pnr)
         when "P"
         @Partner         = Partner.get(@OZBPerson.Mnr)
-        @PartnerPerson   = Person.get(@Partner.MnrO)
+        @PartnerPerson   = Person.get(@Partner.Pnr_P)
         when "G"
         @Gesellschafter  = Gesellschafter.get(@OZBPerson.Mnr)
         when "S"
@@ -340,7 +340,7 @@ class OZBPersonController < ApplicationController
     begin    
      #Beginne Transaktion
       ActiveRecord::Base.transaction do   
-          @OZBPerson       = OZBPerson.find(current_OZBPerson.Mnr)
+          @OZBPerson       = OZBPerson.find(current_user.Mnr)
           @Person          = Person.get(@OZBPerson.Mnr)  
           
           @Rollen          = @@Rollen
@@ -362,7 +362,7 @@ class OZBPersonController < ApplicationController
             @Gesellschafter.Wohnsitzfinanzamt = params[:wohnsitzFinanzamt]
             @Gesellschafter.NotarPnr          = params[:notarPnr]
             @Gesellschafter.BeurkDatum        = params[:beurkDatum] 
-            @Gesellschafter.SachPnr           = current_OZBPerson.Mnr        
+            @Gesellschafter.SachPnr           = current_user.Mnr        
             #Fehler aufgetreten?
             if !@Gesellschafter.valid? then
               @errors.push(@Gesellschafter.errors)
@@ -377,7 +377,7 @@ class OZBPersonController < ApplicationController
             @Student.Studienbeginn = params[:studienbeginn]
             @Student.Studienende   = params[:studienende]
             @Student.Abschluss     = params[:abschluss]#
-            @Student.SachPnr       = current_OZBPerson.Mnr          
+            @Student.SachPnr       = current_user.Mnr          
             #Fehler aufgetreten?
             if !@Student.valid? then
               @errors.push(@Student.errors)
@@ -395,9 +395,9 @@ class OZBPersonController < ApplicationController
             @Mitglied.save!
           when "P"
             @Partner              = Partner.get(@OZBPerson.Mnr)
-            @Partner.MnrO         = params[:partner]
+            @Partner.Pnr_P         = params[:partner]
             @Partner.Berechtigung = params[:berechtigung]
-            @Partner.SachPnr      = current_OZBPerson.Mnr 
+            @Partner.SachPnr      = current_user.Mnr 
             #Fehler aufgetreten?
             if !@Partner.valid? then
               @errors.push(@Partner.errors)
@@ -408,7 +408,7 @@ class OZBPersonController < ApplicationController
             @Foerdermitglied                = Foerdermitglied.get(@Person.Pnr)
             @Foerdermitglied.Region         = params[:region]
             @Foerdermitglied.Foerderbeitrag = params[:foerderbeitrag]
-            @Foerdermitglied.SachPnr        = current_OZBPerson.Mnr 
+            @Foerdermitglied.SachPnr        = current_user.Mnr 
             #Fehler aufgetreten?
             if !@Foerdermitglied.valid? then
               @errors.push(@Foerdermitglied.errors)
@@ -433,7 +433,7 @@ class OZBPersonController < ApplicationController
 
 ### Logindaten bearbeiten ###
   def editLogindaten
-    @OZBPerson = OZBPerson.find(current_OZBPerson)
+    @OZBPerson = OZBPerson.find(current_user)
     @Person    = Person.get(@OZBPerson.Mnr)  
   end
 
@@ -449,7 +449,7 @@ class OZBPersonController < ApplicationController
 
   def searchOZBPerson
     super
-#    if current_OZBPerson.Mnr = params[:id] then
+#    if current_user.Mnr = params[:id] then
 #      super
 #    else
 #      redirect_to "/MeineDaten"

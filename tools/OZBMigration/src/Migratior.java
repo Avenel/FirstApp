@@ -15,44 +15,56 @@ import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 public class Migratior {
-	private static String inputfile = new File(AppWindow.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("migration.jar", ""), "/create_tables.txt").toString();
+	private static String inputfile = new File(AppWindow.class
+			.getProtectionDomain().getCodeSource().getLocation().getPath()
+			.replace("migration.jar", ""), "/create_tables.txt").toString();
 	private static String server = "localhost";
 	private static String user;
 	private static String password;
-	private static String pathToLog = new File(AppWindow.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("migration.jar", ""), "log.txt").toString();
-	
-	public static void main(String[] args) {		
-		if(args.length == 0 ) {
+	private static String pathToLog = new File(AppWindow.class
+			.getProtectionDomain().getCodeSource().getLocation().getPath()
+			.replace("migration.jar", ""), "log.txt").toString();
+
+	public static void main(String[] args) {
+		if (args.length == 0) {
 			new AppWindow();
 		} else {
-			if(args[0].equals("-h")) {
+			if (args[0].equals("-h")) {
 				printHelp();
-			} else { 
-				for(int i=0; i < args.length; i++) {				
-					if(args[i].equals("-i")) inputfile = args[++i];
-					if(args[i].equals("-s")) server = args[++i];
-					if(args[i].equals("-u")) user = args[++i];
-					if(args[i].equals("-p")) password = args[++i];
+			} else {
+				for (int i = 0; i < args.length; i++) {
+					if (args[i].equals("-i"))
+						inputfile = args[++i];
+					if (args[i].equals("-s"))
+						server = args[++i];
+					if (args[i].equals("-u"))
+						user = args[++i];
+					if (args[i].equals("-p"))
+						password = args[++i];
 				}
 			}
 			System.out.println("migration ...");
 			migrate(inputfile, server, user, password, pathToLog);
 		}
 	}
-	
+
 	private static void printHelp() {
 		System.out.println("-h \t Zeigt diese Hilfeseite");
-		System.out.println("-i \t Setzt den Pfad zur txt-Datei mit der Tabellendefiniton (Default: im gleichen Ordner wir die Jar-Datei die Datei create_tables.txt");
+		System.out
+				.println("-i \t Setzt den Pfad zur txt-Datei mit der Tabellendefiniton (Default: im gleichen Ordner wir die Jar-Datei die Datei create_tables.txt");
 		System.out.println("-s \t Setzt den Server (Default: localhost");
 		System.out.println("-u \t Setzt den Username für den Login");
 		System.out.println("-p \t Setzt das Password");
 	}
 
-	public static void migrate(String pathToFile, String server, String user, String password, String pathToLog) {
+	public static void migrate(String pathToFile, String server, String user,
+			String password, String pathToLog) {
 		Calendar calendar = Calendar.getInstance();
-		GregorianCalendar endCalender = new GregorianCalendar(9999, 11, 31, 23, 59, 59);
-		Timestamp endOfTime = new java.sql.Timestamp(endCalender.getTime().getTime());
-		
+		GregorianCalendar endCalender = new GregorianCalendar(9999, 11, 31, 23,
+				59, 59);
+		Timestamp endOfTime = new java.sql.Timestamp(endCalender.getTime()
+				.getTime());
+
 		try {
 			/**
 			 * Lesen Dateiinhalt
@@ -66,33 +78,36 @@ public class Migratior {
 			/**
 			 * Link zur neuen Datenbank
 			 */
-			String urlOzbTest = "jdbc:mysql://" + server + "/ozb_test?zeroDateTimeBehavior=convertToNull";			
+			String urlOzbTest = "jdbc:mysql://" + server
+					+ "/ozb_test?zeroDateTimeBehavior=convertToNull";
 			/**
 			 * Link zur alten Datenbank
 			 */
-			String urlOzbProd = "jdbc:mysql://" + server + "/ozb_prod?zeroDateTimeBehavior=convertToNull";
+			String urlOzbProd = "jdbc:mysql://" + server
+					+ "/ozb_prod?zeroDateTimeBehavior=convertToNull";
 			/**
 			 * Ausgabe aller Fehler in der log Datei
 			 */
 			PrintWriter pw = new PrintWriter(new FileOutputStream(pathToLog));
 			try {
 				/**
-				 * Erstellung  Verbindungen  zu Datenbanken
+				 * Erstellung Verbindungen zu Datenbanken
 				 */
-				Connection conOzbProd = DriverManager.getConnection(
-						urlOzbProd, user, password);
-				Connection conOzbTest = DriverManager.getConnection(
-						urlOzbTest, user, password);
+				Connection conOzbProd = DriverManager.getConnection(urlOzbProd,
+						user, password);
+				Connection conOzbTest = DriverManager.getConnection(urlOzbTest,
+						user, password);
 				conOzbTest.setAutoCommit(false);
 				Statement stOzbTest = conOzbTest.createStatement();
 				Statement stOzbProd = conOzbProd.createStatement();
 				/**
-				 * Vorbereitung der SQl Aufrufe fur die neue Datenbank. Inhalt von Attributen wird spater hingefugt
+				 * Vorbereitung der SQl Aufrufe fur die neue Datenbank. Inhalt
+				 * von Attributen wird spater hingefugt
 				 */
-				String queryInsertPerson = "INSERT INTO person " +
-						"(Pnr,Rolle,Name,Vorname,Geburtsdatum," +
-						"EMail,GueltigVon,GueltigBis,SperrKZ) VALUES " +
-						"(?,?,?,?,?,?,?,?,?);";
+				String queryInsertPerson = "INSERT INTO person "
+						+ "(Pnr,Rolle,Name,Vorname,Geburtsdatum,"
+						+ "EMail,GueltigVon,GueltigBis,SperrKZ) VALUES "
+						+ "(?,?,?,?,?,?,?,?,?);";
 				String queryInsertAdresse = "INSERT INTO adresse (Pnr,Strasse,Nr,PLZ,Ort,GueltigVon,GueltigBis,Vermerk) VALUES (?,?,?,?,?,?,?,?);";
 				String queryInsertOZBPerson = "INSERT INTO ozbperson (Mnr,UeberPnr,PWAendDatum,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum) VALUES (?,?,?,?,?,?,?);";
 				String queryInsertPartner = "INSERT INTO partner (Mnr,Pnr_P,Berechtigung,GueltigVon,GueltigBis) VALUES (?,?,?,?,?);";
@@ -105,7 +120,7 @@ public class Migratior {
 				String queryInsertTan = "INSERT INTO tan (Mnr,ListNr,TanNr,Tan,VerwendetAm,Status) VALUES (?,?,?,?,?,?);";
 				String queryInsertBankverbindung = "INSERT INTO bankverbindung (Pnr,BankKtoNr,BLZ,GueltigVon,GueltigBis,IBAN) VALUES (?,?,?,?,?,?);";
 				String queryInsertBank = "INSERT INTO bank (BLZ,BankName) VALUES (?,?);";
-				
+
 				String queryInsertProjektgruppe = "INSERT INTO projektgruppe (Pgnr,ProjGruppenBez) VALUES (?,?);";
 				String queryInsertZEKonto = "INSERT INTO zekonto (KtoNr,EEKtoNr,Pgnr,ZENr,ZEAbDatum,ZEEndDatum,ZEBetrag,Laufzeit,ZahlModus,TilgRate,NachsparRate,KDURate,RDURate,ZEStatus,GueltigVon,GueltigBis,Kalk_Leihpunkte,Tats_Leihpunkte,Sicherung) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 				String queryInsertBuergschaft = "INSERT INTO buergschaft (Pnr_B,Mnr_G,ZENr,SichAbDatum,SichEndDatum,SichBetrag,SichKurzbez,GueltigVon,GueltigBis) VALUES (?,?,?,?,?,?,?,?,?);";
@@ -113,10 +128,14 @@ public class Migratior {
 				String queryInsertTemp = "INSERT INTO temp (KtoNr,Kreditlimit,BankKtoNr,BLZ,BankName) VALUES (?,?,?,?,?);";
 				String queryInsertKontenklasse = "INSERT INTO kontenklasse (KKL,KKLEinrDatum,Prozent) VALUES (?,?,?)";
 				String queryInsertKKLVerlauf = "INSERT INTO kklverlauf (KtoNr,KKLAbDatum,KKL) VALUES (?,?,?)";
-				
+
 				String queryInsertVeranstalltungart = "INSERT INTO veranstaltungsart (VANr,VABezeichnung) VALUES (?,?)";
 				String queryInsertVeranstalltung = "INSERT INTO veranstaltung (Vnr,VANr,VADatum,VAOrt) VALUES (?,?,?,?)";
-				String queryInsertTeilnahme= "INSERT INTO teilnahme (Pnr,Vnr,TeilnArt) VALUES (?,?,?)";
+				String queryInsertTeilnahme = "INSERT INTO teilnahme (Pnr,Vnr,TeilnArt) VALUES (?,?,?)";
+
+				// User Table (Devise Login Module)
+				String queryInsertUser = "INSERT INTO users (id,email,created_at,updated_at) VALUES (?,?,?,?)";
+
 				/**
 				 * Lesen, Trennung und Ausfuhrung SQl Aufrufe aus Datei
 				 */
@@ -133,41 +152,47 @@ public class Migratior {
 					}
 				}
 				conOzbTest.commit();
-				
-				
+
 				// Person
 				/**
-				 * Aufruf Daten fur die Tabelle Person 
+				 * Aufruf Daten fur die Tabelle Person
 				 */
-				ResultSet rs = stOzbProd.executeQuery(" SELECT `MNR`,`GM`,`NAME`,`VORNAME`, `GEBURTSDATUM`,`STRASSE-NR`, `PLZ`, `ORT`, `VERMERK`, `EMAIL`, `SPERRKZ` FROM Mitglied "
-						+"union "
-						+"select `MNR`,`GM`,`NAME`,`VORNAME`, `GEBURTSDATUM`,`STRASSE-NR`, `PLZ`, `ORT`, `VERMERK`, `EMAIL`, 0 from Fördermitglied;");
-				
-				
+				ResultSet rs = stOzbProd
+						.executeQuery(" SELECT `MNR`,`GM`,`NAME`,`VORNAME`, `GEBURTSDATUM`,`STRASSE-NR`, `PLZ`, `ORT`, `VERMERK`, `EMAIL`, `SPERRKZ` FROM Mitglied "
+								+ "union "
+								+ "select `MNR`,`GM`,`NAME`,`VORNAME`, `GEBURTSDATUM`,`STRASSE-NR`, `PLZ`, `ORT`, `VERMERK`, `EMAIL`, 0 from Fördermitglied;");
+
 				while (rs.next()) {
-						/**
-					 * Dynamische Erstellung des Aufrufs und Bearbeitung der Daten, die wir aus der alten Datenbank bekommen haben.
+					/**
+					 * Dynamische Erstellung des Aufrufs und Bearbeitung der
+					 * Daten, die wir aus der alten Datenbank bekommen haben.
 					 */
-					PreparedStatement queryInsertStmt = conOzbTest.prepareStatement(queryInsertPerson);
+					PreparedStatement queryInsertStmt = conOzbTest
+							.prepareStatement(queryInsertPerson);
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					queryInsertStmt.setString(2, rs.getString("GM"));
 					queryInsertStmt.setString(3, rs.getString("NAME"));
 					queryInsertStmt.setString(4, rs.getString("VORNAME"));
 					queryInsertStmt.setDate(5, rs.getDate("GEBURTSDATUM"));
-					//queryInsertStmt.setString(6, rs.getString("VERMERK"));
+					// queryInsertStmt.setString(6, rs.getString("VERMERK"));
 					queryInsertStmt.setString(6, rs.getString("EMAIL"));
-					queryInsertStmt.setTimestamp(7, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(7, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(8, endOfTime);
 
-					// Temp! Alle werden freigeschalten. Info: Kienle hat Sperrkz = 3 ?! :D
+					// Temp! Alle werden freigeschalten. Info: Kienle hat
+					// Sperrkz = 3 ?! :D
 					// TODO
 					queryInsertStmt.setString(9, "0");// rs.getString("SPERRKZ"));
-					
+
 					/**
-					 * Ausfuhrung des SQL Aufrufs. Falls ein Fehler vorhanden wird, wird es im log Datei protokolliert
+					 * Ausfuhrung des SQL Aufrufs. Falls ein Fehler vorhanden
+					 * wird, wird es im log Datei protokolliert
 					 */
 					try {
-						System.out.println("insert person" + rs.getString("NAME"));
+						System.out.println("insert person"
+								+ rs.getString("NAME"));
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
 						pw.println("Person : " + " MNR: " + rs.getInt("MNR")
@@ -175,28 +200,31 @@ public class Migratior {
 						pw.println("SQL-Query: " + queryInsertStmt.toString());
 						pw.println("");
 					}
-					
-					queryInsertStmt = conOzbTest.prepareStatement(queryInsertAdresse);
+
+					queryInsertStmt = conOzbTest
+							.prepareStatement(queryInsertAdresse);
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					if (!(rs.getString("STRASSE-NR") == null)) {
 						String temp = rs.getString("STRASSE-NR");
-						queryInsertStmt.setString(2,
-								getStrasseFromString(temp));
-						queryInsertStmt.setString(3,
-								getNumberFromString(temp));
+						queryInsertStmt
+								.setString(2, getStrasseFromString(temp));
+						queryInsertStmt.setString(3, getNumberFromString(temp));
 					} else {
 						queryInsertStmt.setString(2, "###");
 						queryInsertStmt.setString(3, "###");
 					}
 					queryInsertStmt.setInt(4, rs.getInt("PLZ"));
-					
-					if (rs.getString("ORT") == null || rs.getString("ORT").equals("")) {
+
+					if (rs.getString("ORT") == null
+							|| rs.getString("ORT").equals("")) {
 						queryInsertStmt.setString(5, "###");
 					} else {
 						queryInsertStmt.setString(5, rs.getString("ORT"));
 					}
-					
-					queryInsertStmt.setTimestamp(6, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+
+					queryInsertStmt.setTimestamp(6, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(7, endOfTime);
 					queryInsertStmt.setString(8, rs.getString("VERMERK"));
 					try {
@@ -222,9 +250,7 @@ public class Migratior {
 						+ "SELECT distinct m.MNR km1, NULL km2 "
 						+ "FROM Mitglied m) T "
 						+ "group by T.km1) O "
-						+ "WHERE "
-						+ "m.MNR = k.MNR AND "
-						+ "O.MNR = m.MNR ";
+						+ "WHERE " + "m.MNR = k.MNR AND " + "O.MNR = m.MNR ";
 				rs = stOzbProd.executeQuery(sql);
 				while (rs.next()) {
 					PreparedStatement queryInsertStmt = conOzbTest
@@ -236,10 +262,15 @@ public class Migratior {
 						queryInsertStmt.setInt(2, rs.getInt("UEBER_MNR"));
 					}
 					queryInsertStmt.setDate(3, rs.getDate("PW_AENDDAT"));
-					
+
 					// TODO
-					if (rs.getString("ANTRAGSDAT") == null || rs.getString("ANTRAGSDAT").equals("")) {
-						queryInsertStmt.setString(4, "0000-01-01"); // Dreckig, lieber Calendar Object nutzen.
+					if (rs.getString("ANTRAGSDAT") == null
+							|| rs.getString("ANTRAGSDAT").equals("")) {
+						queryInsertStmt.setString(4, "0000-01-01"); // Dreckig,
+																	// lieber
+																	// Calendar
+																	// Object
+																	// nutzen.
 					} else {
 						queryInsertStmt.setDate(4, rs.getDate("ANTRAGSDAT"));
 					}
@@ -248,8 +279,10 @@ public class Migratior {
 					queryInsertStmt.setDate(6, rs.getDate("AUS_DAT"));
 					queryInsertStmt.setDate(7, rs.getDate("SCHUL_DAT"));
 					long oneDay = 1 * 24 * 60 * 60 * 1000;
-					//queryInsertStmt.setTimestamp(10, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
-					//queryInsertStmt.setTimestamp(11, endOfTime);
+					// queryInsertStmt.setTimestamp(10, new
+					// java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24
+					// * 60 * 60 * 1000));
+					// queryInsertStmt.setTimestamp(11, endOfTime);
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -270,7 +303,9 @@ public class Migratior {
 
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					queryInsertStmt.setDate(2, rs.getDate("RV_DAT"));
-					queryInsertStmt.setTimestamp(3, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(3, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(4, endOfTime);
 
 					try {
@@ -294,23 +329,28 @@ public class Migratior {
 							.prepareStatement(queryInsertGesellschafter);
 
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
-					
-					if (rs.getString("FAStnr") == null || rs.getString("FAStnr").equals("")) {
+
+					if (rs.getString("FAStnr") == null
+							|| rs.getString("FAStnr").equals("")) {
 						queryInsertStmt.setString(2, "###");
 					} else {
 						queryInsertStmt.setString(2, rs.getString("FAStnr"));
 					}
-					
-					queryInsertStmt.setInt(3, rs.getInt("FALfdnr"));					
+
+					queryInsertStmt.setInt(3, rs.getInt("FALfdnr"));
 					queryInsertStmt.setString(4, rs.getString("FAIdnr"));
-					
-					if (rs.getString("WohnsitzFA") == null || rs.getString("WohnsitzFA").equals("")) {
+
+					if (rs.getString("WohnsitzFA") == null
+							|| rs.getString("WohnsitzFA").equals("")) {
 						queryInsertStmt.setString(5, "###");
 					} else {
-						queryInsertStmt.setString(5, rs.getString("WohnsitzFA"));
+						queryInsertStmt
+								.setString(5, rs.getString("WohnsitzFA"));
 					}
-					
-					queryInsertStmt.setTimestamp(6, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+
+					queryInsertStmt.setTimestamp(6, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(7, endOfTime);
 					try {
 						queryInsertStmt.executeUpdate();
@@ -333,16 +373,22 @@ public class Migratior {
 							.prepareStatement(queryInsertStudent);
 
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
-					queryInsertStmt.setTimestamp(2, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(2, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(3, endOfTime);
-					
+
 					// Temp!!!
 					// TODO
 					queryInsertStmt.setString(4, "###");
 					queryInsertStmt.setString(5, "###");
 					queryInsertStmt.setString(6, "###");
-					queryInsertStmt.setTimestamp(7, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
-					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(7, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
+					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setString(9, "###");
 
 					try {
@@ -363,17 +409,19 @@ public class Migratior {
 
 					PreparedStatement queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertFoerdermitglied);
-					
+
 					queryInsertStmt.setInt(1, rs.getInt("Pnr"));
-					queryInsertStmt.setTimestamp(2, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(2, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(3, endOfTime);
-					
+
 					// Region,Foerderbeitrag,MJ
 					// TODO
 					queryInsertStmt.setString(4, "###");
 					queryInsertStmt.setInt(5, -1);
 					queryInsertStmt.setString(6, "m");
-					
+
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -385,7 +433,8 @@ public class Migratior {
 
 				}
 				// Veranstaltungsart
-				rs = stOzbProd.executeQuery("SELECT `Vanr`,`VABezeichnung` FROM `Veranstaltungsart`");
+				rs = stOzbProd
+						.executeQuery("SELECT `Vanr`,`VABezeichnung` FROM `Veranstaltungsart`");
 				while (rs.next()) {
 					PreparedStatement queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertVeranstalltungart);
@@ -395,15 +444,16 @@ public class Migratior {
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
-						pw.println("Veranstaltungsart : " + " Vnr: " + rs.getInt("Vanr")
-								+ " " + e.getMessage());
+						pw.println("Veranstaltungsart : " + " Vnr: "
+								+ rs.getInt("Vanr") + " " + e.getMessage());
 						pw.println("SQL-Query: " + queryInsertStmt.toString());
 						pw.println("");
 					}
 
 				}
 				// Veranstaltung
-				rs = stOzbProd.executeQuery("SELECT `Vnr`,`Vanr`,`VADatum`,`VAOrt` FROM `Veranstaltung`");
+				rs = stOzbProd
+						.executeQuery("SELECT `Vnr`,`Vanr`,`VADatum`,`VAOrt` FROM `Veranstaltung`");
 				while (rs.next()) {
 					PreparedStatement queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertVeranstalltung);
@@ -415,15 +465,16 @@ public class Migratior {
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
-						pw.println("Veranstaltung : " + " Vnr: " + rs.getInt("Vnr")
-								+ " " + e.getMessage());
+						pw.println("Veranstaltung : " + " Vnr: "
+								+ rs.getInt("Vnr") + " " + e.getMessage());
 						pw.println("SQL-Query: " + queryInsertStmt.toString());
 						pw.println("");
 					}
 				}
-				
+
 				// Teilnahme
-				rs = stOzbProd.executeQuery("SELECT `Mnr`,`Vnr`,`TeilnArt` FROM `Teilnahme`");
+				rs = stOzbProd
+						.executeQuery("SELECT `Mnr`,`Vnr`,`TeilnArt` FROM `Teilnahme`");
 				while (rs.next()) {
 					PreparedStatement queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertTeilnahme);
@@ -434,8 +485,9 @@ public class Migratior {
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
-						pw.println("Teilnahme : " + " Vnr: " + rs.getInt("Vnr") + " Mnr: " + rs.getInt("Mnr")
-								+ " " + e.getMessage());
+						pw.println("Teilnahme : " + " Vnr: " + rs.getInt("Vnr")
+								+ " Mnr: " + rs.getInt("Mnr") + " "
+								+ e.getMessage());
 						pw.println("SQL-Query: " + queryInsertStmt.toString());
 						pw.println("");
 					}
@@ -451,15 +503,18 @@ public class Migratior {
 
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					queryInsertStmt.setInt(2, rs.getInt("MNR_P"));
-					
+
 					// TODO
 					// Berechtigungen in der ozb_prod: i, j, n, l - WTF :D
-					// unsere neuen Berechtigungen: l = leseberechtigt, v = vollberechtigt
+					// unsere neuen Berechtigungen: l = leseberechtigt, v =
+					// vollberechtigt
 					// setze jetzt erstmal alle auf leseberechtigt.
-					//queryInsertStmt.setString(3, rs.getString("AUT"));
+					// queryInsertStmt.setString(3, rs.getString("AUT"));
 					queryInsertStmt.setString(3, "l");
-					
-					queryInsertStmt.setTimestamp(4, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+
+					queryInsertStmt.setTimestamp(4, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(5, endOfTime);
 					try {
 						queryInsertStmt.executeUpdate();
@@ -483,12 +538,13 @@ public class Migratior {
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					queryInsertStmt.setInt(2, rs.getInt("LFD-Nr"));
 					queryInsertStmt.setString(3, rs.getString("TELNr"));
-					
-					// TODO es gibt unterschiedliche Telefontypen zu unseren Definitionen!
+
+					// TODO es gibt unterschiedliche Telefontypen zu unseren
+					// Definitionen!
 					// Setze daher jetzt erstmal alles auf 'tel'.
-					//queryInsertStmt.setString(4, rs.getString("TELTYP"));
+					// queryInsertStmt.setString(4, rs.getString("TELTYP"));
 					queryInsertStmt.setString(4, "tel");
-					
+
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -510,9 +566,10 @@ public class Migratior {
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					queryInsertStmt.setInt(2, rs.getInt("LISTID"));
 					queryInsertStmt.setString(3, rs.getString("STATUS"));
-					
+
 					// TODO TanlistDatum
-					// Auch hier setze ich erstmal "dreckig" auf Jahr 0. Micha hf ;)
+					// Auch hier setze ich erstmal "dreckig" auf Jahr 0. Micha
+					// hf ;)
 					queryInsertStmt.setString(4, "0000-01-01");
 
 					try {
@@ -551,33 +608,38 @@ public class Migratior {
 					}
 
 				}
-				
-				// Bank				
-				rs = stOzbProd.executeQuery("SELECT `BLZ`,`BANK` FROM `Mitglied` WHERE BLZ is not null GROUP By BLZ");
-				while(rs.next()) {
+
+				// Bank
+				rs = stOzbProd
+						.executeQuery("SELECT `BLZ`,`BANK` FROM `Mitglied` WHERE BLZ is not null GROUP By BLZ");
+				while (rs.next()) {
 					PreparedStatement queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertBank);
 					queryInsertStmt.setString(2, rs.getString("BANK"));
 					try {
-						queryInsertStmt.setInt(1, Integer.parseInt( rs.getString("BLZ").replaceAll(" ","")));
+						queryInsertStmt.setInt(1, Integer.parseInt(rs
+								.getString("BLZ").replaceAll(" ", "")));
 					} catch (Exception e) {
-						pw.println("Can't process BLZ" + rs.getString("BLZ") + ", skipping.");
+						pw.println("Can't process BLZ" + rs.getString("BLZ")
+								+ ", skipping.");
 						continue;
 					}
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
-//						pw.println("Bank : " + " BLZ: "
-//								+ rs.getString("BLZ") + " " + e.getMessage());
-//						pw.println("SQL-Query: " + queryInsertStmt.toString());
-//						pw.println("");
+						// pw.println("Bank : " + " BLZ: "
+						// + rs.getString("BLZ") + " " + e.getMessage());
+						// pw.println("SQL-Query: " +
+						// queryInsertStmt.toString());
+						// pw.println("");
 					}
 
 				}
 
 				// Bankverbindung
-				rs = stOzbProd.executeQuery("select MNR,BANKKONTONR, BLZ from Mitglied WHERE BLZ is not null");
-				
+				rs = stOzbProd
+						.executeQuery("select MNR,BANKKONTONR, BLZ from Mitglied WHERE BLZ is not null");
+
 				while (rs.next()) {
 
 					PreparedStatement queryInsertStmt = conOzbTest
@@ -586,17 +648,21 @@ public class Migratior {
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					queryInsertStmt.setString(2, rs.getString("BANKKONTONR"));
 					try {
-						queryInsertStmt.setInt(3, Integer.parseInt( rs.getString("BLZ").replaceAll(" ","")));
+						queryInsertStmt.setInt(3, Integer.parseInt(rs
+								.getString("BLZ").replaceAll(" ", "")));
 					} catch (Exception e) {
-						pw.println("Can't process BLZ" + rs.getString("BLZ") + ", skipping.");
+						pw.println("Can't process BLZ" + rs.getString("BLZ")
+								+ ", skipping.");
 						continue;
 					}
-					queryInsertStmt.setTimestamp(4, new java.sql.Timestamp(calendar.getTime().getTime() -1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(4, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(5, endOfTime);
 
 					// TODO Es gibt noch keine IBAN, also dummy wert
 					queryInsertStmt.setString(6, "000");
-					
+
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -607,51 +673,64 @@ public class Migratior {
 					}
 
 				}
-				
+
 				// TODO
 				// Waehrung
-				// Die Tabelle muss mit den gefundenen Waehrungen gefüllt werden. (STR, CAR
+				// Die Tabelle muss mit den gefundenen Waehrungen gefüllt
+				// werden. (STR, CAR
 				// NGD, EUR, PFR).
-				// Ich hau jetzt mal was rein Micha, schau dir das bitte nochmal an ;)
-				String queryInsertWaehrungStmt = 	"INSERT INTO waehrung (Code,Bezeichnung) VALUES (?,?);";
+				// Ich hau jetzt mal was rein Micha, schau dir das bitte nochmal
+				// an ;)
+				String queryInsertWaehrungStmt = "INSERT INTO waehrung (Code,Bezeichnung) VALUES (?,?);";
 				PreparedStatement queryWaehrungInsertStmt = null;
-				/*"INSERT INTO waehrung (Code,Bezeichnung) VALUES ('STR', 'Stuttgarter');"
-											"INSERT INTO waehrung (Code,Bezeichnung) VALUES ('CAR', '###');" +
-											"INSERT INTO waehrung (Code,Bezeichnung) VALUES ('NGD', '###');" +
-											"INSERT INTO waehrung (Code,Bezeichnung) VALUES ('EUR', 'Europ');" +
-											"INSERT INTO waehrung (Code,Bezeichnung) VALUES ('PFR', 'Pforzheimer');"; */
+				/*
+				 * "INSERT INTO waehrung (Code,Bezeichnung) VALUES ('STR', 'Stuttgarter');"
+				 * "INSERT INTO waehrung (Code,Bezeichnung) VALUES ('CAR', '###');"
+				 * +
+				 * "INSERT INTO waehrung (Code,Bezeichnung) VALUES ('NGD', '###');"
+				 * +
+				 * "INSERT INTO waehrung (Code,Bezeichnung) VALUES ('EUR', 'Europ');"
+				 * +
+				 * "INSERT INTO waehrung (Code,Bezeichnung) VALUES ('PFR', 'Pforzheimer');"
+				 * ;
+				 */
 				try {
-					queryWaehrungInsertStmt = conOzbTest.prepareStatement(queryInsertWaehrungStmt);
+					queryWaehrungInsertStmt = conOzbTest
+							.prepareStatement(queryInsertWaehrungStmt);
 					queryWaehrungInsertStmt.setString(1, "STR");
 					queryWaehrungInsertStmt.setString(2, "Stuttgarter");
 					queryWaehrungInsertStmt.executeUpdate();
-					
-					queryWaehrungInsertStmt = conOzbTest.prepareStatement(queryInsertWaehrungStmt);
+
+					queryWaehrungInsertStmt = conOzbTest
+							.prepareStatement(queryInsertWaehrungStmt);
 					queryWaehrungInsertStmt.setString(1, "CAR");
 					queryWaehrungInsertStmt.setString(2, "###");
 					queryWaehrungInsertStmt.executeUpdate();
-					
-					queryWaehrungInsertStmt = conOzbTest.prepareStatement(queryInsertWaehrungStmt);
+
+					queryWaehrungInsertStmt = conOzbTest
+							.prepareStatement(queryInsertWaehrungStmt);
 					queryWaehrungInsertStmt.setString(1, "NGD");
 					queryWaehrungInsertStmt.setString(2, "###");
 					queryWaehrungInsertStmt.executeUpdate();
-					
-					queryWaehrungInsertStmt = conOzbTest.prepareStatement(queryInsertWaehrungStmt);
+
+					queryWaehrungInsertStmt = conOzbTest
+							.prepareStatement(queryInsertWaehrungStmt);
 					queryWaehrungInsertStmt.setString(1, "EUR");
 					queryWaehrungInsertStmt.setString(2, "Euro");
 					queryWaehrungInsertStmt.executeUpdate();
-					
-					queryWaehrungInsertStmt = conOzbTest.prepareStatement(queryInsertWaehrungStmt);
+
+					queryWaehrungInsertStmt = conOzbTest
+							.prepareStatement(queryInsertWaehrungStmt);
 					queryWaehrungInsertStmt.setString(1, "PFR");
 					queryWaehrungInsertStmt.setString(2, "Pforzheimer");
 					queryWaehrungInsertStmt.executeUpdate();
 				} catch (SQLException e) {
 					pw.println("Waehrung : " + e.getMessage());
-					pw.println("SQL-Query: " + queryWaehrungInsertStmt.toString());
+					pw.println("SQL-Query: "
+							+ queryWaehrungInsertStmt.toString());
 					pw.println("");
 				}
-				
-				
+
 				String queryInsertOZBKonto = "INSERT INTO ozbkonto (KtoNr,Mnr,KtoEinrDatum,Waehrung,WSaldo,PSaldo,SaldoDatum,GueltigVon,GueltigBis) VALUES (?,?,?,?,?,?,?,?,?);";
 				// OZBKonto 1
 				rs = stOzbProd
@@ -665,12 +744,13 @@ public class Migratior {
 					queryInsertStmt.setInt(2, rs.getInt("MNR"));
 					queryInsertStmt.setDate(3, rs.getDate("KTOEINRDAT"));
 					queryInsertStmt.setString(4, rs.getString("WHRG"));
-					queryInsertStmt.setBigDecimal(5, rs
-							.getBigDecimal("W_SALDO"));
-					queryInsertStmt.setInt(6, rs
-							.getInt("PKTESALDO"));
+					queryInsertStmt.setBigDecimal(5,
+							rs.getBigDecimal("W_SALDO"));
+					queryInsertStmt.setInt(6, rs.getInt("PKTESALDO"));
 					queryInsertStmt.setDate(7, rs.getDate("SALDODAT"));
-					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(9, endOfTime);
 					try {
 						queryInsertStmt.executeUpdate();
@@ -693,24 +773,27 @@ public class Migratior {
 
 					queryInsertStmt.setInt(1, rs.getInt("KTONR"));
 					queryInsertStmt.setInt(2, rs.getInt("MNR"));
-					
+
 					try {
-						Date date=rs.getDate("DARLDAT");
-						if (date.getDate()<=7) date.setDate(1);
-						else date.setDate(date.getDate()-7);
+						Date date = rs.getDate("DARLDAT");
+						if (date.getDate() <= 7)
+							date.setDate(1);
+						else
+							date.setDate(date.getDate() - 7);
 						queryInsertStmt.setDate(3, date);
 					} catch (Exception e) {
-						
+
 						queryInsertStmt.setNull(3, java.sql.Types.DATE);
 					}
-					
+
 					queryInsertStmt.setString(4, rs.getString("WHRG"));
-					queryInsertStmt.setBigDecimal(5, rs
-							.getBigDecimal("DARL_SALDO"));
-					queryInsertStmt.setInt(6, rs
-							.getInt("PKTESALDO"));
+					queryInsertStmt.setBigDecimal(5,
+							rs.getBigDecimal("DARL_SALDO"));
+					queryInsertStmt.setInt(6, rs.getInt("PKTESALDO"));
 					queryInsertStmt.setDate(7, rs.getDate("SALDODAT"));
-					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(9, endOfTime);
 					try {
 						queryInsertStmt.executeUpdate();
@@ -722,7 +805,7 @@ public class Migratior {
 					}
 
 				}
-				
+
 				// EEKonto Temp
 				rs = stOzbProd
 						.executeQuery("SELECT k.KTONR, k.`LIMIT`, m.`BANKKONTONR`,m.BLZ,m.BANK FROM Konto k join Mitglied m on m.MNR = k.MNR; ");
@@ -732,18 +815,18 @@ public class Migratior {
 							.prepareStatement(queryInsertTemp);
 
 					queryInsertStmt.setInt(1, rs.getInt("KTONR"));
-					queryInsertStmt.setBigDecimal(2, rs
-							.getBigDecimal("LIMIT"));
+					queryInsertStmt.setBigDecimal(2, rs.getBigDecimal("LIMIT"));
 					queryInsertStmt.setString(3, rs.getString("BANKKONTONR"));
 
 					try {
-						queryInsertStmt.setInt(4, Integer.parseInt( rs.getString("BLZ").replaceAll(" ","")));
+						queryInsertStmt.setInt(4, Integer.parseInt(rs
+								.getString("BLZ").replaceAll(" ", "")));
 					} catch (Exception e) {
 						queryInsertStmt.setNull(4, java.sql.Types.INTEGER);
 					}
-					
+
 					queryInsertStmt.setString(5, rs.getString("BANK"));
-					
+
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -754,12 +837,13 @@ public class Migratior {
 					}
 				}
 				// EEKonto
-				rs = stOzbTest.executeQuery("select T.KtoNr, max(T.ID) ID,T.Kreditlimit from "
+				rs = stOzbTest
+						.executeQuery("select T.KtoNr, max(T.ID) ID,T.Kreditlimit from "
 								+ "(select Temp.KtoNr, Bankverbindung.ID, Temp.Kreditlimit from temp as Temp, bankverbindung as Bankverbindung join bank as Bank on Bank.BLZ = Bankverbindung.BLZ "
-								+ "where (Temp.BankKtoNr=Bankverbindung.BankKtoNr and Temp.BLZ=Bankverbindung.BLZ) " 
+								+ "where (Temp.BankKtoNr=Bankverbindung.BankKtoNr and Temp.BLZ=Bankverbindung.BLZ) "
 								+ "or (Temp.BankKtoNr=Bankverbindung.BankKtoNr and Temp.BankName=Bank.BankName) "
 								+ "union "
-								+ "select Temp.KtoNr, NULL, Temp.Kreditlimit from temp as Temp) T " 
+								+ "select Temp.KtoNr, NULL, Temp.Kreditlimit from temp as Temp) T "
 								+ "group by T.KtoNr");
 				while (rs.next()) {
 
@@ -768,14 +852,17 @@ public class Migratior {
 
 					queryInsertStmt.setInt(1, rs.getInt("KtoNr"));
 					if (rs.getInt("ID") == 0) {
-						// TODO Falls keine Bank gefunden wurde, setze ich hier erstmal 0 ein.
+						// TODO Falls keine Bank gefunden wurde, setze ich hier
+						// erstmal 0 ein.
 						queryInsertStmt.setInt(2, 0);
 					} else {
 						queryInsertStmt.setInt(2, rs.getInt("ID"));
 					}
-					queryInsertStmt.setBigDecimal(3, rs
-							.getBigDecimal("Kreditlimit"));
-					queryInsertStmt.setTimestamp(4, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setBigDecimal(3,
+							rs.getBigDecimal("Kreditlimit"));
+					queryInsertStmt.setTimestamp(4, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(5, endOfTime);
 					try {
 						queryInsertStmt.executeUpdate();
@@ -797,8 +884,8 @@ public class Migratior {
 							.prepareStatement(queryInsertProjektgruppe);
 
 					queryInsertStmt.setInt(1, rs.getInt("PGNR"));
-					queryInsertStmt.setString(2, rs
-							.getString("ProjektGruppBez"));
+					queryInsertStmt.setString(2,
+							rs.getString("ProjektGruppBez"));
 
 					try {
 						queryInsertStmt.executeUpdate();
@@ -824,39 +911,43 @@ public class Migratior {
 					queryInsertStmt.setInt(3, rs.getInt("PGNR"));
 					queryInsertStmt.setString(4, rs.getString("DARLNR"));
 					queryInsertStmt.setDate(5, rs.getDate("DARLDAT"));
-					
+
 					// TODO ZE Enddatum darf nicht null sein -> dummy wert
 					if (rs.getDate("ENDDAT") == null) {
 						queryInsertStmt.setString(6, "9999-01-01");
 					} else {
 						queryInsertStmt.setDate(6, rs.getDate("ENDDAT"));
 					}
-					
-					queryInsertStmt.setBigDecimal(7, rs.getBigDecimal("DARLBETRAG"));
+
+					queryInsertStmt.setBigDecimal(7,
+							rs.getBigDecimal("DARLBETRAG"));
 					queryInsertStmt.setInt(8, rs.getInt("LAUFZEIT"));
-					
+
 					// TODO wenn Zahlmodus nicht gegeben, setze dummy wert ein.
 					// Es gibt: m = monatlich, q = quartal, j = jaehrlich
-					if (rs.getString("ZAHLMODUS") == null || rs.getString("ZAHLMODUS").equals("")) {
-						queryInsertStmt.setString(9, "m"); // Dreckig, lieber Calendar Object nutzen.
+					if (rs.getString("ZAHLMODUS") == null
+							|| rs.getString("ZAHLMODUS").equals("")) {
+						queryInsertStmt.setString(9, "m"); // Dreckig, lieber
+															// Calendar Object
+															// nutzen.
 					} else {
 						queryInsertStmt.setString(9, rs.getString("ZAHLMODUS"));
 					}
-					
-					queryInsertStmt.setBigDecimal(10, rs
-							.getBigDecimal("TILG_RATE"));
-					queryInsertStmt.setBigDecimal(11, rs
-							.getBigDecimal("NSPAR_RATE"));
-					queryInsertStmt
-							.setBigDecimal(12, rs.getBigDecimal("KDU"));
-					queryInsertStmt
-							.setBigDecimal(13, rs.getBigDecimal("RDU"));
+
+					queryInsertStmt.setBigDecimal(10,
+							rs.getBigDecimal("TILG_RATE"));
+					queryInsertStmt.setBigDecimal(11,
+							rs.getBigDecimal("NSPAR_RATE"));
+					queryInsertStmt.setBigDecimal(12, rs.getBigDecimal("KDU"));
+					queryInsertStmt.setBigDecimal(13, rs.getBigDecimal("RDU"));
 					queryInsertStmt.setString(14, rs.getString("STATUS"));
-					queryInsertStmt.setTimestamp(15, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(15, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(16, endOfTime);
 					queryInsertStmt.setInt(17, rs.getInt("KALK_LEIHPUNKTE"));
 					queryInsertStmt.setInt(18, rs.getInt("TATS_LEIHPUNKTE"));
-					queryInsertStmt.setString(19,rs.getString("Sicherung"));
+					queryInsertStmt.setString(19, rs.getString("Sicherung"));
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -869,10 +960,10 @@ public class Migratior {
 				}
 
 				// Buergschaft
-				
-						rs = stOzbProd
+
+				rs = stOzbProd
 						.executeQuery("SELECT MNR_B,MNR_G,Darlehen.KTONR,ZE_NR, SICH_AB_DAT,SICH_BIS_DAT,SICH_BETRAG,SICH_BEZ  FROM Buergschaft,Darlehen WHERE Buergschaft.ze_nr=Darlehen.darlnr ;");
-						while (rs.next()) {
+				while (rs.next()) {
 
 					PreparedStatement queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertBuergschaft);
@@ -881,19 +972,20 @@ public class Migratior {
 					queryInsertStmt.setInt(2, rs.getInt("MNR_G"));
 					queryInsertStmt.setString(3, rs.getString("ZE_NR"));
 					queryInsertStmt.setDate(4, rs.getDate("SICH_AB_DAT"));
-					
+
 					// TODO Enddatum darf nicht null sein -> dummy wert
 					if (rs.getDate("SICH_BIS_DAT") == null) {
 						queryInsertStmt.setString(5, "9999-01-01");
 					} else {
 						queryInsertStmt.setDate(5, rs.getDate("SICH_BIS_DAT"));
 					}
-					
-					
-					queryInsertStmt.setBigDecimal(6, rs
-							.getBigDecimal("SICH_BETRAG"));
+
+					queryInsertStmt.setBigDecimal(6,
+							rs.getBigDecimal("SICH_BETRAG"));
 					queryInsertStmt.setString(7, rs.getString("SICH_BEZ"));
-					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24 * 60 * 60 * 1000));
+					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(
+							calendar.getTime().getTime() - 1 * 24 * 60 * 60
+									* 1000));
 					queryInsertStmt.setTimestamp(9, endOfTime);
 					try {
 						queryInsertStmt.executeUpdate();
@@ -915,8 +1007,7 @@ public class Migratior {
 
 					queryInsertStmt.setString(1, rs.getString("KKL"));
 					queryInsertStmt.setDate(2, rs.getDate("KKL-ABDAT"));
-					queryInsertStmt
-							.setBigDecimal(3, rs.getBigDecimal("KKL%"));
+					queryInsertStmt.setBigDecimal(3, rs.getBigDecimal("KKL%"));
 
 					try {
 						queryInsertStmt.executeUpdate();
@@ -951,7 +1042,10 @@ public class Migratior {
 					}
 
 				}
+				
+				
 				String queryInsertBuchung = "INSERT INTO buchung (BuchJahr,KtoNr,BnKreis,BelegNr,Typ,Belegdatum,BuchDatum,Buchungstext,Sollbetrag,Habenbetrag,SollKtoNr,HabenKtoNr,WSaldoAcc,Punkte,PSaldoAcc) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				
 				// Buchung
 				rs = stOzbProd
 						.executeQuery("SELECT JAHR,KONTONR,BNKREIS,BELEGNR,TYP,BUCHUNGSDAT,WERTDAT,BUCHUNGSTEXT,SOLLBETRAG,HABENBETRAG,SOLLKTONR,HABENKTONR,SALDO_ACC,PKTE,PKTE_ACC FROM `Buchung` ; ");
@@ -966,19 +1060,18 @@ public class Migratior {
 					queryInsertStmt.setString(5, rs.getString("TYP"));
 					queryInsertStmt.setDate(6, rs.getDate("BUCHUNGSDAT"));
 					queryInsertStmt.setDate(7, rs.getDate("WERTDAT"));
-					queryInsertStmt
-							.setString(8, rs.getString("BUCHUNGSTEXT"));
-					queryInsertStmt.setBigDecimal(9, rs
-							.getBigDecimal("SOLLBETRAG"));
-					queryInsertStmt.setBigDecimal(10, rs
-							.getBigDecimal("HABENBETRAG"));
+					queryInsertStmt.setString(8, rs.getString("BUCHUNGSTEXT"));
+					queryInsertStmt.setBigDecimal(9,
+							rs.getBigDecimal("SOLLBETRAG"));
+					queryInsertStmt.setBigDecimal(10,
+							rs.getBigDecimal("HABENBETRAG"));
 					queryInsertStmt.setInt(11, rs.getInt("SOLLKTONR"));
 					queryInsertStmt.setInt(12, rs.getInt("HABENKTONR"));
-					queryInsertStmt.setBigDecimal(13, rs
-							.getBigDecimal("SALDO_ACC"));
-			
+					queryInsertStmt.setBigDecimal(13,
+							rs.getBigDecimal("SALDO_ACC"));
 
-					// Vertauscht, da in der Produktivdatenbank schon falsch benannt wurde (Punkte -> PSaldoACC)
+					// Vertauscht, da in der Produktivdatenbank schon falsch
+					// benannt wurde (Punkte -> PSaldoACC)
 					queryInsertStmt.setInt(14, rs.getInt("PKTE_ACC"));
 					queryInsertStmt.setInt(15, rs.getInt("PKTE"));
 
@@ -992,15 +1085,65 @@ public class Migratior {
 					}
 
 				}
-				stOzbTest.executeUpdate("INSERT INTO `geschaeftsprozess` (`ID`, `Beschreibung`, `IT`, `MV`, `RW`, `ZE`, `OeA`) VALUES (1, 'Alle Mitglieder anzeigen', 1, 1, 1, 1, 1),(2, 'Details einer Person anzeigen', 1, 1, 1, 1, 1),(3, 'Mitglieder hinzufuegen', 1, 1, 0, 0, 0),(5, 'Mitglieder loeschen', 1, 1, 0, 0, 0),(6, 'Rolle eines Mitglieds zum Gesellschafter aendern', 1, 1, 0, 0, 0),(7, 'Mitglied Administratorrechte hinzufuegen', 1, 0, 0, 0, 0),(8, 'Kontenklassen hinzufuegen', 1, 0, 1, 0, 0),(9, 'Kontenklassen bearbeiten', 1, 0, 0, 0, 0),(11, 'Alle Konten anzeigen', 1, 1, 1, 1, 1),(12, 'Details eines Kontos anzeigen', 1, 1, 1, 1, 1),(13, 'Einlage/Entnahmekonten hinzufuegen', 1, 0, 1, 0, 0),(14, 'Einlage/Entnahmekonten bearbeiten', 1, 0, 1, 0, 0),(15, 'Zusatzentnahmekonten hinzufuegen', 1, 0, 1, 0, 0),(17, 'Buergschaften anzeigen', 1, 1, 1, 1, 1),(18, 'Buergschaften hinzufuegen', 1, 0, 0, 1, 0),(19, 'Buergschaften bearbeiten', 1, 0, 0, 1, 0),(20, 'Veranstaltung einsehen/bearbeiten',1,1,0,0,1);");
-				/**Loschen der Tabelle temp	 */
+				stOzbTest
+						.executeUpdate("INSERT INTO `geschaeftsprozess` (`ID`, `Beschreibung`, `IT`, `MV`, `RW`, `ZE`, `OeA`) VALUES (1, 'Alle Mitglieder anzeigen', 1, 1, 1, 1, 1),(2, 'Details einer Person anzeigen', 1, 1, 1, 1, 1),(3, 'Mitglieder hinzufuegen', 1, 1, 0, 0, 0),(5, 'Mitglieder loeschen', 1, 1, 0, 0, 0),(6, 'Rolle eines Mitglieds zum Gesellschafter aendern', 1, 1, 0, 0, 0),(7, 'Mitglied Administratorrechte hinzufuegen', 1, 0, 0, 0, 0),(8, 'Kontenklassen hinzufuegen', 1, 0, 1, 0, 0),(9, 'Kontenklassen bearbeiten', 1, 0, 0, 0, 0),(11, 'Alle Konten anzeigen', 1, 1, 1, 1, 1),(12, 'Details eines Kontos anzeigen', 1, 1, 1, 1, 1),(13, 'Einlage/Entnahmekonten hinzufuegen', 1, 0, 1, 0, 0),(14, 'Einlage/Entnahmekonten bearbeiten', 1, 0, 1, 0, 0),(15, 'Zusatzentnahmekonten hinzufuegen', 1, 0, 1, 0, 0),(17, 'Buergschaften anzeigen', 1, 1, 1, 1, 1),(18, 'Buergschaften hinzufuegen', 1, 0, 0, 1, 0),(19, 'Buergschaften bearbeiten', 1, 0, 0, 1, 0),(20, 'Veranstaltung einsehen/bearbeiten',1,1,0,0,1);");
+				/** Loschen der Tabelle temp */
 				stOzbTest.executeUpdate("drop table temp");
+				
+				
+				// Users table
+				
+				// Get OZBPersons
+				sql = "SELECT DISTINCT m.MNR, O.UEBER_MNR, m.PASSWORT, m.PW_AENDDAT, m.SPERRKZ, m.ANTRAGSDAT, m.AUFNAHMEDAT, m.AUS_DAT, m.SCHUL_DAT, m.EMAIL "
+						+ "FROM Mitglied m, Konto k, "
+						+ "(select T.km1 MNR, MAX(T.km2) UEBER_MNR "
+						+ "from"
+						+ "(SELECT distinct m.MNR km1, m2.MNR km2 "
+						+ "FROM Mitglied m, Mitglied m2 "
+						+ "WHERE m.UEBER_NAME = m2.NAME AND "
+						+ "m.UEBER_VORNAME = m2.VORNAME "
+						+ "union "
+						+ "SELECT distinct m.MNR km1, NULL km2 "
+						+ "FROM Mitglied m) T "
+						+ "group by T.km1) O "
+						+ "WHERE " + "m.MNR = k.MNR AND " + "O.MNR = m.MNR ";
+				rs = stOzbProd
+						.executeQuery(sql);
+				
+				System.out.println("Inserting Users... ");
+				// Insert Mnr + Email into users table
+				while (rs.next()) {
+					int mnr = rs.getInt("MNR");
+					System.out.println("Mnr: " + mnr);
+					PreparedStatement queryInsertStmt = conOzbTest
+							.prepareStatement(queryInsertUser);
 
+					queryInsertStmt.setInt(1, mnr);
+					queryInsertStmt.setString(2, rs.getString("EMAIL"));
+					
+					// Now
+					java.util.Date today = new java.util.Date();
+					java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+					
+					queryInsertStmt.setDate(3, sqlToday);
+					queryInsertStmt.setDate(4, sqlToday);
+
+					try {
+						queryInsertStmt.executeUpdate();
+					} catch (SQLException e) {
+						pw.println("Users : " + " Mnr: "
+								+ rs.getInt("Mnr") + " " + e.getMessage());
+						pw.println("SQL-Query: " + queryInsertStmt.toString());
+						pw.println("");
+					}
+
+				}
+				
 				conOzbTest.commit();
 
 				conOzbProd.close();
 				conOzbTest.close();
-			} catch (SQLException e) {				
+			} catch (SQLException e) {
 				pw.println("sql: " + e.getMessage());
 				e.printStackTrace();
 			}
@@ -1011,8 +1154,9 @@ public class Migratior {
 			e.printStackTrace();
 		}
 	}
-	
-	/**Eine Methode, um die Hausnummer aus einer Zeile zu erhalten
+
+	/**
+	 * Eine Methode, um die Hausnummer aus einer Zeile zu erhalten
 	 * 
 	 */
 	private static String getNumberFromString(String str) {
@@ -1028,8 +1172,9 @@ public class Migratior {
 		return "";
 
 	}
-	
-	/**Eine Methode, um die Adresse aus einer Zeile zu erhalten
+
+	/**
+	 * Eine Methode, um die Adresse aus einer Zeile zu erhalten
 	 * 
 	 */
 	private static String getStrasseFromString(String str) {

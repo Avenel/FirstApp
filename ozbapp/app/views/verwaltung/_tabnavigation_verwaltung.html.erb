@@ -5,25 +5,25 @@
 <% editRollen_link    = "/Verwaltung/Rollen" %>
 <% createSonderberechtigung_link = "/Verwaltung/Rollen/NeueSonderberechtigung" %>
 <ul class="nav nav-tabs">
-	<% if is_allowed(current_OZBPerson, 1) %>
+	<% if is_allowed(current_user, 1) %>
 	<li <%= (getCurrentLocation == "/Verwaltung/Mitglieder") ? "class='active'" : "" %> >
 	 <%= link_to "Alle Mitglieder anzeigen", list_link %>
 	</li>
 	<% end %>
 
-	<% if is_allowed(current_OZBPerson, 1) %>
+	<% if is_allowed(current_user, 1) %>
 	<li <%= (getCurrentLocation == "/Verwaltung/Mitglieder/Suchen") ? "class='active'" : "" %>>
 	 <%= link_to "Schnellsuche", searchPerson_link %>	
 	</li>
 	<% end %>
 
-	<% if is_allowed(current_OZBPerson, 3) %>
+	<% if is_allowed(current_user, 3) %>
 	<li>
 	 <%= link_to "Neues Mitglied hinzufügen", newPerson_link %>	
 	</li>
 	<% end %>	
 
-	<% if is_allowed(current_OZBPerson, 1) %>
+	<% if is_allowed(current_user, 1) %>
     <li <% if getCurrentLocation == editRollen_link || getCurrentLocation == createSonderberechtigung_link %>class="active"<%end%>>
     	<%= link_to "Sonderberechtigungen", editRollen_link %>	
     </li>

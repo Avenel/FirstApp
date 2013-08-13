@@ -2,7 +2,7 @@
 # encoding: utf-8
 class VerwaltungController < ApplicationController
 #  protect_from_forgery
-  before_filter :authenticate_OZBPerson!
+  before_filter :authenticate_user!
 
   # Zugriff der Methoden aus der View. NU
   helper_method :sort_column, :sort_direction, :rollen_bezeichnung
@@ -23,7 +23,7 @@ class VerwaltungController < ApplicationController
 
 ### Mitglieder hinzufügen ###
   def newOZBPerson
-    if is_allowed(current_OZBPerson, 3) then
+    if is_allowed(current_user, 3) then
       @DistinctPersonen    = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
       @Rollen              = @@Rollen2
       @Rollen2             = @@Rollen
@@ -57,7 +57,7 @@ class VerwaltungController < ApplicationController
             :Vorname      => params[:vorname], 
             :Geburtsdatum => params[:gebDatum], 
             :Email        => params[:email],
-            :SachPnr      => current_OZBPerson.Mnr 
+            :SachPnr      => current_user.Mnr 
         )
 
         #Fehler aufgetreten?
@@ -69,14 +69,14 @@ class VerwaltungController < ApplicationController
         # Achtung: UberPnr erweitern: Definition + Maske
         @new_OZBPerson = OZBPerson.new(
             :Mnr            => @new_Person.Pnr, 
-            :UeberPnr       => current_OZBPerson.Mnr, 
+            :UeberPnr       => current_user.Mnr, 
             :email          => params[:email], 
             :password       => params[:passwort], 
             :Antragsdatum   => params[:antragsdatum],
             :Aufnahmedatum  => params[:aufnahmedatum],
             :Austrittsdatum => params[:austrittsdatum],
             :PWAendDatum    => Date.today, #NU
-            :SachPnr        => current_OZBPerson.Mnr
+            :SachPnr        => current_user.Mnr
         )
 
         #Fehler aufgetreten?
@@ -92,7 +92,7 @@ class VerwaltungController < ApplicationController
             :PLZ     => params[:plz], 
             :Ort     => params[:ort],
             :Vermerk => params[:vermerk],
-            :SachPnr => current_OZBPerson.Mnr
+            :SachPnr => current_user.Mnr
         )
 
         if params[:strasse].length > 0 || params[:hausnr].length > 0 || params[:plz].length > 0 || params[:ort].length > 0 then
@@ -159,7 +159,7 @@ class VerwaltungController < ApplicationController
             :Wohnsitzfinanzamt => params[:wohnsitzFinanzamt], 
             :NotarPnr          => params[:notarPnr], 
             :BeurkDatum        => params[:beurkDatum],
-            :SachPnr           => current_OZBPerson.Mnr  
+            :SachPnr           => current_user.Mnr  
         )              
 
         @new_Student = Student.new( 
@@ -170,27 +170,27 @@ class VerwaltungController < ApplicationController
             :Studienbeginn => params[:studienbeginn],
             :Studienende   => params[:studienende],
             :Abschluss     => params[:abschluss],
-            :SachPnr       => current_OZBPerson.Mnr 
+            :SachPnr       => current_user.Mnr 
         )
 
         @new_Mitglied = Mitglied.new( 
             :Mnr     => @new_OZBPerson.Mnr, 
             :RVDatum => params[:rvDatum],
-            :SachPnr => current_OZBPerson.Mnr 
+            :SachPnr => current_user.Mnr 
         )
 
         @new_Partner = Partner.new( 
             :Mnr          => @new_OZBPerson.Mnr, 
-            :MnrO         => params[:partner], 
+            :Pnr_P         => params[:partner], 
             :Berechtigung => params[:berechtigung], 
-            :SachPnr      => current_OZBPerson.Mnr 
+            :SachPnr      => current_user.Mnr 
         )
 
         @new_Foerdermitglied = Foerdermitglied.new( 
             :Pnr            => @new_Person.Pnr, 
             :Region         => params[:region], 
             :Foerderbeitrag => params[:foerderbeitrag], 
-            :SachPnr        => current_OZBPerson.Mnr 
+            :SachPnr        => current_user.Mnr 
         )    
 
         error = false
@@ -260,19 +260,19 @@ class VerwaltungController < ApplicationController
           
          ## Telefon speichern
           if params[:telefon].length > 0 then
-            @new_Telefon.SachPnr = current_OZBPerson.Mnr
+            @new_Telefon.SachPnr = current_user.Mnr
             @new_Telefon.save!          
           end
           
          ## Mobil speichern
           if params[:mobil].length > 0 then   
-            @new_Mobil.SachPnr = current_OZBPerson.Mnr       
+            @new_Mobil.SachPnr = current_user.Mnr       
             @new_Mobil.save!
           end
           
          ## Fax speichern speichern
           if params[:fax].length > 0 then
-            @new_Fax.SachPnr = current_OZBPerson.Mnr
+            @new_Fax.SachPnr = current_user.Mnr
             @new_Fax.save!          
           end
          
@@ -326,7 +326,7 @@ class VerwaltungController < ApplicationController
       when "P"
         @Partner = Partner.get(@OZBPerson.Mnr)
         #if !@Partner.nil? then
-        #  @PartnerPerson = Person.get(@Partner.MnrO)
+        #  @PartnerPerson = Person.get(@Partner.Pnr_P)
         #end
       when "G"
         @Gesellschafter = Gesellschafter.get(@OZBPerson.Mnr)
@@ -341,7 +341,7 @@ class VerwaltungController < ApplicationController
 
 ### Mitglieder bearbeiten: Personaldaten ###
   def editPersonaldaten
-    if is_allowed(current_OZBPerson, 3) then
+    if is_allowed(current_user, 3) then
       @OZBPerson = OZBPerson.find(params[:Mnr])
       @Person    = Person.get(@OZBPerson.Mnr)
       @Fullname  = @Person.Name + ", " + @Person.Vorname
@@ -362,12 +362,12 @@ class VerwaltungController < ApplicationController
         @Person.Name              = params[:name]
         @Person.Vorname           = params[:vorname]
         @Person.Geburtsdatum      = params[:gebDatum]
-        @Person.SachPnr           = current_OZBPerson.Mnr
+        @Person.SachPnr           = current_user.Mnr
         
         @OZBPerson.Antragsdatum   = params[:antragsdatum]
         @OZBPerson.Aufnahmedatum  = params[:aufnahmedatum]    
         @OZBPerson.Austrittsdatum = params[:austrittsdatum]
-        @OZBPerson.SachPnr        = current_OZBPerson.Mnr
+        @OZBPerson.SachPnr        = current_user.Mnr
            
        #Fehler aufgetreten?
         if !@Person.valid? then
@@ -397,7 +397,7 @@ class VerwaltungController < ApplicationController
 
 ### Mitglieder bearbeiten: Kontaktdaten ###
   def editKontaktdaten
-    if is_allowed(current_OZBPerson, 3) then
+    if is_allowed(current_user, 3) then
       @OZBPerson = OZBPerson.find(params[:Mnr])
       @Person    = Person.get(@OZBPerson.Mnr)
       @Fullname  = @Person.Name + ", " + @Person.Vorname
@@ -428,7 +428,7 @@ class VerwaltungController < ApplicationController
           @Adresse.PLZ     = params[:plz]
           @Adresse.Ort     = params[:ort]
           @Adresse.Vermerk = params[:vermerk]
-          @Adresse.SachPnr = current_OZBPerson.Mnr
+          @Adresse.SachPnr = current_user.Mnr
         else
           if params[:strasse].length > 0 || params[:hausnr].length > 0 || params[:plz].length > 0 || params[:ort].length > 0 || params[:vermerk] then
             # create
@@ -439,7 +439,7 @@ class VerwaltungController < ApplicationController
               :PLZ     => params[:plz], 
               :Ort     => params[:ort],
               :Vermerk => params[:vermerk],
-              :SachPnr => current_OZBPerson.Mnr
+              :SachPnr => current_user.Mnr
             )
           end
         end
@@ -505,7 +505,7 @@ class VerwaltungController < ApplicationController
  
        # Email
         # @OZBPerson.email = params[:email]
-        @OZBPerson.SachPnr = current_OZBPerson.Mnr
+        @OZBPerson.SachPnr = current_user.Mnr
         
        # Email bei OZBPerson speichern         
         #Fehler aufgetreten?
@@ -517,7 +517,7 @@ class VerwaltungController < ApplicationController
          
        if @Person.Email != params[:email] then
         @Person.Email   = params[:email]
-        @Person.SachPnr = current_OZBPerson.Mnr
+        @Person.SachPnr = current_user.Mnr
        # Email bei Person speichern       
         #Fehler aufgetreten?
         if !@Person.valid? then
@@ -541,7 +541,7 @@ class VerwaltungController < ApplicationController
           # Telefon, Mobil, Fax speichern
         if @Telefon[0] != nil && !params[:telefon].empty? then
         #if params[:telefon].length > 0 then
-          @Telefon[0].SachPnr = current_OZBPerson.Mnr
+          @Telefon[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?
           if !@Telefon[0].valid? then
             @errors.push(@Telefon[0].errors)
@@ -552,7 +552,7 @@ class VerwaltungController < ApplicationController
 
         if @Mobil[0] != nil && !params[:mobil].empty? then
         #if params[:mobil].length > 0 then
-          @Mobil[0].SachPnr = current_OZBPerson.Mnr
+          @Mobil[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?        
           if !@Mobil[0].valid? then
             @errors.push(@Mobil[0].errors)
@@ -563,7 +563,7 @@ class VerwaltungController < ApplicationController
 
         if @Fax[0] != nil && !params[:fax].empty? then
         #if params[:fax].length > 0 then          
-          @Fax[0].SachPnr = current_OZBPerson.Mnr
+          @Fax[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?
           if !@Fax[0].valid? then
             @errors.push(@Fax[0].errors)
@@ -587,7 +587,7 @@ class VerwaltungController < ApplicationController
 
 ### Mitglieder bearbeiten: Rolle ###
   def editRolle
-    if is_allowed(current_OZBPerson, 3) then
+    if is_allowed(current_user, 3) then
       
       @OZBPerson        = OZBPerson.find(params[:Mnr])
       @Person           = Person.get(@OZBPerson.Mnr)
@@ -610,9 +610,9 @@ class VerwaltungController < ApplicationController
       when "P"
         @Partner = Partner.get(@OZBPerson.Mnr)
         #if !@Partner.nil? then
-        #  @PartnerPerson = Person.get(@Partner.MnrO)
+        #  @PartnerPerson = Person.get(@Partner.Pnr_P)
         #else
-        #  @Partner = Partner.new(:Mnr => @OZBPerson.Mnr, :MnrO => 0, :Berechtigung => "")          
+        #  @Partner = Partner.new(:Mnr => @OZBPerson.Mnr, :Pnr_P => 0, :Berechtigung => "")          
         #end
       when "G"
         @Gesellschafter = Gesellschafter.get(@OZBPerson.Mnr)
@@ -669,7 +669,7 @@ class VerwaltungController < ApplicationController
             @Gesellschafter.Wohnsitzfinanzamt = params[:wohnsitzFinanzamt]
             @Gesellschafter.NotarPnr          = params[:notarPnr]
             @Gesellschafter.BeurkDatum        = params[:beurkDatum] 
-            @Gesellschafter.SachPnr           = current_OZBPerson.Mnr        
+            @Gesellschafter.SachPnr           = current_user.Mnr        
             #Fehler aufgetreten?
             if !@Gesellschafter.valid? then
               @errors.push(@Gesellschafter.errors)
@@ -684,7 +684,7 @@ class VerwaltungController < ApplicationController
             @Student.Studienbeginn = params[:studienbeginn]
             @Student.Studienende   = params[:studienende]
             @Student.Abschluss     = params[:abschluss]
-            @Student.SachPnr       = current_OZBPerson.Mnr           
+            @Student.SachPnr       = current_user.Mnr           
             #Fehler aufgetreten?
             if !@Student.valid? then
               @errors.push(@Student.errors)
@@ -694,7 +694,7 @@ class VerwaltungController < ApplicationController
           when "M"
             @Mitglied         = Mitglied.get(@OZBPerson.Mnr)
             @Mitglied.RVDatum = params[:rvDatum]
-            @Mitglied.SachPnr = current_OZBPerson.Mnr           
+            @Mitglied.SachPnr = current_user.Mnr           
             #Fehler aufgetreten?
             if !@Mitglied.valid? then
               @errors.push(@Mitglied.errors)
@@ -703,9 +703,9 @@ class VerwaltungController < ApplicationController
             @Mitglied.save!
           when "P"
             @Partner              = Partner.get(@OZBPerson.Mnr)
-            @Partner.MnrO         = params[:partner]
+            @Partner.Pnr_P         = params[:partner]
             @Partner.Berechtigung = params[:berechtigung]
-            @Partner.SachPnr      = current_OZBPerson.Mnr
+            @Partner.SachPnr      = current_user.Mnr
             #Fehler aufgetreten?
             if !@Partner.valid? then
               @errors.push(@Partner.errors)
@@ -716,7 +716,7 @@ class VerwaltungController < ApplicationController
             @Foerdermitglied                = Foerdermitglied.get(@Person.Pnr)
             @Foerdermitglied.Region         = params[:region]
             @Foerdermitglied.Foerderbeitrag = params[:foerderbeitrag]
-            @Foerdermitglied.SachPnr        = current_OZBPerson.Mnr
+            @Foerdermitglied.SachPnr        = current_user.Mnr
             #Fehler aufgetreten?
             if !@Foerdermitglied.valid? then
               @errors.push(@Foerdermitglied.errors)
@@ -730,28 +730,28 @@ class VerwaltungController < ApplicationController
           when "G"
             @Gesellschafter            = Gesellschafter.get(@OZBPerson.Mnr)
             @Gesellschafter.GueltigBis = Time.now
-            @Gesellschafter.SachPnr    = current_OZBPerson.Mnr
+            @Gesellschafter.SachPnr    = current_user.Mnr
             @Gesellschafter.save!
           when "S"
             @Student            = Student.get(@OZBPerson.Mnr)
             @Student.GueltigBis = Time.now
-            @Student.SachPnr    = current_OZBPerson.Mnr
+            @Student.SachPnr    = current_user.Mnr
             @Student.save!
           when "M"
             #nu
             @Mitglied            = Mitglied.get(@OZBPerson.Mnr)
             @Mitglied.GueltigBis = Time.now
-            @Mitglied.SachPnr    = current_OZBPerson.Mnr
+            @Mitglied.SachPnr    = current_user.Mnr
             @Mitglied.save!
           when "P"
             @Partner            = Partner.get(@OZBPerson.Mnr)
             @Partner.GueltigBis = Time.now
-            @Partner.SachPnr    = current_OZBPerson.Mnr
+            @Partner.SachPnr    = current_user.Mnr
             @Partner.save!
           when "F"
             @Foerdermitglied            = Foerdermitglied.get(@Person.Pnr)
             @Foerdermitglied.GueltigBis = Time.now
-            @Foerdermitglied.SachPnr    = current_OZBPerson.Mnr
+            @Foerdermitglied.SachPnr    = current_user.Mnr
             @Foerdermitglied.save!
           end             
           
@@ -766,7 +766,7 @@ class VerwaltungController < ApplicationController
               :Wohnsitzfinanzamt => params[:wohnsitzFinanzamt], 
               :NotarPnr          => params[:notarPnr], 
               :BeurkDatum        => params[:beurkDatum],
-              :SachPnr           => current_OZBPerson.Mnr 
+              :SachPnr           => current_user.Mnr 
             )
 
             #Fehler aufgetreten?
@@ -784,7 +784,7 @@ class VerwaltungController < ApplicationController
               :Studienbeginn => params[:studienbeginn],
               :Studienende   => params[:studienende],
               :Abschluss     => params[:abschluss],
-              :SachPnr       => current_OZBPerson.Mnr )      
+              :SachPnr       => current_user.Mnr )      
             
             #Fehler aufgetreten?
             if !@Student.valid? then
@@ -796,7 +796,7 @@ class VerwaltungController < ApplicationController
             @Mitglied = Mitglied.new( 
                 :Mnr     => @OZBPerson.Mnr, 
                 :RVDatum => params[:rvDatum],
-                :SachPnr => current_OZBPerson.Mnr 
+                :SachPnr => current_user.Mnr 
             )   
 
             #Fehler aufgetreten?
@@ -808,9 +808,9 @@ class VerwaltungController < ApplicationController
           when "P"
             @Partner = Partner.new( 
                 :Mnr          => @OZBPerson.Mnr, 
-                :MnrO         => params[:partner], 
+                :Pnr_P         => params[:partner], 
                 :Berechtigung => params[:berechtigung], 
-                :SachPnr      => current_OZBPerson.Mnr 
+                :SachPnr      => current_user.Mnr 
             )
             #Fehler aufgetreten?
             if !@Partner.valid? then
@@ -823,7 +823,7 @@ class VerwaltungController < ApplicationController
                 :Pnr            => @Person.Pnr, 
                 :Region         => params[:region], 
                 :Foerderbeitrag => params[:foerderbeitrag], 
-                :SachPnr        => current_OZBPerson.Mnr 
+                :SachPnr        => current_user.Mnr 
             )
             #Fehler aufgetreten?
             if !@Foerdermitglied.valid? then
@@ -855,7 +855,7 @@ class VerwaltungController < ApplicationController
 
 ### Mitglieder löschen ### 
   def deleteOZBPerson
-    if is_allowed(current_OZBPerson, 5) then     
+    if is_allowed(current_user, 5) then     
       begin    
        #Beginne Transaktion
         ActiveRecord::Base.transaction do   
@@ -876,27 +876,27 @@ class VerwaltungController < ApplicationController
             when "G"
             @Gesellschafter             = Gesellschafter.get(@OZBPerson.Mnr)
             @Gesellschafter.GueltigBis  = Time.now
-            @Gesellschafter.SachPnr     = current_OZBPerson.Mnr
+            @Gesellschafter.SachPnr     = current_user.Mnr
             @Gesellschafter.save(:validation => false)
             when "S"
             @Student                    = Student.get(@OZBPerson.Mnr) 
             @Student.GueltigBis         = Time.now
-            @Student.SachPnr            = current_OZBPerson.Mnr
+            @Student.SachPnr            = current_user.Mnr
             @Student.save(:validation => false)
             when "M"
             @Mitglied                   = Mitglied.get(@OZBPerson.Mnr)
             @Mitglied.GueltigBis        = Time.now
-            @Mitglied.SachPnr           = current_OZBPerson.Mnr
+            @Mitglied.SachPnr           = current_user.Mnr
             @Mitglied.save(:validation => false)
             when "P"
             @Partner                    = Partner.get(@OZBPerson.Mnr)
             @Partner.GueltigBis         = Time.now
-            @Partner.SachPnr            = current_OZBPerson.Mnr
+            @Partner.SachPnr            = current_user.Mnr
             @Partner.save(:validation => false)
             when "F"
             @Foerdermitglied            = Foerdermitglied.get(@Person.Pnr)
             @Foerdermitglied.GueltigBis = Time.now
-            @Foerdermitglied.SachPnr    = current_OZBPerson.Mnr
+            @Foerdermitglied.SachPnr    = current_user.Mnr
             @Foerdermitglied.save(:validation => false)
           end         
           
@@ -919,7 +919,7 @@ class VerwaltungController < ApplicationController
  
 ### Mitglieder Administrationsrechte geben ###
   def editBerechtigungen
-    if is_allowed(current_OZBPerson, 7) then 
+    if is_allowed(current_user, 7) then 
       @OZBPerson = OZBPerson.find(params[:Mnr])
       @Person = Person.get(@OZBPerson.Mnr)
       
@@ -941,7 +941,7 @@ class VerwaltungController < ApplicationController
   end
 
   def createBerechtigung
-    if is_allowed(current_OZBPerson, 7) then 
+    if is_allowed(current_user, 7) then 
       @errors = Array.new                                       
       begin    
         #Beginne Transaktion
@@ -953,7 +953,7 @@ class VerwaltungController < ApplicationController
             @Person    = Person.get(@OZBPerson.Mnr)
 
             ## Person erstellen und validieren
-            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr => @OZBPerson.Mnr, :Email => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_OZBPerson.Mnr )
+            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr => @OZBPerson.Mnr, :Email => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr )
             #Fehler aufgetreten?
             if !@new_Sonderberechtigung.valid? then
               @errors.push(@new_Sonderberechtigung.errors)
@@ -981,7 +981,7 @@ class VerwaltungController < ApplicationController
   end
 
   def deleteBerechtigung
-    if is_allowed(current_OZBPerson, 7) then
+    if is_allowed(current_user, 7) then
       
        @Sonderberechtigung = Sonderberechtigung.find(params[:id])
        @Sonderberechtigung.delete

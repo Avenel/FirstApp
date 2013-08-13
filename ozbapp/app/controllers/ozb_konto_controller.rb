@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class OzbKontoController < ApplicationController
-  before_filter :authenticate_OZBPerson!
+  before_filter :authenticate_user!
   before_filter :person_details
   
   # Authorizations for available pages
@@ -11,11 +11,11 @@ class OzbKontoController < ApplicationController
   #
   # TODO: This should be moved to the application layer
   def check_authorization_for_action(c)
-    if ( c.action_name == "index" && !is_allowed(current_OZBPerson, 11)) ||
-       ((c.action_name == "new" || c.action_name == "create") && (!is_allowed(current_OZBPerson, 13) && !is_allowed(current_OZBPerson, 15))) ||
-       ((c.action_name == "edit" || c.action_name == "update") && (!is_allowed(current_OZBPerson, 14) && !is_allowed(current_OZBPerson, 16))) ||
-       ( c.action_name == "delete" && (!is_allowed(current_OZBPerson, 14) && !is_allowed(current_OZBPerson, 16))) ||
-       ( c.action_name == "verlauf" && !is_allowed(current_OZBPerson, 11))
+    if ( c.action_name == "index" && !is_allowed(current_user, 11)) ||
+       ((c.action_name == "new" || c.action_name == "create") && (!is_allowed(current_user, 13) && !is_allowed(current_user, 15))) ||
+       ((c.action_name == "edit" || c.action_name == "update") && (!is_allowed(current_user, 14) && !is_allowed(current_user, 16))) ||
+       ( c.action_name == "delete" && (!is_allowed(current_user, 14) && !is_allowed(current_user, 16))) ||
+       ( c.action_name == "verlauf" && !is_allowed(current_user, 11))
 
         flash[:error] = "Sie haben keine Berechtigung, um diese Seite anzuzeigen."
 
@@ -64,14 +64,14 @@ class OzbKontoController < ApplicationController
   # done
   def create
     @ozb_konto         = OzbKonto.new(params[:ozb_konto])
-    @ozb_konto.SachPnr = current_OZBPerson.Mnr
+    @ozb_konto.SachPnr = current_user.Mnr
 
     @bankverbindung = Bankverbindung.new
     @bank           = Bank.new
     result          = nil
 
     if params[:kontotyp] == "EE"    
-      @ozb_konto.ee_konto.Bankverbindung.SachPnr = current_OZBPerson.Mnr
+      @ozb_konto.ee_konto.Bankverbindung.SachPnr = current_user.Mnr
 
       if (!(result = Bankverbindung.find(:first, :conditions => { :Pnr => params[:Mnr] }, :order => "GueltigVon DESC")).nil?)
         @bankverbindung = result
@@ -83,7 +83,7 @@ class OzbKontoController < ApplicationController
     end
 
     if params[:kontotyp] == "ZE"    
-      @ozb_konto.ze_konto.SachPnr = current_OZBPerson.Mnr
+      @ozb_konto.ze_konto.SachPnr = current_user.Mnr
     end
 
     if params[:kontotyp] == "EE"    
@@ -112,7 +112,7 @@ class OzbKontoController < ApplicationController
 
     if params[:kontotyp] == "EE"    
       @eekonto = EeKonto.find_by_KtoNr_and_GueltigBis(params[:KtoNr], "9999-12-31 23:59:59")
-      @ozb_konto.ee_konto.Bankverbindung.SachPnr = current_OZBPerson.Mnr
+      @ozb_konto.ee_konto.Bankverbindung.SachPnr = current_user.Mnr
 
       if (!(result = Bankverbindung.find_by_Pnr_and_ID_and_GueltigBis(params[:Mnr], @eekonto.BankID, "9999-12-31 23:59:59")).nil?)
         @bankverbindung = result
@@ -168,13 +168,13 @@ class OzbKontoController < ApplicationController
           bankverbindung.IBAN      = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:IBAN]
           bankverbindung.BLZ       = bank.BLZ
           bankverbindung.Pnr       = bankverbindung.Pnr
-          bankverbindung.SachPnr   = current_OZBPerson.Mnr 
+          bankverbindung.SachPnr   = current_user.Mnr 
           bankverbindung.save!
           
           # EE-Konto NU
           ee             = @ozb_konto.ee_konto
           ee.Kreditlimit = params[:ozb_konto][:ee_konto_attributes][:Kreditlimit]
-          ee.SachPnr     = current_OZBPerson.Mnr 
+          ee.SachPnr     = current_user.Mnr 
           ee.BankID      = bankverbindung.ID
           # ee.save!
         else
@@ -193,7 +193,7 @@ class OzbKontoController < ApplicationController
           ze.KDURate    = params[:ozb_konto][:ze_konto_attributes][:KDURate]
           ze.RDURate    = params[:ozb_konto][:ze_konto_attributes][:RDURate]
           ze.ZEStatus   = params[:ozb_konto][:ze_konto_attributes][:ZEStatus]
-          ze.SachPnr    = current_OZBPerson.Mnr
+          ze.SachPnr    = current_user.Mnr
           
           # ze.save!
         end
@@ -202,7 +202,7 @@ class OzbKontoController < ApplicationController
         @ozb_konto.Mnr          = params[:ozb_konto][:Mnr]
         @ozb_konto.Waehrung     = params[:ozb_konto][:Waehrung]
         @ozb_konto.KtoEinrDatum = params[:ozb_konto][:KtoEinrDatum]
-        @ozb_konto.SachPnr      = current_OZBPerson.Mnr # for security reasons: no mass-assignment here!
+        @ozb_konto.SachPnr      = current_user.Mnr # for security reasons: no mass-assignment here!
     
         # KKL-Verlauf
         # This is manually done because there are some problems with multiple primary keys for KKL-Verlauf!
@@ -260,12 +260,12 @@ class OzbKontoController < ApplicationController
     
     if (!@konto.nil?)
       @konto.GueltigBis = Time.now
-      @konto.SachPnr    = current_OZBPerson.Mnr
+      @konto.SachPnr    = current_user.Mnr
       @konto.save!
 
       @ozbkonto            = OzbKonto.find_by_KtoNr_and_GueltigBis(params[:KtoNr], "9999-12-31 23:59:59")
       @ozbkonto.GueltigBis = Time.now
-      @ozbkonto.SachPnr    = current_OZBPerson.Mnr
+      @ozbkonto.SachPnr    = current_user.Mnr
       @ozbkonto.save!
       
       flash[:success] = "Konto wurde erfolgreich gelöscht."
@@ -277,7 +277,7 @@ class OzbKontoController < ApplicationController
   end
 =begin
   def searchKtoNr
-    if current_OZBPerson.canEditB then
+    if current_user.canEditB then
       if( !params[:ktoNr].nil? ) then
         @konten = OzbKonto.all
       end
@@ -289,7 +289,7 @@ class OzbKontoController < ApplicationController
 
   # Kümmert sich um die Änderung der Kontenklasse
   def kkl
-    if current_OZBPerson.canEditB then
+    if current_user.canEditB then
       @konten = OZBKonto.paginate(:page => params[:page], :per_page => 5)
     else
       redirect_to "/"
@@ -298,7 +298,7 @@ class OzbKontoController < ApplicationController
   
   # Ändert die Kontoklasse aller angewählten Konten
   def changeKKL
-    if current_OZBPerson.canEditB then
+    if current_user.canEditB then
       i = 0
       params[:kkl].each do |kkl|
         @verlauf = KKLVerlauf.create( :ktoNr => params[:ktoNr][i], :kklAbDatum => Time.now, :kkl => kkl )

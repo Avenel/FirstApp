@@ -42,7 +42,7 @@ end
    <tr>
     <th align="left"><font color="red">*</font>Berechtigung:</th>
     <td>
-      <% if is_allowed(current_OZBPerson, 7) %>
+      <% if is_allowed(current_user, 7) %>
   		<%= select_tag 'berechtigung', options_for_select(@Berechtigungen, @new_Sonderberechtigung.Berechtigung) %>
   	  <% end %>
   	</td>

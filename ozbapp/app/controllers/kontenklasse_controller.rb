@@ -1,10 +1,10 @@
 # encoding: UTF-8
 class KontenklasseController < ApplicationController
 
-	before_filter :authenticate_OZBPerson!
+	before_filter :authenticate_user!
 
   def index
-    if current_OZBPerson.canEditD then
+    if current_user.canEditD then
       @kontenklassen = Kontenklasse.paginate(:page => params[:page], :per_page => 5)
     else
       redirect_to "/"
@@ -12,7 +12,7 @@ class KontenklasseController < ApplicationController
   end
   
   def new
-    if current_OZBPerson.canEditD then
+    if current_user.canEditD then
       @kontenklasse = Kontenklasse.new
     else
       redirect_to "/"
@@ -20,7 +20,7 @@ class KontenklasseController < ApplicationController
   end
   
   def edit
-    if current_OZBPerson.canEditD then
+    if current_user.canEditD then
       @kontenklasse = Kontenklasse.find(params[:id])
     else
       redirect_to "/"
@@ -28,7 +28,7 @@ class KontenklasseController < ApplicationController
   end
   
   def create
-    if current_OZBPerson.canEditD then
+    if current_user.canEditD then
       @kontenklasse = Kontenklasse.new(params[:kontenklasse])
       @errors = @kontenklasse.validate!
       
@@ -46,7 +46,7 @@ class KontenklasseController < ApplicationController
   end  
   
   def update
-    if current_OZBPerson.canEditD then
+    if current_user.canEditD then
       @kontenklasse = Kontenklasse.find(params[:id])
       @kontenklasse.attributes = params[:kontenklasse]
       @errors = @kontenklasse.validate!
@@ -66,7 +66,7 @@ class KontenklasseController < ApplicationController
   end
   
   def delete
-    if current_OZBPerson.canEditD then
+    if current_user.canEditD then
       begin
         @kontenklasse = Kontenklasse.find(params[:id])
         @kontenklasse.delete

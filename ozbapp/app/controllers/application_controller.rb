@@ -13,7 +13,7 @@ Rails.logger.level = 0
 
  def after_update_path_for(resource)
  # session[:previous_url] || root_path
-  if is_allowed(current_OZBPerson, 1) then
+  if is_allowed(current_user, 1) then
     "/Verwaltung/Mitglieder"
   else
     "/MeineKonten"
@@ -25,12 +25,12 @@ Rails.logger.level = 0
   ### to get "isCurrentUserInGroup" method available to both controllers and views
   helper_method :isCurrentUserInGroup
   def isCurrentUserInGroup(group)
-    return !(Sonderberechtigung.find(:all, :conditions => {:Mnr => current_OZBPerson.Mnr, :Berechtigung => group})).first.nil?
+    return !(Sonderberechtigung.find(:all, :conditions => {:Mnr => current_user.Mnr, :Berechtigung => group})).first.nil?
   end
 
   helper_method :isCurrentUserAdmin
   def isCurrentUserAdmin
-    return !(Sonderberechtigung.find(:all, :conditions => {:Mnr => current_OZBPerson.Mnr})).first.nil?  
+    return !(Sonderberechtigung.find(:all, :conditions => {:Mnr => current_user.Mnr})).first.nil?  
   end
   
   helper_method :getCurrentLocation
@@ -113,14 +113,6 @@ Rails.logger.level = 0
 
 
   # necessary for paper trail (whodunnit)
-  def current_user
-    if !current_OZBPerson.nil? then
-        return current_OZBPerson.Mnr
-    else 
-      return nil
-    end
-  end
-
   def info_for_paper_trail
     { :GueltigBis => Time.now }
   end

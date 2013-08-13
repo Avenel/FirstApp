@@ -168,25 +168,13 @@ ActiveRecord::Schema.define(:version => 20130810112346) do
   add_index "ozbkonto", ["Waehrung"], :name => "Waehrung"
 
   create_table "ozbperson", :primary_key => "Mnr", :force => true do |t|
-    t.integer  "UeberPnr"
-    t.date     "PWAendDatum",                                                                                                       :null => false
-    t.date     "Antragsdatum",                                                                                                      :null => false
-    t.date     "Aufnahmedatum"
-    t.date     "Austrittsdatum"
-    t.date     "Schulungsdatum"
-    t.integer  "SachPnr"
-    t.string   "email",                  :limit => 40,  :default => "test@example.com"
-    t.string   "encrypted_password",     :limit => 64,  :default => "$2a$10$qGrVqv4bHcfd4Ld649LoS.xIc/gK8GBdSXAS47AQpg1eVhPQL.H7K", :null => false
-    t.string   "reset_password_token",   :limit => 128
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     :limit => 16
-    t.string   "last_sign_in_ip",        :limit => 16
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "UeberPnr"
+    t.date    "PWAendDatum",    :null => false
+    t.date    "Antragsdatum",   :null => false
+    t.date    "Aufnahmedatum"
+    t.date    "Austrittsdatum"
+    t.date    "Schulungsdatum"
+    t.integer "SachPnr"
   end
 
   create_table "partner", :id => false, :force => true do |t|
@@ -268,17 +256,28 @@ ActiveRecord::Schema.define(:version => 20130810112346) do
     t.string  "TelefonTyp", :limit => 0
   end
 
-  create_table "temp", :primary_key => "KtoNr", :force => true do |t|
-    t.decimal "Kreditlimit",               :precision => 5, :scale => 2
-    t.string  "BankKtoNr",   :limit => 12
-    t.integer "BLZ"
-    t.string  "BankName",    :limit => 30
-  end
-
   create_table "umlage", :primary_key => "Jahr", :force => true do |t|
     t.decimal "RDU", :precision => 3, :scale => 2, :null => false
     t.decimal "KDU", :precision => 3, :scale => 2, :null => false
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "email",                                 :default => "",                                                             :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "$2a$10$nnGM0m/WzLBWzc0Q8SL13ePcwl9VoXqaL8s7nZ2xZSA2iGuvLD1qK", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                         :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                                                                                                        :null => false
+    t.datetime "updated_at",                                                                                                        :null => false
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "veranstaltung", :primary_key => "Vnr", :force => true do |t|
     t.integer "VANr",                  :null => false

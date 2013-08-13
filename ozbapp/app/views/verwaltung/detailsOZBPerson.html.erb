@@ -155,7 +155,7 @@
 <% if @Partner != nil %>
  <tr>
   <th align="left">Partner:</th>
-  <td><%= @Partner.MnrO %></td>
+  <td><%= @Partner.Pnr_P %></td>
  </tr>
  <tr>
   <th align="left">Berechtigung:</th>
@@ -176,7 +176,7 @@
    <a href="" class="btn" onclick="history.back();">Zurück</a>
   </div>
   <div class="span10" align="right">
-   <% if is_allowed(current_OZBPerson, 5) %>  
+   <% if is_allowed(current_user, 5) %>  
    		<% delete_link = "/Verwaltung/OZBPerson/" + @OZBPerson.Mnr.to_s + "/Loeschen" %>
    		<%= link_to "Mitglied sicher löschen", delete_link, :class => "btn btn-danger", :onclick => "return confirm('Wollen Sie wirklich die Person löschen?');" %>
    <% end %>		

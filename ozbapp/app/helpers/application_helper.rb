@@ -12,7 +12,7 @@ module ApplicationHelper
   end
 
   def resource
-    @resource = current_OZBPerson || OZBPerson.new
+    @resource = current_user || OZBPerson.new
   end
 
   def devise_mapping

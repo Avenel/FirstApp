@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<% if OZBPerson_signed_in? %> 
+<% if user_signed_in? %> 
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
@@ -28,7 +28,7 @@
           <li><a href="#">Protokolle</a></li>
           <li><a href="#">o/ZBlick</a></li>
 
-          <% if is_allowed(current_OZBPerson, 20) %>
+          <% if is_allowed(current_user, 20) %>
             <li <% if getCurrentLocation == "/Verwaltung/Mitglieder" %>class="active"<%end%>><a href="/Verwaltung/Mitglieder">Mitglieder</a></li>
             <li class="dropdown <% if getCurrentLocation.include? "Optionen" %>active<%end%>">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Weiteres <b class="caret"></b></a>
@@ -45,7 +45,7 @@
         </ul>
         <ul class="nav pull-right">
           <!---<i class="icon-off icon-white"></i>--->
-          <li><%= link_to raw("<i class=\"icon-off icon-white\"></i> Ausloggen"), destroy_OZBPerson_session_path, :method => :delete, :style => "color: #ff4500;" %></li>
+          <li><%= link_to raw("<i class=\"icon-off icon-white\"></i> Ausloggen"), destroy_user_session_path, :method => :delete, :style => "color: #ff4500;" %></li>
         </ul>
       </div><!-- /.nav-collapse -->
     </div><!-- /container -->

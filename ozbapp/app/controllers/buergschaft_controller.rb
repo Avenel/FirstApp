@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class BuergschaftController < ApplicationController
-  before_filter :authenticate_OZBPerson!
+  before_filter :authenticate_user!
   
   # Authorizations for available pages
   before_filter { |c| c.check_authorization_for_action(c) }
@@ -11,10 +11,10 @@ class BuergschaftController < ApplicationController
   #
   # TODO: This should be moved to the application layer
   def check_authorization_for_action(c)
-    if (c.action_name == "index" && !is_allowed(current_OZBPerson, 17)) ||
-       (c.action_name == "new" || c.action_name == "create") && !is_allowed(current_OZBPerson, 18) ||
-       (c.action_name == "edit" || c.action_name == "update" || c.action_name == "updateB") && !is_allowed(current_OZBPerson, 19) ||
-       (c.action_name == "delete" && !is_allowed(current_OZBPerson, 18))
+    if (c.action_name == "index" && !is_allowed(current_user, 17)) ||
+       (c.action_name == "new" || c.action_name == "create") && !is_allowed(current_user, 18) ||
+       (c.action_name == "edit" || c.action_name == "update" || c.action_name == "updateB") && !is_allowed(current_user, 19) ||
+       (c.action_name == "delete" && !is_allowed(current_user, 18))
 
         flash[:error] = "Sie haben keine Berechtigung, um diese Seite anzuzeigen."
 
@@ -150,7 +150,7 @@ class BuergschaftController < ApplicationController
   
   
   def create
-    if is_allowed(current_OZBPerson, 18) then   #Bürgschaft hinzufügen => ändert sich nach der neuen Geschäftsprozesstabelle
+    if is_allowed(current_user, 18) then   #Bürgschaft hinzufügen => ändert sich nach der neuen Geschäftsprozesstabelle
    
       @buergschaft = Buergschaft.new(params[:buergschaft])
       
@@ -164,7 +164,7 @@ class BuergschaftController < ApplicationController
       @buergschaft.Mnr_G = @buergschaft.Pnr_B
       @buergschaft.Pnr_B = params[:Mnr]
       
-      @buergschaft.SachPnr = current_OZBPerson.Mnr
+      @buergschaft.SachPnr = current_user.Mnr
      
       
       begin
@@ -197,7 +197,7 @@ class BuergschaftController < ApplicationController
   
   
   def update
-    if is_allowed(current_OZBPerson, 19) then   #Bürgschaft bearbeiten => ändert sich nach neuer Geschäftsprozesstabelle
+    if is_allowed(current_user, 19) then   #Bürgschaft bearbeiten => ändert sich nach neuer Geschäftsprozesstabelle
       if params[:art] =="g" then
           @buergschaft = Buergschaft.find(:first, :conditions => ['Pnr_B = ? AND Mnr_G = ? AND (SichEndDatum >= ? OR SichEndDatum is ?)', params[:Mnr],params[:Pnr_B], DateTime.now, nil])
         else

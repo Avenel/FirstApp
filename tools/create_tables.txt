@@ -35,23 +35,6 @@ CREATE TABLE IF NOT EXISTS `OZBPerson` (
   `Austrittsdatum` date DEFAULT NULL,
   `Schulungsdatum` date DEFAULT NULL,
   `SachPnr` int(10) unsigned DEFAULT NULL,
-  
-  -- TODO
-  `email` varchar(40) DEFAULT 'test@example.com',
-
--- Technische Attribute fuer das Login/Session Gem
-  `encrypted_password` varchar(64) NOT NULL DEFAULT '$2a$10$qGrVqv4bHcfd4Ld649LoS.xIc/gK8GBdSXAS47AQpg1eVhPQL.H7K',
-  `reset_password_token` varchar(128) DEFAULT NULL,
-  `reset_password_sent_at` datetime DEFAULT NULL,
-  `remember_created_at` datetime DEFAULT NULL,
-  `sign_in_count` int(10) default 0,
-  `current_sign_in_at` datetime DEFAULT NULL,
-  `last_sign_in_at` datetime DEFAULT NULL,
-  `current_sign_in_ip` varchar(16) DEFAULT NULL,
-  `last_sign_in_ip` varchar(16) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
- 
  PRIMARY KEY (Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -373,3 +356,23 @@ CREATE  TABLE IF NOT EXISTS `temp` (
   `BankName` varchar(30),
   PRIMARY KEY (`KtoNr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='';
+
+-- Create User Table (Devise Login Module)
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL DEFAULT '',
+  `encrypted_password` varchar(128) NOT NULL DEFAULT '$2a$10$nnGM0m/WzLBWzc0Q8SL13ePcwl9VoXqaL8s7nZ2xZSA2iGuvLD1qK',
+  `reset_password_token` varchar(255) DEFAULT NULL,
+  `reset_password_sent_at` datetime DEFAULT NULL,
+  `remember_created_at` datetime DEFAULT NULL,
+  `sign_in_count` int(11) DEFAULT '0',
+  `current_sign_in_at` datetime DEFAULT NULL,
+  `last_sign_in_at` datetime DEFAULT NULL,
+  `current_sign_in_ip` varchar(255) DEFAULT NULL,
+  `last_sign_in_ip` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_users_on_email` (`email`),
+  UNIQUE KEY `index_users_on_reset_password_token` (`reset_password_token`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

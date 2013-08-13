@@ -78,7 +78,7 @@ class Partner < ActiveRecord::Base
   end
 
   # Returns nil if at the given time no person object was valid
-  def Partner.get_all(mnrO, date = Time.now)
-	  Partner.where(:Pnr_P => mnrO).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date])
+  def Partner.get_all(pnr, date = Time.now)
+	  Partner.where(:Pnr_P => pnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date])
   end
 end

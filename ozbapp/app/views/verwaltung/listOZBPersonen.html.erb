@@ -50,7 +50,7 @@
    <a href="" class="btn" onclick="history.back();">Zurück</a>
   </div>
   <div class="span6" align="right">
-   <% if is_allowed(current_OZBPerson, 3) %>
+   <% if is_allowed(current_user, 3) %>
     <%= link_to 'Neues Mitglied hinzufügen', "/Verwaltung/OZBPerson/NeuePerson", :class => "btn btn-primary" %>
    <% end %>
   </div>		

@@ -93,7 +93,7 @@
 			<div class="span6" align="left">
 				<a href="javascript:history.back(-1);" class="btn">Zurück</a>
 			</div>
-			<% if is_allowed(current_OZBPerson, 19) && @action != "new" %>
+			<% if is_allowed(current_user, 19) && @action != "new" %>
 				<div class="span3" align="right">
 					<% loeschen = "/Verwaltung/OZBPerson/"+params[:Mnr]+"/Buergschaften/"+ @pnr +"/Loeschen"+ ende %> <!-- kein button_to da in anderer Form-->
 					

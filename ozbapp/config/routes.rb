@@ -1,5 +1,6 @@
 OZB::Application.routes.draw do
-  devise_for :OZBPerson, :path_names => { :sign_up => "Registration", :sign_in => "Anmeldung" }
+  devise_for :users, :path_names => { :sign_up => "Registration", :sign_in => "Anmeldung" }
+  
   get "willkommen/index"
   
   match '/'				=> 'willkommen#index'

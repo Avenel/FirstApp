@@ -9,7 +9,7 @@
 	    <th class="header">Letzte Kontobewegung</th>
 	    <th class="header">Währungssaldo</th>
 	    <th class="header">Punktesaldo</th>
-	    <% if current_OZBPerson.Sonderberechtigung.size > 0 %>
+	    <% if current_user.Sonderberechtigung.size > 0 %>
 	    	<th class="header">Einrichtungsdatum</th>
 	    <% end %>
 	    <th class="header">Dispo-Limit</th>
@@ -35,7 +35,7 @@
 					<td class="zentriert"><%= ee_konto.ozb_konto.saldoDatum.strftime("%d.%m.%Y") %></td>
 					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.ozb_konto.wSaldo, :precision => 2, :delimiter => ".") %></td>
 					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.ozb_konto.pSaldo, :delimiter => ".", :precision => 0) %></td>
-					<% if current_OZBPerson.Sonderberechtigung.size > 0 %>
+					<% if current_user.Sonderberechtigung.size > 0 %>
 						<td class="zentriert"><%= ee_konto.ozb_konto.ktoEinrDatum.strftime("%d.%m.%Y") %></td>
 					<% end %>
 					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.kreditlimit, :precision => 2, :delimiter => ".") %></td>				

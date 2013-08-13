@@ -49,15 +49,15 @@
 
 				<td style="text-align: center">
 		          <div style="width: 200px">
-		          <% if is_allowed(current_OZBPerson, 12) %>
+		          <% if is_allowed(current_user, 12) %>
 		            <%= link_to "KKL-Verlauf", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/#{ee_konto.KtoNr.to_s}/KKLVerlauf", :class => "btn btn-mini btn-success" %>
 		          <% end %>
 		          
-		          <% if is_allowed(current_OZBPerson, 14) %>
+		          <% if is_allowed(current_user, 14) %>
 		            <%= link_to "Ändern", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/EE/#{ee_konto.KtoNr.to_s}/Aendern", :class => "btn btn-mini btn-warning" %>
 		          <% end %>
 
-      	          <% if is_allowed(current_OZBPerson, 14) %>
+      	          <% if is_allowed(current_user, 14) %>
 		            <%= button_to "Löschen", "/Verwaltung/OZBPerson/#{params[:Mnr]}/Konten/EE/#{ee_konto.KtoNr.to_s}/Loeschen", :class => "btn btn-mini btn-danger", :confirm => "Möchten Sie das EE-Konto #{ee_konto.KtoNr} einschließlich aller zugehörigen ZE-Konten unwiderruflich löschen? Dieser Vorgang kann nicht mehr rückgängig gemacht werden." %>
 		          <% end %>
 		          </div>
@@ -76,7 +76,7 @@
     </div>
     
     <div class="span6" align="right">
-      <% if is_allowed(current_OZBPerson, 13) %>
+      <% if is_allowed(current_user, 13) %>
         <%= link_to 'EE-Konto hinzufügen', "/Verwaltung/OZBPerson/" + params[:Mnr] +  "/Konten/EE/Neu", :class => "btn btn-primary" %>
       <% end %>
     </div>

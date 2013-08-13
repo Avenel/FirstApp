@@ -2,7 +2,7 @@
 # encoding: utf-8
 class SonderberechtigungController < ApplicationController
 #  protect_from_forgery
-  before_filter :authenticate_OZBPerson!
+  before_filter :authenticate_user!
   
   @@Rollen2 = Hash["Mitglied", "M", "Fördermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]  
   #Workaround - Da Ruby 1.8.7 die key()-Funktion nicht kennt
@@ -20,7 +20,7 @@ class SonderberechtigungController < ApplicationController
   
 
   def createBerechtigungRollen
-    if is_allowed(current_OZBPerson, 7) then
+    if is_allowed(current_user, 7) then
        
       @errors = Array.new                                       
       begin    
@@ -42,9 +42,9 @@ class SonderberechtigungController < ApplicationController
             # Berechtigung erstellen und validieren
              
             if params[:email].blank? && !@Person.Email.blank? then
-              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :Email => @Person.Email, :Berechtigung => params[:berechtigung], :SachPnr => current_OZBPerson.Mnr)
+              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :Email => @Person.Email, :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
             else
-              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :Email => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_OZBPerson.Mnr)
+              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :Email => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
             end
             
             #Fehler aufgetreten?
@@ -88,7 +88,7 @@ class SonderberechtigungController < ApplicationController
 
 
   def deleteBerechtigungRollen
-    if is_allowed(current_OZBPerson, 7) then
+    if is_allowed(current_user, 7) then
       
       @Sonderberechtigung = Sonderberechtigung.find(params[:id])
       @Sonderberechtigung.delete
@@ -110,7 +110,7 @@ class SonderberechtigungController < ApplicationController
       @Berechtigung =["IT", "RW", "MV", "ZE", "OeA"]
       @Rollen = @@Rollen
     
-      if is_allowed(current_OZBPerson, 7) then 
+      if is_allowed(current_user, 7) then 
 
         @Berechtigungen = @@Berechtigungen2.sort
         @BerechtigungsName = @@Berechtigungen
@@ -139,7 +139,7 @@ class SonderberechtigungController < ApplicationController
   
  ### Mitglieder Administrationsrechte geben ###
   def editBerechtigungenRollen
-    if is_allowed(current_OZBPerson, 7) then 
+    if is_allowed(current_user, 7) then 
       
       
       #@OZBPerson = OZBPerson.find(params[:Mnr])
@@ -157,7 +157,7 @@ class SonderberechtigungController < ApplicationController
   
   
   def createSonderberechtigung   
-    if is_allowed(current_OZBPerson, 7) then
+    if is_allowed(current_user, 7) then
       @nil = nil
       @AktiveOzbPersonen = OZBPerson.find(:all, :conditions => {:Austrittsdatum => @nil})
       @DistinctPersonen ||= Array.new

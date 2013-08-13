@@ -77,12 +77,12 @@
 			<a href="javascript:history.back(-1);" class="btn">Zurück</a>
 		</div>
 		<div class="span3" align="right">
-			<% if is_allowed(current_OZBPerson, 18) %>
+			<% if is_allowed(current_user, 18) %>
 					<a href="<%= @link_aeltere%>" class="btn btn-info">Bürgschaften Historie</a>
 			<%end%>
 		</div>
 		<div class="span3" align="right">
-			<% if is_allowed(current_OZBPerson, 18) %>
+			<% if is_allowed(current_user, 18) %>
 				<%= link_to 'Bürgschaft hinzufügen', "/Verwaltung/OZBPerson/#{params[:Mnr]}/Buergschaften/Neu", :class => "btn btn-primary" %>
 			<% end %>
 		</div>

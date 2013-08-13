@@ -14,7 +14,7 @@
 	 <%= link_to "Details", details_link %>
 	</li>
 	<!-- NU -->
-   <% if is_allowed(current_OZBPerson, 3) %>  
+   <% if is_allowed(current_user, 3) %>  
 		<li <% if getCurrentLocation == personaldaten_link %>class="active"<%end%>>
 			 <%= link_to "Personaldaten", personaldaten_link %>	
 		</li>
@@ -22,12 +22,12 @@
 	<li <% if getCurrentLocation == kontaktdaten_link %>class="active"<%end%>>
 	 <%= link_to "Kontaktdaten", kontaktdaten_link %>	
 	</li>
-	<% if is_allowed(current_OZBPerson, 20) %>  
+	<% if is_allowed(current_user, 20) %>  
 		<li <% if getCurrentLocation == rolle_link %>class="active"<%end%>>
 		 <%= link_to "Rolle", rolle_link %>	
 		</li>
 	<% end %>		
-	<li <% if getCurrentLocation == edit_OZBPerson_registration_path %>class="active"<%end%>>
-	 <%= link_to "Passwort ändern", edit_OZBPerson_registration_path %>	
+	<li <% if getCurrentLocation == edit_user_registration_path %>class="active"<%end%>>
+	 <%= link_to "Passwort ändern", edit_user_registration_path %>	
 	</li>	
 </ul>
