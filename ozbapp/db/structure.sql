@@ -318,7 +318,7 @@ CREATE TABLE `zekonto` (
   `Laufzeit` tinyint(4) unsigned NOT NULL,
   `ZahlModus` char(1) DEFAULT 'M',
   `TilgRate` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `AnsparRate` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `NachsparRate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `KDURate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `RDURate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `ZEStatus` char(1) NOT NULL DEFAULT 'A',

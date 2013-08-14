@@ -159,23 +159,23 @@ describe ZeKonto do
 		expect(zeKonto).to be_invalid
 	end
 
-	# AnsparRate
-	it "is valid with a valid AnsparRate" do
-		zeKonto = FactoryGirl.create(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe, :ansparRate => 100.00)
+	# NachsparRate
+	it "is valid with a valid NachsparRate" do
+		zeKonto = FactoryGirl.create(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe, :NachsparRate => 100.00)
 		expect(zeKonto).to be_valid
-		expect(zeKonto.ansparRate).to eq 100.00
+		expect(zeKonto.NachsparRate).to eq 100.00
 	end
 
-	it "is invalid without a AnsparRate" do
-		zeKonto = FactoryGirl.build(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe, :ansparRate => nil)
+	it "is invalid without a NachsparRate" do
+		zeKonto = FactoryGirl.build(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe, :NachsparRate => nil)
 		expect(zeKonto).to be_invalid
 	end
 
-	it "is invalid with an invalid AnsparRate" do
-		zeKonto = FactoryGirl.build(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe, :ansparRate => 0.00)
+	it "is invalid with an invalid NachsparRate" do
+		zeKonto = FactoryGirl.build(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe, :NachsparRate => 0.00)
 		expect(zeKonto).to be_invalid
 
-		zeKonto = FactoryGirl.build(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe, :ansparRate => "AB12")
+		zeKonto = FactoryGirl.build(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe, :NachsparRate => "AB12")
 		expect(zeKonto).to be_invalid
 	end
 

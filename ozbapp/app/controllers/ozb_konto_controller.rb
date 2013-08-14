@@ -189,7 +189,7 @@ class OzbKontoController < ApplicationController
           ze.Laufzeit   = params[:ozb_konto][:ze_konto_attributes][:Laufzeit]
           ze.ZahlModus  = params[:ozb_konto][:ze_konto_attributes][:ZahlModus]
           ze.TilgRate   = params[:ozb_konto][:ze_konto_attributes][:TilgRate]
-          ze.AnsparRate = params[:ozb_konto][:ze_konto_attributes][:AnsparRate]
+          ze.NachsparRate = params[:ozb_konto][:ze_konto_attributes][:NachsparRate]
           ze.KDURate    = params[:ozb_konto][:ze_konto_attributes][:KDURate]
           ze.RDURate    = params[:ozb_konto][:ze_konto_attributes][:RDURate]
           ze.ZEStatus   = params[:ozb_konto][:ze_konto_attributes][:ZEStatus]

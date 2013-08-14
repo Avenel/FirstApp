@@ -10,7 +10,7 @@ FactoryGirl.define do
 		sequence(:zeNr) {|n| "D"+(n*10000000).to_s[0, 8]} 
 		zahlModus "M"
 		tilgRate 100.00
-		ansparRate 20.00
+		NachsparRate 20.00
 		kduRate 5.00
 		rduRate 5.00
 		zeStatus "A"

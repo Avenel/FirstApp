@@ -15,7 +15,7 @@ class ZeKonto < ActiveRecord::Base
   alias_attribute :zahlModus, :ZahlModus
   alias_attribute :tilgRate, :TilgRate
 
-  # früher: ansparRate
+  # früher: NachsparRate
   alias_attribute :nachsparRate, :NachsparRate
   
   alias_attribute :kduRate, :KDURate
