@@ -296,7 +296,7 @@ class VerwaltungController < ApplicationController
 ### Alle Mitglieder anzeigen ###
   def listOZBPersonen
     if isCurrentUserAdmin then
-      @OZBPersonen = OZBPerson.joins(:Person).order(sort_column + " " + sort_direction).where("GueltigBis LIKE '%9999%'").paginate(:page => params[:page], :per_page => 25)
+      @OZBPersonen = OZBPerson.joins(:Person).order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 25)
     else
       redirect_to "/MeineKonten"
     end    

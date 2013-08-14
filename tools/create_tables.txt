@@ -1,8 +1,6 @@
 
 CREATE TABLE IF NOT EXISTS `Person` (
   `Pnr` int(10) unsigned NOT NULL,
-  `GueltigVon` datetime NOT NULL,
-  `GueltigBis` datetime NOT NULL,
   `Rolle` enum('G','M','P','S','F') DEFAULT NULL, -- G = Gesellschafter, M = Mitglied, P = Partner, S = Student, F = Foerdermitglied
   `Name` varchar(30) NOT NULL,
   `Vorname` varchar(20) NOT NULL DEFAULT '',
@@ -10,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `Person` (
   `EMail` varchar(255) DEFAULT NULL,
   `SperrKZ` enum('0', '1') DEFAULT '0', -- 0 = Logon freigegeben, 1 = gesperrt
   `SachPnr` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (Pnr,GueltigVon)
+  PRIMARY KEY (Pnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `Adresse` (

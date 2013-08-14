@@ -25,7 +25,7 @@
       end
     %>
   <tr <%= style %>>
-    <% person = ozbPerson.Person.last %>
+    <% person = ozbPerson.Person %>
   <td><%= ozbPerson.Mnr %></td> 
   <td>
     <% konto_link = '/Verwaltung/OZBPerson/'+ ozbPerson.Mnr.to_s + "/Konten" %>

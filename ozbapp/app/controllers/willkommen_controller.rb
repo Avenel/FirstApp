@@ -17,7 +17,7 @@ class WillkommenController < ApplicationController
 	
 	end
 
-    @current_person = Person.find(:last, :conditions => [ "Pnr = ?", current_user.Mnr])
+    @current_person = Person.where("Pnr = ?", current_user.Mnr).first
     
     @ee_konten = OzbKonto.get_all_ee_for(current_user.id)
     @ze_konten = OzbKonto.get_all_ze_for(current_user.id)

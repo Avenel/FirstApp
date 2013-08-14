@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Person < ActiveRecord::Base
-  self.primary_keys = :Pnr, :GueltigVon
+  self.primary_keys = :Pnr
 
   alias_attribute :pnr, :Pnr
   alias_attribute :rolle, :Rolle
@@ -13,7 +13,7 @@ class Person < ActiveRecord::Base
   alias_attribute :email, :EMail
   alias_attribute :Email, :EMail
 
-  attr_accessible :Pnr, :GueltigVon, :GueltigBis, :Rolle, :Name, 
+  attr_accessible :Pnr, :Rolle, :Name, 
                   :Vorname, :Geburtsdatum, :email, :SperrKZ, 
                   :SachPnr, :AVAILABLE_ROLES
 
@@ -23,9 +23,7 @@ class Person < ActiveRecord::Base
   # column names
   HUMANIZED_ATTRIBUTES = {
     :Pnr        => 'Personal-Nr.',
-    :SperrKZ    => 'SperrKZ',
-    :GueltigVon => 'Gueltig von',
-    :GueltigBis => 'Gueltig bis'
+    :SperrKZ    => 'SperrKZ'
   }
    
 
@@ -48,7 +46,7 @@ class Person < ActiveRecord::Base
   # Relations
   has_many :Partner, :foreign_key => :Mnr, :dependent => :destroy
   has_many :Foerdermitglied, :foreign_key => :Pnr, :dependent => :destroy
-  has_many :OZBPerson, :foreign_key => :UeberPnr, :dependent => :destroy 
+  has_one :OZBPerson, :foreign_key => :Pnr, :dependent => :destroy 
   has_one :Adresse, :foreign_key => :Pnr, :dependent => :destroy
   has_many :Telefon, :foreign_key => :Pnr, :dependent => :destroy
 
