@@ -1,27 +1,20 @@
 # encoding: UTF-8
+require "HistoricRecord.rb"
+
 class ZeKonto < ActiveRecord::Base
+	include HistoricRecord
+	
   self.table_name = "ZEKonto"
   self.primary_keys = :KtoNr, :GueltigVon
   
-  # aliases
-  alias_attribute :ktoNr, :KtoNr
-  alias_attribute :eeKtoNr, :EEKtoNr
-  alias_attribute :pgNr, :Pgnr
-  alias_attribute :zeNr, :ZENr
-  alias_attribute :zeAbDatum, :ZEAbDatum
-  alias_attribute :zeEndDatum, :ZEEndDatum
-  alias_attribute :zeBetrag, :ZEBetrag
-  alias_attribute :laufzeit, :Laufzeit
-  alias_attribute :zahlModus, :ZahlModus
-  alias_attribute :tilgRate, :TilgRate
+  # Necessary for historization
+  def get_primary_keys 
+    return {"KtoNr" => self.KtoNr}
+  end
 
-  # früher: NachsparRate
-  alias_attribute :nachsparRate, :NachsparRate
-  
-  alias_attribute :kduRate, :KDURate
-  alias_attribute :rduRate, :RDURate
-  alias_attribute :zeStatus, :ZEStatus 
-  alias_attribute :sachPnr, :SachPnr
+  def set_primary_keys(values)
+    self.KtoNr = values["KtoNr"]
+  end
   
   # attributes
   attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :Pgnr, :EEKtoNr, :ZENr, :ZEAbDatum,
@@ -124,82 +117,26 @@ class ZeKonto < ActiveRecord::Base
   belongs_to :ozb_konto,
     :primary_key => :KtoNr,
     :foreign_key => :KtoNr,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 
   belongs_to :ee_konto,
     :foreign_key => :EEKtoNr,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
-
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
+	
   has_many :buergschaft,
-    :foreign_key => :KtoNr # no one or many
+    :foreign_key => :KtoNr,
+	:conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 
   belongs_to :projektgruppe,
     :inverse_of => :ZEKonto,
     :foreign_key => :Pgnr
 
-  has_one :sachbearbeiter,
-    :class_name => "Person",
-    :foreign_key => :Pnr,
-    :primary_key => :SachPnr,
-    #:order => "GueltigBis DESC", # ????????????????????????????????????????????
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
- # callbacks
+  # callbacks
   before_create :set_valid_time
   before_update :set_new_valid_time
-  after_destroy :destroy_historic_records, :destroy_ozb_konto_if_this_is_last_konto
+  after_update :save_copy  
   
-  def set_valid_time
-    unless(self.GueltigBis || self.GueltigVon)
-      self.GueltigVon = Time.now
-      self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")
-    end
-  end
-
-  @@copy = nil
-
-  def set_new_valid_time 
-    if(self.KtoNr)
-      if(self.GueltigBis > "9999-01-01 00:00:00")
-        @@copy            = self.get(self.KtoNr)
-        @@copy            = @@copy.dup
-        @@copy.KtoNr      = self.KtoNr
-        @@copy.GueltigVon = self.GueltigVon
-        @@copy.GueltigBis = Time.now
-        
-        self.GueltigVon   = Time.now
-        self.GueltigBis   = Time.zone.parse("9999-12-31 23:59:59")
-      end
-    end
-  end
-
-   after_update do
-      if !@@copy.nil?
-        @@copy.save(:validation => false)
-        @@copy = nil
-      end
-   end
-
-  # Returns nil if at the given time no person object was valid
-  def get(ktoNr, date = Time.now)
-    ZeKonto.find(:all, :conditions => ["KtoNr = ? AND GueltigVon <= ? AND GueltigBis > ?", ktoNr, date, date]).first
-  end
-  
-  def self.latest(ktoNr)
+  def ZeKonto.latest(ktoNr)
     begin
       self.find(:all, :conditions => ["KtoNr = ? AND GueltigBis = ?", ktoNr, "9999-12-31 23:59:59"]).first # composite primary key gem
     rescue ActiveRecord::RecordNotFound
@@ -207,7 +144,7 @@ class ZeKonto < ActiveRecord::Base
     end
   end
   
-  def self.latest_all_for(mnr)
+  def ZeKonto.latest_all_for(mnr)
     ozb = OzbKonto.find(:all, :conditions => ["Mnr = ? AND GueltigBis = ?", mnr, "9999-12-31 23:59:59"]) # composite primary key gem
     
     k = Array.new
@@ -218,21 +155,19 @@ class ZeKonto < ActiveRecord::Base
     return k
   end
   
-  private
-    # bound to callback
-    def destroy_historic_records
-      # find all historic records that belongs to this record and destroy(!) them
-      # note: destroy should always destroy all the corresponding association objects
-      # if the association option :dependent => :destroy is set correctly
-      recs = self.class.find(:all, :conditions => ["KtoNr = ? AND GueltigBis < ?", self.KtoNr, self.GueltigBis])
-      
-      recs.each do |r|
-        r.destroy
-      end
+  # Returns nil if at the given time no person object was valid
+  def ZeKonto.get(KtoNr, date = Time.now)
+    begin
+      return Adresse.find(:all, :conditions => ["KtoNr = ? AND GueltigVon <= ? AND GueltigBis > ?", KtoNr, date, date]).first
+    rescue ActiveRecord::RecordNotFound
+      return nil
     end
-    
-    # bound to callback
-    def destroy_ozb_konto_if_this_is_last_konto
-      OzbKonto.destroy_yourself_if_you_are_alone(self.ktoNr)
-    end
+  end
+  
+  # (non static) get latest instance of model
+  def getLatest()
+    return ZeKonto.get(self.KtoNr)
+  end
+  
+  
 end
