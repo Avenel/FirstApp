@@ -120,6 +120,10 @@ class Buchung < ActiveRecord::Base
   validate :kto_soll_exists
   validate :kto_haben_exists
 
+   # Associations
+  belongs_to :OZBKonto, 
+    :foreign_key => :KtoNr,
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
   def kto_exists
     kto = OzbKonto.latest(self.KtoNr)
@@ -150,10 +154,5 @@ class Buchung < ActiveRecord::Base
       return true
     end
   end
-
-   # Relations
-  belongs_to :OZBKonto, 
-    :foreign_key => :KtoNr,
-    :class_name => "OzbKonto"
 
 end

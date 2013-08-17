@@ -1,12 +1,25 @@
 # encoding: UTF-8
+require "HistoricRecord.rb"
+
 class Buergschaft < ActiveRecord::Base 
+    include HistoricRecord
+
   self.table_name = "Buergschaft"
   self.primary_keys = :Pnr_B, :Mnr_G, :GueltigVon
   
+  # Necessary for historization
+  def get_primary_keys 
+    return {"Pnr_B" => self.Pnr_B, "Mnr_G" => self.Mnr_G}
+  end
+
+  def set_primary_keys(values)
+    self.Pnr_B = values["Pnr_B"]
+    self.Mnr_G = values["Mnr_G"]
+  end
+
   # attributes
   attr_accessible :Pnr_B, :Mnr_G, :GueltigVon, :GueltigBis, :ZENr, :SichAbDatum, 
                   :SichEndDatum, :SichBetrag, :SichKurzbez, :SachPnr
-  
 
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -35,6 +48,25 @@ class Buergschaft < ActiveRecord::Base
   validate :zeKonto_exists
   validate :sachPnr_exists
   validate :valid_sichZeitraum
+
+  # callbacks
+  before_create :set_valid_time
+  before_update :set_new_valid_time
+  after_update :save_copy
+
+  # Associations
+  belongs_to :Person,
+          :foreign_key => :Pnr_B,
+          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }          
+  
+  belongs_to :OZBPerson,
+          :foreign_key => :Mnr_G,
+          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+    
+  belongs_to :ZEKonto,
+          :foreign_key => :ZENr,
+          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+
 
   # SachPnr should be an ozb member, so check if there is an OZBPerson with the given Pnr (=Mnr)
   def sachPnr_exists
@@ -89,30 +121,6 @@ class Buergschaft < ActiveRecord::Base
       return false
     end
   end
-
-  # GueltigVon und GueltigBis wird durch Model selbst gesetzt
-  # Sachbearbeiter muss durch Controller oder abhängiges Model gesetzt werden!
-  
-  # Relations
-  belongs_to :person,
-    :foreign_key => :Pnr_B
-  
-  belongs_to :OZBPerson,
-    :foreign_key => :Mnr_G
-    
-  belongs_to :ZEKonto,
-    :foreign_key => :ZENr
-  
-  has_one :sachbearbeiter,
-    :class_name => "Person",
-    :foreign_key => :Pnr,
-    :primary_key => :SachPNR,
-    :order => "GueltigBis DESC"
-
-  # callbacks
-  before_create :set_valid_time
-  before_update :set_new_valid_time
-  after_destroy :destroy_historic_records
   
   def validate(bName, gName)!    
     errors = ActiveModel::Errors.new(self)
@@ -174,12 +182,16 @@ class Buergschaft < ActiveRecord::Base
     else
       return person.pnr
     end
-    
   end
 
   # Returns the EEKonto Object for ktoNr and date
-  def get(pnr_b, mnr_g, date = Time.now)
+  def Buergschaft.get(pnr_b, mnr_g, date = Time.now)
     Buergschaft.find(:all, :conditions => ["Pnr_B = ? AND Mnr_G = ? AND GueltigVon <= ? AND GueltigBis > ?", pnr_b, mnr_g, date, date]).first
+  end
+
+  # (non static) get latest instance of model
+  def getLatest()
+    return Buergschaft.get(self.Pnr_B, self.Mnr_G)
   end
   
   def self.latest(pnr_b, mnr_g)
