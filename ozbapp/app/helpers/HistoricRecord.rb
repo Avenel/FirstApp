@@ -1,5 +1,3 @@
-require "deep_clone"
-
 module HistoricRecord
 
   def set_valid_time
