@@ -17,9 +17,11 @@ class Adresse < ActiveRecord::Base
     self.Pnr = values["Pnr"]
   end
   
-  # column names   
-  attr_accessible :Pnr, :GueltigVon, :GueltigBis, :Strasse, :Nr, :PLZ, :Ort, :Vermerk, :SachPnr
+  # attributes
+  attr_accessible :Pnr, :GueltigVon, :GueltigBis, :Strasse, :Nr, :PLZ, :Ort, 
+                  :Vermerk, :SachPnr
 
+  # column names
   HUMANIZED_ATTRIBUTES = {
     :Pnr        => 'Personal-Nr.',
     :Nr         => 'Hausnummer',
@@ -39,17 +41,18 @@ class Adresse < ActiveRecord::Base
   validates :Strasse, :presence => true  
   validates :Ort, :presence => true
 
+  # callbacks
+  before_create :set_valid_time
+  before_update :set_new_valid_time
+  after_update :save_copy
+
   # Associations
   belongs_to :Person,
           :primary_key => :Pnr,
           :foreign_key => :Pnr,
           :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
-  # callbacks
-  before_create :set_valid_time
-  before_update :set_new_valid_time
-  after_update :save_copy
-
+  
   # Returns nil if at the given time no person object was valid
   def Adresse.get(pnr, date = Time.now)
     begin

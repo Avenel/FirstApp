@@ -1,14 +1,20 @@
 # encoding: UTF-8
+require "HistoricRecord.rb"
+
 class Bankverbindung < ActiveRecord::Base
+    include HistoricRecord
+
   self.table_name = "Bankverbindung"
   self.primary_keys = :ID, :GueltigVon
-  
-  # aliases
-  alias_attribute :id, :ID
-  alias_attribute :pnr, :Pnr
-  alias_attribute :bankKtoNr, :BankKtoNr
-  alias_attribute :blz, :BLZ
-  alias_attribute :iban, :IBAN
+
+  # Necessary for historization
+  def get_primary_keys 
+    return {"ID" => self.ID}
+  end
+
+  def set_primary_keys(values)
+    self.ID = values["ID"]
+  end
 
   # attributes
   # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
@@ -37,42 +43,29 @@ class Bankverbindung < ActiveRecord::Base
   validates :IBAN, :presence => true, :format => { :with => /^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
   validates :BLZ, :presence => true, :format => { :with => /^[0-9]{8}$/i, :message => "Bitte geben Sie eine valide BLZ an." }
 
-  validate :valid_id
   validate :bank_exists
   validate :pnr_exists
   
   # callbacks
-  #after_commit :set_id_for_eekonto
-  before_create :set_valid_time, :set_valid_id
+  before_create :set_valid_time
   before_update :set_new_valid_time
-  after_destroy :destroy_historic_records, :destroy_bank_if_this_is_last_bankverbindung
+  after_update :save_copy
   
-   # Relations
-  belongs_to :person,
+   # Associations
+  belongs_to :Person,
     :foreign_key => :Pnr,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
   has_one :ee_konto,
     :foreign_key => :BankId,
     :autosave => true,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } # condition -> for historic db
-                                                                # do never ever rely that the current record is the newest one (GueltigBis = "9999-12-31 23:59:59")
-                                                                # it might be possible that older records are focused. So you should come in trouble when selecting 
-                                                                # not the corresponding record for that association.
-                                                                # PLEASE NOTE: This associated child records must be updated to the SAME DateTime and EVERYTIME this
-                                                                # record is updated, otherwise it would corrupt the underlying logic model.
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 
   belongs_to :Bank,
     :foreign_key => :BLZ,
     :autosave => true
 
   accepts_nested_attributes_for :Bank, :reject_if => :bank_already_exists
-
 
   def bank_exists 
     if Bank.where("BLZ = ?", self.blz).empty? then
@@ -89,77 +82,22 @@ class Bankverbindung < ActiveRecord::Base
       return true
     end
   end
-
-  def valid_id
-    # return false, if id equals 0. an id is always greater than 0. in addition
-    # an id equals 0, if one tries to setup the id with a string value. therefore this
-    # check should be satisfying. 
-    if self.id == 0 then
-      errors.add :ID, "Bitte gebe eine valide ID an"
-      return false
-    else
-      return true
-    end
-  end
-
-  # valid_id to callback
-  def set_valid_id
-    if (self.id.nil?)
-      b = Bankverbindung.find(:all, :order => "ID ASC").last
-      if b.nil? then
-        self.id = 1
-      else
-        self.id = b.id + 1
-      end
-    end
-  end
   
-  # bound to callback
-  def set_valid_time
-    unless(self.GueltigBis || self.GueltigVon)
-      self.GueltigVon = Time.now
-      self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")
-    end
-  end
-  
-  @@copy = nil
-
-  # bound to callback
-  def set_new_valid_time
-    if (self.id.nil?) then
-      errors.add :ID, "Die ID darf nicht leer (nil) sein."
-      throw Exception.new("Die ID darf nicht leer (nil) sein.")
-    end
-
-    if(self.GueltigBis > "9999-01-01 00:00:00")
-      @@copy            = self.get(self.id)
-      @@copy            = @@copy.dup
-      @@copy.id         = self.id
-      @@copy.GueltigVon = self.GueltigVon
-      @@copy.GueltigBis = Time.now
-      
-      self.GueltigVon   = Time.now
-      self.GueltigBis   = Time.zone.parse("9999-12-31 23:59:59")
+  def Bankverbindung.get(id, date = Time.now)
+    begin
+      return Adresse.find(:all, :conditions => ["ID = ? AND GueltigVon <= ? AND GueltigBis > ?", id, date, date]).first
+    rescue ActiveRecord::RecordNotFound
+      return nil
     end
   end
 
-   after_update do
-      if !@@copy.nil?
-        @@copy.save(:validation => false)
-        @@copy = nil
-      end
-   end
-  
-  def get(id, date = Time.now)
-    Bankverbindung.find(:all, :conditions => ["ID = ? AND GueltigVon <= ? AND GueltigBis > ?", id, date, date]).first
+  # (non static) get latest instance of model
+  def getLatest()
+    return Bankverbindung.get(self.ID)
   end
   
   def self.latest(id)
-    begin
-      self.find(:all, :conditions => ["ID = ? AND GueltigVon <= ? AND GueltigBis > ?", id, Time.now, Time.now]).first
-    rescue ActiveRecord::RecordNotFound
-      nil
-    end
+    return Bankverbindung.get(self.ID)
   end
   
   private
@@ -173,19 +111,4 @@ class Bankverbindung < ActiveRecord::Base
       end
     end
 
-    # bound to callback
-    def destroy_historic_records
-      # find all historic records that belongs to this record and destroy(!) them
-      # note: destroy should always destroy all the corresponding association objects
-      # if the association option :dependent => :destroy is set correctly
-      recs = self.class.find(:all, :conditions => ["ID = ? AND GueltigBis < ?", self.ID, self.GueltigBis])
-      
-      recs.each do |r|
-        r.destroy
-      end
-    end
-    
-    def destroy_bank_if_this_is_last_bankverbindung
-      Bank.destroy_yourself_if_you_are_alone(self.BLZ)
-    end
 end
