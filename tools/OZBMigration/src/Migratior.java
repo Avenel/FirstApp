@@ -106,8 +106,8 @@ public class Migratior {
 				 */
 				String queryInsertPerson = "INSERT INTO person "
 						+ "(Pnr,Rolle,Name,Vorname,Geburtsdatum,"
-						+ "EMail,SperrKZ) VALUES "
-						+ "(?,?,?,?,?,?,?);";
+						+ "EMail,GueltigVon,GueltigBis,SperrKZ) VALUES "
+						+ "(?,?,?,?,?,?,?,?,?);";
 				String queryInsertAdresse = "INSERT INTO adresse (Pnr,Strasse,Nr,PLZ,Ort,GueltigVon,GueltigBis,Vermerk) VALUES (?,?,?,?,?,?,?,?);";
 				String queryInsertOZBPerson = "INSERT INTO ozbperson (Mnr,UeberPnr,PWAendDatum,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum) VALUES (?,?,?,?,?,?,?);";
 				String queryInsertPartner = "INSERT INTO partner (Mnr,Pnr_P,Berechtigung,GueltigVon,GueltigBis) VALUES (?,?,?,?,?);";
@@ -176,15 +176,15 @@ public class Migratior {
 					queryInsertStmt.setDate(5, rs.getDate("GEBURTSDATUM"));
 					// queryInsertStmt.setString(6, rs.getString("VERMERK"));
 					queryInsertStmt.setString(6, rs.getString("EMAIL"));
-					/*queryInsertStmt.setTimestamp(7, new java.sql.Timestamp(
+					queryInsertStmt.setTimestamp(7, new java.sql.Timestamp(
 							calendar.getTime().getTime() - 1 * 24 * 60 * 60
 									* 1000));
-					queryInsertStmt.setTimestamp(8, endOfTime);*/
+					queryInsertStmt.setTimestamp(8, endOfTime);
 
 					// Temp! Alle werden freigeschalten. Info: Kienle hat
 					// Sperrkz = 3 ?! :D
 					// TODO
-					queryInsertStmt.setString(7, "0");// rs.getString("SPERRKZ"));
+					queryInsertStmt.setString(9, "0");// rs.getString("SPERRKZ"));
 
 					/**
 					 * Ausfuhrung des SQL Aufrufs. Falls ein Fehler vorhanden
@@ -201,6 +201,7 @@ public class Migratior {
 						pw.println("");
 					}
 
+					// Adresse
 					queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertAdresse);
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));

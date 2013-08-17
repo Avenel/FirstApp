@@ -177,41 +177,6 @@ class Buergschaft < ActiveRecord::Base
     
   end
 
-  # Historization stuff
-  # bound to callback
-  def set_valid_time
-    unless(self.GueltigBis || self.GueltigVon)
-      self.GueltigVon = Time.now
-      self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")
-    end
-  end
-  
-  @@copy = nil
-
-  # bound to callback
-  def set_new_valid_time
-    if (self.KtoNr)
-      if (self.GueltigBis > "9999-01-01 00:00:00")
-        @@copy            = self.get(self.KtoNr)
-        @@copy            = @@copy.dup
-        @@copy.KtoNr      = self.KtoNr
-        @@copy.GueltigVon = self.GueltigVon
-        @@copy.GueltigBis = Time.now
-        
-        self.GueltigVon   = Time.now
-        self.GueltigBis   = Time.zone.parse("9999-12-31 23:59:59")
-      end
-    end
-  end
-
- #NU
-  after_update do
-      if !@@copy.nil?
-        @@copy.save(:validation => false)
-        @@copy = nil
-      end
-   end
-
   # Returns the EEKonto Object for ktoNr and date
   def get(pnr_b, mnr_g, date = Time.now)
     Buergschaft.find(:all, :conditions => ["Pnr_B = ? AND Mnr_G = ? AND GueltigVon <= ? AND GueltigBis > ?", pnr_b, mnr_g, date, date]).first

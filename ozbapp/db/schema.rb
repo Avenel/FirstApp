@@ -13,7 +13,8 @@
 
 ActiveRecord::Schema.define(:version => 20130813190332) do
 
-  create_table "adresse", :primary_key => "Pnr", :force => true do |t|
+  create_table "adresse", :id => false, :force => true do |t|
+    t.integer  "Pnr",                      :null => false
     t.datetime "GueltigVon",               :null => false
     t.datetime "GueltigBis",               :null => false
     t.string   "Strasse",    :limit => 50, :null => false
@@ -186,14 +187,17 @@ ActiveRecord::Schema.define(:version => 20130813190332) do
     t.integer  "SachPnr"
   end
 
-  create_table "person", :primary_key => "Pnr", :force => true do |t|
-    t.string  "Rolle",        :limit => 0
-    t.string  "Name",         :limit => 30,                  :null => false
-    t.string  "Vorname",      :limit => 20, :default => "",  :null => false
-    t.date    "Geburtsdatum"
-    t.string  "EMail"
-    t.string  "SperrKZ",      :limit => 0,  :default => "0"
-    t.integer "SachPnr"
+  create_table "person", :id => false, :force => true do |t|
+    t.integer  "Pnr",                                         :null => false
+    t.datetime "GueltigVon",                                  :null => false
+    t.datetime "GueltigBis",                                  :null => false
+    t.string   "Rolle",        :limit => 0
+    t.string   "Name",         :limit => 30,                  :null => false
+    t.string   "Vorname",      :limit => 20, :default => "",  :null => false
+    t.date     "Geburtsdatum"
+    t.string   "EMail"
+    t.string   "SperrKZ",      :limit => 0,  :default => "0"
+    t.integer  "SachPnr"
   end
 
   create_table "projektgruppe", :primary_key => "Pgnr", :force => true do |t|
