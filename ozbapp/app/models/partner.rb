@@ -1,15 +1,21 @@
 #!/bin/env ruby
 # encoding: utf-8
+require "HistoricRecord.rb"
+
 class Partner < ActiveRecord::Base
+	include HistoricRecord
+	
   self.table_name = "Partner"
   self.primary_keys = :Mnr, :GueltigVon
   
-  alias_attribute :mnr, :Mnr
-  alias_attribute :gueltigVon, :GueltigVon 
-  alias_attribute :gueltigBis, :GueltigBis
-  alias_attribute :pnrp, :Pnr_P
-  alias_attribute :berechtigung, :Berechtigung 
-  alias_attribute :sachPnr, :SachPnr
+  # Necessary for historization
+  def get_primary_keys 
+    return {"Mnr" => self.Mnr}
+  end
+
+  def set_primary_keys(values)
+    self.Mnr = values["Mnr"]
+  end
 
   attr_accessible :Mnr, :GueltigVon, :GueltigBis, :Pnr_P, 
                   :Berechtigung, :SachPnr
@@ -35,50 +41,39 @@ class Partner < ActiveRecord::Base
   AVAILABLE_PERMISSIONS = %W(l v) # l = leseberechtigt, v = vollberechtigt 
   validates :Berechtigung, :presence => true, :inclusion => { :in => AVAILABLE_PERMISSIONS, :message => "%{value} is not a valid permission (l, v)" }
 
-  # Relations
-  belongs_to :OZBPerson, :foreign_key => :Mnr
+  # Associations
+  belongs_to :OZBPerson, 
+		:foreign_key => :Mnr
   # Pnr vom Partner (eigentliche Mitglied)
-  belongs_to :Person, :foreign_key => :Pnr_P
+  belongs_to :Person, 
+		:foreign_key => :Pnr_P
+		:conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
-  @@copy = nil
-
-  before_save do 
-    unless(self.GueltigBis || self.GueltigVon)
-      self.GueltigVon = Time.now      
-      self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")      
-    end
-  end
-
-  before_update do      
-    if(self.Mnr)
-      if(self.GueltigBis > "9999-01-01 00:00:00")
-        @@copy = Partner.get(self.Mnr)
-        @@copy = @@copy.dup
-        @@copy.Mnr = self.Mnr
-        @@copy.GueltigVon = self.GueltigVon
-        @@copy.GueltigBis = Time.now      
-
-        self.GueltigVon = Time.now      
-        self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")      
-      end
-    end
-  end
-
-   after_update do
-      if !@@copy.nil?
-        @@copy.save(:validation => false)
-        @@copy = nil
-      end
-   end
-
+  # callbacks
+  before_create :set_valid_time
+  before_update :set_new_valid_time
+  after_update :save_copy
 
   # Returns nil if at the given time no person object was valid
   def Partner.get(mnr, date = Time.now)
-    Partner.where(:Mnr => mnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
+    begin
+      return Partner.find(:all, :conditions => ["Mnr = ? AND GueltigVon <= ? AND GueltigBis > ?", Mnr, date, date]).first
+    rescue ActiveRecord::RecordNotFound
+      return nil
+    end
   end
 
   # Returns nil if at the given time no person object was valid
   def Partner.get_all(pnr, date = Time.now)
-	  Partner.where(:Pnr_P => pnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date])
+    begin
+      return Partner.find(:all, :conditions => ["Pnr_P = ? AND GueltigVon <= ? AND GueltigBis > ?", pnr, date, date])
+    rescue ActiveRecord::RecordNotFound
+      return nil
+    end
+  end
+  
+  # (non static) get latest instance of model
+  def getLatest()
+    return Partner.get(self.Mnr)
   end
 end

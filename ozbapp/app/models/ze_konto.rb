@@ -113,7 +113,7 @@ class ZeKonto < ActiveRecord::Base
     return true
   end
 
-  # Relations
+  # Associations
   belongs_to :ozb_konto,
     :primary_key => :KtoNr,
     :foreign_key => :KtoNr,
@@ -124,7 +124,7 @@ class ZeKonto < ActiveRecord::Base
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 	
   has_many :buergschaft,
-    :foreign_key => :KtoNr,
+    :foreign_key => :ZENr,
 	:conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 
   belongs_to :projektgruppe,
