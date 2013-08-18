@@ -45,8 +45,10 @@ class Partner < ActiveRecord::Base
   # Associations
   belongs_to :OZBPerson, 
 		:foreign_key => :Mnr
+
   # Pnr vom Partner (eigentliche Mitglied)
   belongs_to :Person, 
+    :primary_key => :Pnr
 		:foreign_key => :Pnr_P
 		:conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 

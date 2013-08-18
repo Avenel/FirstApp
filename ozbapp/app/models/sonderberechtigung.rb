@@ -24,5 +24,6 @@ class Sonderberechtigung < ActiveRecord::Base
   validates :Berechtigung, :presence => true, :inclusion => { :in => AVAILABLE_PERMISSIONS, :message => "%{value} is not a valid permission (IT, MV, RW, ZE, OeA)" }  
 
   # Associations
-  belongs_to :OZBPerson, :foreign_key => :Mnr
+  belongs_to :OZBPerson, 
+    :foreign_key => :Mnr
 end

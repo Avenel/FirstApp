@@ -12,7 +12,12 @@ class Veranstaltung < ActiveRecord::Base
   validates :VADatum, :presence => true
   validates :VAOrt, :presence => true
 
-	# Associations
-	belongs_to :Veranstaltungsart, :foreign_key => :VANr
-	has_many :Teilnahme, :foreign_key => :Vnr
+  # Associations
+  belongs_to :Veranstaltungsart, 
+    :foreign_key => :VANr
+
+  has_many :Teilnahme, 
+    :primary_key => :Vnr,
+    :foreign_key => :Vnr
+    
 end

@@ -7,7 +7,6 @@ class Person < ActiveRecord::Base
 
   self.primary_keys = :Pnr, :GueltigVon
 
-
   # Necessary for historization 
   def get_primary_keys 
     return {"Pnr" => self.Pnr}
@@ -49,16 +48,46 @@ class Person < ActiveRecord::Base
 
 
   # Associations
-  has_many :Partner, :foreign_key => :Mnr, :dependent => :destroy
-  has_many :Foerdermitglied, :foreign_key => :Pnr, :dependent => :destroy
-  has_one :OZBPerson, :foreign_key => :Pnr, :dependent => :destroy 
-  has_many :Telefon, :foreign_key => :Pnr, :dependent => :destroy
+  has_one :Partner,
+    :primary_key => :Mnr, 
+    :foreign_key => :Pnr,
+    # Nur mit derselben Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+
+  has_many :Foerdermitglied, 
+    :primary_key => :Pnr,
+    :foreign_key => :Pnr,
+    # Nur mit derselben Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+
+  has_one :OZBPerson,
+    :primary_key => :Mnr,
+    :foreign_key => :Pnr
+
+  has_many :Telefon, 
+    :primary_key => :Pnr,
+    :foreign_key => :Pnr
 
   has_one :Adresse,
-          :primary_key => :Pnr,
-          :foreign_key => :Pnr,
-          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
-    
+    :primary_key => :Pnr,
+    :foreign_key => :Pnr,
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+
+  has_many :Teilnahme,
+    :primary_key => :Pnr,
+    :foreign_key => :Pnr
+
+  has_many :Bankverbindung, 
+    :primary_key => :Pnr,
+    :foreign_key => :Pnr,
+    # Nur mit derselben Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+  
+  has_many :Buergschaft, 
+    :primary_key => :Pnr_B,
+    :foreign_key => :Pnr,
+    # Nur mit derselben Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
   # Callbacks
   before_create :set_valid_time

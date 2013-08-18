@@ -120,15 +120,16 @@ class ZeKonto < ActiveRecord::Base
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 
   belongs_to :ee_konto,
+    :primary_key => :KtoNr,
     :foreign_key => :EEKtoNr,
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 	
   has_many :buergschaft,
+    :primary_key => :ZENr,
     :foreign_key => :ZENr,
-	:conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 
   belongs_to :projektgruppe,
-    :inverse_of => :ZEKonto,
     :foreign_key => :Pgnr
 
   # callbacks

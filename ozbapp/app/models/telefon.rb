@@ -30,5 +30,10 @@ class Telefon < ActiveRecord::Base
   validates :TelefonTyp, :presence => true, :inclusion => { :in => AVAILABLE_TYPES, :message => "%{value} is not a valid telephone type (tel, mob, fax" } 
 
   # Associations 
-  belongs_to :Person, :foreign_key => :Pnr
+  belongs_to :Person, 
+    :primary_key => :Pnr,
+    :foreign_key => :Pnr,
+    # Nur mit der aktuellsten Version der Person verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+
 end

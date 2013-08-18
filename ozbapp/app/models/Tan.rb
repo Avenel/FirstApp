@@ -30,4 +30,11 @@ class Tan < ActiveRecord::Base
   # enum Status
   AVAILABLE_STATUS = %W(n d a) # n = neu, a = aktiviert, d = deaktiviert
   validates :Status, :presence => true, :inclusion => { :in => AVAILABLE_STATUS, :message => "%{value} is not a valid status (n, d, a" } 
+
+  # Associations
+  belongs_to :Tanliste,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr,
+    :conditions => proc { ["ListNr = ?", self.ListNr] }
+
 end

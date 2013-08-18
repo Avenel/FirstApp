@@ -38,6 +38,57 @@ class OZBPerson < ActiveRecord::Base
   end
 
   # Associations
-  has_many :BuchungOnline, :foreign_key => :Mnr
-  belongs_to :Person, :foreign_key => :Mnr
+  has_many :Sonderberechtigung,
+    :primary_key => :Mnr, # column in Sonderberechtigung 
+    :foreign_key => :Mnr # column in OZBPerson
+
+  belongs_to :Person,
+    :primary_key => :Pnr,
+    :foreign_key => :Mnr,
+    # Nur mit der aktuellsten Version der Person verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+
+  has_one :Gesellschafter,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr,
+    # Nur mit der aktuellsten Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }   
+
+  has_one :Partner,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr,
+    # Nur mit der aktuellsten Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+
+  has_one :Mitglied,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr,
+    # Nur mit der aktuellsten Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+
+  has_one :Student,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr,
+    # Nur mit der aktuellsten Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+
+  has_many :Tanliste,
+    :foreign_key => :Mnr
+
+  has_many :OzbKonto,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr,
+    # Nur mit der aktuellsten Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+
+  has_one :Buergschaft,
+    :primary_key => :Mnr_G,
+    :foreign_key => :Mnr,
+    # Nur mit der aktuellsten Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+
+  has_many :BuchungOnline,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr
+
 end

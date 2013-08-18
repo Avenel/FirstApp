@@ -4,20 +4,23 @@ class Veranstaltungsart < ActiveRecord::Base
 	self.primary_key =  :VANr
 
 	# attributes
-	attr_accessible  :VANr,:VABezeichnung
+	attr_accessible  :VANr, :VABezeichnung
 	
 	# Validations
 	validates :VANr, :presence => true, :format => { :with => /^([0-9]+)$/i }
 	validates :VABezeichnung, :presence => true
 
 	# Associations 
-	has_many :Veranstaltung, :foreign_key => :Vnr
+	has_many :Veranstaltung,
+		:primary_key => :VANr,
+		:foreign_key => :VANr
 	
 	def Veranstaltungsart.get(vanr)
-    begin
-      Veranstaltungsart.find(:all, :conditions => ["VANr = ?", vanr]).first
-    rescue ActiveRecord::RecordNotFound
-      return nil
-    end
+	    begin
+	      Veranstaltungsart.find(:all, :conditions => ["VANr = ?", vanr]).first
+	    rescue ActiveRecord::RecordNotFound
+	      return nil
+	    end
 	end
+
 end

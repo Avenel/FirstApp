@@ -15,5 +15,12 @@ class Teilnahme < ActiveRecord::Base
 	validates :TeilnArt, :presence => true, :inclusion => { :in => AVAILABLE_PARTICIPATIONS, :message => "%{value} is not a valid participation (a, e, u, l)" }
 
   # Associations
-  belongs_to :Veranstaltung, :foreign_key => :Vnr, :dependent => :destroy
+  belongs_to :Veranstaltung, 
+    :primary_key => :Vnr,
+    :foreign_key => :Vnr
+
+  belongs_to :Person,
+    :primary_key => :Pnr,
+    :foreign_key => :Pnr
+
 end

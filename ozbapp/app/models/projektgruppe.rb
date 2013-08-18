@@ -9,9 +9,14 @@ class Projektgruppe < ActiveRecord::Base
 	attr_accessible :Pgnr, :ProjGruppenBez
 
 	# Validations
-	validates :PgNr, :uniqueness => true, :presence => true, :format => {:with => /^[0-9]{1,2}$/i, :message => "Not a valid PGNnr"}
+	validates :Pgnr, :uniqueness => true, :presence => true, :format => {:with => /^[0-9]{1,2}$/i, :message => "Not a valid PGNnr"}
   validates :ProjGruppenBez, :presence => true
 
   # Associations
-  has_many :ZEKonto, :inverse_of => :Projektgruppe, :foreign_key => :PgNr
+  has_many :ZeKonto, 
+    :primary_key => :Pgnr,
+    :foreign_key => :Pgnr,
+    # Nur mit der aktuellsten Version verknüpfen 
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+    
 end

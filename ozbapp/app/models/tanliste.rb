@@ -27,4 +27,8 @@ class Tanliste < ActiveRecord::Base
   AVAILABLE_STATUS = %W(n d a) # n = neu, a = aktiviert, d = deaktiviert
   validates :Status, :presence => true, :inclusion => { :in => AVAILABLE_STATUS, :message => "%{value} is not a valid status (n, d, a" } 
 
+  belongs_to :OZBPerson,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr
+
 end
