@@ -49,25 +49,6 @@ class Buergschaft < ActiveRecord::Base
   validate :sachPnr_exists
   validate :valid_sichZeitraum
 
-  # callbacks
-  before_create :set_valid_time
-  before_update :set_new_valid_time
-  after_update :save_copy
-
-  # Associations
-  belongs_to :Person,
-          :foreign_key => :Pnr_B,
-          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }          
-  
-  belongs_to :OZBPerson,
-          :foreign_key => :Mnr_G,
-          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
-    
-  belongs_to :ZEKonto,
-          :foreign_key => :ZENr,
-          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
-
-
   # SachPnr should be an ozb member, so check if there is an OZBPerson with the given Pnr (=Mnr)
   def sachPnr_exists
     if self.SachPnr.nil? then
@@ -171,6 +152,26 @@ class Buergschaft < ActiveRecord::Base
    
     return errors
   end
+
+  # callbacks
+  before_create :set_valid_time
+  before_update :set_new_valid_time
+  after_update :save_copy
+
+  # Associations
+  belongs_to :Person,
+          :foreign_key => :Pnr_B,
+          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }          
+  
+  belongs_to :OZBPerson,
+          :foreign_key => :Mnr_G,
+          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+    
+  belongs_to :ZEKonto,
+          :primary_key => :ZENr, # column in ZEKonto
+          :foreign_key => :ZENr, # column in Buergschaft
+          :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+
   
   def find_by_name(lastname, firstname)
     person = Person.where("name = ? AND vorname = ?", lastname.to_s.strip, firstname.to_s.strip).first
@@ -186,7 +187,11 @@ class Buergschaft < ActiveRecord::Base
 
   # Returns the EEKonto Object for ktoNr and date
   def Buergschaft.get(pnr_b, mnr_g, date = Time.now)
-    Buergschaft.find(:all, :conditions => ["Pnr_B = ? AND Mnr_G = ? AND GueltigVon <= ? AND GueltigBis > ?", pnr_b, mnr_g, date, date]).first
+    begin
+      return Buergschaft.find(:all, :conditions => ["Pnr_B = ? AND Mnr_G = ? AND GueltigVon <= ? AND GueltigBis > ?", pnr_b, mnr_g, date, date]).first
+    rescue ActiveRecord:RecordNotFound
+      return nil
+    end
   end
 
   # (non static) get latest instance of model
@@ -195,11 +200,7 @@ class Buergschaft < ActiveRecord::Base
   end
   
   def self.latest(pnr_b, mnr_g)
-    begin
-      self.find(:all, :conditions => ["Pnr_B = ? AND Mnr_G = ? AND GueltigBis = ?", pnr_b, mnr_g, "9999-12-31 23:59:59"]).first
-    rescue ActiveRecord::RecordNotFound
-      nil
-    end
+    return Buergschaft.get(pnr_b, mnr_g)
   end
   
 end

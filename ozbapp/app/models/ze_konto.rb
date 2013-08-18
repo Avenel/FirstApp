@@ -158,7 +158,7 @@ class ZeKonto < ActiveRecord::Base
   # Returns nil if at the given time no person object was valid
   def ZeKonto.get(KtoNr, date = Time.now)
     begin
-      return Adresse.find(:all, :conditions => ["KtoNr = ? AND GueltigVon <= ? AND GueltigBis > ?", KtoNr, date, date]).first
+      return ZeKonto.find(:all, :conditions => ["KtoNr = ? AND GueltigVon <= ? AND GueltigBis > ?", KtoNr, date, date]).first
     rescue ActiveRecord::RecordNotFound
       return nil
     end

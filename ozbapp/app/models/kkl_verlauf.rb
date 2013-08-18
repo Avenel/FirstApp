@@ -1,11 +1,9 @@
 #!/bin/env ruby
 # encoding: utf-8
 class KklVerlauf < ActiveRecord::Base
+
   self.table_name = "KKLVerlauf"
   self.primary_keys = :KtoNr, :KKLAbDatum
-  
-  # aliases
-  alias_attribute :kkl, :KKL
   
   # attributes
   attr_accessible :KtoNr, :KKLAbDatum, :KKL
@@ -43,36 +41,20 @@ class KklVerlauf < ActiveRecord::Base
     end
   end
   
-  # Relations
-  belongs_to :ozb_konto,
-    :foreign_key => :KtoNr,
-    :class_name => "OzbKonto"
+  # Associations
+  belongs_to :OzbKonto,
+          :foreign_key => :KtoNr
     
   belongs_to :kontenklasse,
-    :foreign_key => :KKL
-
+          :foreign_key => :KKL
 
   # callbacks
   before_create :set_ab_datum
-  after_destroy :destroy_historic_records
 
   def set_ab_datum
     if (self.KKLAbDatum.blank?)
       self.KKLAbDatum = Date.today
     end
   end
-
-  private
-    # bound to callback
-    def destroy_historic_records
-      # find all historic records that belongs to this record and destroy(!) them
-      # note: destroy should always destroy all the corresponding association objects
-      # if the association option :dependent => :destroy is set correctly
-      recs = self.class.find(:all, :conditions => ["KtoNr = ? AND KKLAbDatum < ?", self.KtoNr, self.KKLAbDatum])
-      
-      recs.each do |r|
-        r.destroy
-      end
-    end
 
 end

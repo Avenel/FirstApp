@@ -1,7 +1,9 @@
 class Waehrung < ActiveRecord::Base
+
 	self.table_name = "Waherung"
   self.primary_keys = :Code
   
+  # attributes
   attr_accessible :Code, :Bezeichnung
 
   # Validations

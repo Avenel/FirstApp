@@ -1,7 +1,9 @@
 class Tan < ActiveRecord::Base
+  
 	self.table_name = "Tan"
   self.primary_keys = :Mnr, :ListNr, :TanNr
   
+  # attributes
   attr_accessible :Mnr, :ListNr, :TanNr, :Tan, :VerwendetAm, :Status 
 
   # column names

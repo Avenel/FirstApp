@@ -1,20 +1,23 @@
 #!/bin/env ruby
 # encoding: utf-8
-class Gesellschafter < ActiveRecord::Base  
+require "HistoricRecord.rb"
+
+class Gesellschafter < ActiveRecord::Base 
+    include HistoricRecord
+  
 	self.table_name = "Gesellschafter"
   self.primary_keys = :Mnr, :GueltigVon
   
-  alias_attribute :mnr, :Mnr
-  alias_attribute :gueltigVon, :GueltigVon 
-  alias_attribute :gueltigBis, :GueltigBis
-  alias_attribute :faLfdNr, :FALfdNr  
-  alias_attribute :faSteuerNr, :FASteuerNr  
-  alias_attribute :faIdNr, :FAIdNr 
-  alias_attribute :wohnsitzFinanzamt, :Wohnsitzfinanzamt  
-  alias_attribute :notarPnr, :NotarPnr 
-  alias_attribute :beurkDatum, :BeurkDatum  
-  alias_attribute :sachPnr, :SachPnr
-  	
+  # Necessary for historization
+  def get_primary_keys 
+    return {"Mnr" => self.Mnr}
+  end
+
+  def set_primary_keys(values)
+    self.Mnr = values["Mnr"]
+  end
+
+  # attributes	
   attr_accessible :Mnr, :GueltigVon, :GueltigBis, :FALfdNr, 
                   :FASteuerNr, :FAIdNr, :Wohnsitzfinanzamt, 
                   :NotarPnr, :BeurkDatum, :SachPnr
@@ -43,42 +46,28 @@ class Gesellschafter < ActiveRecord::Base
   validates :FASteuerNr, :presence => true
   validates :Wohnsitzfinanzamt, :presence => true
 
-  # Relations
-  belongs_to :OZBPerson, :foreign_key => :Mnr
+  # callbacks
+  before_create :set_valid_time
+  before_update :set_new_valid_time
+  after_update :save_copy
 
-  @@copy = nil
+  # Associations
+  belongs_to :OZBPerson, 
+          :foreign_key => :Mnr
 
-  before_save do 
-    unless(self.GueltigBis || self.GueltigVon)
-        self.GueltigVon = Time.now      
-        self.GueltigBis = Time.zone.parse("9999-12-31 23:59:59")      
-    end
-  end
-
-  before_update do      
-    if(self.Mnr)
-      if(self.GueltigBis > "9999-01-01 00:00:00")
-          @@copy            = Gesellschafter.get(self.Mnr)
-          @@copy            = @@copy.dup
-          @@copy.Mnr        = self.Mnr
-          @@copy.GueltigVon = self.GueltigVon
-          @@copy.GueltigBis = Time.now      
-          
-          self.GueltigVon   = Time.now      
-          self.GueltigBis   = Time.zone.parse("9999-12-31 23:59:59")      
-      end
-    end
-  end
-
-   after_update do
-      if !@@copy.nil?
-        @@copy.save(:validation => false)
-        @@copy = nil
-      end
-   end
 
   # Returns nil if at the given time no person object was valid
-  def Gesellschafter.get(pnr, date = Time.now)
-    Gesellschafter.where(:Mnr => pnr).where(["GueltigVon <= ?", date]).where(["GueltigBis > ?",date]).first
+  def Gesellschafter.get(mnr, date = Time.now)
+    begin
+      return Gesellschafter.find(:all, :conditions => ["Mnr = ? AND GueltigVon <= ? AND GueltigBis > ?", mnr, date, date]).first
+    rescue ActiveRecord::RecordNotFound
+      return nil
+    end
   end
+
+  # (non static) get latest instance of model
+  def getLatest()
+    return Gesellschafter.get(self.Mnr)
+  end
+
 end

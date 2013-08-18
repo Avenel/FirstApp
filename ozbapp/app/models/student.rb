@@ -17,6 +17,7 @@ class Student < ActiveRecord::Base
     self.Mnr = values["Mnr"]
   end
   
+  # attributes
   attr_accessible :Mnr, :GueltigVon, :GueltigBis, :AusbildBez, 
                   :InstitutName, :Studienort, :Studienbeginn,
                   :Studienende, :Abschluss, :SachPnr   
@@ -52,9 +53,9 @@ class Student < ActiveRecord::Base
   after_update :save_copy
   
   # Returns nil if at the given time no person object was valid
-  def Student.get(pnr, date = Time.now)
+  def Student.get(mnr, date = Time.now)
     begin
-      return Student.find(:all, :conditions => ["Mnr = ? AND GueltigVon <= ? AND GueltigBis > ?", pnr, date, date]).first
+      return Student.find(:all, :conditions => ["Mnr = ? AND GueltigVon <= ? AND GueltigBis > ?", mnr, date, date]).first
     rescue ActiveRecord::RecordNotFound
       return nil
     end

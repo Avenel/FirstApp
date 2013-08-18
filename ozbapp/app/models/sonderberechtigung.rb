@@ -1,5 +1,4 @@
 # encoding: UTF-8
-
 class EmailValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
@@ -9,14 +8,11 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class Sonderberechtigung < ActiveRecord::Base
+  
   self.table_name = "Sonderberechtigung"
   self.primary_key = :ID
 
-  alias_attribute :id, :ID   
-  alias_attribute :mnr, :Mnr
-  alias_attribute :berechtigung, :Berechtigung
-  alias_attribute :email, :Email   
-        
+  # attributes      
   attr_accessible :ID, :Mnr, :Email, :Berechtigung
    
   # Validations
@@ -27,6 +23,6 @@ class Sonderberechtigung < ActiveRecord::Base
   AVAILABLE_PERMISSIONS = %W(IT MV RW ZE OeA) 
   validates :Berechtigung, :presence => true, :inclusion => { :in => AVAILABLE_PERMISSIONS, :message => "%{value} is not a valid permission (IT, MV, RW, ZE, OeA)" }  
 
-  # Relations
+  # Associations
   belongs_to :OZBPerson, :foreign_key => :Mnr
 end

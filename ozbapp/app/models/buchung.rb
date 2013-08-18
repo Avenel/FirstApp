@@ -1,6 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Buchung < ActiveRecord::Base
+  
   self.table_name = "Buchung"
   self.primary_keys = :BuchJahr, :KtoNr, :BnKreis, :BelegNr, :Typ
   
@@ -120,11 +121,6 @@ class Buchung < ActiveRecord::Base
   validate :kto_soll_exists
   validate :kto_haben_exists
 
-   # Associations
-  belongs_to :OZBKonto, 
-    :foreign_key => :KtoNr,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
-
   def kto_exists
     kto = OzbKonto.latest(self.KtoNr)
     if kto.nil? then
@@ -154,5 +150,10 @@ class Buchung < ActiveRecord::Base
       return true
     end
   end
+
+   # Associations
+  belongs_to :OZBKonto, 
+    :foreign_key => :KtoNr,
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
 end

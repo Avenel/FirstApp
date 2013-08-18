@@ -127,28 +127,4 @@ class EeKonto < ActiveRecord::Base
     end
   end
   
-  private
-    # bound to callback
-    def destroy_historic_records
-      # find all historic records that belongs to this record and destroy(!) them
-      # note: destroy should always destroy all the corresponding association objects
-      # if the association option :dependent => :destroy is set correctly
-      recs = EeKonto.find(:all, :conditions => ["KtoNr = ? AND GueltigBis < ?", self.KtoNr, self.GueltigBis])
-      
-      recs.each do |r|
-        r.destroy
-      end
-    end
-    
-    # bound to callback
-    def destroy_ozb_konto_if_this_is_last_konto
-      OzbKonto.destroy_yourself_if_you_are_alone(self.ktoNr)
-    end
-    
-    # bound to callback
-    def destroy_bankverbindung
-      if (!self.Bankverbindung.nil?)
-        self.Bankverbindung.destroy
-      end
-    end
 end

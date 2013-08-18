@@ -17,6 +17,7 @@ class Partner < ActiveRecord::Base
     self.Mnr = values["Mnr"]
   end
 
+  # attributes
   attr_accessible :Mnr, :GueltigVon, :GueltigBis, :Pnr_P, 
                   :Berechtigung, :SachPnr
 

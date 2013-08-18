@@ -1,4 +1,5 @@
 class BuchungOnline < ActiveRecord::Base
+  
 	self.table_name = "BuchungOnline"
   self.primary_keys = :ID
   

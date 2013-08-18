@@ -1,11 +1,8 @@
 # encoding: UTF-8
 class Kontenklasse < ActiveRecord::Base
+
   self.table_name = "KontenKlasse"
   self.primary_key = :KKL
-  
-  # aliases
-  alias_attribute :kkl, :KKL
-  alias_attribute :prozent, :Prozent
   
   # attributes
   attr_accessible :KKL, :KKLEinrDatum, :Prozent, :kkl_with_percent
@@ -42,12 +39,13 @@ class Kontenklasse < ActiveRecord::Base
       :message => "Bitte geben Sie einen gültigen Prozentsatz an." }
 
 
-   # Relations
+   # Associations
   has_many :KKLVerlauf,
-    :foreign_key => :KKL # no one or many
+        :foreign_key => :KKL
   
   # Liefert einen detaillierten String mit dem Prozentsatz
   def kkl_with_percent
     "Klasse " + kkl.to_s + " - " + sprintf("%3.2f", prozent) + "%"
   end
+
 end

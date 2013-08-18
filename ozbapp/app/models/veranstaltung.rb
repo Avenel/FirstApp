@@ -1,8 +1,9 @@
 class Veranstaltung < ActiveRecord::Base
+	
 	self.table_name = "Veranstaltung"
 	self.primary_key = :Vnr
 	
-	
+  # attributes
   attr_accessible :Vnr,  :VANr, :VADatum, :VAOrt, :SachPnr
 	
   # Validations
@@ -11,7 +12,7 @@ class Veranstaltung < ActiveRecord::Base
   validates :VADatum, :presence => true
   validates :VAOrt, :presence => true
 
-	# Relations
+	# Associations
 	belongs_to :Veranstaltungsart, :foreign_key => :VANr
 	has_many :Teilnahme, :foreign_key => :Vnr
 end

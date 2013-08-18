@@ -17,16 +17,20 @@ class Person < ActiveRecord::Base
     self.Pnr = values["Pnr"]
   end
 
-  # column names
+  # attributes
   attr_accessible :Pnr, :GueltigVon, :GueltigBis, :Rolle, :Name, 
                   :Vorname, :Geburtsdatum, :EMail, :SperrKZ, 
                   :SachPnr, :AVAILABLE_ROLES
 
+  # column names
   HUMANIZED_ATTRIBUTES = {
     :Pnr        => 'Personal-Nr.',
     :SperrKZ    => 'SperrKZ'
   }
    
+  def self.human_attribute_name(attr, options={})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
 
   # Validations
   validates :Pnr, :presence => true, :format => { :with => /^([0-9]+)$/i }

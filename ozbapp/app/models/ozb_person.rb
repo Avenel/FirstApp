@@ -1,18 +1,10 @@
 # encoding: UTF-8
 class OZBPerson < ActiveRecord::Base
+
   self.table_name = "OZBPerson"
   self.primary_key = :Mnr
-  
-  alias_attribute :mnr, :Mnr
-  alias_attribute :ueberPnr, :UeberPnr
-  alias_attribute :pwAendDatum, :PWAendDatum
-  alias_attribute :antragsdatum, :Antragsdatum
-  alias_attribute :aufnahmedatum, :Aufnahmedatum
-  alias_attribute :austrittsdatum, :Austrittsdatum
-  alias_attribute :schulungsdatum, :Schulungsdatum
-  alias_attribute :gesperrt, :Gesperrt
-  alias_attribute :sachPnr, :SachPnr
-  
+
+  # attributes  
   attr_accessible :Mnr, :UeberPnr, :PWAendDatum, 
                   :Antragsdatum, :Aufnahmedatum, :Austrittsdatum, :Schulungsdatum, :SachPnr
 
@@ -33,9 +25,6 @@ class OZBPerson < ActiveRecord::Base
   validates :Mnr, :presence => true
   validates :Antragsdatum, :presence => true
   
-  # technical attributes
-  # obsolet
-  # validate :password_complexity
   validate :person_exists
 
   def person_exists
@@ -48,11 +37,7 @@ class OZBPerson < ActiveRecord::Base
     return true
   end
 
-  # Relations
-  # Note: These are relations which correspond with the db schema. There 
-  #       are further relations (Person, OZBKonto) which don't work with 
-  #       with the db schema, but never the less exist. If necessesary
-  #       there are ways to implement them, like in the OZBKonto model.
+  # Associations
   has_many :BuchungOnline, :foreign_key => :Mnr
   belongs_to :Person, :foreign_key => :Mnr
 end

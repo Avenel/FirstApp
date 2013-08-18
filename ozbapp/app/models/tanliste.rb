@@ -1,7 +1,9 @@
 class Tanliste < ActiveRecord::Base
+  
 	self.table_name = "Tanliste"
   self.primary_keys = :Mnr, :ListNr
   
+  # attributes
   attr_accessible :Mnr, :ListNr, :TanListDatum, :Status 
 
   # column names

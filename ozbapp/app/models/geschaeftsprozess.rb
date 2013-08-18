@@ -1,7 +1,9 @@
 class Geschaeftsprozess < ActiveRecord::Base
+	
 	self.table_name = "Geschaeftsprozess"
 	self.primary_key = :ID
 
+	# attributes
 	attr_accessible :ID, :Beschreibung, :IT, :MV, :RW, :ZE, :OeA
 
 	# Validations

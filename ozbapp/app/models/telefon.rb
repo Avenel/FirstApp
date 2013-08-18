@@ -1,9 +1,11 @@
 #!/bin/env ruby
 # encoding: utf-8
 class Telefon < ActiveRecord::Base
+  
   self.table_name = "Telefon"
   self.primary_keys = :Pnr, :LfdNr
   
+  # attributes
   attr_accessible :Pnr, :LfdNr, :TelefonNr, :TelefonTyp
 
   # column names
@@ -27,6 +29,6 @@ class Telefon < ActiveRecord::Base
   AVAILABLE_TYPES = %W(tel mob fax) # tel = Festnetz, mob = Mobilfunk, fax = FAX
   validates :TelefonTyp, :presence => true, :inclusion => { :in => AVAILABLE_TYPES, :message => "%{value} is not a valid telephone type (tel, mob, fax" } 
 
-  # Relations 
+  # Associations 
   belongs_to :Person, :foreign_key => :Pnr
 end

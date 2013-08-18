@@ -1,17 +1,8 @@
 # encoding: UTF-8
 class OzbKonto < ActiveRecord::Base
+  
   self.table_name = "OZBKonto"
   self.primary_keys = :KtoNr, :GueltigVon # two primary keys define an unique record
-  
-  # aliases
-  alias_attribute :ktoNr, :KtoNr
-  alias_attribute :mnr, :Mnr
-  alias_attribute :ktoEinrDatum, :KtoEinrDatum
-  alias_attribute :waehrung, :Waehrung
-  alias_attribute :wSaldo, :WSaldo
-  alias_attribute :pSaldo, :PSaldo
-  alias_attribute :saldoDatum, :SaldoDatum
-  alias_attribute :sachPnr, :SachPnr
   
   # attributes
   # accept only and really only attr_accessible if you want that a user is able to mass-assign these attributes!
