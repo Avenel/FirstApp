@@ -32,15 +32,16 @@
 				<tr>
 					<!-- NU -->
 					<td class="zentriert"><a href="/Darlehensverlauf/<%= ee_konto.KtoNr %>/EE"><%= ee_konto.KtoNr %></a></td>
-					<td class="zentriert"><%= ee_konto.ozb_konto.saldoDatum.strftime("%d.%m.%Y") %></td>
-					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.ozb_konto.wSaldo, :precision => 2, :delimiter => ".") %></td>
-					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.ozb_konto.pSaldo, :delimiter => ".", :precision => 0) %></td>
+					<td class="zentriert"><%= ee_konto.OzbKonto.SaldoDatum.strftime("%d.%m.%Y") %></td>
+					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.OzbKonto.WSaldo, :precision => 2, :delimiter => ".") %></td>
+					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.OzbKonto.PSaldo, :delimiter => ".", :precision => 0) %></td>
 					<% if current_user.Sonderberechtigung.size > 0 %>
-						<td class="zentriert"><%= ee_konto.ozb_konto.ktoEinrDatum.strftime("%d.%m.%Y") %></td>
+						<td class="zentriert"><%= ee_konto.OzbKonto.KtoEinrDatum.strftime("%d.%m.%Y") %></td>
 					<% end %>
-					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.kreditlimit, :precision => 2, :delimiter => ".") %></td>				
+					<td class="rechtsbuendig"><%= number_with_precision(ee_konto.Kreditlimit, :precision => 2, :delimiter => ".") %></td>				
 
 					<% bv = ee_konto.Bankverbindung %>
+					<% puts ">>>> DEBUG: bv: " + bv.inspect %>
 					<% if !bv.nil?%>
 						<td><%= bv.BankKtoNr %></td>
 						<td class="zentriert"><%= bv.BLZ %></td>

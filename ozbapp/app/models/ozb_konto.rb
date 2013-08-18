@@ -18,8 +18,8 @@ class OzbKonto < ActiveRecord::Base
 
   # attributes
   attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :Mnr, :KtoEinrDatum, :Waehrung, :WSaldo, 
-                  :PSaldo, :SaldoDatum, :SachPnr, :ee_konto_attributes, 
-                  :ze_konto_attributes, :kkl_verlauf_attributes
+                  :PSaldo, :SaldoDatum, :SachPnr, :EeKonto_attributes, 
+                  :ZeKonto_attributes, :kkl_verlauf_attributes
   
   # column names
   HUMANIZED_ATTRIBUTES = {
@@ -102,7 +102,7 @@ class OzbKonto < ActiveRecord::Base
     :primary_key => :Code,
     :foreign_key => :Waehrung
 
-  accepts_nested_attributes_for :ee_konto, :ze_konto, :kkl_verlauf
+  accepts_nested_attributes_for :EeKonto, :ZeKonto, :KklVerlauf
 
   # callbacks
   before_save :set_assoc_attributes, :set_wsaldo_psaldo_to_zero, :set_saldo_datum
@@ -134,30 +134,30 @@ class OzbKonto < ActiveRecord::Base
   # Returns all EE-Konten for the specified person which are valid AT THE MOMENT
   def self.get_all_ee_for(mnr)
     ozb_konto = self.where(:Mnr => mnr, :GueltigBis => "9999-12-31 23:59:59").order("KtoNr ASC")
-    @ee_konto = Array.new
+    @EeKonto = Array.new
     
     ozb_konto.each do |konto|
-      if !konto.ee_konto.nil? 
-        @ee_konto.push(konto.ee_konto)
+      if !konto.EeKonto.nil? 
+        @EeKonto.push(konto.EeKonto)
       end
     end
     
-    return @ee_konto
+    return @EeKonto
   end
   
   # Static method
   # Returns all ZE-Konten for the specified person which are valid AT THE MOMENT
   def self.get_all_ze_for(mnr)
     ozb_konto = self.where(:Mnr => mnr, :GueltigBis => "9999-12-31 23:59:59").order("KtoNr ASC")
-    @ze_konto = Array.new
+    @ZeKonto = Array.new
     
     ozb_konto.each do |konto|
-      if !konto.ze_konto.nil?
-        @ze_konto.push(konto.ze_konto)
+      if !konto.ZeKonto.nil?
+        @ZeKonto.push(konto.ZeKonto)
       end
     end
     
-    return @ze_konto
+    return @ZeKonto
   end
 
   private

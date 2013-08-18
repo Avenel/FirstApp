@@ -57,8 +57,8 @@ class Bankverbindung < ActiveRecord::Base
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
   has_one :ee_konto,
+    :primary_key => :ID,
     :foreign_key => :BankId,
-    :autosave => true,
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 
   belongs_to :Bank,

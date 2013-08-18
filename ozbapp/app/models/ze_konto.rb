@@ -114,7 +114,7 @@ class ZeKonto < ActiveRecord::Base
   end
 
   # Associations
-  belongs_to :ozb_konto,
+  belongs_to :OzbKonto,
     :primary_key => :KtoNr,
     :foreign_key => :KtoNr,
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
@@ -157,9 +157,9 @@ class ZeKonto < ActiveRecord::Base
   end
   
   # Returns nil if at the given time no person object was valid
-  def ZeKonto.get(KtoNr, date = Time.now)
+  def ZeKonto.get(ktoNr, date = Time.now)
     begin
-      return ZeKonto.find(:all, :conditions => ["KtoNr = ? AND GueltigVon <= ? AND GueltigBis > ?", KtoNr, date, date]).first
+      return ZeKonto.find(:all, :conditions => ["KtoNr = ? AND GueltigVon <= ? AND GueltigBis > ?", ktoNr, date, date]).first
     rescue ActiveRecord::RecordNotFound
       return nil
     end

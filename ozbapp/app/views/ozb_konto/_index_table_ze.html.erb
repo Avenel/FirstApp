@@ -37,9 +37,9 @@
 		        <td class="zentriert"><a href="/Darlehensverlauf/<%= ze_konto.KtoNr %>/ZE"><%= ze_konto.KtoNr %></a></td>
 		        <td class="zentriert"><%= ze_konto.zeNr %></td>
 		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.zeBetrag, :precision => 2, :delimiter => ".") %></td>
-		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.ozb_konto.wSaldo, :precision => 2, :delimiter => ".") %></td>
-		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.ozb_konto.pSaldo, :delimiter => ".", :precision => 0) %></td>
-		        <td class="zentriert"><%= (!ze_konto.ozb_konto.saldoDatum.nil?) ? ze_konto.ozb_konto.saldoDatum.strftime("%d.%m.%Y") : nil %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.OzbKonto.wSaldo, :precision => 2, :delimiter => ".") %></td>
+		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.OzbKonto.pSaldo, :delimiter => ".", :precision => 0) %></td>
+		        <td class="zentriert"><%= (!ze_konto.OzbKonto.saldoDatum.nil?) ? ze_konto.OzbKonto.saldoDatum.strftime("%d.%m.%Y") : nil %></td>
 		        <td class="zentriert"><%= ze_konto.laufzeit %> Monate</td>
 		        <td class="zentriert"><%= ze_konto.zahlModus %></td>
 		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.tilgRate, :precision => 2, :delimiter => ".") %></td>

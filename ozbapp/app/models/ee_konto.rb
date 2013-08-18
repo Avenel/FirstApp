@@ -17,8 +17,9 @@ class EeKonto < ActiveRecord::Base
   end
 
   # attributes
-  attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :BankId, :Kreditlimit,  
-                  :SachPnr, :Bankverbindung_attributes, :sachbearbeiter_attributes
+  attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :BankID, :Kreditlimit,  
+                  :SachPnr, :Bankverbindung_attributes, :sachbearbeiter_attributes,
+                  
   
 
    # column names
@@ -85,16 +86,18 @@ class EeKonto < ActiveRecord::Base
   after_update :save_copy
 
   # Associations
-  belongs_to :ozb_konto,
-    :foreign_key => :KtoNr, 
+  belongs_to :OzbKonto,
+    :primary_key => :KtoNr,
+    :foreign_key => :KtoNr,
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 
   belongs_to :Bankverbindung,
     :primary_key => :ID,
-    :foreign_key => :BankId, # associated column in ee_konto table! 
+    :foreign_key => :BankID, # associated column in ee_konto table! 
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
     
-  has_one :ze_konto, 
+  has_one :ZeKonto, 
+    :primary_key => :KtoNr,
     :foreign_key => :EEKtoNr, # associated column in ZEKonto table
     :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
 

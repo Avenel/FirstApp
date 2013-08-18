@@ -211,14 +211,24 @@ class OZBPersonController < ApplicationController
             )
         end
         
+        puts ">>>> DEBUGS save OZBPerson"
        # Email bei OZBPerson speichern         
         #Fehler aufgetreten?
-        if !@OZBPerson.valid? then
-          @errors.push(@OZBPerson.errors)
-        end    
-        @OZBPerson.save!
+        begin
+          if !@OZBPerson.valid? then
+            @errors.push(@OZBPerson.errors)
+          end    
+          @OZBPerson.save!
+        rescue Exception => e
+          puts ">>>> DEBUG <<<<<<"
+          puts e.message
+          puts e.backtrace.join("\n")
+          @errors.push(e.message)
+        end
          
-       # Email bei Person speichern       
+
+        puts ">>>> DEBUGS save Person"
+        # Email bei Person speichern       
         #Fehler aufgetreten?
         begin
           if !@Person.valid? then
@@ -229,8 +239,10 @@ class OZBPersonController < ApplicationController
           puts ">>>> DEBUG <<<<<<"
           puts e.message
           puts e.backtrace.join("\n")
+          @errors.push(e.message)
         end
         
+        puts ">>>> DEBUGS save Adresse"
        # Adresse speichern
         if @Adresse != nil then
         #if params[:strasse].length > 0 || params[:hausnr].length > 0 || params[:plz].length > 0 || params[:ort].length > 0 then
@@ -245,6 +257,7 @@ class OZBPersonController < ApplicationController
             puts ">>>> DEBUG <<<<<<"
             puts e.message
             puts e.backtrace.join("\n")
+            @errors.push(e.message)
           end
         end
 

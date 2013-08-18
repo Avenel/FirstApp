@@ -30,17 +30,8 @@ module HistoricRecord
   def save_copy
     puts ">>>> DEBUG save_copy " + self.class.name
     if !@@copy.nil?
-      begin        
-        puts ">>>> DEBUG save success?"
-        puts ">>>> @@copy"
-        puts @@copy.inspect
-
-        puts ">>>> self"
-        puts self.inspect
-
-        suc = @@copy.save(:validation => false)
-        puts suc.inspect
-
+      begin      
+        @@copy.save(:validation => false)
         @@copy = nil
       rescue Exception => e
         puts ">>>>>> FAIL SAVE COPY " + self.class.name

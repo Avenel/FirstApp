@@ -28,7 +28,7 @@ class OZBPerson < ActiveRecord::Base
   validate :person_exists
 
   def person_exists
-    person = Person.where("pnr = ?", mnr)
+    person = Person.where("pnr = ?", self.Mnr)
     if person.empty? then
       errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen Mnr (#{mnr}) gefunden werden.")
       errors.add :mnr, errorString

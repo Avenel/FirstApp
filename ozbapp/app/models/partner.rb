@@ -48,8 +48,8 @@ class Partner < ActiveRecord::Base
 
   # Pnr vom Partner (eigentliche Mitglied)
   belongs_to :Person, 
-    :primary_key => :Pnr
-		:foreign_key => :Pnr_P
+    :primary_key => :Pnr,
+		:foreign_key => :Pnr_P,
 		:conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
 
   # callbacks

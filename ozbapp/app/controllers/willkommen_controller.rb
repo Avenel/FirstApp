@@ -3,7 +3,6 @@ class WillkommenController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-
   	# If user admin, check if referer is given and redirect to manage page
   	if !request.referer.nil?
 
@@ -18,7 +17,7 @@ class WillkommenController < ApplicationController
 	end
 
     @current_person = Person.where("Pnr = ?", current_user.Mnr).first
-    
+
     @ee_konten = OzbKonto.get_all_ee_for(current_user.id)
     @ze_konten = OzbKonto.get_all_ze_for(current_user.id)
   end
