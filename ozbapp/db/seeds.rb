@@ -1,0 +1,1 @@
+Sonderberechtigung.create(:ID => 1, :Mnr => 13, :EMail => "hello@example.com", :Berechtigung => "IT")

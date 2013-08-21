@@ -13,11 +13,11 @@ class Sonderberechtigung < ActiveRecord::Base
   self.primary_key = :ID
 
   # attributes      
-  attr_accessible :ID, :Mnr, :Email, :Berechtigung
+  attr_accessible :ID, :Mnr, :EMail, :Berechtigung
    
   # Validations
   validates :Berechtigung, :presence => true
-  validates :email, :presence => true, :email => true
+  validates :EMail, :presence => true, :email => true
 
    # enum Berechtigung
   AVAILABLE_PERMISSIONS = %W(IT MV RW ZE OeA) 

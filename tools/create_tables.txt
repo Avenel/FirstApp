@@ -302,7 +302,7 @@ CREATE TABLE IF NOT EXISTS `BuchungOnline` (
 CREATE TABLE IF NOT EXISTS `Sonderberechtigung` (
   `ID` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `Mnr` int(11) unsigned NOT NULL,
-  `Email` varchar(40) NOT NULL,
+  `EMail` varchar(40) NOT NULL,
   `Berechtigung` enum('IT','MV','RW','ZE','OeA') NOT NULL,
   PRIMARY KEY (`ID`),
   FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
