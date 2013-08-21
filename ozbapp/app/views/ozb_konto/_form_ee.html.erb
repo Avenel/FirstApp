@@ -37,7 +37,7 @@
 		</header>
 
 		<%= ee.fields_for :Bankverbindung do |bv| %>
-			<%= bv.hidden_field :Pnr, :value => @Person.pnr %>
+			<%= bv.hidden_field :Pnr, :value => @Person.Pnr %>
 
 			<%
 				blz       = ""

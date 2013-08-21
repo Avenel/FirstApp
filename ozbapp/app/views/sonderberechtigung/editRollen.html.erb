@@ -28,7 +28,7 @@
     <div class ="span4">
       <div class="input-prepend" >
         <span class="add-on" title ="Leer lassen falls die Standard-User-E-Mail Adresse verwendet werden soll"><i class="icon-envelope"></i></span>
-        <%= email_field_tag :email, @new_Sonderberechtigung.Email,:placeholder => 'Neue E-Mail eintragen' %>
+        <%= email_field_tag :email, @new_Sonderberechtigung.EMail,:placeholder => 'Neue E-Mail eintragen' %>
       </div>
     </div>    
   </div>
@@ -73,7 +73,7 @@
                     <% delete_link = "/Verwaltung/OZBPerson/" + ozbPerson.Mnr.to_s + "/Sonderberechtigung/" + @Sonderberechtigung.first().ID.to_s + "/Loeschen" %>
                     
                     <td style="text-align: center; width: 50px; background-color: #defbd4">
-                      <%= link_to @falseTrue[1], delete_link, :style => 'color: #00CC00',:onclick => "return confirm('Sonderberechtigung von "+person.Vorname+" "+person.Name+" als "+@BerechtigungsName.fetch(@Sonderberechtigung.first().Berechtigung)+" entfernen?')", :title => @Sonderberechtigung.first().Email %>
+                      <%= link_to @falseTrue[1], delete_link, :style => 'color: #00CC00',:onclick => "return confirm('Sonderberechtigung von "+person.Vorname+" "+person.Name+" als "+@BerechtigungsName.fetch(@Sonderberechtigung.first().Berechtigung)+" entfernen?')", :title => @Sonderberechtigung.first().EMail %>
                     </td>
                   <%else%>
                     <td title = "hinzufügen" style="text-align: center; width: 50px; background-color: #fde5e5">

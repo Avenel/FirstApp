@@ -38,7 +38,7 @@
 				<td width="50px"><%= text_field_tag :mnr, "",  :readonly => true, :style => 'width: 50px;', :placeholder => 'Mnr.' %></td>
 				<td><div><%= text_field_tag "test", "", :id => "suchFeld", :placeholder => 'Mitglied eingeben' %></div></td>
 				<td><%= select_tag :berechtigung, options_for_select(@Berechtigungen, @new_Sonderberechtigung.Berechtigung) %></td>
-				<td><%= email_field_tag :email, @new_Sonderberechtigung.Email, :placeholder => 'E-Mail eingeben' %></td>
+				<td><%= email_field_tag :email, @new_Sonderberechtigung.EMail, :placeholder => 'E-Mail eingeben' %></td>
 			</tbody>
 		</table>
 	</div>

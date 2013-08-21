@@ -29,21 +29,21 @@
     <% @konten.each do |konto| %>  
     <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
     <tr style="background:<%= bg_color %>;">
-      <td><%= konto.ktoNr %></td>
-      <td><%= konto.mnr %></td>
-      <% person = Person.where(:pnr => OZBPerson.where(:mnr => konto.mnr).first.ueberPnr).first %>
+      <td><%= konto.KtoNr %></td>
+      <td><%= konto.Mnr %></td>
+      <% person = Person.where(:pnr => OZBPerson.where(:mnr => konto.Mnr).first.UeberPnr).first %>
       <% if !person.nil? %>
-        <td><%= person.name.to_s + ", "+ person.vorname.to_s %></td>
+        <td><%= person.Name.to_s + ", "+ person.Vorname.to_s %></td>
       <% else %>
         <td>-</td>
       <% end %>
-      <td><%= konto.ktoEinrDatum %></td>
-      <%= hidden_field_tag "ktoNr[]", konto.ktoNr %>
+      <td><%= konto.KtoEinrDatum %></td>
+      <%= hidden_field_tag "ktoNr[]", konto.KtoNr %>
       <td class="kklRow"style="display:none;">
-        <%= select_tag "kkl[]", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl", konto.KKLVerlauf.last.kkl) %>
+        <%= select_tag "kkl[]", options_from_collection_for_select(Kontenklasse.all, "kkl", "kkl", konto.KKLVerlauf.last.KKL) %>
       </td>
       <td class="insert_td">
-        <%= link_to_function "einfügen", "$('#ktoNr').val('"+konto.ktoNr.to_s+"'); $.fancybox.close() ", :class => "insert"%>
+        <%= link_to_function "einfügen", "$('#ktoNr').val('"+konto.KtoNr.to_s+"'); $.fancybox.close() ", :class => "insert"%>
       </td>
     </tr>
     

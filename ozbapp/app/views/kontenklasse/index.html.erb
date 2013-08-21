@@ -5,7 +5,7 @@
   <tr>
     <th>Name</th>
     <th>Prozent</th>
-    <th>AbDatum</th>
+    <th>EinrDatum</th>
     <th />
     <th />
   </tr>
@@ -14,9 +14,9 @@
   <% @kontenklassen.each do |kkl| %>
     <% if i%2 == 0 then bg_color="white" else bg_color="lightgrey" end %>
     <tr style="background:<%= bg_color %>;">
-      <td><%= kkl.kkl %></td>
-      <td><%= kkl.prozent %></td>
-      <td><%= kkl.kklAbDatum %></td>
+      <td><%= kkl.KKL %></td>
+      <td><%= kkl.Prozent %></td>
+      <td><%= kkl.KKLEinrDatum %></td>
       <% edit_link = "/kontenklasse/" + kkl.kkl.to_s %>
       <% delete_link = "/kontenklasse/" + kkl.kkl.to_s + "/delete" %>
       <td><%= link_to "Editieren", edit_link, :class => "edit_link" %></td>
