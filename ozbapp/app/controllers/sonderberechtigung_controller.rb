@@ -36,15 +36,15 @@ class SonderberechtigungController < ApplicationController
           # Keine Berechtigung dieser Art gefunden
           if    !Sonderberechtigung.find(:first, :conditions => {:Mnr =>params[:mnr], :Berechtigung => params[:berechtigung]}) &&
                 !Sonderberechtigung.find(:first, :conditions => {:Mnr =>params[:mnr], :Berechtigung => 'IT'}) &&
-                ( !params[:email].blank? || !@Person.Email.blank? ) then
+                ( !params[:email].blank? || !@Person.EMail.blank? ) then
             @bereitsVorhanden = false
   
             # Berechtigung erstellen und validieren
              
-            if params[:email].blank? && !@Person.Email.blank? then
-              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :Email => @Person.Email, :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
+            if params[:email].blank? && !@Person.EMail.blank? then
+              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => @Person.EMail, :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
             else
-              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :Email => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
+              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
             end
             
             #Fehler aufgetreten?
@@ -53,7 +53,7 @@ class SonderberechtigungController < ApplicationController
             end
             
             if params[:berechtigung] = 'IT' then
-              @alle_Sonderberechtigungen = Sonderberechtigung.find(:all, :conditions => {:Mnr =>params[:mnr]})
+              @alle_Sonderberechtigungen = Sonderberechtigung.find(:all, :conditions => {:Mnr => params[:mnr]})
               
               @alle_Sonderberechtigungen.each do |sb|
                 sb.delete
@@ -66,7 +66,7 @@ class SonderberechtigungController < ApplicationController
             redirect_to "/Verwaltung/Rollen"
             # Eine solche Berechtigung ist gefunden worden
           else
-            if (!params[:email].blank? || !@Person.Email.blank?) then
+            if (!params[:email].blank? || !@Person.EMail.blank?) then
               @bereitsVorhanden = true
             else
               @bereitsVorhanden = false

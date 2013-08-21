@@ -283,7 +283,7 @@ class VerwaltungController < ApplicationController
           render "newOZBPerson"
         end     
     end
-    # Bei Fehlern Daten reten
+    # Bei Fehlern Daten retten
     rescue
       @DistinctPersonen = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
       @Rollen = @@Rollen2
@@ -953,7 +953,7 @@ class VerwaltungController < ApplicationController
             @Person    = Person.get(@OZBPerson.Mnr)
 
             ## Person erstellen und validieren
-            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr => @OZBPerson.Mnr, :Email => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr )
+            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr => @OZBPerson.Mnr, :EMail => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr )
             #Fehler aufgetreten?
             if !@new_Sonderberechtigung.valid? then
               @errors.push(@new_Sonderberechtigung.errors)

@@ -46,16 +46,16 @@ class DarlehensverlaufController < ApplicationController
 
       # Daten zum Kontoinhaber
       if params[:EEoZEkonto] == "EE"
-          @bankId = EeKonto.where("KtoNr = ?", params[:KtoNr]).first.bankId
+          @bankId = EeKonto.where("KtoNr = ?", params[:KtoNr]).first.BankID
       else
-        @EeKtoNrZumZeKto = ZeKonto.where("KtoNr = ?", params[:KtoNr]).first.eeKtoNr
-        @bankId = EeKonto.where("KtoNr = ?", @EeKtoNrZumZeKto).first.bankId
+        @EeKtoNrZumZeKto = ZeKonto.where("KtoNr = ?", params[:KtoNr]).first.EEKtoNr
+        @bankId = EeKonto.where("KtoNr = ?", @EeKtoNrZumZeKto).first.BankID
       end
 
-      @pnrDesInhabers = Bankverbindung.where("ID = ?", @bankId).first.pnr
+      @pnrDesInhabers = Bankverbindung.where("ID = ?", @bankId).first.Pnr
       @personZurPnr = Person.where("Pnr = ?", @pnrDesInhabers).first
-      @nameZurPerson = @personZurPnr.name
-      @vornameZurPerson = @personZurPnr.vorname
+      @nameZurPerson = @personZurPnr.Name
+      @vornameZurPerson = @personZurPnr.Vorname
 
       # Die (Währungs) Buchung vor der ersten Buchung in Buchungen finden
       @vorherigeBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC").limit(1).first

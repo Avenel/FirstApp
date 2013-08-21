@@ -163,7 +163,7 @@ class OzbKontoController < ApplicationController
           bank.save!
           
           # Bankverbindung NU
-          bankverbindung           = @ozb_konto.ee_konto.Bankverbindung
+          bankverbindung           = @ozb_konto.EeKonto.Bankverbindung
           bankverbindung.BankKtoNr = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:BankKtoNr]
           bankverbindung.IBAN      = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:IBAN]
           bankverbindung.BLZ       = bank.BLZ
@@ -172,14 +172,14 @@ class OzbKontoController < ApplicationController
           bankverbindung.save!
           
           # EE-Konto NU
-          ee             = @ozb_konto.ee_konto
+          ee             = @ozb_konto.EeKonto
           ee.Kreditlimit = params[:ozb_konto][:ee_konto_attributes][:Kreditlimit]
           ee.SachPnr     = current_user.Mnr 
           ee.BankID      = bankverbindung.ID
           # ee.save!
         else
           # ZE-Konto NU
-          ze            = @ozb_konto.ze_konto
+          ze            = @ozb_konto.ZeKonto
           ze.EEKtoNr    = params[:ozb_konto][:ze_konto_attributes][:EEKtoNr]
           ze.Pgnr       = params[:ozb_konto][:ze_konto_attributes][:Pgnr]
           ze.ZENr       = params[:ozb_konto][:ze_konto_attributes][:ZENr]

@@ -100,7 +100,7 @@ Rails.logger.level = 0
           
           pnrs = Array.new
           @konten.each do |konto|
-            pnrs.push(konto.mnr)
+            pnrs.push(konto.Mnr)
           end
           
           @personen = @personen.where( " pnr IN (?)", pnrs )
