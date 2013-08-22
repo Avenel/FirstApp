@@ -40,7 +40,7 @@ class OZBPerson < ActiveRecord::Base
   # Associations
   has_many :Sonderberechtigung,
     :primary_key => :Mnr, # column in Sonderberechtigung 
-    :foreign_key => :Mnr # column in OZBPerson,
+    :foreign_key => :Mnr, # column in OZBPerson,
     :dependent => :destroy
 
   belongs_to :Person,
@@ -144,43 +144,43 @@ class OZBPerson < ActiveRecord::Base
   # Destroy associated (historic) objects
   def destroy_associated_objects
     # Gesellschafter
-    gesellschafter = Gesellschafter.find(:all, :conditions => "Mnr = ?", self.Mnr)
+    gesellschafter = Gesellschafter.find(:all, :conditions => ["Mnr = ?", self.Mnr])
     gesellschafter.each do |g|
       g.destroy()
     end
 
     # Partner
-    partner = Partner.find(:all, :conditions => "Mnr = ?", self.Mnr)
+    partner = Partner.find(:all, :conditions => ["Mnr = ?", self.Mnr])
     partner.each do |p|
       p.destroy()
     end
 
     # Mitglied
-    mitglieder = Mitglied.find(:all, :conditions => "Mnr = ?", self.Mnr)
+    mitglieder = Mitglied.find(:all, :conditions => ["Mnr = ?", self.Mnr])
     mitglieder.each do |m|
       m.destroy()
     end
 
     # Student
-    studenten = Student.find(:all, :conditions => "Mnr = ?", self.Mnr)
+    studenten = Student.find(:all, :conditions => ["Mnr = ?", self.Mnr])
     studenten.each do |s|
       s.destroy()
     end
 
     # OzbKonto
-    konten = OzbKonto.find(:all, :conditions => "Mnr = ?", self.Mnr)
+    konten = OzbKonto.find(:all, :conditions => ["Mnr = ?", self.Mnr])
     konten.each do |k|
       k.destroy()
     end
 
     # Buergschaft
-    buergschaften = Buergschaft.find(:all, :conditions => "Mnr = ?", self.Mnr)
+    buergschaften = Buergschaft.find(:all, :conditions => ["Mnr = ?", self.Mnr])
     buergschaften.each do |b|
       b.destroy()
     end
 
     # BuchungOnline
-    buchungenOnline = BuchungOnline.find(:all, :conditions => "Mnr = ?", self.Mnr)
+    buchungenOnline = BuchungOnline.find(:all, :conditions => ["Mnr = ?", self.Mnr])
     buchungenOnline.each do |bO|
       bO.destroy()
     end

@@ -160,31 +160,31 @@ class Person < ActiveRecord::Base
   # Destroy associated (historic) objects
   def destroy_associated_objects
     # Partner
-    partner = Partner.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    partner = Partner.find(:all, :conditions => ["Pnr = ?", self.Pnr])
     partner.each do |p|
       p.destroy()
     end
 
     # Foerdermitglied
-    fmitglieder = Foerdermitglied.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    fmitglieder = Foerdermitglied.find(:all, :conditions => ["Pnr = ?", self.Pnr])
     fmitglieder.each do |f|
       f.destroy()
     end
 
     # Adresse
-    adressen = Adresse.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    adressen = Adresse.find(:all, :conditions => ["Pnr = ?", self.Pnr])
     adressen.each do |a|
       a.destroy()
     end
 
     # Bankverbindung
-    bverbindungen = Bankverbindung.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    bverbindungen = Bankverbindung.find(:all, :conditions => ["Pnr = ?", self.Pnr])
     bverbindungen.each do |b|
       b.destroy()
     end
 
     # Buergschaft
-    buergschaften = Buergschaft.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    buergschaften = Buergschaft.find(:all, :conditions => ["Pnr = ?", self.Pnr])
     buergschaften.each do |b|
       b.destroy()
     end

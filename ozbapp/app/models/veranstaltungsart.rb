@@ -14,7 +14,7 @@ class Veranstaltungsart < ActiveRecord::Base
 	has_many :Veranstaltung,
 		:primary_key => :VANr,
 		:foreign_key => :VANr,
-		:dependent => :restrict_with_error
+		:dependent => :restrict
 	
 	def Veranstaltungsart.get(vanr)
 	    begin

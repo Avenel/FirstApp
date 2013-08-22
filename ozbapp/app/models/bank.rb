@@ -25,6 +25,6 @@ class Bank < ActiveRecord::Base
   # Relations
   has_many :Bankverbindung,
     :foreign_key => :BLZ,
-    :dependent => :restrict_with_error 
+    :dependent => :restrict
 
 end

@@ -196,19 +196,19 @@ class OzbKonto < ActiveRecord::Base
     # Destroy associated (historic) objects
     def destroy_associated_objects
       # KKL Verlauf
-      verlaeufe = KKLVerlauf.find(:all, :conditions => "KtoNr = ?", self.KtoNr)
+      verlaeufe = KKLVerlauf.find(:all, :conditions => ["KtoNr = ?", self.KtoNr])
       verlaeufe.each do |verlauf|
         verlauf.destroy()
       end
 
       # EEKonto
-      eeKonten = EeKonto.find(:all, :conditions => "KtoNr = ?", self.KtoNr)
+      eeKonten = EeKonto.find(:all, :conditions => ["KtoNr = ?", self.KtoNr])
       eeKonten.each do |ee|
         ee.destroy()
       end
 
       # ZEKonto
-      zeKonten = ZeKonto.find(:all, :conditions => "KtoNr = ?", self.KtoNr)
+      zeKonten = ZeKonto.find(:all, :conditions => ["KtoNr = ?", self.KtoNr])
       zeKonten.each do |ze|
         ze.destroy()
       end
