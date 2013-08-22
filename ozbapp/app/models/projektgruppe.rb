@@ -17,6 +17,7 @@ class Projektgruppe < ActiveRecord::Base
     :primary_key => :Pgnr,
     :foreign_key => :Pgnr,
     # Nur mit der aktuellsten Version verknüpfen 
-    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] }
+    :conditions => proc { ["GueltigBis = ?", "9999-12-31 23:59:59"] },
+    :dependent => :restrict_with_error
     
 end

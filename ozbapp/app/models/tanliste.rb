@@ -31,4 +31,25 @@ class Tanliste < ActiveRecord::Base
     :primary_key => :Mnr,
     :foreign_key => :Mnr
 
+  has_many :Tan,
+    :primary_key => :Mnr,
+    :foreign_key => :Mnr,
+    :conditions => proc { ["ListNr = ?", self.ListNr] },
+    :dependant => :destroy
+
+  # Callbacks
+  before_destroy :check_destroy_conditions
+
+  # Destroy Regel
+  # Tanliste inkl. Tans dürfen nur gelöscht werden, wenn diese noch nicht aktiviert oder deaktiviert wurden:
+  # Status != a && != d => Status = n 
+  def check_destroy_conditions
+    if self.Status == "n" then
+      return true
+    else
+      return false
+    end
+  end
+
+
 end

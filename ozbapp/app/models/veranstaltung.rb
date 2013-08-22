@@ -18,6 +18,7 @@ class Veranstaltung < ActiveRecord::Base
 
   has_many :Teilnahme, 
     :primary_key => :Vnr,
-    :foreign_key => :Vnr
+    :foreign_key => :Vnr,
+    :dependent => :restrict_with_error 
     
 end

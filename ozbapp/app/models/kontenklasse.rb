@@ -41,7 +41,7 @@ class Kontenklasse < ActiveRecord::Base
 
    # Associations
   has_many :KKLVerlauf,
-        :foreign_key => :KKL
+    :foreign_key => :KKL
   
   # Liefert einen detaillierten String mit dem Prozentsatz
   def kkl_with_percent

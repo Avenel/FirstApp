@@ -13,7 +13,8 @@ class Veranstaltungsart < ActiveRecord::Base
 	# Associations 
 	has_many :Veranstaltung,
 		:primary_key => :VANr,
-		:foreign_key => :VANr
+		:foreign_key => :VANr,
+		:dependent => :restrict_with_error
 	
 	def Veranstaltungsart.get(vanr)
 	    begin

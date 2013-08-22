@@ -52,47 +52,57 @@ class Person < ActiveRecord::Base
     :primary_key => :Mnr, 
     :foreign_key => :Pnr,
     # Nur mit derselben Version verknüpfen 
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] },
+    :dependent => :destroy
 
   has_many :Foerdermitglied, 
     :primary_key => :Pnr,
     :foreign_key => :Pnr,
     # Nur mit derselben Version verknüpfen 
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] },
+    :dependent => :destroy
 
   has_one :OZBPerson,
     :primary_key => :Mnr,
-    :foreign_key => :Pnr
+    :foreign_key => :Pnr,
+    :dependent => :destroy
 
   has_many :Telefon, 
     :primary_key => :Pnr,
-    :foreign_key => :Pnr
+    :foreign_key => :Pnr,
+    :dependent => :destroy
 
   has_one :Adresse,
     :primary_key => :Pnr,
     :foreign_key => :Pnr,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] },
+    :dependent => :destroy
 
   has_many :Teilnahme,
     :primary_key => :Pnr,
-    :foreign_key => :Pnr
+    :foreign_key => :Pnr,
+    :dependent => :destroy
 
   has_many :Bankverbindung, 
     :primary_key => :Pnr,
     :foreign_key => :Pnr,
     # Nur mit derselben Version verknüpfen 
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] },
+    :dependent => :destroy
   
   has_many :Buergschaft, 
     :primary_key => :Pnr_B,
     :foreign_key => :Pnr,
     # Nur mit derselben Version verknüpfen 
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] },
+    :dependent => :destroy
 
   # Callbacks
   before_create :set_valid_time
   before_update :set_new_valid_time
   after_update :save_copy
+  before_destroy :check_destroy_conditions
+  after_destroy :destroy_associated_objects
 
   # Returns nil if at the given time no person object was valid
   def Person.get(pnr, date = Time.now)
@@ -126,4 +136,58 @@ class Person < ActiveRecord::Base
   def fullname
     self.Name + ", " + self.Vorname
   end
+
+  # On Destroy Regeln
+  # Eine Person, die keine: OZBPerson, Bürge, Fördermitglied oder Partner ist, darf gelöscht werden.
+  # Es werden in diesem Falle alle assozierten Objekte gelöscht (Delete Cascade).
+  def check_destroy_conditions
+    # Check OZBPerson
+    if (self.OZBPerson.any? and self.OZBPerson.check_destroy_conditions) or 
+      # Check Buerge
+      (self.Buergschaft.any?) or
+      # Check Fördermitglied
+      (self.Foerdermitglied.any?) or
+      # Check Partner 
+      (self.Partner.any?) then
+
+      return false
+
+    else
+      return true
+    end
+  end
+
+  # Destroy associated (historic) objects
+  def destroy_associated_objects
+    # Partner
+    partner = Partner.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    partner.each do |p|
+      p.destroy()
+    end
+
+    # Foerdermitglied
+    fmitglieder = Foerdermitglied.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    fmitglieder.each do |f|
+      f.destroy()
+    end
+
+    # Adresse
+    adressen = Adresse.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    adressen.each do |a|
+      a.destroy()
+    end
+
+    # Bankverbindung
+    bverbindungen = Bankverbindung.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    bverbindungen.each do |b|
+      b.destroy()
+    end
+
+    # Buergschaft
+    buergschaften = Buergschaft.find(:all, :conditions => "Pnr = ?", self.Pnr)
+    buergschaften.each do |b|
+      b.destroy()
+    end
+  end
+
 end

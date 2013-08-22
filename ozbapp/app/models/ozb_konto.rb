@@ -76,7 +76,8 @@ class OzbKonto < ActiveRecord::Base
     :primary_key => :KtoNr,
     :foreign_key => :KtoNr,
     # Zeige nur Buchungen an, die innerhalb dieser version des OZBKontos durchgeführt wurden.
-    :conditions => proc { ["BuchDatum <= ?", self.GueltigBis] } 
+    :conditions => proc { ["BuchDatum <= ?", self.GueltigBis] },
+    :dependent => :destroy
 
   belongs_to :OZBPerson, 
     :foreign_key => :Mnr
@@ -86,17 +87,20 @@ class OzbKonto < ActiveRecord::Base
     :primary_key => :KtoNr,
     # Nur der aktuellste KKLVerlauf, in dem aktiven Zeitram des OZBKontos ist gültig
     :order => "KKLAbDatum DESC", 
-    :conditions => proc { ["KKLAbDatum <= ?", self.GueltigBis] } 
+    :conditions => proc { ["KKLAbDatum <= ?", self.GueltigBis] },
+    :dependent => :destroy 
 
   has_one :ZeKonto, 
     :foreign_key => :KtoNr,
     :primary_key => :KtoNr, 
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] } 
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] },
+    :dependent => :destroy 
 
   has_one :EeKonto,
     :foreign_key => :KtoNr, 
     :primary_key => :KtoNr,
-    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] }
+    :conditions => proc { ["GueltigBis = ?", self.GueltigBis] },
+    :dependent => :destroy
 
   belongs_to :Waehrung,
     :primary_key => :Code,
@@ -109,6 +113,7 @@ class OzbKonto < ActiveRecord::Base
   before_create :set_valid_time
   before_update :set_new_valid_time
   after_update :save_copy
+  after_destroy :destroy_associated_objects
 
 
   # Returns the OZBKonto Object for ktoNr and date
@@ -187,4 +192,26 @@ class OzbKonto < ActiveRecord::Base
       end
     end
     
+
+    # Destroy associated (historic) objects
+    def destroy_associated_objects
+      # KKL Verlauf
+      verlaeufe = KKLVerlauf.find(:all, :conditions => "KtoNr = ?", self.KtoNr)
+      verlaeufe.each do |verlauf|
+        verlauf.destroy()
+      end
+
+      # EEKonto
+      eeKonten = EeKonto.find(:all, :conditions => "KtoNr = ?", self.KtoNr)
+      eeKonten.each do |ee|
+        ee.destroy()
+      end
+
+      # ZEKonto
+      zeKonten = ZeKonto.find(:all, :conditions => "KtoNr = ?", self.KtoNr)
+      zeKonten.each do |ze|
+        ze.destroy()
+      end
+
+    end
 end
