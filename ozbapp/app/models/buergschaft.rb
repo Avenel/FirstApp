@@ -189,7 +189,7 @@ class Buergschaft < ActiveRecord::Base
   def Buergschaft.get(pnr_b, mnr_g, date = Time.now)
     begin
       return Buergschaft.find(:all, :conditions => ["Pnr_B = ? AND Mnr_G = ? AND GueltigVon <= ? AND GueltigBis > ?", pnr_b, mnr_g, date, date]).first
-    rescue ActiveRecord:RecordNotFound
+    rescue ActiveRecord::RecordNotFound
       return nil
     end
   end

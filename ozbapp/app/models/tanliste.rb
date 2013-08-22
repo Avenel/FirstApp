@@ -35,7 +35,7 @@ class Tanliste < ActiveRecord::Base
     :primary_key => :Mnr,
     :foreign_key => :Mnr,
     :conditions => proc { ["ListNr = ?", self.ListNr] },
-    :dependant => :destroy
+    :dependent => :destroy
 
   # Callbacks
   before_destroy :check_destroy_conditions

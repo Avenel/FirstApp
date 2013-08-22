@@ -33,8 +33,8 @@ describe Bank do
 		expect(FactoryGirl.create(:Bank, :BIC => "AS13AS1223A")).to be_valid
 	end
 
-	it "is valid without a BIC" do
-		expect(FactoryGirl.create(:Bank, :BIC => nil)).to be_valid
+	it "is invalid without a BIC" do
+		expect(FactoryGirl.build(:Bank, :BIC => nil)).to be_invalid
 	end
 
 	it "is invalid with an invalid BIC" do
@@ -49,34 +49,14 @@ describe Bank do
 		expect(FactoryGirl.create(:Bank, :BankName => "Sparkasse Musterstadt")).to be_valid
 	end
 
-	# What is an invalid BankName? => to be defined! Do we need a Bankname?
-	it "is valid without a BankName"
-	it "is invalid with an invalid BankName" 
+	it "is invalid without a BankName" do
+		expect(FactoryGirl.build(:Bank, :BankName => nil)).to be_invalid
+	end
 
 
 	# Class and instance methods
-	# self.destroy_yourself_if_your_are_alone(blz)
-	it "destroys himself if there are zero Bankverbindungen related to this Bank" do
-		bank = FactoryGirl.create(:Bank)
-		expect(bank).to be_valid
+	it "destroys himself if there are zero Bankverbindungen related to this Bank" 
 
-		blz = bank.BLZ
-
-		Bank.destroy_yourself_if_you_are_alone(blz)
-		expect(Bank.where("BLZ = ?", blz).size).to eq 0
-	end
-
-	it "does not destroy himself if there are any Bankverbindungen related to this Bank" do
-		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
-		expect(bankverbindungOrigin).to be_valid
-
-		bank = Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).first
-		expect(bank.nil?).to eq false
-
-		blz = bank.BLZ
-
-		Bank.destroy_yourself_if_you_are_alone(blz)
-		expect(Bank.where("BLZ = ?", blz).size).to eq 1
-	end
+	it "does not destroy himself if there are any Bankverbindungen related to this Bank" 
 
 end
