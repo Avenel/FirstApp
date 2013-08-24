@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS `Adresse` (
 CREATE TABLE IF NOT EXISTS `OZBPerson` (
   `Mnr` int(10) unsigned NOT NULL,    
   `UeberPnr` int(10) unsigned,
-  `PWAendDatum` date NOT NULL,
   `Antragsdatum` date NOT NULL,
   `Aufnahmedatum` date DEFAULT NULL,
   `Austrittsdatum` date DEFAULT NULL,

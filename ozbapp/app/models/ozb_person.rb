@@ -26,12 +26,24 @@ class OZBPerson < ActiveRecord::Base
   validates :Antragsdatum, :presence => true
   
   validate :person_exists
+  validate :ueberPerson_exists
 
   def person_exists
-    person = Person.where("pnr = ?", self.Mnr)
+    person = Person.where("Pnr = ?", self.Mnr)
     if person.empty? then
-      errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen Mnr (#{mnr}) gefunden werden.")
-      errors.add :mnr, errorString
+      errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen Mnr (%(value)) gefunden werden.")
+      errors.add :Mnr, errorString
+      return false
+    end
+    return true
+  end
+
+
+  def ueberPerson_exists
+    person = Person.where("Pnr = ?", self.UeberPnr)
+    if person.empty? then
+      errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen Pnr (%(value)) gefunden werden.")
+      errors.add :UeberPnr, errorString
       return false
     end
     return true
