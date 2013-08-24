@@ -1,5 +1,5 @@
 #!/bin/bash
-PASS=""
+PASS="root"
 echo "drop database ozb_test" | mysql -u root -p$PASS
 echo "create database ozb_test" | mysql -u root -p$PASS
 mysql -u root -p$PASS ozb_test < dump.sql

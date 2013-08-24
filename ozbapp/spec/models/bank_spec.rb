@@ -53,10 +53,4 @@ describe Bank do
 		expect(FactoryGirl.build(:Bank, :BankName => nil)).to be_invalid
 	end
 
-
-	# Class and instance methods
-	it "destroys himself if there are zero Bankverbindungen related to this Bank" 
-
-	it "does not destroy himself if there are any Bankverbindungen related to this Bank" 
-
 end

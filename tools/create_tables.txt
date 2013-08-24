@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `Person` (
   `Vorname` varchar(20) NOT NULL DEFAULT '',
   `Geburtsdatum` date DEFAULT NULL,
   `EMail` varchar(255) DEFAULT NULL,
-  `SperrKZ` enum('0', '1') DEFAULT '0', -- 0 = Logon freigegeben, 1 = gesperrt
+  `SperrKZ` bool DEFAULT '0', -- 0 = Logon freigegeben, 1 = gesperrt
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (Pnr, GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

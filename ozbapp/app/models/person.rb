@@ -43,9 +43,8 @@ class Person < ActiveRecord::Base
   validates :EMail, :presence => true, :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
   
   # SperrKZ enum
-  AVAILABLE_STATES = %W(0 1)
-  validates :SperrKZ, :presence => true, :inclusion => { :in => AVAILABLE_STATES, :message => "%{value} is not a valid state (0, 1)" }  
-
+  AVAILABLE_STATES = [true, false]
+  validates :SperrKZ, :inclusion => { :in => AVAILABLE_STATES, :message => "%{value} - #{self.inspect} is not a valid state (#{AVAILABLE_STATES.to_s})" }  
 
   # Associations
   has_one :Partner,
@@ -115,7 +114,7 @@ class Person < ActiveRecord::Base
    
   # (static) Returns the latest/newest Person Object
   def self.latest(pnr)
-    retur Person.get(self.pnr)
+    return Person.get(pnr)
   end
 
   # (non static) get latest instance of model
