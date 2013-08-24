@@ -2,7 +2,7 @@ require 'faker'
 
 FactoryGirl.define do
 	factory :Projektgruppe do
-		sequence(:pgNr) {|n| "#{n}"}
+		sequence(:Pgnr) {|n| "#{n}"}
 		ProjGruppenBez Faker::Name.name
 	end
 end

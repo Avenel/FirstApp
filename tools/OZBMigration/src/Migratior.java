@@ -732,7 +732,7 @@ public class Migratior {
 					pw.println("");
 				}
 
-				String queryInsertOZBKonto = "INSERT INTO ozbkonto (KtoNr,Mnr,KtoEinrDatum,Waehrung,WSaldo,PSaldo,SaldoDatum,GueltigVon,GueltigBis) VALUES (?,?,?,?,?,?,?,?,?);";
+				String queryInsertOZBKonto = "INSERT INTO ozbkonto (KtoNr,Mnr,KtoEinrDatum,WaehrungID,WSaldo,PSaldo,SaldoDatum,GueltigVon,GueltigBis) VALUES (?,?,?,?,?,?,?,?,?);";
 				// OZBKonto 1
 				rs = stOzbProd
 						.executeQuery("SELECT KTONR,MNR,KTOEINRDAT,WHRG,W_SALDO,PKTESALDO,SALDODAT FROM Konto; ");

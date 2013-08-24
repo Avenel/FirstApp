@@ -19,5 +19,5 @@ ActiveSupport::Inflector.inflections do |inflect|
                            EeKonto Foerdermitglied Gesellschafter KkVerlauf Kontenklasse
                            Mitglied OzbKonto OzbPerson Partner Person Projektgruppe 
                            Student Tan Tanliste Teilnahme Telefon Veranstaltung 
-                           Veranstaltungsart, ZeKonto)
+                           Veranstaltungsart ZeKonto Waehrung)
 end

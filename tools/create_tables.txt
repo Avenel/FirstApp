@@ -184,13 +184,13 @@ CREATE TABLE IF NOT EXISTS `OZBKonto` (
   `GueltigBis` datetime NOT NULL,
   `Mnr` int(10) unsigned NOT NULL,
   `KtoEinrDatum` date NOT NULL,
-  `Waehrung` char(3) NOT NULL,
+  `WaehrungID` char(3) NOT NULL,
   `WSaldo` decimal(10,2) DEFAULT NULL,
   `PSaldo` int(11) DEFAULT NULL,
   `SaldoDatum` date DEFAULT NULL,    
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (KtoNr,GueltigVon),
-  FOREIGN KEY (Waehrung) REFERENCES Waehrung(Code),
+  FOREIGN KEY (WaehrungID) REFERENCES Waehrung(Code),
   FOREIGN KEY (Mnr) REFERENCES OZBPerson(Mnr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

@@ -5,6 +5,7 @@ FactoryGirl.define do
 	factory :Bankverbindung do
 		sequence(:ID){ |n| "#{n}" }
 		sequence(:BankKtoNr) { |n| "#{n*100000000000}" }
+		IBAN "DE12500105170648489890"
 		
 		factory :bankverbindung_with_bank do
 			before(:create) do |bankverbindung|

@@ -17,7 +17,7 @@ class OzbKonto < ActiveRecord::Base
   end
 
   # attributes
-  attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :Mnr, :KtoEinrDatum, :Waehrung, :WSaldo, 
+  attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :Mnr, :KtoEinrDatum, :WaehrungID, :WSaldo, 
                   :PSaldo, :SaldoDatum, :SachPnr, :EeKonto_attributes, 
                   :ZeKonto_attributes, :kkl_verlauf_attributes
   
@@ -44,28 +44,26 @@ class OzbKonto < ActiveRecord::Base
   validates :KtoNr, :presence => { :format => { :with => /^[0-9]{5}$/i }, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
   validates :Mnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Mitgliedsnummer an." }  
   validates :KtoEinrDatum, :presence => true
-  validates :Waehrung, :presence => { :format => { :with => /[a-zA-Z]{3}/ }, :message => "Bitte geben Sie eine gültige Währung an." }
+  validates :WaehrungID, :presence => { :format => { :with => /[a-zA-Z]{3}/ }, :message => "Bitte geben Sie eine gültige Währung an." }
   validates :SachPnr, :format => { :with => /[0-9]+/, :message => "Bitte geben Sie eine gültige Mitgliedsnummer für den Sachbearbeiter an." }  
 
   validate :ozbperson_exists, :sachPnr_exists
 
   def ozbperson_exists
-    ozbperson = OZBPerson.where("Mnr = ?", mnr)
+    ozbperson = OZBPerson.where("Mnr = ?", self.Mnr)
     if ozbperson.empty? then
-      errorString = String.new("Es konnte keine zugehörige OZBPerson zu der angegebenen Mnr (#{mnr}) gefunden werden.")
-      errors.add :mnr, errorString
+      errorString = String.new("Es konnte keine zugehörige OZBPerson zu der angegebenen Mnr (%(value)) gefunden werden.")
+      errors.add :Mnr, errorString
       return false
     end
     return true
   end
 
   def sachPnr_exists
-    ozbperson = OZBPerson.where("Mnr = ?", sachPnr)
-    if ozbperson.empty? then
-      ozbpersons = OZBPerson.all()
-      
-      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{sachPnr}) gefunden werden.")
-      errors.add :mnr, errorString
+    ozbperson = OZBPerson.where("Mnr = ?", self.SachPnr)
+    if ozbperson.empty? then      
+      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (%(value)) gefunden werden.")
+      errors.add :SachPnr, errorString
       return false
     end
     return true
@@ -104,7 +102,7 @@ class OzbKonto < ActiveRecord::Base
 
   belongs_to :Waehrung,
     :primary_key => :Code,
-    :foreign_key => :Waehrung
+    :foreign_key => :WaehrungID
 
   accepts_nested_attributes_for :EeKonto, :ZeKonto, :KklVerlauf
 
@@ -186,9 +184,9 @@ class OzbKonto < ActiveRecord::Base
     
     # bound to callback
     def set_assoc_attributes
-      eeKonto = EeKonto.latest(self.ktoNr)
+      eeKonto = EeKonto.latest(self.KtoNr)
       if (!eeKonto.nil?)
-        eeKonto.sachPnr = self.sachPnr
+        eeKonto.SachPnr = self.SachPnr
       end
     end
     

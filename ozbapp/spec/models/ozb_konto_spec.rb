@@ -17,50 +17,50 @@ describe OzbKonto do
 
 	# Kontonummer (ktoNr)
 	it "is valid with a valid Kontonummer" do
-		expect(FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 51234)).to be_valid
+		expect(FactoryGirl.create(:ozbkonto_with_ozbperson, :KtoNr => 51234)).to be_valid
 	end
 
 	it "is invalid without a Kontonummer" do 
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => nil)).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :KtoNr => nil)).to be_invalid
 	end
 
 	it "is invalid with an invalid Kontonummer" do 
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => "a1234")).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :KtoNr => "a1234")).to be_invalid
 
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => 123456)).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :KtoNr => 123456)).to be_invalid
 
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => 45)).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :KtoNr => 45)).to be_invalid
 
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :ktoNr => "hellow")).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :KtoNr => "hellow")).to be_invalid
 	end
 
 	# Mitgliedsnummer (mnr)
 	it "is valid with a valid Mitgliedsnummer" do
-		person = FactoryGirl.create(:Person, :pnr => 42)
+		person = FactoryGirl.create(:Person, :Pnr => 42)
 		expect(person).to be_valid
 
-		ozbperson = FactoryGirl.create(:OZBPerson, :mnr => 42, :ueberPnr => 42)
+		ozbperson = FactoryGirl.create(:OZBPerson, :Mnr => 42, :UeberPnr => 42)
 		expect(ozbperson).to be_valid
 
 		sachbearbeiter = FactoryGirl.create(:ozbperson_with_person)
 		expect(sachbearbeiter).to be_valid
 
-		expect(FactoryGirl.build(:OzbKonto, :mnr => 42, :sachPnr => sachbearbeiter.mnr)).to be_valid
+		expect(FactoryGirl.build(:ozbkonto_with_waehrung, :Mnr => 42, :SachPnr => sachbearbeiter.Mnr)).to be_valid
 	end
 
 	it "is invalid without a Mitgliedsnummer" do
-		expect(FactoryGirl.build(:OzbKonto, :mnr => nil)).to be_invalid
+		expect(FactoryGirl.build(:OzbKonto, :Mnr => nil)).to be_invalid
 	end
 
 	it "is invalid with an invalid Mitgliedsnummer" do 
-		person = FactoryGirl.create(:Person, :pnr => 42)
+		person = FactoryGirl.create(:Person, :Pnr => 42)
 		expect(person).to be_valid
 
-		ozbperson = FactoryGirl.create(:OZBPerson, :mnr => 42, :ueberPnr => 42)
+		ozbperson = FactoryGirl.create(:OZBPerson, :Mnr => 42, :UeberPnr => 42)
 		expect(ozbperson).to be_valid
 
-		expect(FactoryGirl.build(:OzbKonto, :mnr => 45)).to be_invalid
-		expect(FactoryGirl.build(:OzbKonto, :mnr => "as")).to be_invalid
+		expect(FactoryGirl.build(:OzbKonto, :Mnr => 45)).to be_invalid
+		expect(FactoryGirl.build(:OzbKonto, :Mnr => "as")).to be_invalid
 	end
 
 
@@ -69,30 +69,30 @@ describe OzbKonto do
 		sachbearbeiter = FactoryGirl.create(:ozbperson_with_person)
 		expect(sachbearbeiter).to be_valid
 
-		expect(FactoryGirl.create(:ozbkonto_with_ozbperson, :sachPnr => sachbearbeiter.mnr)).to be_valid		
+		expect(FactoryGirl.create(:ozbkonto_with_ozbperson, :SachPnr => sachbearbeiter.Mnr)).to be_valid		
 	end
 
 	# Ist nun der Sachbearbeiter pflicht, oder nicht?
 	it "is invalid without a Sachbearbeiter Personalnummer" do 
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :sachPnr => nil)).to be_invalid		
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :SachPnr => nil)).to be_invalid		
 	end
 
 	it "is invalid with an invalid Sachbearbeiter Personalnummer" do
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :sachPnr => 45)).to be_invalid
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :sachPnr => "hello")).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :SachPnr => 45)).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :SachPnr => "hello")).to be_invalid
 	end
 
 	# Währung
 	it "is valid with a valid Waehrung" do
-		expect(FactoryGirl.create(:ozbkonto_with_ozbperson, :waehrung => "STR")).to be_valid
+		expect(FactoryGirl.create(:ozbkonto_with_ozbperson, :Waehrung => FactoryGirl.create(:Waehrung))).to be_valid
 	end
 
 	it "is invalid without a Waehrung" do
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :waehrung => nil)).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :Waehrung => nil)).to be_invalid
 	end
 
 	it "is invalid with an invalid Waehrung" do
-		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :waehrung => "12Asd")).to be_invalid
+		expect(FactoryGirl.build(:ozbkonto_with_ozbperson, :Waehrung => FactoryGirl.create(:Waehrung))).to be_invalid
 	end
 
 
@@ -103,14 +103,14 @@ describe OzbKonto do
 		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		
 		ozbperson = FactoryGirl.create(:ozbperson_with_person)
-		ozbkonto.mnr = ozbperson.mnr
+		ozbkonto.Mnr = ozbperson.Mnr
 		
 		expect(ozbkonto.ozbperson_exists).to eq true
 	end
 
 	it "returns false if an invalid person exists" do
 		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
-		ozbkonto.mnr = 45
+		ozbkonto.Mnr = 1337
 		
 		expect(ozbkonto.ozbperson_exists).to eq false
 	end
@@ -120,14 +120,14 @@ describe OzbKonto do
 		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		
 		ozbperson = FactoryGirl.create(:ozbperson_with_person)
-		ozbkonto.sachPnr = ozbperson.mnr
+		ozbkonto.SachPnr = ozbperson.Mnr
 		
 		expect(ozbkonto.sachPnr_exists).to eq true
 	end
 
 	it "returns false if an invalid sachPnr exists" do
 		ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
-		ozbkonto.sachPnr = 45
+		ozbkonto.SachPnr = 45
 		
 		expect(ozbkonto.sachPnr_exists).to eq false
 	end
@@ -136,28 +136,29 @@ describe OzbKonto do
 	it "returns all EE-Konten for a given Mitgliedsnummer" do
 		# create 1 OZBPerson
 		ozbPerson = FactoryGirl.create(:ozbperson_with_person)
-		pnr = ozbPerson.ueberPnr
+		pnr = ozbPerson.UeberPnr
 
 		sachPerson = FactoryGirl.create(:ozbperson_with_person)
-		sachPnr = sachPerson.ueberPnr
+		sachPnr = sachPerson.UeberPnr
 		
 		expect(OZBPerson.where("Mnr = ?", pnr).size).to eq 1
 		expect(OZBPerson.where("Mnr = ?", sachPnr).size).to eq 1
 
 		# create 1 bankverbindung
-		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => pnr)
+		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :Pnr => pnr)
 
 		# create 3 EEKonten
 		ktoNr = 12345
 		for i in 0..2
-			ozbKonto = FactoryGirl.create(:OzbKonto, :ktoNr => ktoNr, :mnr => pnr, :sachPnr => sachPnr)
-			eeKonto = FactoryGirl.create(:EeKonto, :sachPnr => sachPnr, 
-													:bankId => bankverbindung.id, :ktoNr => ktoNr)
+			ozbKonto = FactoryGirl.create(:ozbkonto_with_waehrung, :KtoNr => ktoNr, :Mnr => pnr, :SachPnr => sachPnr)
+			eeKonto = FactoryGirl.create(:EeKonto, :SachPnr => sachPnr, 
+													:BankID => bankverbindung.ID, :KtoNr => ktoNr,
+													:Kreditlimit => 42000)
 			ktoNr += 1
 
 			# create more versions
 			sleep(1.0)
-			eeKonto.kreditlimit += 1
+			eeKonto.Kreditlimit += 1
 			expect(eeKonto.save).to eq true
 		end
 
@@ -173,18 +174,18 @@ describe OzbKonto do
 	# self.get_all_ze_for(mnr)
 	it "returns all ZE-Konten for a given Mitgliedsnummer" do
 		ozbPerson = FactoryGirl.create(:ozbperson_with_person)
-		pnr = ozbPerson.ueberPnr
+		pnr = ozbPerson.UeberPnr
 
 		sachPerson = FactoryGirl.create(:ozbperson_with_person)
-		sachPnr = sachPerson.ueberPnr
+		sachPnr = sachPerson.UeberPnr
 		
 		expect(OZBPerson.where("Mnr = ?", pnr).size).to eq 1
 		expect(OZBPerson.where("Mnr = ?", sachPnr).size).to eq 1
 
 		ktoNr = 12345
 		for i in 0..2
-			ozbKonto = FactoryGirl.create(:OzbKonto, :ktoNr => ktoNr, :mnr => pnr, :sachPnr => sachPnr)
-			zeKonto = FactoryGirl.create(:zeKonto_with_EEKonto_Projektgruppe, :ktoNr => ktoNr)
+			ozbKonto = FactoryGirl.create(:ozbkonto_with_waehrung, :KtoNr => ktoNr, :Mnr => pnr, :SachPnr => sachPnr)
+			zeKonto = FactoryGirl.create(:zeKonto_with_EEKonto_Projektgruppe, :KtoNr => ktoNr)
 			expect(zeKonto).to be_valid
 
 			#create more versions
@@ -216,9 +217,9 @@ describe OzbKonto do
 			ozbKontoOrigin.save!
 			createdAt = Time.now
 		end
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 3
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 3
 
-		latestOzbKonto = ozbKontoOrigin.get(ozbKontoOrigin.ktoNr, Time.now)
+		latestOzbKonto = OzbKonto.get(ozbKontoOrigin.KtoNr, Time.now)
 
 		expect(latestOzbKonto.nil?).to eq false
 		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
@@ -236,9 +237,9 @@ describe OzbKonto do
 			ozbKontoOrigin.save!
 			createdAt = Time.now
 		end
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 3
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 3
 
-		latestOzbKonto = ozbKontoOrigin.get(ozbKontoOrigin.ktoNr, createdAtOrigin)
+		latestOzbKonto = OzbKonto.get(ozbKontoOrigin.KtoNr, createdAtOrigin)
 
 		expect(latestOzbKonto.nil?).to eq false
 		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to_not eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
@@ -248,7 +249,7 @@ describe OzbKonto do
 	it "returns nil, if there is no OZBKonto for an invalid Kontonummer" do
 		# Test for an invalid Kontonummer
 		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
-		expect(ozbKontoOrigin.get(ozbKontoOrigin.ktoNr + 10, Time.now)).to eq nil
+		expect(OzbKonto.get(ozbKontoOrigin.KtoNr + 10, Time.now)).to eq nil
 
 		# create valid ozbkonto, in different versions
 		originTime = Time.now
@@ -263,9 +264,9 @@ describe OzbKonto do
 			ozbKontoOrigin.save!
 			createdAt = Time.now
 		end
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 3
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 3
 
-		latestOzbKonto = ozbKontoOrigin.get(ozbKontoOrigin.ktoNr, originTime)
+		latestOzbKonto = OzbKonto.get(ozbKontoOrigin.KtoNr, originTime)
 		expect(latestOzbKonto.nil?).to eq true
 	end
 
@@ -281,9 +282,9 @@ describe OzbKonto do
 			ozbKontoOrigin.save
 			createdAt = Time.now
 		end
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 3
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 3
 
-		latestOzbKonto = OzbKonto.latest(ozbKontoOrigin.ktoNr)
+		latestOzbKonto = OzbKonto.latest(ozbKontoOrigin.KtoNr)
 
 		expect(latestOzbKonto.nil?).to eq false
 		expect(latestOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
@@ -294,176 +295,78 @@ describe OzbKonto do
 		expect(OzbKonto.latest(45)).to eq nil
 	end
 
-
-	# self.destroy_yourself_if_you_are_alone(ktoNr)
-	it "destroys himself if there is only one record related to a given Kontonummer in the database." do
-		aloneOzbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
-		expect(OzbKonto.where("ktoNr = ?", aloneOzbKonto.ktoNr).size).to eq 1
-
-		OzbKonto.destroy_yourself_if_you_are_alone(aloneOzbKonto.ktoNr)
-		expect(OzbKonto.where("ktoNr = ?", aloneOzbKonto.ktoNr).size).to eq 0		
-	end
-
-	it "does not break if the given Kontonummer is not valid" do 
-		errorCount = 0
-
-		begin 
-			OzbKonto.destroy_yourself_if_you_are_alone(45)
-		rescue Exception => e
-			errorCount += 1
-		end
-
-		expect(errorCount).to eq 0
-	end
-
-	it "does not destroy himself if there are more than 1 record for the given Kontonummer in the database" do
-		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 42)
-		sachPersonOzbKonto = ozbKonto.sachPnr
-
-		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => ozbKonto.mnr)
-
-		sachPersonEEKonto = FactoryGirl.create(:ozbperson_with_person)
-
-  		eeKonto = FactoryGirl.create(:EeKonto, :ktoNr => ozbKonto.ktoNr, :sachPnr => sachPersonEEKonto.mnr, 
-  									:bankId => bankverbindung.id)
-
-  		expect(eeKonto.sachPnr).to eq sachPersonEEKonto.mnr
-		expect(eeKonto).to be_valid
-		expect(ozbKonto.ktoNr).to eq eeKonto.ktoNr
-		
-		expect(OzbKonto.where("KtoNr = ?", ozbKonto.ktoNr).size).to eq 1
-		expect(EeKonto.where("KtoNr = ?", ozbKonto.ktoNr).size).to eq 1
-
-		ktoNr = ozbKonto.ktoNr
-		OzbKonto.destroy_yourself_if_you_are_alone(ktoNr)
-
-		expect(OzbKonto.where("KtoNr = ?", ktoNr).size).to eq 1
-		expect(EeKonto.where("KtoNr = ?", ktoNr).size).to eq 1
-	end
-
 	# set_wsaldo_psaldo_to_zero (callback methode: before_save)
 	it "sets WSaldo and PSaldo to 0, even if they are nil" do 
 		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 
-		ozbKonto.wSaldo = nil
-		ozbKonto.pSaldo = nil
+		ozbKonto.WSaldo = nil
+		ozbKonto.PSaldo = nil
 
-		expect(ozbKonto.wSaldo).to eq nil
-		expect(ozbKonto.pSaldo).to eq nil
+		expect(ozbKonto.WSaldo).to eq nil
+		expect(ozbKonto.PSaldo).to eq nil
 
 		# Private method, therfore using send methode
 		ozbKonto.send(:set_wsaldo_psaldo_to_zero)
 
-		expect(ozbKonto.wSaldo.nil?).to eq false
-		expect(ozbKonto.wSaldo).to eq 0
+		expect(ozbKonto.WSaldo.nil?).to eq false
+		expect(ozbKonto.WSaldo).to eq 0
 
-		expect(ozbKonto.pSaldo.nil?).to eq false
-		expect(ozbKonto.pSaldo).to eq 0
+		expect(ozbKonto.PSaldo.nil?).to eq false
+		expect(ozbKonto.PSaldo).to eq 0
 	end
 
 	it "does not set WSaldo and PSaldo to 0, if they != nil" do 
-		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :wSaldo => 42, :pSaldo => 42)
+		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :WSaldo => 42, :PSaldo => 42)
 
-		expect(ozbKonto.wSaldo).to eq 42
-		expect(ozbKonto.pSaldo).to eq 42
+		expect(ozbKonto.WSaldo).to eq 42
+		expect(ozbKonto.PSaldo).to eq 42
 
 		# Private method, therfore using send methode
 		ozbKonto.send(:set_wsaldo_psaldo_to_zero)
 
-		expect(ozbKonto.wSaldo).to_not eq 0
-		expect(ozbKonto.pSaldo).to_not eq 0
+		expect(ozbKonto.WSaldo).to_not eq 0
+		expect(ozbKonto.PSaldo).to_not eq 0
 	end
 
 	# set_saldo_datum (callback methode: before_save)
 	it "sets Saldo Datum to Kontoeinrichtungsdatum, if SaldoDatum is nil" do
 		originDate = Time.now
-		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoEinrDatum => originDate)
-		ozbKonto.saldoDatum = nil
+		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :KtoEinrDatum => originDate)
+		ozbKonto.SaldoDatum = nil
 
-		expect(ozbKonto.saldoDatum).to eq nil
-		expect(ozbKonto.ktoEinrDatum).to eq originDate
+		expect(ozbKonto.SaldoDatum).to eq nil
+		expect(ozbKonto.KtoEinrDatum).to eq originDate
 
 		# Private method, therfore using send methode
 		ozbKonto.send(:set_saldo_datum)
 
-		expect(ozbKonto.saldoDatum).to eq ozbKonto.ktoEinrDatum
+		expect(ozbKonto.SaldoDatum).to eq ozbKonto.KtoEinrDatum
 	end
 
 	it "does not set Saldo Datum to Kontoeinrichtungsdatum, if SaldoDatum != nil" do
 		originDate = Time.now
 		sleep(1.0)
 		saldoDate = Time.now
-		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoEinrDatum => originDate, :saldoDatum => saldoDate)
+		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :KtoEinrDatum => originDate, :SaldoDatum => saldoDate)
 
 		expect(originDate).to_not eq saldoDate
 		
-		expect(ozbKonto.saldoDatum.nil?).to eq false
-		expect(ozbKonto.saldoDatum).to eq saldoDate
+		expect(ozbKonto.SaldoDatum.nil?).to eq false
+		expect(ozbKonto.SaldoDatum).to eq saldoDate
 
 		# Private method, therfore using send methode
 		ozbKonto.send(:set_saldo_datum)
 
-		expect(ozbKonto.saldoDatum).to eq saldoDate
+		expect(ozbKonto.SaldoDatum).to eq saldoDate
 	end
 
 	# destroy_historic_records (callback methode: after_destroy)
-	it "destroys all historic records except himself" do
-		# create valid ozbkonto, in different versions
-		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
-		for i in 0..1
-			sleep(1.0)
-			ozbKontoOrigin.WSaldo +=  1
-			ozbKontoOrigin.save!
-		end
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 3
+	it "destroys all historic records except himself"
 
-		# Private method, therfore using send methode
-		ozbKontoOrigin.send(:destroy_historic_records)
-
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
-	end
-
-	it "destroys zero records, because there are no historic records" do
-		expect(OzbKonto.where("KtoNr = ?", 42).size).to eq 0
-
-		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 42)
-
-		expect(ozbKontoOrigin.ktoNr).to eq 42
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
-
-		# Private method, therfore using send methode
-		ozbKontoOrigin.send(:destroy_historic_records)
-
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
-	end
+	it "destroys zero records, because there are no historic records"
 
 	# set_assoc_attributes (callback methode: before_save)
-	it "sets the value of the SachPnr attribute in the associated EE Konto" #do
-		# create one eekonto
-		#ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 42)
-		#sachPersonOzbKonto = ozbKonto.sachPnr
-
-		#bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => ozbKonto.mnr)
-
-		#sachPersonEEKonto = FactoryGirl.create(:ozbperson_with_person)
-
-  		#eeKonto = FactoryGirl.create(:EeKonto, :ktoNr => ozbKonto.ktoNr, :sachPnr => sachPersonEEKonto.mnr, 
-  		#							:bankId => bankverbindung.id)
-
-  		#expect(eeKonto.sachPnr).to eq sachPersonEEKonto.mnr
-		#expect(eeKonto).to be_valid
-		#expect(ozbKonto.ktoNr).to eq eeKonto.ktoNr
-		#expect(EeKonto.where("KtoNr = ?", ozbKonto.ktoNr).size).to eq 1
-
-		#sleep(1.0)
-		#sachPersonNew = FactoryGirl.create(:ozbperson_with_person)
-		#ozbKonto.sachPnr = sachPersonNew.mnr
-
-		#expect(ozbKonto.save).to eq true
-		#expect(ozbKonto.sachPnr).to eq sachPersonNew.mnr
-
-		#expect(eeKonto.sachPnr).to eq ozbKonto.sachPnr
-	#end
+	it "sets the value of the SachPnr attribute in the associated EE Konto" 
 
 	it "does not set the value of the SachPnr attribute in the associated EE Konto, if the EE Konto does not exists"
 
@@ -471,8 +374,8 @@ describe OzbKonto do
 	it "sets the valid time to GueltigVon = now and GueltigBis = 9999-12-31 23:59:59" do
 		ozbPerson = FactoryGirl.create(:ozbperson_with_person)
 		sachbearbeiter = FactoryGirl.create(:ozbperson_with_person)
-		ozbKonto = FactoryGirl.build(	:ozbkonto_with_ozbperson, :mnr => ozbPerson.mnr, 
-										:sachPnr => sachbearbeiter.mnr)
+		ozbKonto = FactoryGirl.build(	:ozbkonto_with_ozbperson, :Mnr => ozbPerson.Mnr, 
+										:SachPnr => sachbearbeiter.Mnr, :Waehrung => FactoryGirl.create(:Waehrung))
 		expect(ozbKonto).to be_valid
 
 		expect(ozbKonto.GueltigVon).to eq nil		
@@ -486,9 +389,10 @@ describe OzbKonto do
 	it "does not set the valid time, if it is already set" do
 		ozbPerson = FactoryGirl.create(:ozbperson_with_person)
 		sachbearbeiter = FactoryGirl.create(:ozbperson_with_person)
-		ozbKonto = FactoryGirl.build(	:ozbkonto_with_ozbperson, :mnr => ozbPerson.mnr, 
-										:sachPnr => sachbearbeiter.mnr, 
-										:GueltigVon => Time.zone.parse("2013-01-01 23:59:59"), :GueltigBis => Time.zone.parse("2013-12-31 23:59:59"))
+		ozbKonto = FactoryGirl.build(	:ozbkonto_with_ozbperson, :Mnr => ozbPerson.Mnr, 
+										:SachPnr => sachbearbeiter.Mnr, 
+										:GueltigVon => Time.zone.parse("2013-01-01 23:59:59"), :GueltigBis => Time.zone.parse("2013-12-31 23:59:59"),
+										:WaehrungID => FactoryGirl.create(:Waehrung))
 		expect(ozbKonto).to be_valid
 
 		expect(ozbKonto.GueltigVon).to eq Time.zone.parse("2013-01-01 23:59:59")
@@ -505,17 +409,17 @@ describe OzbKonto do
 	it "sets the valid time of the new copy to GueltigVon = self.GueltigVon and GueltigBis = Time.now and updates himself to the latest record" do
 		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		gueltigVon = Time.now
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 1
 
 		sleep(1.0)
 
-		ozbKontoOrigin.wSaldo += 1
+		ozbKontoOrigin.WSaldo += 1
 		
 		gueltigBis = Time.now
 		expect(ozbKontoOrigin.save!).to eq true
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 2
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 2
 
-		oldOzbKonto = OzbKonto.where("KtoNr = ? AND GueltigBis < ?", ozbKontoOrigin.ktoNr, Time.zone.parse("9999-12-31 23:59:59")).first
+		oldOzbKonto = OzbKonto.where("KtoNr = ? AND GueltigBis < ?", ozbKontoOrigin.KtoNr, Time.zone.parse("9999-12-31 23:59:59")).first
 		expect(oldOzbKonto.nil?).to eq false
 		expect(oldOzbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq gueltigVon.strftime("%Y-%m-%d %H:%M:%S")
 		expect(oldOzbKonto.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq gueltigBis.strftime("%Y-%m-%d %H:%M:%S")
@@ -525,12 +429,12 @@ describe OzbKonto do
 		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		gueltigVon = Time.now
 
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 1
 
 		sleep(1.0)
 
-		ozbKontoOrigin.ktoNr = nil
-		ozbKontoOrigin.wSaldo += 1
+		ozbKontoOrigin.KtoNr = nil
+		ozbKontoOrigin.WSaldo += 1
 
 		# one cannot save an ozbkonto without a valid kontonummer
 		expect(ozbKontoOrigin.save).to eq false
@@ -540,7 +444,7 @@ describe OzbKonto do
 		ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		gueltigVon = Time.now
 
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 1
 		expect(ozbKontoOrigin.GueltigBis).to eq Time.zone.parse("9999-12-31 23:59:59")
 
 		sleep(1.0)
@@ -549,7 +453,7 @@ describe OzbKonto do
 		expect(ozbKontoOrigin.save).to eq true
 
 		# change nothing, because one can only modify the latest version
-		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.ktoNr).size).to eq 1
+		expect(OzbKonto.where("KtoNr = ?", ozbKontoOrigin.KtoNr).size).to eq 1
 		expect(ozbKontoOrigin.GueltigBis).to eq Time.zone.parse("9998-12-31 23:59:59")	
 	end
 end

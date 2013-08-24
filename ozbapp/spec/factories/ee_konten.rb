@@ -3,19 +3,20 @@ require 'faker'
 FactoryGirl.define do
 
 	factory :EeKonto do
-		sequence(:ktoNr) {|n| "#{n}"} 
-		sequence(:bankId) {|n| "#{n}"} 
-		sequence(:SachPnr) {|n| "#{n}"} 
+		sequence(:KtoNr) {|n| "#{n}"} 
+		sequence(:BankID) {|n| "#{n}"} 
+		sequence(:SachPnr) {|n| "#{n}"}
+		Kreditlimit 42000
 
 
 		factory :eekonto_with_ozbkonto_and_sachPerson_and_bankverbindung do
 			before(:create) do |eeKonto|
 				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				sachPerson = FactoryGirl.create(:ozbperson_with_person)
-				bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :pnr => ozbKonto.mnr)
-				eeKonto.ktoNr = ozbKonto.ktoNr
-				eeKonto.sachPnr = sachPerson.mnr
-				eeKonto.bankId = bankverbindung.id
+				bankverbindung = FactoryGirl.create(:bankverbindung_with_bank, :Pnr => ozbKonto.Mnr)
+				eeKonto.KtoNr = ozbKonto.KtoNr
+				eeKonto.SachPnr = sachPerson.Mnr
+				eeKonto.BankID = bankverbindung.ID
 			end
 		end
 
@@ -23,15 +24,15 @@ FactoryGirl.define do
 			before(:create) do |eeKonto|
 				sachPerson = FactoryGirl.create(:ozbperson_with_person)
 				bankverbindung = FactoryGirl.create(:bankverbindung_with_bank_and_person)
-				eeKonto.sachPnr = sachPerson.mnr
-				eeKonto.bankId = bankverbindung.id
+				eeKonto.SachPnr = sachPerson.Mnr
+				eeKonto.BankID = bankverbindung.ID
 			end
 		end
 
 		factory :eekonto_with_sachPerson do
 			before(:create) do |eeKonto|
 				sachPerson = FactoryGirl.create(:ozbperson_with_person)
-				eeKonto.sachPnr = sachPerson.mnr
+				eeKonto.SachPnr = sachPerson.Mnr
 			end
 		end
 

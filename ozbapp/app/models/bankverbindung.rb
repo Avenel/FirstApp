@@ -68,7 +68,7 @@ class Bankverbindung < ActiveRecord::Base
   accepts_nested_attributes_for :Bank, :reject_if => :bank_already_exists
 
   def bank_exists 
-    if Bank.where("BLZ = ?", self.blz).empty? then
+    if Bank.where("BLZ = ?", self.BLZ).empty? then
       return false
     else
       return true
@@ -76,7 +76,7 @@ class Bankverbindung < ActiveRecord::Base
   end
 
   def pnr_exists 
-    if Person.where("Pnr = ?", self.pnr).empty? then
+    if Person.where("Pnr = ?", self.Pnr).empty? then
       return false
     else
       return true
@@ -85,7 +85,7 @@ class Bankverbindung < ActiveRecord::Base
   
   def Bankverbindung.get(id, date = Time.now)
     begin
-      return Adresse.find(:all, :conditions => ["ID = ? AND GueltigVon <= ? AND GueltigBis > ?", id, date, date]).first
+      return Bankverbindung.find(:all, :conditions => ["ID = ? AND GueltigVon <= ? AND GueltigBis > ?", id, date, date]).first
     rescue ActiveRecord::RecordNotFound
       return nil
     end
@@ -97,7 +97,7 @@ class Bankverbindung < ActiveRecord::Base
   end
   
   def self.latest(id)
-    return Bankverbindung.get(self.ID)
+    return Bankverbindung.get(id)
   end
   
   private

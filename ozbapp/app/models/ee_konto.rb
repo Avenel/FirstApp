@@ -46,9 +46,9 @@ class EeKonto < ActiveRecord::Base
   validate :sachPnr_exists
 
   def kto_exists
-    kto = OzbKonto.latest(self.ktoNr)
+    kto = OzbKonto.latest(self.KtoNr)
     if kto.nil? then
-      errors.add :ktoNr, "Konto existiert nicht: {self.ktoNr}."
+      errors.add :KtoNr, "Konto existiert nicht: {self.ktoNr}."
       return false
     else
       return true
@@ -56,10 +56,10 @@ class EeKonto < ActiveRecord::Base
   end
 
   def bankId_exists
-    bankverbindung = Bankverbindung.latest(self.bankId)
+    bankverbindung = Bankverbindung.latest(self.BankID)
 
     if bankverbindung.nil? then
-      errors.add :bankId, "Bankverbindung existiert nicht: {self.bankId}."
+      errors.add :BankID, "Bankverbindung existiert nicht: {self.bankId}."
       return false
     else
       return true
@@ -74,7 +74,7 @@ class EeKonto < ActiveRecord::Base
     ozbperson = OZBPerson.where("Mnr = ?", self.SachPnr)
     if ozbperson.empty? then
       errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (#{self.SachPnr}) gefunden werden.")
-      errors.add :mnr, errorString
+      errors.add :Mnr, errorString
       return false
     end
     return true

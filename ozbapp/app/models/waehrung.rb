@@ -1,6 +1,5 @@
 class Waehrung < ActiveRecord::Base
 
-	self.table_name = "Waherung"
   self.primary_keys = :Code
   
   # attributes
