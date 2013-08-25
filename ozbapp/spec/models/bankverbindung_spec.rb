@@ -85,29 +85,11 @@ describe Bankverbindung do
 		expect(bankverbindung.bank_exists).to eq false
 	end
 
-	# valid_id
-	it "returns true if id is valid (a Number)" do
-		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => 42)
-		expect(bankverbindung.valid_id).to eq true
-	end
-
-	it "returns false if id is invalid (a String)" do
-		bankverbindung = FactoryGirl.build(:bankverbindung_with_bank_and_person, :id => "ABCD")
-		expect(bankverbindung.valid_id).to eq false
-	end
-
-	# set_valid_id (callback methode: before_create)
-	it "sets a valid id, if id does not exists. (auto-increment)" do
-		bankverbindung = FactoryGirl.create(:bankverbindung_with_bank_and_person, :id => nil)
-		expect(bankverbindung).to be_valid
-		expect(bankverbindung.id).to eq 1
-	end
-
 	# set_valid_time (callback methode: before_create)
 	it "sets the valid time to GueltigVon = now and GueltigBis = 9999-12-31 23:59:59" do
 		bank = FactoryGirl.create(:Bank)
 		person = FactoryGirl.create(:Person)
-		bankverbindung = FactoryGirl.build(:Bankverbindung, :Pnr => person.pnr, :BLZ => bank.BLZ)
+		bankverbindung = FactoryGirl.build(:Bankverbindung, :Pnr => person.Pnr, :BLZ => bank.BLZ)
 		expect(bankverbindung).to be_valid
 
 		expect(bankverbindung.GueltigVon).to eq nil		
@@ -121,7 +103,7 @@ describe Bankverbindung do
 	it "does not set the valid time, if it is already set" do
 		bank = FactoryGirl.create(:Bank)
 		person = FactoryGirl.create(:Person)
-		bankverbindung = FactoryGirl.build(	:Bankverbindung, :Pnr => person.pnr, 
+		bankverbindung = FactoryGirl.build(	:Bankverbindung, :Pnr => person.Pnr, 
 										:BLZ => bank.BLZ, 
 										:GueltigVon => Time.zone.parse("2013-01-01 23:59:59"), :GueltigBis => Time.zone.parse("2013-12-31 23:59:59"))
 		expect(bankverbindung).to be_valid
@@ -139,17 +121,17 @@ describe Bankverbindung do
 	it "sets the valid time of the new copy to GueltigVon = self.GueltigVon and GueltigBis = Time.now and updates himself to the latest record" do
 		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
 		gueltigVon = Time.now
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 1
 
 		sleep(1.0)
 
-		bankverbindungOrigin.iban = "gueltigeIBAN"
+		bankverbindungOrigin.IBAN = "DE12500105170648489890"
 		
 		gueltigBis = Time.now
 		expect(bankverbindungOrigin.save!).to eq true
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 2
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 2
 
-		oldBankverbindung = Bankverbindung.where("ID = ? AND GueltigBis < ?", bankverbindungOrigin.id, Time.zone.parse("9999-12-31 23:59:59")).first
+		oldBankverbindung = Bankverbindung.where("ID = ? AND GueltigBis < ?", bankverbindungOrigin.ID, Time.zone.parse("9999-12-31 23:59:59")).first
 		expect(oldBankverbindung.nil?).to eq false
 		expect(oldBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq gueltigVon.strftime("%Y-%m-%d %H:%M:%S")
 		expect(oldBankverbindung.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq gueltigBis.strftime("%Y-%m-%d %H:%M:%S")
@@ -159,12 +141,12 @@ describe Bankverbindung do
 		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
 		gueltigVon = Time.now
 
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 1
 
 		sleep(1.0)
 
-		bankverbindungOrigin.id = nil
-		bankverbindungOrigin.iban = "gueltigeIBAN"
+		bankverbindungOrigin.ID = nil
+		bankverbindungOrigin.IBAN = "DE12500105170648489890"
 
 		# one cannot save a bankverbindung without a valid id
 		exceptionThrown = false
@@ -181,7 +163,7 @@ describe Bankverbindung do
 		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
 		gueltigVon = Time.now
 
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 1
 		expect(bankverbindungOrigin.GueltigBis).to eq Time.zone.parse("9999-12-31 23:59:59")
 
 		sleep(1.0)
@@ -190,7 +172,7 @@ describe Bankverbindung do
 		expect(bankverbindungOrigin.save).to eq true
 
 		# change nothing, because one can only modify the latest version
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 1
 		expect(bankverbindungOrigin.GueltigBis).to eq Time.zone.parse("9998-12-31 23:59:59")	
 	end
 
@@ -202,13 +184,13 @@ describe Bankverbindung do
 		createdAt = Time.now
 		for i in 0..1
 			sleep(1.0)
-			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.IBAN =  "DE12500105170648489890"
 			bankverbindungOrigin.save!
 			createdAt = Time.now
 		end
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 3
 
-		latestBankverbindung = bankverbindungOrigin.get(bankverbindungOrigin.id, Time.now)
+		latestBankverbindung = Bankverbindung.get(bankverbindungOrigin.ID, Time.now)
 
 		expect(latestBankverbindung.nil?).to eq false
 		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
@@ -222,13 +204,13 @@ describe Bankverbindung do
 		createdAt = Time.now
 		for i in 0..1
 			sleep(1.0)
-			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.IBAN =  "DE12500105170648489890"
 			bankverbindungOrigin.save!
 			createdAt = Time.now
 		end
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 3
 
-		latestBankverbindung = bankverbindungOrigin.get(bankverbindungOrigin.id, createdAtOrigin)
+		latestBankverbindung = Bankverbindung.get(bankverbindungOrigin.ID, createdAtOrigin)
 
 		expect(latestBankverbindung.nil?).to eq false
 		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to_not eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
@@ -238,7 +220,7 @@ describe Bankverbindung do
 	it "returns nil, if there is no Bankverbindung for a invalid ID or date" do
 		# Test for an invalid ID
 		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
-		expect(bankverbindungOrigin.get(bankverbindungOrigin.id + 10, Time.now)).to eq nil
+		expect(Bankverbindung.get(bankverbindungOrigin.ID + 10, Time.now)).to eq nil
 
 		# create valid ozbkonto, in different versions
 		originTime = Time.now
@@ -249,13 +231,13 @@ describe Bankverbindung do
 		createdAt = Time.now
 		for i in 0..1
 			sleep(1.0)
-			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.IBAN =  "DE12500105170648489890"
 			bankverbindungOrigin.save!
 			createdAt = Time.now
 		end
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 3
 
-		latestBankverbindung = bankverbindungOrigin.get(bankverbindungOrigin.id, originTime)
+		latestBankverbindung = Bankverbindung.get(bankverbindungOrigin.ID, originTime)
 		expect(latestBankverbindung.nil?).to eq true
 	end
 
@@ -267,13 +249,13 @@ describe Bankverbindung do
 		createdAt = Time.now
 		for i in 0..1
 			sleep(1.0)
-			bankverbindungOrigin.iban =  "gueltigeIBAN"
+			bankverbindungOrigin.IBAN =  "DE12500105170648489890"
 			bankverbindungOrigin.save!
 			createdAt = Time.now
 		end
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
+		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.ID).size).to eq 3
 
-		latestBankverbindung = Bankverbindung.latest(bankverbindungOrigin.id)
+		latestBankverbindung = Bankverbindung.latest(bankverbindungOrigin.ID)
 
 		expect(latestBankverbindung.nil?).to eq false
 		expect(latestBankverbindung.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq createdAt.strftime("%Y-%m-%d %H:%M:%S")
@@ -299,73 +281,6 @@ describe Bankverbindung do
 
 		# Private method, therfore using send methode
 		expect(bankverbindung.send(:bank_already_exists, 'BLZ' => 45)).to eq false
-	end
-
-	# destroy_historic_records (callback methode: after_destroy)
-	it "destroys all historic records except himself" do
-		# create valid ozbkonto, in different versions
-		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
-		for i in 0..1
-			sleep(1.0)
-			bankverbindungOrigin.iban =  "gueltigeIBAN"
-			bankverbindungOrigin.save!
-		end
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
-
-		# Private method, therfore using send methode
-		bankverbindungOrigin.send(:destroy_historic_records)
-
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
-	end
-
-	it "destroys zero records, because there are no historic records" do
-		expect(Bankverbindung.where("ID = ?", 42).size).to eq 0
-
-		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person, :id => 42)
-
-		expect(bankverbindungOrigin.id).to eq 42
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
-
-		# Private method, therfore using send methode
-		bankverbindungOrigin.send(:destroy_historic_records)
-
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 1
-	end
-
-	# destroy_bank_if_this_is_last_bankverbindung
-	it "destroys bank, if this is the last bankverbindung" do
-		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
-		expect(bankverbindungOrigin).to be_valid
-
-		bank = Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).first
-		expect(bank.nil?).to eq false
-
-		bankverbindungOrigin.destroy
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 0
-		expect(Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).size).to eq 0
-	end
-
-	it "does not destroys bank, if this is not the last bankverbindung" do
-		# create valid ozbkonto, in different versions
-		bankverbindungOrigin = FactoryGirl.create(:bankverbindung_with_bank_and_person)
-		expect(bankverbindungOrigin).to be_valid
-		createdAtOrigin = Time.now
-
-		bank = Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).first
-		expect(bank.nil?).to eq false
-
-		for i in 0..1
-			sleep(1.0)
-			bankverbindungOrigin.iban =  "gueltigeIBAN"
-			bankverbindungOrigin.save!
-		end
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 3
-
-		# delete one of the three bankverbindungen
-		bankverbindungToDelete = bankverbindungOrigin.get(bankverbindungOrigin.id, createdAtOrigin)
-		bankverbindungToDelete.destroy
-		expect(Bankverbindung.where("ID = ?", bankverbindungOrigin.id).size).to eq 2
-		expect(Bank.where("BLZ = ?", bankverbindungOrigin.BLZ).size).to eq 1
 	end
 
 end
