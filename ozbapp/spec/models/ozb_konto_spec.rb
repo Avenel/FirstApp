@@ -7,8 +7,6 @@ describe OzbKonto do
 		ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 		expect(ozbKonto).to be_valid
 
-		puts ozbKonto.inspect
-
 		expect(ozbKonto.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.now.strftime("%Y-%m-%d %H:%M:%S")
 		expect(ozbKonto.GueltigBis.strftime("%Y-%m-%d %H:%M:%S")).to eq "9999-12-31 23:59:59"
 	end

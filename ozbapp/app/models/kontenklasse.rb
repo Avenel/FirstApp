@@ -35,7 +35,7 @@ class Kontenklasse < ActiveRecord::Base
     :presence => { :message => "Bitte geben Sie einen Prozentsatz an." }, 
     :numericality => { :greater_than_or_equal_to => 0, 
       :message => "Der Prozentsatz muss positiv sein." },
-    :format => { :with => /^\d{1,5}[.]?\d{1,2}$/, #0.00 .. 99999.99 (siehe create_tables)
+    :format => { :with => /^\d{1,3}[.]?\d{1,2}$/, #0.00 .. 999.99 (siehe create_tables)
       :message => "Bitte geben Sie einen gültigen Prozentsatz an." }
 
 
@@ -45,7 +45,7 @@ class Kontenklasse < ActiveRecord::Base
   
   # Liefert einen detaillierten String mit dem Prozentsatz
   def kkl_with_percent
-    "Klasse " + kkl.to_s + " - " + sprintf("%3.2f", prozent) + "%"
+    "Klasse " + self.KKL.to_s + " - " + sprintf("%3.2f", self.Prozent) + "%"
   end
 
 end

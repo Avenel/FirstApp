@@ -4,7 +4,7 @@ FactoryGirl.define do
 
 	factory :Kontenklasse do
 		KKL "0"
-		KKLAbDatum Date.today
+		KKLEinrDatum Date.today
 		Prozent 0.00
 
 		factory :kontenklasse_A do
