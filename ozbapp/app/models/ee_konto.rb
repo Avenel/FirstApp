@@ -59,7 +59,7 @@ class EeKonto < ActiveRecord::Base
     bankverbindung = Bankverbindung.latest(self.BankID)
 
     if bankverbindung.nil? then
-      errors.add :BankID, "Bankverbindung existiert nicht: {self.bankId}."
+      errors.add :BankID, "Bankverbindung existiert nicht: {self.BankID}."
       return false
     else
       return true
@@ -121,8 +121,8 @@ class EeKonto < ActiveRecord::Base
   end
 
   def ktonr_with_name
-    if !self.ozb_konto.nil?
-      p = Person.find_by_Pnr_and_GueltigBis(self.ozb_konto.Mnr, "9999-12-31 23:59:59")
+    if !self.OzbKonto.nil?
+      p = Person.find_by_Pnr_and_GueltigBis(self.OzbKonto.Mnr, "9999-12-31 23:59:59")
       
       if !p.nil?
         "[" + self.KtoNr.to_s + "] " + p.Name + ", " + p.Vorname

@@ -7,7 +7,7 @@ FactoryGirl.define do
 		sequence(:KtoNr) {|n| "#{42680+10*n}"} 
 		sequence(:BnKreis) {|n| "#{n}"} 
 		sequence(:BelegNr) {|n| "#{n}"} 
-		sequence(:Typ) {|n| "#{n}"} 
+		Typ "w"
 		Belegdatum Date.today 
 		BuchDatum Date.today
 		Buchungstext "Some dummy text"
@@ -25,9 +25,9 @@ FactoryGirl.define do
 				ozbkonto_soll = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				ozbkonto_haben = FactoryGirl.create(:ozbkonto_with_ozbperson)
 
-				buchung.KtoNr = ozbkonto.ktoNr
-				buchung.SollKtoNr = ozbkonto_soll.ktoNr
-				buchung.HabenKtoNr = ozbkonto_haben.ktoNr
+				buchung.KtoNr = ozbkonto.KtoNr
+				buchung.SollKtoNr = ozbkonto_soll.KtoNr
+				buchung.HabenKtoNr = ozbkonto_haben.KtoNr
 			end
 		end
 
@@ -36,8 +36,8 @@ FactoryGirl.define do
 				ozbkonto_soll = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				ozbkonto_haben = FactoryGirl.create(:ozbkonto_with_ozbperson)
 
-				buchung.SollKtoNr = ozbkonto_soll.ktoNr
-				buchung.HabenKtoNr = ozbkonto_haben.ktoNr
+				buchung.SollKtoNr = ozbkonto_soll.KtoNr
+				buchung.HabenKtoNr = ozbkonto_haben.KtoNr
 			end
 		end
 
@@ -46,8 +46,8 @@ FactoryGirl.define do
 				ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				ozbkonto_haben = FactoryGirl.create(:ozbkonto_with_ozbperson)
 
-				buchung.KtoNr = ozbkonto.ktoNr
-				buchung.HabenKtoNr = ozbkonto_haben.ktoNr
+				buchung.KtoNr = ozbkonto.KtoNr
+				buchung.HabenKtoNr = ozbkonto_haben.KtoNr
 			end
 		end
 
@@ -56,8 +56,8 @@ FactoryGirl.define do
 				ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				ozbkonto_soll = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				
-				buchung.KtoNr = ozbkonto.ktoNr
-				buchung.SollKtoNr = ozbkonto_soll.ktoNr
+				buchung.KtoNr = ozbkonto.KtoNr
+				buchung.SollKtoNr = ozbkonto_soll.KtoNr
 			end
 		end
 	end
