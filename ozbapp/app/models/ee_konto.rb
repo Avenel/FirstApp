@@ -39,7 +39,7 @@ class EeKonto < ActiveRecord::Base
 
   # Validations  
   validates :KtoNr, :presence => true, :format => { :with => /^[0-9]{5}$/i, :message => "Bitte geben Sie eine gültige Kontonummer (5 stellig) an." }
-  validates :Kreditlimit, :presence => true, :format => { :with => /^[0-9]+$/, :message => "Bitte geben Sie ein gültiges Kreditlimit ein." }
+  validates :Kreditlimit, :presence => true, :numericality => true
   
   validate :bankId_exists
   validate :kto_exists

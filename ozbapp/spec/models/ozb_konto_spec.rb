@@ -45,7 +45,8 @@ describe OzbKonto do
 		sachbearbeiter = FactoryGirl.create(:ozbperson_with_person)
 		expect(sachbearbeiter).to be_valid
 
-		expect(FactoryGirl.build(:ozbkonto_with_waehrung, :Mnr => 42, :SachPnr => sachbearbeiter.Mnr)).to be_valid
+		expect(FactoryGirl.build(:ozbkonto_with_waehrung, :Mnr => 42, :SachPnr => sachbearbeiter.Mnr, 
+								:WaehrungID => FactoryGirl.create(:Waehrung))).to be_valid
 	end
 
 	it "is invalid without a Mitgliedsnummer" do
@@ -151,9 +152,7 @@ describe OzbKonto do
 		ktoNr = 12345
 		for i in 0..2
 			ozbKonto = FactoryGirl.create(:ozbkonto_with_waehrung, :KtoNr => ktoNr, :Mnr => pnr, :SachPnr => sachPnr)
-			eeKonto = FactoryGirl.create(:EeKonto, :SachPnr => sachPnr, 
-													:BankID => bankverbindung.ID, :KtoNr => ktoNr,
-													:Kreditlimit => 42000)
+			eeKonto = FactoryGirl.create(:EeKonto, :SachPnr => sachPnr, :BankID => bankverbindung.ID, :KtoNr => ktoNr)
 			ktoNr += 1
 
 			# create more versions
@@ -190,7 +189,7 @@ describe OzbKonto do
 
 			#create more versions
 			sleep(1.0)
-			zeKonto.laufzeit += 1
+			zeKonto.Laufzeit += 1
 			expect(zeKonto.save).to eq true
 
 			ktoNr += 1

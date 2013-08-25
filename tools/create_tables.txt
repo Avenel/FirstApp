@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `EEKonto` (
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
   `BankID` int(10) unsigned NOT NULL,
-  `Kreditlimit`  decimal(5,2) NOT NULL DEFAULT '0.00', 
+  `Kreditlimit`  decimal(7,2) NOT NULL DEFAULT '0.00', 
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (KtoNr,GueltigVon)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

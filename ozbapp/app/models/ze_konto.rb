@@ -56,8 +56,8 @@ class ZeKonto < ActiveRecord::Base
   validates :ZENr, :presence => { :format => { :with => /^[A-Z]([0-9]){4}$/ }, :message => "Bitte geben Sie eine gültige ZE-Nr. an." }
   validates :ZEAbDatum, :presence => true
   validates :ZEEndDatum, :presence => true
-  validates :ZEBetrag, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie einen gültigen ZEBetrag an." } 
-  validates :Laufzeit, :presence => { :format => { :with => /[1-9]+/ }, :message => "Bitte geben Sie eine gültige Laufzeit an." }
+  validates :ZEBetrag, :presence => true, :numericality => true 
+  validates :Laufzeit, :presence => true, :numericality => true
   
   # enum ZahlModus
   AVAILABLE_ZAHLMODI = %W(m q j) # m = monatlich, q = quartal, j = jaehrlich
@@ -72,14 +72,14 @@ class ZeKonto < ActiveRecord::Base
   AVAILABLE_ZESTATUS = %W(a e u) # a = aktiv, e = beendet, u = unterbrochen 
   validates :ZahlModus, :presence => true, :inclusion => { :in => AVAILABLE_ZAHLMODI, :message => "%{value} is not a valid ZEStatus (a, e, u)" }
 
-  validates :Kalk_Leihpunkte, :presence => true, :format => {:with => /^[\d]+$/i}
+  validates :Kalk_Leihpunkte, :presence => true, :numericality => true
 
   validate :kto_exists
   validate :eeKonto_exists
   validate :sachPnr_exists
 
   def kto_exists
-    kto = OzbKonto.latest(self.ktoNr)
+    kto = OzbKonto.latest(self.KtoNr)
     if kto.nil? then
       errors.add :ktoNr, "Konto existiert nicht: {self.ktoNr}."
       return false
@@ -90,7 +90,7 @@ class ZeKonto < ActiveRecord::Base
 
 
   def eeKonto_exists
-    kto = EeKonto.latest(self.eeKtoNr)
+    kto = EeKonto.latest(self.EEKtoNr)
     if kto.nil? then
       errors.add :ktoNr, "EEKonto existiert nicht: {self.eeKtoNr}."
       return false

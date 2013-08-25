@@ -28,7 +28,6 @@ module HistoricRecord
   end
 
   def save_copy
-    puts ">>>> DEBUG save_copy " + self.class.name
     if !@@copy.nil?
       begin      
         @@copy.save(:validation => false)

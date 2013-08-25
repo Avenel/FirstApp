@@ -8,12 +8,16 @@ FactoryGirl.define do
 		sequence(:Laufzeit) {|n| "#{n}"}
 		sequence(:Pgnr) {|n| "#{n}"}
 		sequence(:ZENr) {|n| "D"+(n*10000000).to_s[0, 8]} 
-		ZahlModus "M"
+		ZahlModus "m"
 		TilgRate 100.00
 		NachsparRate 20.00
 		KDURate 5.00
 		RDURate 5.00
-		ZEStatus "A"
+		ZEStatus "a"
+		ZEBetrag 42
+		Kalk_Leihpunkte 13
+		ZEAbDatum Time.now
+		ZEEndDatum Time.zone.parse("2050-01-01 23:59:59")
 
 		factory :zeKonto_with_EEKonto_Projektgruppe do
 			before(:create) do |zeKonto|
