@@ -5,27 +5,28 @@ FactoryGirl.define do
 	factory :KklVerlauf do
 		sequence(:KtoNr) {|n| "#{n}"} 
 		sequence(:KKL) {|n| "#{n}"}
+		KKLAbDatum Date.today
 
 		factory :kklverlauf_with_ozbkonto_with_kontenklasse do
 			before(:create) do |kklverlauf|
-				ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 12345)
+				ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :KtoNr => 12345)
 				kontenklasse = FactoryGirl.create(:kontenklasse_A)
-				kklverlauf.KtoNr = ozbkonto.ktoNr
-				kklverlauf.kkl = kontenklasse.kkl
+				kklverlauf.KtoNr = ozbkonto.KtoNr
+				kklverlauf.KKL = kontenklasse.KKL
 			end
 		end
 
 		factory :kklverlauf_with_kontenklasse do
 			before(:create) do |kklverlauf|
 				kontenklasse = FactoryGirl.create(:kontenklasse_B)
-				kklverlauf.kkl = kontenklasse.kkl
+				kklverlauf.KKL = kontenklasse.KKL
 			end
 		end
 
 		factory :kklverlauf_with_ozbkonto do
 			before(:create) do |kklverlauf|
-				ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :ktoNr => 31337)
-				kklverlauf.KtoNr = ozbkonto.ktoNr
+				ozbkonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :KtoNr => 31337)
+				kklverlauf.KtoNr = ozbkonto.KtoNr
 			end
 		end
 	end

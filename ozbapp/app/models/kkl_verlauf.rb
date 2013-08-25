@@ -48,13 +48,4 @@ class KklVerlauf < ActiveRecord::Base
   belongs_to :kontenklasse,
           :foreign_key => :KKL
 
-  # callbacks
-  before_create :set_ab_datum
-
-  def set_ab_datum
-    if (self.KKLAbDatum.blank?)
-      self.KKLAbDatum = Date.today
-    end
-  end
-
 end
