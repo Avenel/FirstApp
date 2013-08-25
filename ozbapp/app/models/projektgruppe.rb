@@ -9,7 +9,7 @@ class Projektgruppe < ActiveRecord::Base
 	attr_accessible :Pgnr, :ProjGruppenBez
 
 	# Validations
-	validates :Pgnr, :uniqueness => true, :presence => true, :format => {:with => /^[0-9]{1,2}$/i, :message => "Not a valid PGNnr"}
+	validates :Pgnr, :uniqueness => true, :presence => true, :numericality => true
   validates :ProjGruppenBez, :presence => true
 
   # Associations
