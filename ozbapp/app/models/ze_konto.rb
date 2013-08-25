@@ -150,7 +150,7 @@ class ZeKonto < ActiveRecord::Base
     
     k = Array.new
     ozb.each do |o|
-      k << o.ze_konto unless o.ze_konto.nil?
+      k << o.ZeKonto unless o.ZeKonto.nil?
     end
     
     return k
