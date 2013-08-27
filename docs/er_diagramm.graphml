@@ -92,10 +92,10 @@ GueltigVon<y:LabelModel>
     <node id="n4">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="66.0" width="104.0" x="1023.4716796874999" y="-633.5402434458156"/>
+          <y:Geometry height="66.0" width="104.0" x="1023.4716796874999" y="-646.8251953124998"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="87.3671875" x="8.31640625" y="4.0">Foerdermitglied</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="87.3671875" x="8.316406250000114" y="4.0">Foerdermitglied</y:NodeLabel>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="custom" textColor="#000000" underlinedText="true" visible="true" width="63.373046875" x="2.0000000000001137" y="30.701171875">Pnr 
 GueltigVon<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
@@ -268,7 +268,7 @@ Typ<y:LabelModel>
     <node id="n13">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="80.5" width="115.0" x="826.2685546875" y="-42.59472656249977"/>
+          <y:Geometry height="104.20851063829787" width="115.0" x="826.2685546875" y="-42.59472656249977"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="60.02734375" x="27.486328125" y="4.0">OZBKonto</y:NodeLabel>
@@ -377,7 +377,7 @@ GueltigVon<y:LabelModel>
     <node id="n19">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="66.0" width="104.0" x="1023.4716796875" y="-550.8251953124998"/>
+          <y:Geometry height="66.0" width="104.0" x="1023.4716796875" y="-565.3251953124998"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="80.69921875" x="11.650390625" y="4.0">Gesellschafter</y:NodeLabel>
@@ -571,18 +571,6 @@ GueltigVon</y:NodeLabel>
     <node id="n30">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="31.9375" width="70.43359375" x="1219.9434830874998" y="-648.8803157924998"/>
-          <y:Fill hasColor="false" transparent="false"/>
-          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="52.66796875" x="8.8828125" y="-0.732421875">Pnr (FK)
-BLZ (FK)</y:NodeLabel>
-          <y:Shape type="rectangle"/>
-        </y:ShapeNode>
-      </data>
-    </node>
-    <node id="n31">
-      <data key="d6">
-        <y:ShapeNode>
           <y:Geometry height="17.96875" width="16.779296875" x="622.4482421875" y="-596.9799479031733"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
@@ -591,7 +579,7 @@ BLZ (FK)</y:NodeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n32">
+    <node id="n31">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="17.96875" width="16.779296875" x="642.3711861875" y="-579.0111979031733"/>
@@ -602,7 +590,7 @@ BLZ (FK)</y:NodeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n33">
+    <node id="n32">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="31.9375" width="26.892578125" x="689.2038085735103" y="-363.13997774249975"/>
@@ -613,7 +601,7 @@ BLZ (FK)</y:NodeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n34">
+    <node id="n33">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="31.9375" width="26.892578125" x="708.3678193870206" y="-345.6154998049995"/>
@@ -624,7 +612,7 @@ BLZ (FK)</y:NodeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n35">
+    <node id="n34">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="31.9375" width="70.43359375" x="637.6279296875" y="-19.875976562499773"/>
@@ -636,7 +624,7 @@ GueltigVon</y:NodeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n36">
+    <node id="n35">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="31.9375" width="70.43359375" x="629.7810425374864" y="5.248046875000455"/>
@@ -647,7 +635,7 @@ GueltigVon</y:NodeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n37">
+    <node id="n36">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="31.9375" width="70.43359375" x="828.2685546875" y="-12.625976562499773"/>
@@ -659,18 +647,19 @@ GueltigVon</y:NodeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n38">
+    <node id="n37">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="31.9375" width="70.43359375" x="821.5621164543292" y="10.734780955000417"/>
+          <y:Geometry height="31.9375" width="70.43359375" x="824.9687483794356" y="14.593416066489851"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="51.326171875" x="9.5537109375" y="6.6181640625">Mnr (FK)</y:NodeLabel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" modelName="internal" modelPosition="tr" textColor="#000000" visible="true" width="59.34765625" x="7.0859375" y="4.0">Mnr (FK)
+Code (FK)</y:NodeLabel>
           <y:Shape type="rectangle"/>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n39">
+    <node id="n38">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="31.9375" width="70.43359375" x="1016.9091796874999" y="10.734780955000417"/>
@@ -681,18 +670,7 @@ GueltigVon</y:NodeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n40">
-      <data key="d6">
-        <y:ShapeNode>
-          <y:Geometry height="31.9375" width="70.43359375" x="1029.1612075485277" y="131.58511893750023"/>
-          <y:Fill hasColor="false" transparent="false"/>
-          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="tr" textColor="#000000" visible="true" width="70.01171875" x="-3.578125" y="4.0">BankID (FK)</y:NodeLabel>
-          <y:Shape type="rectangle"/>
-        </y:ShapeNode>
-      </data>
-    </node>
-    <node id="n41">
+    <node id="n39">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="53.0" width="115.0" x="593.260834625" y="-479.78209885408637"/>
@@ -710,6 +688,52 @@ GueltigVon</y:NodeLabel>
             <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
           </y:StyleProperties>
         </y:GenericNode>
+      </data>
+    </node>
+    <node id="n40">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="31.9375" width="70.43359375" x="1222.098802236436" y="-655.3462732393083"/>
+          <y:Fill hasColor="false" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="52.66796875" x="8.8828125" y="6.6181640625">BLZ (FK)</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n41">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
+          <y:Geometry height="55.21790641622363" width="104.0" x="889.4716796875" y="-118.37597656249977"/>
+          <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="52.69140625" x="25.654296875" y="4.0">Währung</y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n42">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="31.9375" width="70.43359375" x="874.3844456449468" y="-95.09557014627615"/>
+          <y:Fill hasColor="false" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="c" textColor="#000000" underlinedText="true" visible="true" width="32.6875" x="18.873046875" y="6.6181640625">Code</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n43">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="31.9375" width="70.43359375" x="843.3731674534574" y="-523.0337199691478"/>
+          <y:Fill hasColor="false" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="tr" textColor="#000000" visible="true" width="82.017578125" x="-15.583984375" y="4.0">UeberPnr (FK)</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
       </data>
     </node>
     <edge id="e0" source="n1" target="n0">
@@ -748,7 +772,7 @@ GueltigVon</y:NodeLabel>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="36.43447079020689" ty="2.0326663131399982">
-            <y:Point x="914.7030254777069" y="-600.5402434458156"/>
+            <y:Point x="914.7030254777069" y="-613.8251953124998"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one_optional" target="crows_foot_one_mandatory"/>
@@ -779,7 +803,7 @@ GueltigVon</y:NodeLabel>
     <edge id="e6" source="n3" target="n7">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="-11.255671620132489" sy="-37.601453470098136" tx="-11.255671620132489" ty="2.844078291223127"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one_mandatory" target="crows_foot_one_optional"/>
           <y:BendStyle smoothed="false"/>
@@ -789,7 +813,7 @@ GueltigVon</y:NodeLabel>
     <edge id="e7" source="n7" target="n19">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="35.87837450959796" sy="-3.913674058590176" tx="0.0" ty="0.0">
+          <y:Path sx="35.87837450959796" sy="-3.913674058590176" tx="7.308268617021213" ty="10.586325941409768">
             <y:Point x="958.0434260123845" y="-521.73886937109"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
@@ -801,8 +825,9 @@ GueltigVon</y:NodeLabel>
     <edge id="e8" source="n8" target="n7">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="-40.47594673392541" ty="3.6897436753036383">
-            <y:Point x="837.7926079535746" y="-593.9486979031733"/>
+          <y:Path sx="0.0" sy="0.0" tx="-39.397453191489035" ty="-29.97927702792549">
+            <y:Point x="785.3752462514469" y="-593.9486979031733"/>
+            <y:Point x="785.3752462514469" y="-547.8044723404253"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_many_optional" target="crows_foot_one_mandatory"/>
@@ -859,7 +884,7 @@ GueltigVon</y:NodeLabel>
     <edge id="e13" source="n12" target="n13">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+          <y:Path sx="0.0" sy="0.0" tx="6.000860206117295" ty="-11.854255319148933">
             <y:Point x="768.9740103626943" y="-184.45019531249977"/>
             <y:Point x="768.9740103626943" y="-2.3447265624997726"/>
           </y:Path>
@@ -872,7 +897,7 @@ GueltigVon</y:NodeLabel>
     <edge id="e14" source="n13" target="n7">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-17.629150457863147" sy="3.329246895764072" tx="-12.129150457863147" ty="-0.6363830070856693"/>
+          <y:Path sx="-17.629150457863147" sy="4.309762242916156" tx="-12.129150457863147" ty="-0.6363830070856693"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_many_optional" target="crows_foot_one_mandatory"/>
           <y:BendStyle smoothed="false"/>
@@ -921,7 +946,7 @@ GueltigVon</y:NodeLabel>
     <edge id="e18" source="n14" target="n13">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="0.6125623337768502" ty="-11.854255319148933"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_many_optional" target="crows_foot_one_mandatory"/>
           <y:BendStyle smoothed="false"/>
@@ -963,8 +988,8 @@ GueltigVon</y:NodeLabel>
     <edge id="e22" source="n17" target="n13">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="2.3196972555051616" sy="29.459096552136998" tx="2.5648753643135933" ty="29.459096552136998">
-            <y:Point x="790.1835440414509" y="27.114369989637225"/>
+          <y:Path sx="2.3196972555051616" sy="29.459096552136998" tx="1.6902219082450074" ty="17.604841232988065">
+            <y:Point x="796.6495014882594" y="27.114369989637225"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one_optional" target="crows_foot_one_mandatory"/>
@@ -1049,12 +1074,62 @@ GueltigVon</y:NodeLabel>
     <edge id="e29" source="n3" target="n20">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="11.06287090484227" sy="29.377758712217883" tx="0.0" ty="0.0">
-            <y:Point x="1153.9466889946777" y="-641.314143269712"/>
+          <y:Path sx="-27.185414893617008" sy="17.77035942873829" tx="0.0" ty="0.0">
+            <y:Point x="1153.9466889946777" y="-652.9215425531916"/>
             <y:Point x="1153.9466889946777" y="-407.48460514530234"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one_mandatory" target="crows_foot_one_optional"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e30" source="n13" target="n41">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="2.6941489361702224" sy="-41.59765957446814" tx="32.92804521276605" ty="1.7784670046540896">
+            <y:Point x="974.399724900266" y="-32.08813081781898"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="crows_foot_many_optional" target="crows_foot_one_mandatory"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e31" source="n42" target="n41">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e32" source="n3" target="n19">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="15.920968085106324" sy="-19.9477256776446" tx="-3.468327127659677" ty="-16.063368517287472">
+            <y:Point x="894.1895227726063" y="-575.3300531914894"/>
+            <y:Point x="970.7033525598404" y="-575.3300531914894"/>
+            <y:Point x="970.7033525598404" y="-548.3885638297872"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="crows_foot_one_optional" target="crows_foot_many_optional"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e33" source="n7" target="n3">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="-40.500976595744305" sy="-17.288757878989372" tx="-40.500976595744305" ty="-1.810715039346519"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="crows_foot_many_optional" target="crows_foot_one_optional"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
