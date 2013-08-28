@@ -109,7 +109,7 @@ public class Migratior {
 						+ "EMail,GueltigVon,GueltigBis,SperrKZ) VALUES "
 						+ "(?,?,?,?,?,?,?,?,?);";
 				String queryInsertAdresse = "INSERT INTO adresse (Pnr,Strasse,Nr,PLZ,Ort,GueltigVon,GueltigBis,Vermerk) VALUES (?,?,?,?,?,?,?,?);";
-				String queryInsertOZBPerson = "INSERT INTO ozbperson (Mnr,UeberPnr,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum) VALUES (?,?,?,?,?,?,?);";
+				String queryInsertOZBPerson = "INSERT INTO ozbperson (Mnr,UeberPnr,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum) VALUES (?,?,?,?,?,?);";
 				String queryInsertPartner = "INSERT INTO partner (Mnr,Pnr_P,Berechtigung,GueltigVon,GueltigBis) VALUES (?,?,?,?,?);";
 				String queryInsertMitglied = "INSERT INTO mitglied (Mnr,RVDatum,GueltigVon,GueltigBis) VALUES (?,?,?,?);";
 				String queryInsertGesellschafter = "INSERT INTO gesellschafter (Mnr,FASteuerNr,FALfdNr,FAIdNr,Wohnsitzfinanzamt,GueltigVon,GueltigBis) VALUES (?,?,?,?,?,?,?);";
@@ -253,6 +253,8 @@ public class Migratior {
 						+ "group by T.km1) O "
 						+ "WHERE " + "m.MNR = k.MNR AND " + "O.MNR = m.MNR ";
 				rs = stOzbProd.executeQuery(sql);
+// (Mnr,UeberPnr,Antragsdatum,Aufnahmedatum,Austrittsdatum,Schulungsdatum) VALUES (?,?,?,?,?,?);
+				
 				while (rs.next()) {
 					PreparedStatement queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertOZBPerson);
@@ -262,23 +264,22 @@ public class Migratior {
 					} else {
 						queryInsertStmt.setInt(2, rs.getInt("UEBER_MNR"));
 					}
-					queryInsertStmt.setDate(3, rs.getDate("PW_AENDDAT"));
 
 					// TODO
 					if (rs.getString("ANTRAGSDAT") == null
 							|| rs.getString("ANTRAGSDAT").equals("")) {
-						queryInsertStmt.setString(4, "0000-01-01"); // Dreckig,
+						queryInsertStmt.setString(3, "0000-01-01"); // Dreckig,
 																	// lieber
 																	// Calendar
 																	// Object
 																	// nutzen.
 					} else {
-						queryInsertStmt.setDate(4, rs.getDate("ANTRAGSDAT"));
+						queryInsertStmt.setDate(3, rs.getDate("ANTRAGSDAT"));
 					}
 
-					queryInsertStmt.setDate(5, rs.getDate("AUFNAHMEDAT"));
-					queryInsertStmt.setDate(6, rs.getDate("AUS_DAT"));
-					queryInsertStmt.setDate(7, rs.getDate("SCHUL_DAT"));
+					queryInsertStmt.setDate(4, rs.getDate("AUFNAHMEDAT"));
+					queryInsertStmt.setDate(5, rs.getDate("AUS_DAT"));
+					queryInsertStmt.setDate(6, rs.getDate("SCHUL_DAT"));
 					long oneDay = 1 * 24 * 60 * 60 * 1000;
 					// queryInsertStmt.setTimestamp(10, new
 					// java.sql.Timestamp(calendar.getTime().getTime() - 1 * 24
