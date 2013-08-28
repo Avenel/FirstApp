@@ -60,7 +60,7 @@ class Partner < ActiveRecord::Base
   # Returns nil if at the given time no person object was valid
   def Partner.get(mnr, date = Time.now)
     begin
-      return Partner.find(:all, :conditions => ["Mnr = ? AND GueltigVon <= ? AND GueltigBis > ?", Mnr, date, date]).first
+      return Partner.find(:all, :conditions => ["Mnr = ? AND GueltigVon <= ? AND GueltigBis > ?", mnr, date, date]).first
     rescue ActiveRecord::RecordNotFound
       return nil
     end
