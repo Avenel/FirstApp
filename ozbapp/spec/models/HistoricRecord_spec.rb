@@ -212,6 +212,88 @@ describe HistoricRecord do
       expect(ozbKontoLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
     end
 
+    # Person
+    it "does historize Person" do
+      # create origin record
+      oldTime = Time.now
+      personOrigin = FactoryGirl.create(:Person)
+      expect(personOrigin).to be_valid
+
+      # Asure that only one record exists
+      query = Person.find(:all, :conditions => ["Pnr = ?", personOrigin.Pnr])
+      expect(query.count).to eq 1
+
+      # Asure GueltigVon and GueltigBis are correct
+      expect(personOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(personOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      # Change any value
+      personOrigin.Vorname = "Hansi4711"
+
+      # wait a second
+      sleep(1)
+
+      # Save
+      saveTime = Time.now
+      expect(personOrigin.save).to eq true
+
+      # Query again, there should be 2 records by now
+      query = Person.find(:all, :conditions => ["Pnr = ?", personOrigin.Pnr])
+      expect(query.count).to eq 2
+
+      # Check GueltigVon and GueltigBis of both records
+      personOrigin = Person.find(:all, :conditions => ["Pnr = ? AND GueltigBis = ?", 
+                                    personOrigin.Pnr, saveTime]).first
+      expect(personOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(personOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      personLatest = Person.find(:all, :conditions => ["Pnr = ? AND GueltigBis = ?", 
+                                    personOrigin.Pnr, "9999-12-31 23:59:59"]).first
+      expect(personLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(personLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    end
+
+    # Adresse
+    it "does historize Adresse" do
+      # create origin record
+      oldTime = Time.now
+      adresseOrigin = FactoryGirl.create(:Adresse)
+      expect(adresseOrigin).to be_valid
+
+      # Asure that only one record exists
+      query = Adresse.find(:all, :conditions => ["Pnr = ?", adresseOrigin.Pnr])
+      expect(query.count).to eq 1
+
+      # Asure GueltigVon and GueltigBis are correct
+      expect(adresseOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(adresseOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      # Change any value
+      adresseOrigin.Ort = "Musterstadt42"
+
+      # wait a second
+      sleep(1)
+
+      # Save
+      saveTime = Time.now
+      expect(adresseOrigin.save).to eq true
+
+      # Query again, there should be 2 records by now
+      query = Adresse.find(:all, :conditions => ["Pnr = ?", adresseOrigin.Pnr])
+      expect(query.count).to eq 2
+
+      # Check GueltigVon and GueltigBis of both records
+      adresseOrigin = Adresse.find(:all, :conditions => ["Pnr = ? AND GueltigBis = ?", 
+                                    adresseOrigin.Pnr, saveTime]).first
+      expect(adresseOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(adresseOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      adresseLatest = Adresse.find(:all, :conditions => ["Pnr = ? AND GueltigBis = ?", 
+                                    adresseOrigin.Pnr, "9999-12-31 23:59:59"]).first
+      expect(adresseLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(adresseLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    end
+
   end
 
 end
