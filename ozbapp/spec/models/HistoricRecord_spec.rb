@@ -171,88 +171,6 @@ describe HistoricRecord do
   # test all models, which implements the HistoricRecord module
   context "test all models, which implements the HistoricRecord module" do
 
-    # OZBKonto
-    it "does historize OZBKonto" do
-      # create origin record
-      oldTime = Time.now
-      ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
-      expect(ozbKontoOrigin).to be_valid
-
-      # Asure that only one record exists
-      query = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ?", ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr])
-      expect(query.count).to eq 1
-
-      # Asure GueltigVon and GueltigBis are correct
-      expect(ozbKontoOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
-      expect(ozbKontoOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
-
-      # Change any value
-      ozbKontoOrigin.WSaldo = 42
-
-      # wait a second
-      sleep(1)
-
-      # Save
-      saveTime = Time.now
-      expect(ozbKontoOrigin.save).to eq true
-
-      # Query again, there should be 2 records by now
-      query = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ?", ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr])
-      expect(query.count).to eq 2
-
-      # Check GueltigVon and GueltigBis of both records
-      ozbKontoOrigin = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ? AND GueltigBis = ?", 
-                                    ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr, saveTime]).first
-      expect(ozbKontoOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
-      expect(ozbKontoOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
-
-      ozbKontoLatest = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ? AND GueltigBis = ?", 
-                                    ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr, "9999-12-31 23:59:59"]).first
-      expect(ozbKontoLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
-      expect(ozbKontoLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
-    end
-
-    # Person
-    it "does historize Person" do
-      # create origin record
-      oldTime = Time.now
-      personOrigin = FactoryGirl.create(:Person)
-      expect(personOrigin).to be_valid
-
-      # Asure that only one record exists
-      query = Person.find(:all, :conditions => ["Pnr = ?", personOrigin.Pnr])
-      expect(query.count).to eq 1
-
-      # Asure GueltigVon and GueltigBis are correct
-      expect(personOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
-      expect(personOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
-
-      # Change any value
-      personOrigin.Vorname = "Hansi4711"
-
-      # wait a second
-      sleep(1)
-
-      # Save
-      saveTime = Time.now
-      expect(personOrigin.save).to eq true
-
-      # Query again, there should be 2 records by now
-      query = Person.find(:all, :conditions => ["Pnr = ?", personOrigin.Pnr])
-      expect(query.count).to eq 2
-
-      # Check GueltigVon and GueltigBis of both records
-      personOrigin = Person.find(:all, :conditions => ["Pnr = ? AND GueltigBis = ?", 
-                                    personOrigin.Pnr, saveTime]).first
-      expect(personOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
-      expect(personOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
-
-      personLatest = Person.find(:all, :conditions => ["Pnr = ? AND GueltigBis = ?", 
-                                    personOrigin.Pnr, "9999-12-31 23:59:59"]).first
-      expect(personLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
-      expect(personLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
-    end
-
     # Adresse
     it "does historize Adresse" do
       # create origin record
@@ -540,6 +458,47 @@ describe HistoricRecord do
       expect(mitgliedLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
     end
 
+    # OZBKonto
+    it "does historize OZBKonto" do
+      # create origin record
+      oldTime = Time.now
+      ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
+      expect(ozbKontoOrigin).to be_valid
+
+      # Asure that only one record exists
+      query = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ?", ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr])
+      expect(query.count).to eq 1
+
+      # Asure GueltigVon and GueltigBis are correct
+      expect(ozbKontoOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(ozbKontoOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      # Change any value
+      ozbKontoOrigin.WSaldo = 42
+
+      # wait a second
+      sleep(1)
+
+      # Save
+      saveTime = Time.now
+      expect(ozbKontoOrigin.save).to eq true
+
+      # Query again, there should be 2 records by now
+      query = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ?", ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr])
+      expect(query.count).to eq 2
+
+      # Check GueltigVon and GueltigBis of both records
+      ozbKontoOrigin = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ? AND GueltigBis = ?", 
+                                    ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr, saveTime]).first
+      expect(ozbKontoOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(ozbKontoOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      ozbKontoLatest = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ? AND GueltigBis = ?", 
+                                    ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr, "9999-12-31 23:59:59"]).first
+      expect(ozbKontoLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(ozbKontoLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    end
+
     # Partner
     it "does historize Partner" do
       # create origin record
@@ -579,6 +538,129 @@ describe HistoricRecord do
                                     partnerOrigin.Mnr, "9999-12-31 23:59:59"]).first
       expect(partnerLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
       expect(partnerLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    end
+
+    # Person
+    it "does historize Person" do
+      # create origin record
+      oldTime = Time.now
+      personOrigin = FactoryGirl.create(:Person)
+      expect(personOrigin).to be_valid
+
+      # Asure that only one record exists
+      query = Person.find(:all, :conditions => ["Pnr = ?", personOrigin.Pnr])
+      expect(query.count).to eq 1
+
+      # Asure GueltigVon and GueltigBis are correct
+      expect(personOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(personOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      # Change any value
+      personOrigin.Vorname = "Hansi4711"
+
+      # wait a second
+      sleep(1)
+
+      # Save
+      saveTime = Time.now
+      expect(personOrigin.save).to eq true
+
+      # Query again, there should be 2 records by now
+      query = Person.find(:all, :conditions => ["Pnr = ?", personOrigin.Pnr])
+      expect(query.count).to eq 2
+
+      # Check GueltigVon and GueltigBis of both records
+      personOrigin = Person.find(:all, :conditions => ["Pnr = ? AND GueltigBis = ?", 
+                                    personOrigin.Pnr, saveTime]).first
+      expect(personOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(personOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      personLatest = Person.find(:all, :conditions => ["Pnr = ? AND GueltigBis = ?", 
+                                    personOrigin.Pnr, "9999-12-31 23:59:59"]).first
+      expect(personLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(personLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    end
+
+    # Student
+    it "does historize Student" do
+      # create origin record
+      oldTime = Time.now
+      studentOrigin = FactoryGirl.create(:student_with_ozbperson)
+      expect(studentOrigin).to be_valid
+
+      # Asure that only one record exists
+      query = Student.find(:all, :conditions => ["Mnr = ?", studentOrigin.Mnr])
+      expect(query.count).to eq 1
+
+      # Asure GueltigVon and GueltigBis are correct
+      expect(studentOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(studentOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      # Change any value
+      studentOrigin.Studienort = "Buxtehude"
+
+      # wait a second
+      sleep(1)
+
+      # Save
+      saveTime = Time.now
+      expect(studentOrigin.save).to eq true
+
+      # Query again, there should be 2 records by now
+      query = Student.find(:all, :conditions => ["Mnr = ?", studentOrigin.Mnr])
+      expect(query.count).to eq 2
+
+      # Check GueltigVon and GueltigBis of both records
+      studentOrigin = Student.find(:all, :conditions => ["Mnr = ? AND GueltigBis = ?", 
+                                    studentOrigin.Mnr, saveTime]).first
+      expect(studentOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(studentOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      studentLatest = Student.find(:all, :conditions => ["Mnr = ? AND GueltigBis = ?", 
+                                    studentOrigin.Mnr, "9999-12-31 23:59:59"]).first
+      expect(studentLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(studentLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    end
+
+    # ZEKonto
+    it "does historize ZEKonto" do
+      # create origin record
+      zeKontoOrigin = FactoryGirl.create(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe)
+      oldTime = Time.now
+      expect(zeKontoOrigin).to be_valid
+
+      # Asure that only one record exists
+      query = ZeKonto.find(:all, :conditions => ["KtoNr = ?", zeKontoOrigin.KtoNr])
+      expect(query.count).to eq 1
+
+      # Asure GueltigVon and GueltigBis are correct
+      expect(zeKontoOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(zeKontoOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      # Change any value
+      zeKontoOrigin.ZEBetrag = 4200
+
+      # wait a second
+      sleep(1)
+
+      # Save
+      saveTime = Time.now
+      expect(zeKontoOrigin.save).to eq true
+
+      # Query again, there should be 2 records by now
+      query = ZeKonto.find(:all, :conditions => ["KtoNr = ?", zeKontoOrigin.KtoNr])
+      expect(query.count).to eq 2
+
+      # Check GueltigVon and GueltigBis of both records
+      zeKontoOrigin = ZeKonto.find(:all, :conditions => ["KtoNr = ? AND GueltigBis = ?", 
+                                    zeKontoOrigin.KtoNr, saveTime]).first
+      expect(zeKontoOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(zeKontoOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      zeKontoLatest = ZeKonto.find(:all, :conditions => ["KtoNr = ? AND GueltigBis = ?", 
+                                    zeKontoOrigin.KtoNr, "9999-12-31 23:59:59"]).first
+      expect(zeKontoLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(zeKontoLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
     end
 
   end
