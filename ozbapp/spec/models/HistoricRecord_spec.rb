@@ -1,8 +1,8 @@
 require 'spec_helper'
 require "HistoricRecord"
 
-# This spec _only_ tests each method for itself.
-
+# Testclass which implement the historicrecord module, emulates an ActiveRecord class to avoid
+# funky tables in database.
 class TestHistoricRecordClass 
     include HistoricRecord
 
@@ -65,6 +65,7 @@ end
 
 describe HistoricRecord do
 
+  # _only_ tests each method for itself.
   # Module Methods
 
   # set_valid_time
@@ -165,6 +166,52 @@ describe HistoricRecord do
     hr.save_copy
 
     expect(hr.ID).to eq 0
+  end
+
+  # test all models, which implements the HistoricRecord module
+  context "test all models, which implements the HistoricRecord module" do
+
+    # OZBKonto
+    it "does historize OZBKonto" do
+      # create origin record
+      oldTime = Time.now
+      ozbKontoOrigin = FactoryGirl.create(:ozbkonto_with_ozbperson)
+      expect(ozbKontoOrigin).to be_valid
+
+      # Asure that only one record exists
+      query = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ?", ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr])
+      expect(query.count).to eq 1
+
+      # Asure GueltigVon and GueltigBis are correct
+      expect(ozbKontoOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(ozbKontoOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      # Change any value
+      ozbKontoOrigin.WSaldo = 42
+
+      # wait a second
+      sleep(1)
+
+      # Save
+      saveTime = Time.now
+      expect(ozbKontoOrigin.save).to eq true
+
+      # Query again, there should be 2 records by now
+      query = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ?", ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr])
+      expect(query.count).to eq 2
+
+      # Check GueltigVon and GueltigBis of both records
+      ozbKontoOrigin = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ? AND GueltigBis = ?", 
+                                    ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr, saveTime]).first
+      expect(ozbKontoOrigin.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq oldTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(ozbKontoOrigin.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+
+      ozbKontoLatest = OzbKonto.find(:all, :conditions => ["KtoNr = ? AND Mnr = ? AND GueltigBis = ?", 
+                                    ozbKontoOrigin.KtoNr, ozbKontoOrigin.Mnr, "9999-12-31 23:59:59"]).first
+      expect(ozbKontoLatest.GueltigVon.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq saveTime.getlocal().strftime("%Y-%m-%d %H:%M:%S")
+      expect(ozbKontoLatest.GueltigBis.getlocal().strftime("%Y-%m-%d %H:%M:%S")).to eq Time.zone.parse("9999-12-31 23:59:59").getlocal().strftime("%Y-%m-%d %H:%M:%S")
+    end
+
   end
 
 end
