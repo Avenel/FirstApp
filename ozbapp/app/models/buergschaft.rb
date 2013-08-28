@@ -80,24 +80,23 @@ class Buergschaft < ActiveRecord::Base
   
   def valid_sichZeitraum
      # sichAbDatum
-    if !self.sichAbDatum.nil? then
-      if !self.sichAbDatum.strftime("%Y-%m-%d").match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/) then
+    if !self.SichAbDatum.nil? then
+      if !self.SichAbDatum.strftime("%Y-%m-%d").match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/) then
         return false
         errors.add("", "Bitte geben sie das sichAbDatum im Format: yyyy-mm-dd an.")
       end
     end
     
     # sichEndDatum
-    if !self.sichEndDatum.nil? then
-      puts self.sichEndDatum.to_s
-      if !self.sichEndDatum.strftime("%Y-%m-%d").match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/) then
+    if !self.SichEndDatum.nil? then
+      if !self.SichEndDatum.strftime("%Y-%m-%d").match(/[0-9]{4}-[0-9][0-9]-[0-9][0-9]/) then
         return false
         errors.add("", "Bitte geben sie das sichEndDatum im Format: yyyy-mm-dd an.")
       end
     end
 
     # test if sichAbDatum is after sichEndDatum
-    if sichAbDatum > sichEndDatum
+    if self.SichAbDatum > self.SichEndDatum
       errors.add("", 'must be possible')
       return false
     end
@@ -111,14 +110,14 @@ class Buergschaft < ActiveRecord::Base
     if self.pnrB.nil? then
       names = bName.split(",")
       self.pnrB = find_by_name(names[0], names[-1])
-      person = Person.where("pnr = ?", self.pnrB).first
+      person = Person.where("Pnr = ?", self.Pnr_B).first
       
-      if self.pnrB == 0 then
-        self.pnrB = nil
+      if self.Pnr_B == 0 then
+        self.Pnr_B = nil
         errors.add("", "Personalnummer oder Name des Bürgschafters konnte nicht gefunden werden.")
       end
     else
-      person = Person.where("pnr = ?", self.pnrB).first
+      person = Person.where("Pnr = ?", self.Pnr_B).first
     end
    
     if person.nil? then 
@@ -127,19 +126,19 @@ class Buergschaft < ActiveRecord::Base
     
     # Gesellschafter
     person = nil
-    if self.mnrG.nil? then
+    if self.Mnr_G.nil? then
     
       names = gName.split(",")
       self.mnrG = find_by_name(names[0], names[-1])
-      person = Person.where("pnr = ?", self.mnrG).first
+      person = Person.where("Pnr = ?", self.Mnr_G).first
       
-      if self.mnrG == 0 then
-        self.mnrG = nil
+      if self.Mnr_G == 0 then
+        self.Mnr_G = nil
         errors.add("", "Mitgliedsnummer oder Name des Gesellschafters konnte nicht gefunden werden.")
       end
       
     else
-      person = Person.where("pnr = ?", self.mnrG).first
+      person = Person.where("Pnr = ?", self.Mnr_G).first
     end
     
     if person.nil? then 
@@ -176,7 +175,6 @@ class Buergschaft < ActiveRecord::Base
   def find_by_name(lastname, firstname)
     person = Person.where("name = ? AND vorname = ?", lastname.to_s.strip, firstname.to_s.strip).first
     
-    puts person.inspect
     
     if person.nil? then
       return 0

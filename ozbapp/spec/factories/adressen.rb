@@ -15,7 +15,7 @@ FactoryGirl.define do
 			before(:create) do |address|
 				person = FactoryGirl.create(:Person)
 				sachPerson = FactoryGirl.create(:ozbperson_with_person)
-				address.Pnr = person.Mnr
+				address.Pnr = person.Pnr
 				address.SachPnr = sachPerson.Mnr
 			end
 		end

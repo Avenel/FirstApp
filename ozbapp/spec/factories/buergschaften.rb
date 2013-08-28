@@ -12,8 +12,8 @@ FactoryGirl.define do
 			before(:create) do |buergschaft|
 				buerge = FactoryGirl.create(:Person)
 				glaeubiger = FactoryGirl.create(:ozbperson_with_person)
-				buergschaft.Pnr_B = buerge.pnr
-				buergschaft.Mnr_G = glaeubiger.mnr
+				buergschaft.Pnr_B = buerge.Pnr
+				buergschaft.Mnr_G = glaeubiger.Mnr
 			end
 		end
 
@@ -21,11 +21,11 @@ FactoryGirl.define do
 			before(:create) do |buergschaft|
 				buerge = FactoryGirl.create(:Person)
 				glaeubiger = FactoryGirl.create(:ozbperson_with_person)
-				zeKonto = FactoryGirl.create(:zeKonto_with_ozbKonto)
+				zeKonto = FactoryGirl.create(:zeKonto_with_ozbKonto_and_EEKonto_Projektgruppe)
 
-				buergschaft.Pnr_B = buerge.pnr
-				buergschaft.Mnr_G = glaeubiger.mnr
-				buergschaft.ZENr = zeKonto.zeNr
+				buergschaft.Pnr_B = buerge.Pnr
+				buergschaft.Mnr_G = glaeubiger.Mnr
+				buergschaft.ZENr = zeKonto.ZENr
 			end
 		end
 	end

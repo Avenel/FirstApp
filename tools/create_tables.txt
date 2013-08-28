@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `Foerdermitglied` (
   `GueltigVon` datetime NOT NULL,
   `GueltigBis` datetime NOT NULL,
   `Region` varchar(30) NOT NULL,
-  `Foerderbeitrag` decimal(5,2) NOT NULL,
+  `Foerderbeitrag` decimal(7,2) NOT NULL,
   `MJ` enum('m', 'j'), -- m = monatlich, j = jaehrlich
   `SachPnr` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY Pnr (Pnr,GueltigVon)
