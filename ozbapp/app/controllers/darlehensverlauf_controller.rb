@@ -24,17 +24,20 @@ class DarlehensverlaufController < ApplicationController
     
     #wurde der anzeigen button noch nicht betätigt. erster klick auf einen kontolink
     if @anzeigen.to_s.empty? && (params[:vonDatum].nil? || params[:bisDatum].nil?) then
-      # Die letzten 10 Buchungen, chronologisch aufsteigend sortiert
-      @Buchungen = Buchung.where("KtoNr = ?", params[:KtoNr]).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag").limit(10).reverse
+      # Finde Datum 
+      @Buchungen = Buchung.where("KtoNr = ?", params[:KtoNr]).order("BelegDatum DESC, Typ DESC, Punkte ASC").limit(10).reverse
 
       # Datum setzen (die letzten 10 Buchungen entscheiden)
       @vonDatum = @Buchungen.first.Belegdatum.strftime("%d.%m.%Y")
       @bisDatum = Date.current().strftime("%d.%m.%Y")
+    
+      # Die letzten Buchungen, chronologisch aufsteigend sortiert
+      @Buchungen = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], @vonDatum.to_date, @bisDatum.to_date).order("BelegDatum ASC, Typ ASC, Punkte DESC")
     #wurde der anzeigen button geklickt werden die buchungen in dem angegebenen zeitraum angezeigt
     else
       #prüfung ob ein ein datum in falschem format eingegeben wurde
       if !@vonDatum.to_s.empty? && !@bisDatum.to_s.empty?
-        @Buchungen = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], @vonDatum.to_date, @bisDatum.to_date).order("Belegdatum DESC, Typ ASC, PSaldoAcc ASC, SollBetrag").reverse
+        @Buchungen = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], @vonDatum.to_date, @bisDatum.to_date).order("BelegDatum ASC, Typ ASC, Punkte DESC")
       #wurde ein datum in falschem format eingegeben wird eine fehlermeldung ausgegeben
       else
         @errors.push("Geben sie bitte ein valides Datum ein.")
@@ -58,7 +61,7 @@ class DarlehensverlaufController < ApplicationController
       @vornameZurPerson = @personZurPnr.Vorname
 
       # Die (Währungs) Buchung vor der ersten Buchung in Buchungen finden
-      @vorherigeBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC").limit(1).first
+      @vorherigeBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @vonDatum.to_date).order("Belegdatum DESC, Punkte ASC").limit(1).first
 
       # Gueltige KKL
       kkl = getKKL(params[:KtoNr])
@@ -72,7 +75,7 @@ class DarlehensverlaufController < ApplicationController
       if !wurdeWiederverwendet then 
         if !@vorherigeBuchung.nil? then
           # Punkte für den Tagessaldo der ersten Buchung berechnen = ((DiffTage * WSaldoAcc) / 30) * KKL + Punkte vorherigeBuchung
-          @tagessaldoPunkte = (((@vonDatum.to_date - @vorherigeBuchung.Belegdatum.to_date).to_i * @vorherigeBuchung.WSaldoAcc) / 30 * kkl) + @vorherigeBuchung.Punkte
+          @tagessaldoPunkte = (((@vonDatum.to_date - @vorherigeBuchung.Belegdatum.to_date).to_i * @vorherigeBuchung.WSaldoAcc) / 30 * kkl) + @vorherigeBuchung.PSaldoAcc
         else
           @tagessaldoPunkte = 0
         end
@@ -83,7 +86,7 @@ class DarlehensverlaufController < ApplicationController
 
         kummuliertePSaldi = 0
         if @vonDatum.to_date >= wurdeWiederverwendetAm.to_date then
-          buchungen = Buchung.where("ktoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], wurdeWiederverwendetAm.to_date, @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC")
+          buchungen = Buchung.where("ktoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], wurdeWiederverwendetAm.to_date, @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, Punkte DESC")
           
           buchungen.each do |buchung|
             kummuliertePSaldi += buchung.PSaldoAcc
@@ -115,13 +118,13 @@ class DarlehensverlaufController < ApplicationController
       @tagesSaldoZeile.Buchungstext = "Tagessaldo"
       @tagesSaldoZeile.Typ = "w"
       @tagesSaldoZeile.Belegdatum = @vonDatum
-      @tagesSaldoZeile.PSaldoAcc = @tagessaldoPunkte
+      @tagesSaldoZeile.Punkte = @tagessaldoPunkte
 
 
       # In der Tagessaldozeile bereits berücksichtigte Buchungen mit 0 Punkten bewerten
       @Buchungen.each do |buchung|
         if buchung.Belegdatum.to_date == @vonDatum.to_date then
-          buchung.PSaldoAcc = 0
+          buchung.Punkte = 0
         end
       end
 
@@ -129,7 +132,7 @@ class DarlehensverlaufController < ApplicationController
       # => Punkte der Buchung -= Punkte im Intervall: Buchung.Belegdatum -  vonDatum
       if !@Buchungen.first.nil? && !@vorherigeBuchung.nil? then
         diffTage = (@Buchungen.first.Belegdatum.to_date - @vonDatum.to_date).to_i
-        @Buchungen.first.PSaldoAcc = (diffTage * @vorherigeBuchung.WSaldoAcc) / 30 * kkl
+        @Buchungen.first.Punkte = (diffTage * @vorherigeBuchung.WSaldoAcc) / 30 * kkl
       end
 
       # Tagessaldozeile den Buchungen oben einfügen
@@ -140,7 +143,7 @@ class DarlehensverlaufController < ApplicationController
       @Buchungen.each do |buchung|
         #ist es eine währungsbuchung
         if buchung.Typ == "w"
-          @summeDerPunkte += buchung.PSaldoAcc
+          @summeDerPunkte += buchung.Punkte
           @summeSoll += buchung.Sollbetrag
           @summeHaben += buchung.Habenbetrag
         #ist es eine punktebuchung
@@ -152,11 +155,12 @@ class DarlehensverlaufController < ApplicationController
           end
         end
       end      
+
       @differenzSollHaben = @summeHaben - @summeSoll
-  
+
       # Berechne erreichte Punkte in dem gegebenen Intervall (von - bis)
       # Die letzte (Währungs) Buchung vor dem bisDatum finden
-      @letzteWaehrungsBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @bisDatum.to_date).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC").limit(1).first
+      @letzteWaehrungsBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @bisDatum.to_date).order("Belegdatum DESC, Punkte ASC").limit(1).first
 
       # Berechne Punkte
       diffTage = (@bisDatum.to_date - @letzteWaehrungsBuchung.Belegdatum.to_date).to_i
@@ -168,7 +172,7 @@ class DarlehensverlaufController < ApplicationController
       @erreichtePunkteZeile.Belegdatum = @bisDatum
       @erreichtePunkteZeile.Sollbetrag = 0
       @erreichtePunkteZeile.Habenbetrag = 0
-      @erreichtePunkteZeile.PSaldoAcc = @punkteImIntervall
+      @erreichtePunkteZeile.Punkte = @punkteImIntervall
       @erreichtePunkteZeile.WSaldoAcc = 0
       @erreichtePunkteZeile.Typ = "w"
 

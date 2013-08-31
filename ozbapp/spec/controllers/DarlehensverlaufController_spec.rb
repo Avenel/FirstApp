@@ -7,7 +7,7 @@ describe DarlehensverlaufController do
 	describe "GET #new" do
 		before :each do
 			# load data of the test-db into the tdd db
-			 `script/datenbank_tdd_migrieren.bat`
+			 #`script/datenbank_tdd_migrieren.bat`
 		end
 
 		# create test data for EEKonto 70073		
@@ -24,14 +24,14 @@ describe DarlehensverlaufController do
 					tagessaldoBeginW = 1895.24
 					tagessaldoBeginP = 21690
 
-					tagessaldoEndW = -474.16
+					tagessaldoEndW = -274.16
 
 					# only for today, 2013-06-13
-					tagessaldoEndP = 17081
+					tagessaldoEndP = 17200
 
 
 					# create points
-					lastCurrencyBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 70073, 2013, "U-", 56, "w").first
+					lastCurrencyBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 70073, 2013, "B-", 80, "w").first
 					expect(lastCurrencyBooking.nil?).to eq false
 
 					diffTage = (Time.now.to_date - lastCurrencyBooking.Belegdatum.to_date).to_i
@@ -42,8 +42,8 @@ describe DarlehensverlaufController do
 					# Get output from website
 					get :new, :KtoNr => 70073, :EEoZEkonto => "EE"
 
-					# expects 12 buchgungen
-					expect(assigns(:Buchungen).size).to eq 12
+					# expects 13 buchgungen
+					expect(assigns(:Buchungen).size).to eq 13
 					# expect same order
 					# TODO
 
@@ -51,7 +51,7 @@ describe DarlehensverlaufController do
 					# first (tagessaldo)
 					expect(assigns(:vorherigeBuchung)).to eq preFirstBooking
 					expect(assigns(:Buchungen).first.Sollbetrag).to eq tagessaldoBeginW 
-					expect(assigns(:Buchungen).first.PSaldoAcc).to eq tagessaldoBeginP
+					expect(assigns(:Buchungen).first.Punkte).to eq tagessaldoBeginP
 
 					# last (reached points, WSaldo)
 					expect(assigns(:bisDatum)).to eq Time.now.strftime("%d.%m.%Y")

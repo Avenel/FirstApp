@@ -80,7 +80,7 @@
 							<% if buchung.Habenbetrag != 0 %>
 								<%= number_with_precision(buchung.Habenbetrag, :precision => 2) %></td>
 							<% end %>
-						<td align="right"><%= buchung.PSaldoAcc %></td>
+						<td align="right"><%= buchung.Punkte %></td>
 					<% else %>
 						<% if buchung.Sollbetrag == 0 and buchung.Habenbetrag != 0%>
 							<td align="right"></td>
