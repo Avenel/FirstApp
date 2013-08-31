@@ -7,7 +7,7 @@ describe DarlehensverlaufController do
 	describe "GET #new" do
 		before :each do
 			# load data of the test-db into the tdd db
-			 `sh script/datenbank_tdd_migrieren.sh`
+			 `script/datenbank_tdd_migrieren.bat`
 		end
 
 		# create test data for EEKonto 70073		

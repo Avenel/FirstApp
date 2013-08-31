@@ -1076,9 +1076,10 @@ public class Migratior {
 					// benannt wurde (Punkte -> PSaldoACC)
 					queryInsertStmt.setInt(14, rs.getInt("PKTE_ACC"));
 					queryInsertStmt.setInt(15, rs.getInt("PKTE"));
-
+					
 					try {
 						queryInsertStmt.executeUpdate();
+						
 					} catch (SQLException e) {
 						pw.println("Buchung : " + " KONTONR: "
 								+ rs.getInt("KONTONR") + " " + e.getMessage());
