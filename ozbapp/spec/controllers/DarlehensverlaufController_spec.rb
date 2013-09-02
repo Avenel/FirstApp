@@ -14,9 +14,6 @@ describe DarlehensverlaufController do
 		context "Show Darlehensverlauf of EEKonto 70073" do
 			context "parameters: anzeigen, vonDatum and bisDatum are nil" do
 				it "returns the 10 latest buchungen" do
-					latest_ten_bookings = Buchung.where("KtoNr = ?", 70073).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag").limit(10).reverse
-					expect(latest_ten_bookings.size).to eq 10
-
 					preFirstBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 70073, 2012, "B-", 652, "w").first
 					expect(preFirstBooking.nil?).to eq false
 
@@ -25,10 +22,6 @@ describe DarlehensverlaufController do
 					tagessaldoBeginP = 21690
 
 					tagessaldoEndW = -274.16
-
-					# only for today, 2013-06-13
-					tagessaldoEndP = 17200
-
 
 					# create points
 					lastCurrencyBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 70073, 2013, "B-", 80, "w").first
@@ -39,13 +32,22 @@ describe DarlehensverlaufController do
 					kkl = 0.75
       				pointsInInterval = ((diffTage * tagessaldoEndW) / 30) * kkl
 
+					# calculate correct points
+					tagessaldoEndP = tagessaldoBeginP + pointsInInterval
+
+					buchungen = Buchung.where("KtoNr = ? AND Belegdatum > ? AND Belegdatum <= ?", 70073, 
+											"2012-11-02", Time.now).order("BelegDatum ASC, Typ ASC, Punkte DESC")
+					
+					buchungen.each do |b|
+						tagessaldoEndP += b.Punkte
+					end
+
+
 					# Get output from website
 					get :new, :KtoNr => 70073, :EEoZEkonto => "EE"
 
 					# expects 13 buchgungen
 					expect(assigns(:Buchungen).size).to eq 13
-					# expect same order
-					# TODO
 
 					# test first and last row
 					# first (tagessaldo)
@@ -68,11 +70,50 @@ describe DarlehensverlaufController do
 			end
 
 			context "from 01.11.2010 - 05.12.2010" do
+				it "shows bookings from 01.11.2010 to 05.12.2010 and correct points and saldi" do
+					preFirstBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 70073, 2010, "B-", 648, "w").first
+					expect(preFirstBooking.nil?).to eq false
+
+					# create first and last row in the overview
+					tagessaldoBeginW = 1600
+					tagessaldoBeginP = 34347
+
+					tagessaldoEndW = 250
+					tagessaldoEndP = -5110
+
+					lastCurrencyBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 70073, 2010, "B-", 799, "w").first
+					expect(lastCurrencyBooking.nil?).to eq false
+
+					diffTage = (Time.zone.local(2010,12,5,0,0).to_date - lastCurrencyBooking.Belegdatum.to_date).to_i
+					# kkl = B => 0.75
+					kkl = 0.75
+      				pointsInInterval = ((diffTage * tagessaldoEndW) / 30) * kkl
+
+					# Get output from website
+					get :new, :KtoNr => 70073, :EEoZEkonto => "EE", :vonDatum => "01.11.2010", :bisDatum => "05.12.2010"
+
+					# expects 13 buchgungen
+					expect(assigns(:Buchungen).size).to eq 7
+
+					# test first and last row
+					# first (tagessaldo)
+					expect(assigns(:vorherigeBuchung)).to eq preFirstBooking
+					expect(assigns(:Buchungen).first.Habenbetrag).to eq tagessaldoBeginW 
+					expect(assigns(:Buchungen).first.Punkte).to eq tagessaldoBeginP
+
+					# last (reached points, WSaldo)
+					expect(assigns(:vonDatum)).to eq "01.11.2010"
+					expect(assigns(:bisDatum)).to eq "05.12.2010"
+					expect(assigns(:letzteWaehrungsBuchung)).to eq lastCurrencyBooking
+					expect(assigns(:punkteImIntervall).to_f.round(2).floor).to eq pointsInInterval.to_f.round(2).floor
+					expect(assigns(:differenzSollHaben).to_f.round(2).floor).to eq tagessaldoEndW.to_f.round(2).floor
+					expect(assigns(:summeDerPunkte).to_f.ceil).to eq tagessaldoEndP.round(0)
+				end
 			end
 		end
 
 		context "ZEKonto 10073" do
-			# create test data for EEKonto 10073
+			# create test data for ZEKonto 10073
 			before :each do
 			end
 
