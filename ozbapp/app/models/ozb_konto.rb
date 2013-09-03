@@ -85,7 +85,7 @@ class OzbKonto < ActiveRecord::Base
     :primary_key => :KtoNr,
     # Nur der aktuellste KKLVerlauf, in dem aktiven Zeitram des OZBKontos ist gültig
     :order => "KKLAbDatum DESC", 
-    :conditions => proc { ["KKLAbDatum <= ?", self.GueltigBis] },
+    :conditions => proc { ["KKLAbDatum <= ?", self.GueltigBis] }, #proc { "KKLAbDatum <= '#{self.GueltigBis.to_date.to_s}'" },
     :dependent => :destroy 
 
   has_one :ZeKonto, 

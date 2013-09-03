@@ -2,8 +2,8 @@ require 'faker'
 
 FactoryGirl.define do 
 	factory :OZBPerson do 
-		sequence(:Mnr) {|n| "#{n}"}
-		sequence(:UeberPnr) {|n| "#{n}"}
+		sequence(:Mnr) {|n| "#{n+400}"}
+		sequence(:UeberPnr) {|m| "#{m+400}"}
 		Antragsdatum Time.now
 
 

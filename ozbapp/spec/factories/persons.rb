@@ -2,7 +2,7 @@ require 'faker'
 
 FactoryGirl.define do
 	factory :Person do
-		sequence(:Pnr) {|n| "#{n}" }
+		sequence(:Pnr) {|n| "#{n+400}" }
 		Name {Faker::Name.first_name}
 		Vorname {Faker::Name.last_name}
     SperrKZ false

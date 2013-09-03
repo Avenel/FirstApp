@@ -5,9 +5,10 @@ describe DarlehensverlaufController do
 	# GET Requests
 	# new
 	describe "GET #new" do
-		before :each do
+		before :all do
 			# load data of the test-db into the tdd db
-			 #`script/datenbank_tdd_migrieren.bat`
+			#puts "migrate testing data"
+		 	#`script/datenbank_tdd_migrieren.bat`
 		end
 
 		# create test data for EEKonto 70073		
@@ -114,8 +115,9 @@ describe DarlehensverlaufController do
 
 		context "ZEKonto 10073 [Reused]" do
 			# create test data for ZEKonto 10073
-			before :each do
+			before :all do
 				# load data of the test-db into the tdd db
+				#puts "migrate testing data"
 			 	#`script/datenbank_tdd_migrieren.bat`
 			end
 
@@ -164,8 +166,9 @@ describe DarlehensverlaufController do
 
 		context "ZEKonto 10038 [Reused]" do
 			# create test data for ZEKonto 10073
-			before :each do
+			before :all do
 				# load data of the test-db into the tdd db
+				#puts "migrate testing data"
 			 	#`script/datenbank_tdd_migrieren.bat`
 			end
 
@@ -269,55 +272,186 @@ describe DarlehensverlaufController do
 		# getKKL(ktoNr)
 		context "getKKL(ktoNr)" do
 			# create test data
-			before :each do
+			before :all do
 				# load data of the test-db into the tdd db
-			 	#`script/datenbank_tdd_migrieren.bat`
+				puts "migrate testing data"
+			 	`script/datenbank_tdd_migrieren.bat`
 			end
 
 			it "returns 1, if given valid Konto is related to KKL: 'A'" do
-				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :KtoNr => 99992)
+				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
 				expect(ozbKonto.nil?).to eq false
 
 				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "B", :KtoNr => ozbKonto.KtoNr, 
 												:KKLAbDatum => Time.zone.local(2015,11,16,0,0).to_date)
+
 				expect(ozbKonto.KklVerlauf.KKL).to eq "B"
 
 				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "A", :KtoNr => ozbKonto.KtoNr, 
 												:KKLAbDatum => Time.zone.local(2016,11,16,0,0).to_date)
+
+				puts KklVerlauf.where("KtoNr = ? AND KKLAbDatum <= ?", ozbKonto.KtoNr, ozbKonto.GueltigBis.to_date.to_s).order("KKLAbDatum DESC").limit(1).inspect
+
+				ozbKonto = OzbKonto.where("KtoNr = ?", ozbKonto.KtoNr).first
 				expect(ozbKonto.KklVerlauf.KKL).to eq "A"
 
-				expect(getKKL(ozbKonto.KtoNr)).to eq 1
+				dc = DarlehensverlaufController.new
+				expect(dc.getKKL(ozbKonto.KtoNr)).to eq 1
 			end
 
-			it "returns 0.75, if given valid Konto is related to KKL: 'B'"
-			it "returns 0.5, if given valid Konto is related to KKL: 'C'"
-			it "returns 0.25, if given valid Konto is related to KKL: 'D'"
-			it "returns 0.00, if given valid Konto is related to KKL: 'E'"
-			it "retuns 0, if given Konto does not exists"
+			it "returns 0.75, if given valid Konto is related to KKL: 'B'" do
+				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+				expect(ozbKonto.nil?).to eq false
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "A", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2015,11,16,0,0).to_date)
+
+				expect(ozbKonto.KklVerlauf.KKL).to eq "A"
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "B", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2016,11,16,0,0).to_date)
+
+				puts KklVerlauf.where("KtoNr = ? AND KKLAbDatum <= ?", ozbKonto.KtoNr, ozbKonto.GueltigBis.to_date.to_s).order("KKLAbDatum DESC").limit(1).inspect
+
+				ozbKonto = OzbKonto.where("KtoNr = ?", ozbKonto.KtoNr).first
+				expect(ozbKonto.KklVerlauf.KKL).to eq "B"
+
+				dc = DarlehensverlaufController.new
+				expect(dc.getKKL(ozbKonto.KtoNr)).to eq 0.75
+			end
+
+			it "returns 0.5, if given valid Konto is related to KKL: 'C'" do
+				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+				expect(ozbKonto.nil?).to eq false
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "B", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2015,11,16,0,0).to_date)
+
+				expect(ozbKonto.KklVerlauf.KKL).to eq "B"
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "C", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2016,11,16,0,0).to_date)
+
+				ozbKonto = OzbKonto.where("KtoNr = ?", ozbKonto.KtoNr).first
+				expect(ozbKonto.KklVerlauf.KKL).to eq "C"
+
+				dc = DarlehensverlaufController.new
+				expect(dc.getKKL(ozbKonto.KtoNr)).to eq 0.5
+			end
+
+			it "returns 0.25, if given valid Konto is related to KKL: 'D'" do
+				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+				expect(ozbKonto.nil?).to eq false
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "B", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2015,11,16,0,0).to_date)
+
+				expect(ozbKonto.KklVerlauf.KKL).to eq "B"
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "D", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2016,11,16,0,0).to_date)
+
+				ozbKonto = OzbKonto.where("KtoNr = ?", ozbKonto.KtoNr).first
+				expect(ozbKonto.KklVerlauf.KKL).to eq "D"
+
+				dc = DarlehensverlaufController.new
+				expect(dc.getKKL(ozbKonto.KtoNr)).to eq 0.25
+			end
+
+			it "returns 0.00, if given valid Konto is related to KKL: 'E'" do
+				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson)
+				expect(ozbKonto.nil?).to eq false
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "B", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2015,11,16,0,0).to_date)
+
+				expect(ozbKonto.KklVerlauf.KKL).to eq "B"
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "E", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2016,11,16,0,0).to_date)
+
+				ozbKonto = OzbKonto.where("KtoNr = ?", ozbKonto.KtoNr).first
+				expect(ozbKonto.KklVerlauf.KKL).to eq "E"
+
+				dc = DarlehensverlaufController.new
+				expect(dc.getKKL(ozbKonto.KtoNr)).to eq 0
+			end 
+
+			it "retuns 0, if given Konto does not exists" do
+				dc = DarlehensverlaufController.new
+				expect(dc.getKKL(nil)).to eq 0
+			end 
 		end
 
 		# checkReuse(ktoNr, vonDatum, kontoTyp)
 		context "checkReuse(ktoNr, vonDatum, kontoTyp)" do
 			# create test data
-			before :each do
+			before :all do
+				# load data of the test-db into the tdd db
+				#puts "migrate testing data"
+			 	#`script/datenbank_tdd_migrieren.bat`
 			end
 
-			it "returns true, if a valid ZEKonto was reused before a given date"
-			it "returns false, if a valid ZEKonto was not reused before a given date"
-			it "returns false, if the given OZBKonto does not exists"
-			it "returns false, if the given OZBKonto  is not a ZEKonto"
+			it "returns true, if a valid ZEKonto was reused before a given date" do
+				# testing with ZEKonto 10038 [Reused], it was reused on 2011-02-09
+				ozbKonto = OzbKonto.where("KtoNr = 10038 AND Belegdatum <= '2011-02-10'")
+				expect(ozbKonto.nil?).to eq false
+
+				dc = DarlehensverlaufController.new
+				expect(dc.checkReuse(10038, '2011-02-10', 'ZE')).to eq true
+			end
+
+			it "returns false, if a valid ZEKonto was not reused before a given date" do
+				# testing with ZEKonto 10038 [Reused], it was reused on 2011-02-09 and 2006-08-01
+				ozbKonto = OzbKonto.where("KtoNr = 10038 AND Belegdatum <= '2006-07-01'")
+				expect(ozbKonto.nil?).to eq false
+
+				dc = DarlehensverlaufController.new
+				expect(dc.checkReuse(10038, '2006-07-01', 'ZE')).to eq false
+			end
+
+			it "returns false, if the given OZBKonto does not exists" do
+				dc = DarlehensverlaufController.new
+				expect(dc.checkReuse(nil, '2006-07-01', 'ZE')).to eq false
+			end
+
+			it "returns false, if the given OZBKonto  is not a ZEKonto" do
+				dc = DarlehensverlaufController.new
+				expect(dc.checkReuse(70073, '2006-07-01', 'E')).to eq false
+			end
 		end
 
 		# findLastResetBooking(ktoNr)
 		context "findLastResetBooking(ktoNr)" do
 			# create test data
-			before :each do
+			before :all do
+				# load data of the test-db into the tdd db
+				#puts "migrate testing data"
+			 	#`script/datenbank_tdd_migrieren.bat`
 			end
 
-			it "returns the booking, which indicated a reuse for a given valid ZEKonto"
-			it "returns nil, if there is no booking, which indicates a reuse for al given valid ZEKonto"
-			it "returns nil, if the given OZBKonzo does not exists"
-			it "returns nil, if the given OZBKonto is not a ZEKonto"
+			it "returns the booking, which indicated a reuse for a given valid ZEKonto" do
+				# testing with ZEKonto 10038 [Reused], it was reused on 2011-02-09
+				ozbKonto = OzbKonto.where("KtoNr = 10038 AND Belegdatum <= '2011-02-10'")
+				expect(ozbKonto.nil?).to eq false
+
+				lastResetBooking = Buchung.where("KtoNr = 10038 AND BelegNr = 135").first
+				expect(lastResetBooking.nil?).to eq false
+
+				dc = DarlehensverlaufController.new
+				expect(dc.findLastResetBooking(10038)).to eq lastResetBooking
+			end
+
+			it "returns nil, if the given OZBKonzo does not exists" do
+				dc = DarlehensverlaufController.new
+				expect(dc.findLastResetBooking(nil)).to eq nil
+			end 
+
+			it "returns nil, if the given OZBKonto is not a ZEKonto" do
+				# 70073 is an EEKonto
+				dc = DarlehensverlaufController.new
+				expect(dc.findLastResetBooking(70038)).to eq nil
+			end
 		end
 
 	end

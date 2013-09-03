@@ -197,7 +197,13 @@ class DarlehensverlaufController < ApplicationController
 
   # Liefert anhand einer gegebenen Kontonummer die richtige Kontoklasse zurueck.
   def getKKL(ktoNr)
-    kklVerlaufKlasse = KklVerlauf.where("KtoNr = ?", ktoNr).order("KKLAbDatum DESC").limit(1).first.KKL
+    kklVerlauf = KklVerlauf.where("KtoNr = ?", ktoNr).order("KKLAbDatum DESC").limit(1).first
+
+    if kklVerlauf.nil? then 
+      return 0
+    end
+
+    kklVerlaufKlasse = kklVerlauf.KKL
     case kklVerlaufKlasse
       when "A"
         return 1
@@ -217,7 +223,7 @@ class DarlehensverlaufController < ApplicationController
 
   # Ein Konto wurde wiederverwendet falls:
   # => es ein ZE Konto ist
-  # => es vor dem angegebenen Startzeitpunkt eine Buchung mit PSaldoAcc = 0 gegeben hat
+  # => es vor dem angegebenen Startzeitpunkt eine Buchung mit Punkte = 0 gegeben hat
   def checkReuse(ktoNr, vonDatum, kontoTyp)
     if (kontoTyp == "ZE") then
       # Besorge alle Buchungen vor dem vonDatum
@@ -233,16 +239,23 @@ class DarlehensverlaufController < ApplicationController
     return false
   end
 
-  # Findet die Buchung heraus, welche die letzte Wiederverwendung eingelauetet hat
+  # Findet die Buchung heraus, welche die letzte Wiederverwendung oder Beginn des ZE eingelauetet hat
   def findLastResetBooking(ktoNr)
+    # filtere non-ZE Konten 
+    zeKonto = ZeKonto.where("KtoNr = ?", ktoNr).first
+    if zeKonto.nil? then 
+      return nil
+    end
+
     # Besorge alle Buchungen vor dem vonDatum
-    buchungen = Buchung.where("ktoNr = ? AND Punkte = 0", ktoNr).order("Belegdatum DESC, Typ DESC, Punkte DESC, SollBetrag DESC")
+    buchungen = Buchung.where("KtoNr = ? AND Punkte = 0", ktoNr).order("Belegdatum DESC, Typ DESC, Punkte DESC, SollBetrag DESC")
 
     # Gebe die zuletzt gefundene Buchung zurueck
     if !buchungen.empty? then
       return buchungen.first
     end
-      
+    
+    return nil
   end
 
 end
