@@ -112,12 +112,141 @@ describe DarlehensverlaufController do
 			end
 		end
 
-		context "ZEKonto 10073" do
+		context "ZEKonto 10073 [Reused]" do
 			# create test data for ZEKonto 10073
 			before :each do
+				# load data of the test-db into the tdd db
+			 	#`script/datenbank_tdd_migrieren.bat`
 			end
 
 			context "Show from 15.08.2011 - 15.02.2012" do
+				it "shows bookings from 15.08.2011 to 15.12.2012 and correct points and saldi" do
+					preFirstBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 10073, 2011, "U-", 588, "w" ).first
+					expect(preFirstBooking.nil?).to eq false
+
+					# create first and last row in the overview
+					tagessaldoBeginW = 2100
+					tagessaldoBeginP = -22555
+
+					tagessaldoEndW = -1312.50
+					tagessaldoEndP = -32987
+
+					lastCurrencyBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 10073, 2012, "U-", 141, "w").first
+					expect(lastCurrencyBooking.nil?).to eq false
+
+					diffTage = (Time.zone.local(2012,02,15,0,0).to_date - lastCurrencyBooking.Belegdatum.to_date).to_i
+					# kkl = A => 1.0
+					kkl = 1.0
+      				pointsInInterval = ((diffTage * tagessaldoEndW) / 30) * kkl
+
+					# Get output from website
+					get :new, :KtoNr => 10073, :EEoZEkonto => "ZE", :vonDatum => "15.08.2011", :bisDatum => "15.02.2012"
+
+					# expects 8 buchgungen
+					expect(assigns(:Buchungen).size).to eq 8
+
+					# test first and last row
+					# first (tagessaldo)
+					expect(assigns(:vorherigeBuchung)).to eq preFirstBooking
+					expect(assigns(:Buchungen).first.Sollbetrag).to eq tagessaldoBeginW 
+					expect(assigns(:Buchungen).first.Punkte).to eq tagessaldoBeginP
+
+					# last (reached points, WSaldo)
+					expect(assigns(:vonDatum)).to eq "15.08.2011"
+					expect(assigns(:bisDatum)).to eq "15.02.2012"
+					expect(assigns(:letzteWaehrungsBuchung)).to eq lastCurrencyBooking
+					expect(assigns(:differenzSollHaben).to_f.round(2).floor).to eq tagessaldoEndW.to_f.round(2).floor
+					expect(assigns(:punkteImIntervall).to_f.round(2).floor).to eq pointsInInterval.to_f.round(2).floor
+					expect(assigns(:summeDerPunkte).to_f.round(0)).to eq tagessaldoEndP.round(0)
+				end
+			end
+		end
+
+		context "ZEKonto 10038 [Reused]" do
+			# create test data for ZEKonto 10073
+			before :each do
+				# load data of the test-db into the tdd db
+			 	#`script/datenbank_tdd_migrieren.bat`
+			end
+
+			it "shows bookings from 02.02.2011 to 16.11.2012 and correct points and saldi" do
+				preFirstBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 10038, 2010, "U-", 518, "w" ).first
+				expect(preFirstBooking.nil?).to eq false
+
+				# create first and last row in the overview
+				tagessaldoBeginW = 0
+				tagessaldoBeginP = 0
+
+				tagessaldoEndW = -6499.93
+				tagessaldoEndP = -177644
+
+				lastCurrencyBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 10038, 2012, "U-", 692, "w").first
+				expect(lastCurrencyBooking.nil?).to eq false
+
+				diffTage = (Time.zone.local(2012,11,16,0,0).to_date - lastCurrencyBooking.Belegdatum.to_date).to_i
+				# kkl = A => 1.0
+				kkl = 1.0
+  				pointsInInterval = ((diffTage * tagessaldoEndW) / 30) * kkl
+
+				# Get output from website
+				get :new, :KtoNr => 10038, :EEoZEkonto => "ZE", :vonDatum => "02.02.2011", :bisDatum => "16.11.2012"
+
+				# expects 24 buchgungen
+				expect(assigns(:Buchungen).size).to eq 24
+
+				# test first and last row
+				# first (tagessaldo)
+				expect(assigns(:vorherigeBuchung)).to eq preFirstBooking
+				expect(assigns(:Buchungen).first.Sollbetrag).to eq tagessaldoBeginW 
+				expect(assigns(:Buchungen).first.Punkte).to eq tagessaldoBeginP
+
+				# last (reached points, WSaldo)
+				expect(assigns(:vonDatum)).to eq "02.02.2011"
+				expect(assigns(:bisDatum)).to eq "16.11.2012"
+				expect(assigns(:letzteWaehrungsBuchung)).to eq lastCurrencyBooking
+				expect(assigns(:differenzSollHaben).to_f.round(2).floor).to eq tagessaldoEndW.to_f.round(2).floor
+				expect(assigns(:punkteImIntervall).to_f.round(2).floor).to eq pointsInInterval.to_f.round(2).floor
+				expect(assigns(:summeDerPunkte).to_f.round(0)).to eq tagessaldoEndP.round(0)
+			end
+			
+			it "shows bookings from 15.03.2011 to 16.11.2012 and correct points and saldi" do
+				preFirstBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 10038, 2011, "U-", 184, "w" ).first
+				expect(preFirstBooking.nil?).to eq false
+
+				# create first and last row in the overview
+				tagessaldoBeginW = 9833.33	
+				tagessaldoBeginP = -11254
+
+				tagessaldoEndW = -6499.93
+				tagessaldoEndP = -177643
+
+				lastCurrencyBooking = Buchung.where("KtoNr = ? AND BuchJahr = ? AND BnKreis = ? AND BelegNr = ? AND Typ = ?", 10038, 2012, "U-", 692, "w").first
+				expect(lastCurrencyBooking.nil?).to eq false
+
+				diffTage = (Time.zone.local(2012,11,16,0,0).to_date - lastCurrencyBooking.Belegdatum.to_date).to_i
+				# kkl = A => 1.0
+				kkl = 1.0
+  				pointsInInterval = ((diffTage * tagessaldoEndW) / 30) * kkl
+
+				# Get output from website
+				get :new, :KtoNr => 10038, :EEoZEkonto => "ZE", :vonDatum => "15.03.2011", :bisDatum => "16.11.2012"
+
+				# expects 22 buchgungen
+				expect(assigns(:Buchungen).size).to eq 22
+
+				# test first and last row
+				# first (tagessaldo)
+				expect(assigns(:vorherigeBuchung)).to eq preFirstBooking
+				expect(assigns(:Buchungen).first.Sollbetrag).to eq tagessaldoBeginW 
+				expect(assigns(:Buchungen).first.Punkte).to eq tagessaldoBeginP
+
+				# last (reached points, WSaldo)
+				expect(assigns(:vonDatum)).to eq "15.03.2011"
+				expect(assigns(:bisDatum)).to eq "16.11.2012"
+				expect(assigns(:letzteWaehrungsBuchung)).to eq lastCurrencyBooking
+				expect(assigns(:differenzSollHaben).to_f.round(2).floor).to eq tagessaldoEndW.to_f.round(2).floor
+				expect(assigns(:punkteImIntervall).to_f.round(2).floor).to eq pointsInInterval.to_f.round(2).floor
+				expect(assigns(:summeDerPunkte).to_f.round(0)).to eq tagessaldoEndP.round(0)
 			end
 		end
 	end
@@ -127,6 +256,11 @@ describe DarlehensverlaufController do
 	# the only difference is, it renders a different template
 	# therefore it should be fine, to test if the correct template has been rendered.
 	describe "GET #kontoauszug" do
+		it "renders the correct template" do
+			get :kontoauszug, :KtoNr => 73013, :EEoZEkonto => "ZE", :vonDatum => "01.03.2011", :bisDatum => "01.11.2011", 
+								:name => "Tassilo", :vName => "Kienle"
+			expect(response).to render_template :kontoauszug
+		end
 	end
 
 	# Class and instance methods	

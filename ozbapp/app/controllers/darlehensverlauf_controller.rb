@@ -89,7 +89,7 @@ class DarlehensverlaufController < ApplicationController
           buchungen = Buchung.where("ktoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], wurdeWiederverwendetAm.to_date, @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, Punkte DESC")
           
           buchungen.each do |buchung|
-            kummuliertePSaldi += buchung.PSaldoAcc
+            kummuliertePSaldi += buchung.Punkte
           end
         end
 
@@ -220,7 +220,7 @@ class DarlehensverlaufController < ApplicationController
   def checkReuse(ktoNr, vonDatum, kontoTyp)
     if (kontoTyp == "ZE") then
       # Besorge alle Buchungen vor dem vonDatum
-      buchungen = Buchung.where("ktoNr = ? AND Belegdatum <= ? AND PSaldoAcc = 0", ktoNr, vonDatum).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC")
+      buchungen = Buchung.where("KtoNr = ? AND Belegdatum <= ? AND Punkte = 0", ktoNr, vonDatum).order("Belegdatum DESC, Typ DESC, Punkte DESC, SollBetrag DESC")
       
       # Schaue nach einer PSaldoAcc = 0 Buchung
       if !buchungen.empty? then
@@ -235,7 +235,7 @@ class DarlehensverlaufController < ApplicationController
   # Findet die Buchung heraus, welche die letzte Wiederverwendung eingelauetet hat
   def findLastResetBooking(ktoNr)
     # Besorge alle Buchungen vor dem vonDatum
-    buchungen = Buchung.where("ktoNr = ? AND PSaldoAcc = 0", ktoNr).order("Belegdatum DESC, Typ DESC, PSaldoAcc DESC, SollBetrag DESC")
+    buchungen = Buchung.where("ktoNr = ? AND Punkte = 0", ktoNr).order("Belegdatum DESC, Typ DESC, Punkte DESC, SollBetrag DESC")
 
     # Gebe die zuletzt gefundene Buchung zurueck
     if !buchungen.empty? then
