@@ -23,9 +23,7 @@ class Kontenklasse < ActiveRecord::Base
   validates :KKL, 
     :presence => { :format => { :with => /^[A-Z]{1}$/i  },
       :message => "Bitte geben Sie eine Klasse an." }, 
-    :length => { :is => 1, :message => "Die Klasse darf nur ein Zeichen lang sein." }, 
-    :numericality => { :only_integer => true, 
-      :message => "Die Klasse darf nur Zahlen beinhalten." }
+    :length => { :is => 1, :message => "Die Klasse darf nur ein Zeichen lang sein." }
   
   validates :KKLEinrDatum, 
     :presence => { :format => { :with => /\d{4}-\d{2}-\d{2}/ }, 

@@ -270,9 +270,25 @@ describe DarlehensverlaufController do
 		context "getKKL(ktoNr)" do
 			# create test data
 			before :each do
+				# load data of the test-db into the tdd db
+			 	#`script/datenbank_tdd_migrieren.bat`
 			end
 
-			it "returns 1, if given valid Konto is related to KKL: 'A'"
+			it "returns 1, if given valid Konto is related to KKL: 'A'" do
+				ozbKonto = FactoryGirl.create(:ozbkonto_with_ozbperson, :KtoNr => 99992)
+				expect(ozbKonto.nil?).to eq false
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "B", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2015,11,16,0,0).to_date)
+				expect(ozbKonto.KklVerlauf.KKL).to eq "B"
+
+				kklVerlauf = FactoryGirl.create(:KklVerlauf, :KKL => "A", :KtoNr => ozbKonto.KtoNr, 
+												:KKLAbDatum => Time.zone.local(2016,11,16,0,0).to_date)
+				expect(ozbKonto.KklVerlauf.KKL).to eq "A"
+
+				expect(getKKL(ozbKonto.KtoNr)).to eq 1
+			end
+
 			it "returns 0.75, if given valid Konto is related to KKL: 'B'"
 			it "returns 0.5, if given valid Konto is related to KKL: 'C'"
 			it "returns 0.25, if given valid Konto is related to KKL: 'D'"

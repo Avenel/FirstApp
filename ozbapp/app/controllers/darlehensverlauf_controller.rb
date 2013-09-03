@@ -89,6 +89,7 @@ class DarlehensverlaufController < ApplicationController
           buchungen = Buchung.where("ktoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], wurdeWiederverwendetAm.to_date, @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, Punkte DESC")
           
           buchungen.each do |buchung|
+            # TODO: KKL hat sich zwischenzeitlich verändert
             kummuliertePSaldi += buchung.Punkte
           end
         end

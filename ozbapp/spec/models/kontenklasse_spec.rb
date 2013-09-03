@@ -10,7 +10,7 @@ describe Kontenklasse do
 
 	# KKL
 	it "is valid with a valid KKL" do
-		expect(FactoryGirl.create(:Kontenklasse, :KKL => "1")).to be_valid	
+		expect(FactoryGirl.create(:Kontenklasse, :KKL => "A")).to be_valid	
 	end
 
 	it "is invalid without a KKL" do
@@ -20,7 +20,7 @@ describe Kontenklasse do
 	it "is invalid with an invalid KKL" do
 		expect(FactoryGirl.build(:Kontenklasse, :KKL => "10")).to be_invalid
 		expect(FactoryGirl.build(:Kontenklasse, :KKL => "-1")).to be_invalid
-		expect(FactoryGirl.build(:Kontenklasse, :KKL => "A")).to be_invalid		
+		expect(FactoryGirl.build(:Kontenklasse, :KKL => "B2")).to be_invalid		
 	end
 
 	# KKLAbDatum
@@ -49,7 +49,7 @@ describe Kontenklasse do
 
 	# kkl_with_percent
 	it "returns the kkl and it percent value" do
-		kontenklasse = FactoryGirl.create(:Kontenklasse, :KKL => "1", :Prozent => 100.42)
+		kontenklasse = FactoryGirl.create(:Kontenklasse, :KKL => "A", :Prozent => 100.42)
 		expect(kontenklasse.kkl_with_percent).to eq "Klasse 1 - 100.42%"
 	end
 
