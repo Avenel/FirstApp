@@ -31,7 +31,7 @@
     <%= simple_form_errors(@error) %>
   <% end %>
   
-  <%= o.hidden_field :Mnr, { :value => @OZBPerson.mnr } %>
+  <%= o.hidden_field :Mnr, { :value => @OZBPerson.Mnr } %>
   
   <% if @kontotyp == "EE" %>
     <%= render :partial => "form_ee", :locals => {:o => o} %>
