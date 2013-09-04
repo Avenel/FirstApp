@@ -35,7 +35,7 @@
 		  <% @ze_konten.each do |ze_konto| %>
 		      <tr>
 		        <td class="zentriert"><a href="/Darlehensverlauf/<%= ze_konto.KtoNr %>/ZE"><%= ze_konto.KtoNr %></a></td>
-		        <td class="zentriert"><%= ze_konto.zeNr %></td>
+		        <td class="zentriert"><%= ze_konto.ZENr %></td>
 		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.ZEBetrag, :precision => 2, :delimiter => ".") %></td>
 		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.OzbKonto.WSaldo, :precision => 2, :delimiter => ".") %></td>
 		        <td class="rechtsbuendig"><%= number_with_precision(ze_konto.OzbKonto.PSaldo, :delimiter => ".", :precision => 0) %></td>
