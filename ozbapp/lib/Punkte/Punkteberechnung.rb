@@ -35,22 +35,22 @@ class Punkteberechnung
   
   def self.calc_score_1(date_begin, date_end, money_begin, months_days, kontonummer)
     db_begin    = KklVerlauf.find(:all, 
-      :conditions => ["ktoNr = ? AND kklAbDatum <= ?", kontonummer, date_begin], 
-      :order => "kklAbDatum DESC"
+      :conditions => ["KtoNr = ? AND KKLAbDatum <= ?", kontonummer, date_begin], 
+      :order => "KKLAbDatum DESC"
     ).first
 
     db_duration = KklVerlauf.find(:all, 
-      :conditions => ["ktoNr = ? AND kklAbDatum <= ? AND kklAbDatum > ?", kontonummer, date_end, date_begin], 
-      :order => "kklAbDatum ASC"
+      :conditions => ["KtoNr = ? AND KKLAbDatum <= ? AND KKLAbDatum > ?", kontonummer, date_end, date_begin], 
+      :order => "KKLAbDatum ASC"
     )
-    
+
     t = Array.new
     t << date_begin
-    t << db_begin.kkl
+    t << db_begin.KKL
     
     db_duration.each do |temp1|
-      t << temp1.kklAbDatum
-      t << temp1.kkl
+      t << temp1.KKLAbDatum
+      t << temp1.KKL
     end
     
     t << date_end.tomorrow
@@ -80,21 +80,21 @@ class Punkteberechnung
 
   def self.calc_percentage(date_begin, date_end, kkl)
     db_begin    = Kontenklasse.find(:all, 
-      :conditions => ["kkl = ? AND kklAbDatum <= ?", kkl, date_begin], 
-      :order => "kklAbDatum DESC", 
+      :conditions => ["KKL = ? AND KKLEinrDatum <= ?", kkl, date_begin], 
+      :order => "KKLEinrDatum DESC", 
       :limit => 1
     ).first
 
     db_duration = Kontenklasse.find(
       :all, 
-      :conditions => ["kkl = ? AND kklAbDatum <= ? AND kklAbDatum > ?", kkl, date_end, date_begin], 
-      :order => "kklAbDatum ASC"
+      :conditions => ["KKL = ? AND KKLEinrDatum <= ? AND KKLEinrDatum > ?", kkl, date_end, date_begin], 
+      :order => "KKLEinrDatum ASC"
     )
     
     t = Array.new
     db_duration.each do |temp1|
-      t << temp1.kklAbDatum
-      t << temp1.prozent
+      t << temp1.KKLAbDatum
+      t << temp1.Prozent
     end
     
     t << date_end
