@@ -162,6 +162,9 @@ Abbildung \vref{fig:ozb_process} zeigt das von der o/ZB verwendete Dreiphasenkon
 
 \section{Das Testsystem}\label{sec:Das_Testsystem}
 % URL, Maschine, Versionen... 
+Das Testsystem wird von Alvotech betrieben. Das Kundeninterface ist unter der URL \url{http://www.alvotech.de/kundenlogin} erreichbar. Das Testsytem bietet ein Debian GNU/Linux System, Kernelversion 3.1.2. Darüber hinaus ist ein MySQL Server in der Version 5.1.49-3 installiert. Auch Ruby ist in der Version 1.9.3p392 vorinstalliert.\\
+Die Webanwendung liegt im Homeverzeichnis. Durch die Einführung von Capistrano geschieht eine Versionierung der Webanwendung. Ein Symlink \textit{ozbapp} führt aus dem Homeverzeichnis zu der aktuellen Version der Webanwendung. Der Web- und Application Server, der für die Ausführung der Webanwendung zuständig ist, heißt \textit{Phusion Passenger} und wird in der Version 3.0.19 verwendet (s. \url{https://www.phusionpassenger.com/}). Die Webanwendung ist unter der URL \url{http://ozbapp.mooo.com/} erreichbar. Der Code liegt in einem Git Repository auf GitHub (\url{https://github.com/Avenel/FirstApp}).
+
 
 \section{Test-Driven Development}
 \subsection{Definition}
