@@ -30,6 +30,8 @@
 \usepackage{multicol}
 \usepackage[german]{varioref}
 
+\usepackage{pdfpages}
+
 \bibliographystyle{alphadin}
 
 \setcounter{tocdepth}{1}
@@ -403,8 +405,12 @@ Ein erster Meilenstein stellt die korrekte Umsetzung des fachlichen Datenmodells
 Der nächste Meilenstein stellt eine einheitliche, technisch und fachlich korrekte Implementierung der Controller und den dazugehörigen Views dar. Hierbei stellt die korrekte Umsetzung der Module das Standbein und somit auch die notwendige Weiche für diesen Meilenstein. Hierbei gewähren die Controller Tests eine fachlich korrekte Umsetzung, ehe sich die Feature Tests auch von der korrekten Umsetzung in einem konkreten Anwendungsfall, der mehrere Controller involviert, überzeugen kann.
 
 \section{Implementierung}
-\subsection{RSpec}
-
+\subsection{Verwendete Gems}
+\subsubsection{RSpec}
+\subsubsection{FactoryGirl}
+\subsubsection{Capybara}
+\subsubsection{Guard-Spec}
+\subsubsection{Faker}
 \subsection{Modul Tests}
 \subsubsection{Gesteste Module}
 \subsection{Controller Tests}
@@ -444,6 +450,9 @@ s. Capify Skript: \glqq cap\_notify.rb\grqq
 \newpage
 %\addcontentsline{toc}{chapter}{Literatur}
 \bibliography{sources}
+
+\newpage
+\includepdf[pages={1-25}]{TDDPresentation.pdf}
 
 \end{document}
 
