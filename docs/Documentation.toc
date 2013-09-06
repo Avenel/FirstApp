@@ -13,18 +13,17 @@
 \contentsline {subsection}{\numberline {2.3.2}Modul Tests}{6}{subsection.2.3.2}
 \contentsline {subsection}{\numberline {2.3.3}Controller Tests}{6}{subsection.2.3.3}
 \contentsline {subsection}{\numberline {2.3.4}Feature Tests}{6}{subsection.2.3.4}
-\contentsline {section}{\numberline {2.4}o/ZB Darlehensvertrag}{7}{section.2.4}
 \contentsline {chapter}{\numberline {3}Allgemeine Dokumentationen}{8}{chapter.3}
 \contentsline {section}{\numberline {3.1}Das korrigierte ER-Diagramm}{8}{section.3.1}
 \contentsline {section}{\numberline {3.2}Das korrigierte Relationenmodell}{8}{section.3.2}
 \contentsline {section}{\numberline {3.3}Deployment und Versionskontrolle}{8}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Deployment}{8}{subsection.3.3.1}
-\contentsline {subsubsection}{Webserver - Apache}{8}{section*.3}
+\contentsline {subsubsection}{Webserver - Apache}{9}{section*.3}
 \contentsline {subsubsection}{Anwendungsserver - Phusion Passenger}{9}{section*.4}
 \contentsline {subsubsection}{Capistrano}{9}{section*.5}
 \contentsline {subsection}{\numberline {3.3.2}Versionsverwaltung}{10}{subsection.3.3.2}
 \contentsline {subsubsection}{Git}{10}{section*.6}
-\contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{10}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{11}{subsection.3.3.3}
 \contentsline {subsubsection}{Das Capistrano Deploymentskript (Rezept)}{11}{section*.7}
 \contentsline {section}{\numberline {3.4}Datenbank Migration}{13}{section.3.4}
 \contentsline {subsection}{\numberline {3.4.1}Datenbank migrieren}{14}{subsection.3.4.1}
@@ -42,6 +41,10 @@
 \contentsline {subsection}{\numberline {5.1.2}Soll-Stand}{21}{subsection.5.1.2}
 \contentsline {section}{\numberline {5.2}Implementierung}{21}{section.5.2}
 \contentsline {subsection}{\numberline {5.2.1}RSpec}{21}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Modul Tests}{21}{subsection.5.2.2}
+\contentsline {subsubsection}{Gesteste Module}{21}{section*.8}
+\contentsline {subsection}{\numberline {5.2.3}Controller Tests}{21}{subsection.5.2.3}
+\contentsline {subsubsection}{Anwendungsf\IeC {\"a}lle der einzelnen Tests}{21}{section*.9}
 \contentsline {section}{\numberline {5.3}Auswertung}{21}{section.5.3}
 \contentsline {chapter}{\numberline {6}Neue Features}{22}{chapter.6}
 \contentsline {subsection}{\numberline {6.0.1}PaperTrail - Historisierung}{22}{subsection.6.0.1}
@@ -50,6 +53,6 @@
 \contentsline {section}{\numberline {7.1}Ergebnis}{24}{section.7.1}
 \contentsline {section}{\numberline {7.2}Ausblick}{24}{section.7.2}
 \contentsline {chapter}{\numberline {8}Anhang}{25}{chapter.8}
-\contentsline {chapter}{Abbildungsverzeichnis}{26}{chapter*.8}
-\contentsline {chapter}{Tabellenverzeichnis}{27}{chapter*.9}
-\contentsline {chapter}{Listings}{28}{chapter*.10}
+\contentsline {chapter}{Abbildungsverzeichnis}{26}{chapter*.10}
+\contentsline {chapter}{Tabellenverzeichnis}{27}{chapter*.11}
+\contentsline {chapter}{Listings}{28}{chapter*.12}
