@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -181,9 +182,7 @@ public class Migratior {
 									* 1000));
 					queryInsertStmt.setTimestamp(8, endOfTime);
 
-					// Temp! Alle werden freigeschalten. Info: Kienle hat
-					// Sperrkz = 3 ?! :D
-					// TODO
+					// Default: 0 -> Logon freigegeben
 					queryInsertStmt.setString(9, "0");// rs.getString("SPERRKZ"));
 
 					/**
@@ -379,20 +378,24 @@ public class Migratior {
 							calendar.getTime().getTime() - 1 * 24 * 60 * 60
 									* 1000));
 					queryInsertStmt.setTimestamp(3, endOfTime);
-
-					// Temp!!!
-					// TODO
-					queryInsertStmt.setString(4, "###");
-					queryInsertStmt.setString(5, "###");
-					queryInsertStmt.setString(6, "###");
-					queryInsertStmt.setTimestamp(7, new java.sql.Timestamp(
-							calendar.getTime().getTime() - 1 * 24 * 60 * 60
-									* 1000));
-					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(
-							calendar.getTime().getTime() - 1 * 24 * 60 * 60
-									* 1000));
-					queryInsertStmt.setString(9, "###");
-
+					
+					String dummyString = "###";
+					Date dummyDate = new Date(endCalender.getTime().getTime());
+							
+					//Keine Daten vorhanden
+					//AusbildBez.
+					queryInsertStmt.setString(4, dummyString);
+					//InstitutName
+					queryInsertStmt.setString(5, dummyString);
+					//Studienort
+					queryInsertStmt.setString(6, dummyString);
+					//Studienbeginn
+					queryInsertStmt.setDate(7, dummyDate);
+					//Studienende
+					queryInsertStmt.setDate(8, dummyDate);
+					//Abschluss
+					queryInsertStmt.setString(9, dummyString);
+					
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -569,11 +572,12 @@ public class Migratior {
 					queryInsertStmt.setInt(2, rs.getInt("LISTID"));
 					queryInsertStmt.setString(3, rs.getString("STATUS"));
 
-					// TODO TanlistDatum
-					// Auch hier setze ich erstmal "dreckig" auf Jahr 0. Micha
-					// hf ;)
-					queryInsertStmt.setString(4, "0000-01-01");
-
+					// TanlistDatum
+					// Aktuelles Datum des Migrationsdatum verwenden					
+					java.util.Date date = new java.util.Date();					 
+			        java.sql.Date tanlistDate = new java.sql.Date(date.getTime());
+			        queryInsertStmt.setDate(4, tanlistDate);
+			        
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -663,7 +667,7 @@ public class Migratior {
 					queryInsertStmt.setTimestamp(5, endOfTime);
 
 					// TODO Es gibt noch keine IBAN, also dummy wert
-					queryInsertStmt.setString(6, "000");
+					queryInsertStmt.setString(6, "###");
 
 					try {
 						queryInsertStmt.executeUpdate();
@@ -757,7 +761,7 @@ public class Migratior {
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
-						pw.println("OZBKonto : " + " KTONR: "
+						pw.println("OZBKonto (1) : " + " KTONR: "
 								+ rs.getInt("KTONR") + " " + e.getMessage());
 						pw.println("SQL-Query: " + queryInsertStmt.toString());
 						pw.println("");
@@ -800,7 +804,7 @@ public class Migratior {
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
-						pw.println("OZBKonto : " + " KTONR: "
+						pw.println("OZBKonto (2) : " + " KTONR: "
 								+ rs.getInt("KTONR") + " " + e.getMessage());
 						pw.println("SQL-Query: " + queryInsertStmt.toString());
 						pw.println("");
