@@ -30,6 +30,8 @@
 \usepackage{multicol}
 \usepackage[german]{varioref}
 
+\usepackage{pdfpages}
+
 \bibliographystyle{alphadin}
 
 \setcounter{tocdepth}{1}
@@ -147,9 +149,24 @@ Nachdem sich ein detaillierter Überblick über den Zustand der Webanwendung ver
 \clearpage
 \chapter{Hintergrundwissen}
 \section{Das o/ZB Projekt}
+Die Solidargemeinschaft o/ZB Stuttgart wurde am 21. Januar 2005 als GbR von 10 GesellschafterInnen gegründet und hatte Mitte des Jahres bereits 100 Mitglieder.
+Die o/ZB ist ein regionales Finanzierungsinstrument, das seinen Mitgliedern die Realisierung von Projekten in Selbsthilfe ermöglicht. Anderst als bei klassischen Einrichtungen erfolgen alle Einlagen (z.B. Sparen) und Entnahmen (z.B. Leihen) zinslos und kostenfrei, weil alle anfallenden Arbeiten von ihren Mitgliedern in Selbstverwaltung ausgeführt werden können.
+
+Abbildung \vref{fig:ozb_process} zeigt das von der o/ZB verwendete Dreiphasenkonzept.
+\begin{figure}[H]
+     \begin{center}
+          \includegraphics[width=0.65\textwidth]{\string"Media/3PhasenKonzept\string".png}
+     \end{center}
+     \label{fig:ozb_process}
+     \caption{o/ZB Dreiphasenkonzept}
+\end{figure} 
+
 
 \section{Das Testsystem}\label{sec:Das_Testsystem}
 % URL, Maschine, Versionen... 
+Das Testsystem wird von Alvotech betrieben. Das Kundeninterface ist unter der URL \url{http://www.alvotech.de/kundenlogin} erreichbar. Das Testsytem bietet ein Debian GNU/Linux System, Kernelversion 3.1.2. Darüber hinaus ist ein MySQL Server in der Version 5.1.49-3 installiert. Auch Ruby ist in der Version 1.9.3p392 vorinstalliert.\\
+Die Webanwendung liegt im Homeverzeichnis. Durch die Einführung von Capistrano geschieht eine Versionierung der Webanwendung. Ein Symlink \textit{ozbapp} führt aus dem Homeverzeichnis zu der aktuellen Version der Webanwendung. Der Web- und Application Server, der für die Ausführung der Webanwendung zuständig ist, heißt \textit{Phusion Passenger} und wird in der Version 3.0.19 verwendet (s. \url{https://www.phusionpassenger.com/}). Die Webanwendung ist unter der URL \url{http://ozbapp.mooo.com/} erreichbar. Der Code liegt in einem Git Repository auf GitHub (\url{https://github.com/Avenel/FirstApp}). Details zu den einzeln genannten Softwaretechnologien können dem Kapitel \ref{sec:deployment} entnommen werden.
+
 
 \section{Test-Driven Development}
 \subsection{Definition}
@@ -177,24 +194,22 @@ Der nächste Schritt besteht darin, die Funktionen eines Controllers zu testen. 
 \subsection{Feature Tests}
 Ein sogenannter \glqq Feature Test\grqq ist in etwa vergleichbar mit einem \glqq Integration Test\grqq. Der Feature Test überprüft das Zusammenspiel der verschiedenen Controller. Darüber hinaus werden Testszenarien festgelegt, in denen reale Benutzerinteraktionen beschrieben werden um zu sehen wie die Webanwendung auf diese reagiert. Somit können die Interaktionen eines Benutzers mit der Webanwendung vollständig nachvollzogen werden. Die Benutzerinteraktionen werden vom Testsystem emuliert und generieren Benutzereingaben, die von den Controllern verarbeitet werden. Hier zeigt sich der Unterschied zu den vorher vorgestellten Controller Tests, denn dort sind die Eingaben bereits festgelegt. Mit Hilfe der Feature Tests können somit weite Bereiche einer Webanwendung getestet werden und sind u.a. ein beliebtes Hilfsmittel um bei Bug-Reports ein Testszenario zu beschreiben.
 
-
-\section{o/ZB Darlehensvertrag}
-% Wie sieht der aus?
-
 \clearpage
 \chapter{Allgemeine Dokumentationen}
 \section{Das korrigierte ER-Diagramm}
+[Insert content, Micha]
 % Wie sieht es aus?
 % Was wurde angepasst?
 % Beschreibung der Veränderungen am Code
 
 \section{Das korrigierte Relationenmodell}
 % Darstellung des ER-Diagramms in Tabellenform
+[Insert content, Micha]
 
 \section{Deployment und Versionskontrolle}
 In diesem Abschnitt werden die Begriffe \textit{Deployment} und \textit{Versionskontrolle} erläutert. In jedem Teilabschnitt wird die aktuelle Umsetzung beschrieben. Der letzte Teil dieses Abschnitts beschäftigt sich mit dem \textit{Commit \& Deployment Workflow}.
 
-\subsection{Deployment}
+\subsection{Deployment}\label{sec:deployment}
 % Was ist das? Deployment - Capistrano, Versionskontrolle - Git
 In der Softwareentwicklung wird unter dem Begriff \textit{Deployment} der Prozess zur \textit{Bereitstellung} und \textit{Verteilung} einer Software verstanden. Der Prozess ist von Software zu Software unterschiedlich, da z.B. die Konfiguration einer Software immer an die Umgebung angepasst werden muss, in der diese zum Einsatz kommt.\\
 
@@ -353,15 +368,13 @@ Einer der Fehler tritt in Zeile 318 auf. Dort werden bei einer bestimmten Kontob
 
 
 \subsection{Punkteberechnung}
-Beim Import der Buchungen werden zum Zeitpunkt der Übernahme noch keine Punkte berechnet. Im Zuge der Modul Tests wurden die mit dem Webimport verbundenen Module nochmals überarbeitet, somit muss die Punkteberechnung in diesem Teil der Webanwendung erneut implementiert werden.
-
-% Lösung 
+Beim Import der Buchungen werden zum Zeitpunkt der Übernahme noch keine Punkte berechnet. Im Zuge der Modul Tests wurden die mit dem Webimport verbundenen Module nochmals überarbeitet. Auf Grund des immensen Arbeitsaufwands, der in das Refactoring gesteckt werden musste, wurde eine erneute Implementierung der Punkteberechnung im Rahmen dieser Projektarbeit nicht in Betracht gezogen. 
 
 % Darlehensverlauf
 \section{Darlehensverlauf}
-Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zuge in den von Herrn Kienle angefertigten Tests, konnten die auftretenen Fehler analysiert und kategorisiert werden. Aufgrund des relativ unstrukturierten und unübersichtlichen Programmcodes, wurde beschlossen diese Funktionalität, basierend den Spezifikationen die sich aus den Tests und Dokumentationen ableiten ließen, neu zu implementieren.
+Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zuge in den von Herrn Kienle angefertigten Tests, konnten die auftretenen Fehler analysiert und kategorisiert werden. Aufgrund des relativ unstrukturierten und unübersichtlichen Programmcodes, wurde beschlossen diese Funktionalität, basierend den Spezifikationen die sich aus den Tests und Dokumentationen ableiten ließen, neu zu implementieren.\\
 
-Fehlerursachen:
+\textbf{Fehlerursachen:}
 
 \begin{itemize}
      \item{Punkte wurde nicht richtig berechnet, wenn am Tage des abDatums noch Buchungen getätigt wurden}
@@ -373,7 +386,7 @@ Fehlerursachen:
 \end{itemize} 
 
 % Lösung
-
+Diese Ursachen wurden bei der kompletten Neu-Implementierung beachtet und umgesetzt. Integrationstest, beschrieben in Kapitel \ref{} sichern die korrekte Funktionalität in den gegebenen Awendungsfällen.
 
 \clearpage
 \chapter{Testdriven Development}
@@ -384,22 +397,33 @@ In diesem Kapitel wird die Einführung und Durchführung der Eigenschaften der T
 \subsection{Ist-Stand}
 Der Ist-Zustand der vorliegenden Webanwendung ist zum Zeitpunkt der Übernahme nur schwer überschaubar. Es gibt viele neue Funktionalitäten und Testberichte die deutliche Mängel aufzeigen. Die vorliegenden Dokumentationen beschreiben die neuen Funktionalitäten und deren Umsetzung, allerdings fehlt ein Überblick über den Gesamtzustand der Webanwendung. Es wurden nur einzelne, wichtige, Funktionalitäten getestet. Allerdings handelt es sich hierbei um Frontend Tests, die jedoch keine ausreichenden Aussagen über die fachliche und technische Korrektheit der Module und deren Beziehungen untereinander liefern können.\\
 
-Um gültige Aussagen über den Zustand dieser Webanwendung treffen zu können, sind umfangreiche Modultests der erste Schritt. Diese liefern den Zustand über die einzelnen Module, bzw. Entitäten wie z.B. Person, OZBPerson, OZBKonto usw. zurück. Auch liefern diese, Aussagen über die Korrektheit der Umsetzung des vorgegeben Datenmodells. Hier sind auf dem ersten Blick bereits einige Unstimmigkeiten aufgefallen.\\
+Um gültige Aussagen über den Zustand dieser Webanwendung treffen zu können, sind umfangreiche Modultests der erste Schritt. Diese liefern den Zustand über die einzelnen Module, bzw. Entitäten wie z.B. Person, OZBPerson, OZBKonto usw. zurück. Auch liefern diese Aussagen über die Korrektheit der Umsetzung des vorgegeben Datenmodells. Hier sind auf dem ersten Blick bereits einige Unstimmigkeiten aufgefallen.\\
 
 % Soll-Analyse: bugfrei durch TDD. Was müssen wir dafür testen?
 \subsection{Soll-Stand} 
-
+Ein erster Meilenstein stellt die korrekte Umsetzung des fachlichen Datenmodells dar. Dazu gehört, dass jedes Model den fachlichen Beschreibungen entspricht und sauber implementiert wurde. Im Idealfall ist die Struktur aller Module gleich, der Code auf ein Minimum reduziert und konsistent hinsichtlich z.B. der Attributsnamen und der Art und Weise wie bestimmte Funktionalitäten (wie z.B. die Suche nach einer Modulinstanz) implementiert wurden. Die Modul Tests gewährleisten hierbei die fachlich korrekte Umsetzung. Auf die technisch konsistente Umsetzung der Module muss der Entwickler selbst achten.\\
+Der nächste Meilenstein stellt eine einheitliche, technisch und fachlich korrekte Implementierung der Controller und den dazugehörigen Views dar. Hierbei stellt die korrekte Umsetzung der Module das Standbein und somit auch die notwendige Weiche für diesen Meilenstein. Hierbei gewähren die Controller Tests eine fachlich korrekte Umsetzung, ehe sich die Feature Tests auch von der korrekten Umsetzung in einem konkreten Anwendungsfall, der mehrere Controller involviert, überzeugen kann.
 
 \section{Implementierung}
-\subsection{RSpec}
+In diesem Abschnitt wird die Umsetzung der Tests beschrieben. Dazu gehört eine kurze Zusammenfassung aller benutzten Gems und wie sie eingesetzt wurden. Im Anschluss werden nacheinander Modul und Controller Tests vorgestellt. Dabei werden Aufbau und Funktionsweise anhand von Beispielen erläutert. Darüber hinaus gibt es eine Auflistung in der alle getesteten Modulen verzeichnet sind.
+\subsection{Verwendete Gems}
+\subsubsection{RSpec}
+
+\subsubsection{FactoryGirl}
+\subsubsection{Capybara}
+\subsubsection{Guard-Spec}
+\subsubsection{Faker}
+\subsection{Modul Tests}
+\subsubsection{Gesteste Module}
+\subsection{Controller Tests}
+\subsubsection{Anwendungsfälle der einzelnen Tests}
 
 % Auswertung der bisherigen manuellen Tests
 \section{Auswertung}
-s. Powerpoint Präsentation
-
+Die Auswertung befindet sich im Anhang Kapitel \vref{sec:appendix}.
 
 \chapter{Neue Features}
-\subsection{Paper_Trail - Historisierung}
+\section{PaperTrail - Historisierung}
 
 \clearpage
 
@@ -411,7 +435,8 @@ s. Capify Skript: \glqq cap\_notify.rb\grqq
 \section{Ausblick}
 
 \clearpage
-\chapter{Anhang}
+\chapter{Anhang}\label{sec:appendix}
+\includepdf[pages={1-25}]{TDDPresentation.pdf}
 
 \newpage
 %\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}

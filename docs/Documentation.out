@@ -4,26 +4,25 @@
 \BOOKMARK [1][-]{section.2.1}{Das o/ZB Projekt}{chapter.2}% 4
 \BOOKMARK [1][-]{section.2.2}{Das Testsystem}{chapter.2}% 5
 \BOOKMARK [1][-]{section.2.3}{Test-Driven Development}{chapter.2}% 6
-\BOOKMARK [1][-]{section.2.4}{o/ZB Darlehensvertrag}{chapter.2}% 7
-\BOOKMARK [0][-]{chapter.3}{Allgemeine Dokumentationen}{}% 8
-\BOOKMARK [1][-]{section.3.1}{Das korrigierte ER-Diagramm}{chapter.3}% 9
-\BOOKMARK [1][-]{section.3.2}{Das korrigierte Relationenmodell}{chapter.3}% 10
-\BOOKMARK [1][-]{section.3.3}{Deployment und Versionskontrolle}{chapter.3}% 11
-\BOOKMARK [1][-]{section.3.4}{Datenbank Migration}{chapter.3}% 12
-\BOOKMARK [0][-]{chapter.4}{Korrekturen, Bugfixes}{}% 13
-\BOOKMARK [1][-]{section.4.1}{Webimport}{chapter.4}% 14
-\BOOKMARK [1][-]{section.4.2}{Darlehensverlauf}{chapter.4}% 15
-\BOOKMARK [0][-]{chapter.5}{Testdriven Development}{}% 16
-\BOOKMARK [1][-]{section.5.1}{Analyse}{chapter.5}% 17
-\BOOKMARK [1][-]{section.5.2}{Implementierung}{chapter.5}% 18
-\BOOKMARK [1][-]{section.5.3}{Auswertung}{chapter.5}% 19
-\BOOKMARK [0][-]{chapter.6}{Neue Features}{}% 20
-\BOOKMARK [1][-]{section.6.1}{Dokumenten-Export}{chapter.6}% 21
-\BOOKMARK [1][-]{section.6.2}{Deployment E-Mail Benachrichtigung}{chapter.6}% 22
-\BOOKMARK [0][-]{chapter.7}{Ergebnis und Ausblick}{}% 23
-\BOOKMARK [1][-]{section.7.1}{Ergebnis}{chapter.7}% 24
-\BOOKMARK [1][-]{section.7.2}{Ausblick}{chapter.7}% 25
-\BOOKMARK [0][-]{chapter.8}{Anhang}{}% 26
-\BOOKMARK [0][-]{chapter*.8}{Abbildungsverzeichnis}{}% 27
-\BOOKMARK [0][-]{chapter*.9}{Tabellenverzeichnis}{}% 28
-\BOOKMARK [0][-]{chapter*.10}{Listings}{}% 29
+\BOOKMARK [0][-]{chapter.3}{Allgemeine Dokumentationen}{}% 7
+\BOOKMARK [1][-]{section.3.1}{Das korrigierte ER-Diagramm}{chapter.3}% 8
+\BOOKMARK [1][-]{section.3.2}{Das korrigierte Relationenmodell}{chapter.3}% 9
+\BOOKMARK [1][-]{section.3.3}{Deployment und Versionskontrolle}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.4}{Datenbank Migration}{chapter.3}% 11
+\BOOKMARK [0][-]{chapter.4}{Korrekturen, Bugfixes}{}% 12
+\BOOKMARK [1][-]{section.4.1}{Webimport}{chapter.4}% 13
+\BOOKMARK [1][-]{section.4.2}{Darlehensverlauf}{chapter.4}% 14
+\BOOKMARK [0][-]{chapter.5}{Testdriven Development}{}% 15
+\BOOKMARK [1][-]{section.5.1}{Analyse}{chapter.5}% 16
+\BOOKMARK [1][-]{section.5.2}{Implementierung}{chapter.5}% 17
+\BOOKMARK [1][-]{section.5.3}{Auswertung}{chapter.5}% 18
+\BOOKMARK [0][-]{chapter.6}{Neue Features}{}% 19
+\BOOKMARK [1][-]{section.6.1}{PaperTrail - Historisierung}{chapter.6}% 20
+\BOOKMARK [1][-]{section.6.2}{Deployment E-Mail Benachrichtigung}{chapter.6}% 21
+\BOOKMARK [0][-]{chapter.7}{Ergebnis und Ausblick}{}% 22
+\BOOKMARK [1][-]{section.7.1}{Ergebnis}{chapter.7}% 23
+\BOOKMARK [1][-]{section.7.2}{Ausblick}{chapter.7}% 24
+\BOOKMARK [0][-]{chapter.8}{Anhang}{}% 25
+\BOOKMARK [0][-]{chapter*.15}{Abbildungsverzeichnis}{}% 26
+\BOOKMARK [0][-]{chapter*.16}{Tabellenverzeichnis}{}% 27
+\BOOKMARK [0][-]{chapter*.17}{Listings}{}% 28
