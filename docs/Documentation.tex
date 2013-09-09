@@ -377,7 +377,7 @@ Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zug
 \textbf{Fehlerursachen:}
 
 \begin{itemize}
-     \item{Punkte wurde nicht richtig berechnet, wenn am Tage des abDatums noch Buchungen getätigt wurden}
+     \item{Punkte wurden nicht richtig berechnet, wenn am Tage des abDatums noch Buchungen getätigt wurden}
      \item{Die Sortierung der Buchungen stimmte nicht mit den Vorgaben überein}
      \item{Wiederverwendete ZE Konten wurden nicht richtig berücksichtigt}
      \item{Startsaldo wurde nicht korrekt berechnet, da die Tagesdifferenz zur letzten Währungsbuchung nicht berücksichtigt wurden}
@@ -408,11 +408,16 @@ Der nächste Meilenstein stellt eine einheitliche, technisch und fachlich korrek
 In diesem Abschnitt wird die Umsetzung der Tests beschrieben. Dazu gehört eine kurze Zusammenfassung aller benutzten Gems und wie sie eingesetzt wurden. Im Anschluss werden nacheinander Modul und Controller Tests vorgestellt. Dabei werden Aufbau und Funktionsweise anhand von Beispielen erläutert. Darüber hinaus gibt es eine Auflistung in der alle getesteten Modulen verzeichnet sind.
 \subsection{Verwendete Gems}
 \subsubsection{RSpec}
+\textit{RSpec} (\url{http://rubygems.org/gems/rspec}) ist das wohl bekannteste Testing-Framework für Ruby on Rails Applikationen. Es ist im Sinne des \textit{Behaviour-Driven Development} entstanden und soll das Test-Driven Development unterstützen und leichter zugänglich machen. Das Verzeichnis \textit{/spec} birgt alle Dateien, die mit dem Testing in Verbindung stehen.
 
 \subsubsection{FactoryGirl}
+
+
+\subsubsection{Faker}
+\subsection{Gems die zukünftig verwendet werden könnten}
 \subsubsection{Capybara}
 \subsubsection{Guard-Spec}
-\subsubsection{Faker}
+
 \subsection{Modul Tests}
 \subsubsection{Gesteste Module}
 \subsection{Controller Tests}
