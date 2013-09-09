@@ -334,7 +334,7 @@ describe OzbKonto do
 		expect(ozbKonto.SaldoDatum).to eq nil
 		expect(ozbKonto.KtoEinrDatum).to eq originDate
 
-		# Private method, therfore using send methode
+		# Private method, therefore using send methode
 		ozbKonto.send(:set_saldo_datum)
 
 		expect(ozbKonto.SaldoDatum).to eq ozbKonto.KtoEinrDatum

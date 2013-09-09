@@ -80,6 +80,12 @@ describe Person do
 	# casted into a boolean value...	
 
 	# Class and instance methods
+	# Fullname
+	it "returns the fullname of a person" do
+		person = FactoryGirl.create(:Person, :Name => "Mustermann", :Vorname => "Max")
+		expect(person.fullname).to eq "Mustermann, Max"
+	end
+
 	# Person.get
 	it "returns the current person object" do
 		person = FactoryGirl.create(:Person, :Name => "Musterfrau")
@@ -128,12 +134,6 @@ describe Person do
 		expect(person.save!).to eq true
 
 		expect(Person.latest(person.Pnr).Name).to eq "Mustermann"
-	end
-
-	# fullname
-	it "returns the fullname of a person" do
-		person = FactoryGirl.create(:Person, :Name => "Mustermann", :Vorname => "Max")
-		expect(person.fullname).to eq "Mustermann, Max"
 	end
 
 end	

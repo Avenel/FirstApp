@@ -35,6 +35,7 @@
 \contentsline {subsection}{\numberline {4.1.3}Anzahl der importierten Datens\IeC {\"a}tze}{17}{subsection.4.1.3}
 \contentsline {subsection}{\numberline {4.1.4}Punkteberechnung}{18}{subsection.4.1.4}
 \contentsline {section}{\numberline {4.2}Darlehensverlauf}{18}{section.4.2}
+\contentsline {section}{\numberline {4.3}HistoricRecord}{19}{section.4.3}
 \contentsline {chapter}{\numberline {5}Testdriven Development}{20}{chapter.5}
 \contentsline {section}{\numberline {5.1}Analyse}{20}{section.5.1}
 \contentsline {subsection}{\numberline {5.1.1}Ist-Stand}{20}{subsection.5.1.1}
@@ -51,18 +52,21 @@
 \contentsline {subsubsection}{Sublime Text 2}{23}{section*.13}
 \contentsline {subsubsection}{RubyTest}{23}{section*.14}
 \contentsline {subsubsection}{Cygwin}{23}{section*.15}
-\contentsline {subsection}{\numberline {5.2.4}Modul Tests}{24}{subsection.5.2.4}
-\contentsline {subsubsection}{Gesteste Module}{24}{section*.16}
-\contentsline {subsection}{\numberline {5.2.5}Controller Tests}{24}{subsection.5.2.5}
-\contentsline {subsubsection}{Anwendungsf\IeC {\"a}lle der einzelnen Tests}{24}{section*.17}
-\contentsline {section}{\numberline {5.3}Auswertung}{24}{section.5.3}
-\contentsline {chapter}{\numberline {6}Neue Features}{25}{chapter.6}
-\contentsline {section}{\numberline {6.1}PaperTrail - Historisierung}{25}{section.6.1}
-\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{26}{section.6.2}
-\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{27}{chapter.7}
-\contentsline {section}{\numberline {7.1}Ergebnis}{27}{section.7.1}
-\contentsline {section}{\numberline {7.2}Ausblick}{27}{section.7.2}
-\contentsline {chapter}{\numberline {8}Anhang}{28}{chapter.8}
-\contentsline {chapter}{Abbildungsverzeichnis}{54}{chapter*.18}
-\contentsline {chapter}{Tabellenverzeichnis}{55}{chapter*.19}
-\contentsline {chapter}{Listings}{56}{chapter*.20}
+\contentsline {subsection}{\numberline {5.2.4}Modul Tests}{23}{subsection.5.2.4}
+\contentsline {subsubsection}{Factory Test}{24}{section*.16}
+\contentsline {subsubsection}{Attribut-Validierungen}{24}{section*.17}
+\contentsline {subsubsection}{Klassen/Instanz Methoden}{25}{section*.18}
+\contentsline {subsubsection}{Gesteste Module}{25}{section*.19}
+\contentsline {subsection}{\numberline {5.2.5}Controller Tests}{25}{subsection.5.2.5}
+\contentsline {subsubsection}{Anwendungsf\IeC {\"a}lle der einzelnen Tests}{25}{section*.20}
+\contentsline {section}{\numberline {5.3}Auswertung}{25}{section.5.3}
+\contentsline {chapter}{\numberline {6}Neue Features}{26}{chapter.6}
+\contentsline {section}{\numberline {6.1}PaperTrail - Historisierung}{26}{section.6.1}
+\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{27}{section.6.2}
+\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{28}{chapter.7}
+\contentsline {section}{\numberline {7.1}Ergebnis}{28}{section.7.1}
+\contentsline {section}{\numberline {7.2}Ausblick}{28}{section.7.2}
+\contentsline {chapter}{\numberline {8}Anhang}{29}{chapter.8}
+\contentsline {chapter}{Abbildungsverzeichnis}{55}{chapter*.21}
+\contentsline {chapter}{Tabellenverzeichnis}{56}{chapter*.22}
+\contentsline {chapter}{Listings}{57}{chapter*.23}

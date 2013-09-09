@@ -388,6 +388,11 @@ Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zug
 % Lösung
 Diese Ursachen wurden bei der kompletten Neu-Implementierung beachtet und umgesetzt. Integrationstest, beschrieben in Kapitel \ref{} sichern die korrekte Funktionalität in den gegebenen Awendungsfällen.
 
+\section{HistoricRecord}
+Problem: Redundanz redundanz redundanz... Scheiss Code.\\
+Lösung: Module module module!
+
+
 \clearpage
 \chapter{Testdriven Development}
 In diesem Kapitel wird die Einführung und Durchführung der Eigenschaften der Testgetriebenen Entwicklung beschrieben. Im Zuge dessen wird zunächst eine Analyse des Ist und des Soll Standes durchgeführt, bevor mit der Umsetzung und Durchführung fortgefahren wird. Das Ziel ist die Einführung und Durchführung von Tests, um den Zustand der Webanwendung darzulegen und um die aufgezeigten Mängel zu beseitigen und mit Hilfe der Tests nicht wieder eintreten zu lassen.    
@@ -441,6 +446,32 @@ Welche Plugins für das Test-Driven Development verwendet wurden, kann dem nun f
 Falls man unter Windows entwickelt ist \textit{Cygwin} eine sehr gute Alternative zu der herkömmlichen Windows Kommandozeile. Die Standardinstallation von Cygwin, zu finden hier: \url{http://www.cygwin.com/}, reicht in der Regel aus. Der große Vorteil hier ist, dass das Fenster frei skalierbar ist und sich der Text (z.B. die Ausgabe des Serverlogs) leichter lesen und markieren lässt. 
 
 \subsection{Modul Tests}
+Ein Modul Test besteht aus drei Teile:
+\begin{itemize}
+     \item{Testing der Factory}
+     \item{Testing der Attribut-Validierungen}
+     \item{Testing der Klassen/Instanz Methoden}
+\end{itemize}
+
+\subsubsection{Factory Test}
+Wie bereits in einem früheren Abschnitt gezeigt, werden Factories verwendet um Testdaten zu generieren. Damit sichergestellt ist, dass diese auch korrekt funktionieren besteht der erste Test darin, genau dies sicherzustellen. Abbildung \vref{listing:default_test_factory} stellt beispielsweise einen solchen Test dar.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=6, lastline=9]{\string"../ozbapp/spec/models/bank_spec\string".rb}\label{listing:default_test_factory}
+
+\subsubsection{Attribut-Validierungen}
+Attribute müssen in den meisten Fällen bestimmten Kriterien entsprechen. Sie dürfen mal nur eine Nummer sein, mal einem bestimmten regulären Ausdruck entsrechen, müssen vorhanden sein oder auch nicht. Wichtig ist, dass man die folgenden Fälle, die Abbildung \vref{listing:default_test_attributes} zeigt abdeckt.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=29, lastline=45]{\string"../ozbapp/spec/models/bank_spec\string".rb}\label{listing:default_test_attributes}
+
+\subsubsection{Klassen/Instanz Methoden}
+Jede Klasse besitzt eigene (private) Methoden die auch getestet werden müssen. Das Prozedere ist auch hier dasselbe, man gibt eine Instanz des zu testenden Models vor, führt die Methode aus und erwartet ein Ergebnis.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=82, lastline=87]{\string"../ozbapp/spec/models/person_spec\string".rb}\label{listing:default_test_instance_methods}
+
+Falls die Methode eine private Methode ist, muss die Methode auf den folgenden Wege, wie sie Abbildung \vref{listing:execute_private_methode} zeigt.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=337, lastline=338]{\string"../ozbapp/spec/models/ozb_konto_spec\string".rb}\label{listing:execute_private_methode}
+
 \subsubsection{Gesteste Module}
 \subsection{Controller Tests}
 \subsubsection{Anwendungsfälle der einzelnen Tests}
