@@ -389,8 +389,29 @@ Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zug
 Diese Ursachen wurden bei der kompletten Neu-Implementierung beachtet und umgesetzt. Integrationstest, beschrieben in Kapitel \ref{} sichern die korrekte Funktionalität in den gegebenen Awendungsfällen.
 
 \section{HistoricRecord}
-Problem: Redundanz redundanz redundanz... Scheiss Code.\\
-Lösung: Module module module!
+Im Zuge des Test-Driven Development und dem damit verbundenen Refactoring, ist aufgefallen das für jedes historisierte Model im Grunde derselbe Quellcode geschrieben wurde, der für die Historisierung zuständig gewesen ist. Dieser lässt sich nur sehr schlecht warten und im allgemeinen ist großer, redundanter Quellcode, wie hier vorgefunden wurde, schlecht. Daher wurde ein neues Ruby-Modul implementiert: \textit{HistoricRecord}. Dieses Ruby-Modul lässt sich für jedes Model anwenden, wenn dies die folgenden Methoden implementiert und Kriterien beachtet.\\
+
+\textbf{get\_primary\_keys}\\
+Diese Methode liefert den primären Schlüssel, bis auf das Attribut GueltigVon (dies ist in jedem primären Schlüssel einer historisierten Klasse enthalten). Abbildung \vref{listing:getPrimaryKeys} zeigt eine beispielhafte Implementierung.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=11, lastline=13]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:getPrimaryKeys}
+
+\textbf{set\_primary\_keys}\\
+Die Methode \textit{set\_primary\_keys(values)} erwartet die Werte für den primären (zusammengesetzten) Schlüssel. Nach Aufruf entspricht der Wert des primären der angegebenen Werte. Abbildung \vref{listing:setPrimaryKeys} zeigt eine beispielhafte Implementierung.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=15, lastline=17]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:setPrimaryKeys}
+
+\textbf{getLatest}\\
+Die Methode \textit{getLatest} liefert die aktuellste Version der Model Instanz zurück, bevor die Änderungen abgespeichert werden. Sie ist notwendig, um die GueltigBis Zeit für diese Instanz neu zu setzen. Abbildung \vref{listing:getLatest} zeigt eine beispielhafte Implementierung.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=132, lastline=134]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:getLatest}
+
+\textbf{Attribute: GueltigVon, GueltigBis}\\
+Diese Attribute müssen auf jeden Fall vorhanden sein, sowohl als \textit{accessible attribute} als auch in der Datenbank. \\
+
+Sind diese Voraussetzungen erfüllt, muss das Modul noch eingebunden werden. Da Ruby keinen \textit{Polymorphismus} (Mehrfachvererbung) unterstüzt, wird \textit{Duck typing} (s. \url{http://en.wikipedia.org/wiki/Duck_typing}) angewandt. Abbildung \vref{listing:duckTyping} zeigt, wie es geht.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=2, lastline=5]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:duckTyping}
 
 
 \clearpage
@@ -468,11 +489,18 @@ Jede Klasse besitzt eigene (private) Methoden die auch getestet werden müssen. 
 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=82, lastline=87]{\string"../ozbapp/spec/models/person_spec\string".rb}\label{listing:default_test_instance_methods}
 
-Falls die Methode eine private Methode ist, muss die Methode auf den folgenden Wege, wie sie Abbildung \vref{listing:execute_private_methode} zeigt.
+Falls die Methode eine private Methode ist, muss die Methode auf den folgenden Wege aufgerufen werden, wie es Abbildung \vref{listing:execute_private_methode} zeigt.
 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=337, lastline=338]{\string"../ozbapp/spec/models/ozb_konto_spec\string".rb}\label{listing:execute_private_methode}
 
+\subsubsection{HistoricRecord}
+
+
+
+
 \subsubsection{Gesteste Module}
+
+
 \subsection{Controller Tests}
 \subsubsection{Anwendungsfälle der einzelnen Tests}
 

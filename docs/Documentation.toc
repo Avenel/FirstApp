@@ -36,37 +36,38 @@
 \contentsline {subsection}{\numberline {4.1.4}Punkteberechnung}{18}{subsection.4.1.4}
 \contentsline {section}{\numberline {4.2}Darlehensverlauf}{18}{section.4.2}
 \contentsline {section}{\numberline {4.3}HistoricRecord}{19}{section.4.3}
-\contentsline {chapter}{\numberline {5}Testdriven Development}{20}{chapter.5}
-\contentsline {section}{\numberline {5.1}Analyse}{20}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Ist-Stand}{20}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Soll-Stand}{21}{subsection.5.1.2}
-\contentsline {section}{\numberline {5.2}Implementierung}{21}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}Verwendete Gems}{21}{subsection.5.2.1}
-\contentsline {subsubsection}{RSpec}{21}{section*.8}
-\contentsline {subsubsection}{FactoryGirl}{21}{section*.9}
-\contentsline {subsubsection}{Faker}{22}{section*.10}
-\contentsline {subsection}{\numberline {5.2.2}Gems die zuk\IeC {\"u}nftig verwendet werden k\IeC {\"o}nnten}{22}{subsection.5.2.2}
-\contentsline {subsubsection}{Capybara}{22}{section*.11}
-\contentsline {subsubsection}{Guard-Spec}{22}{section*.12}
-\contentsline {subsection}{\numberline {5.2.3}Entwicklertools}{23}{subsection.5.2.3}
-\contentsline {subsubsection}{Sublime Text 2}{23}{section*.13}
-\contentsline {subsubsection}{RubyTest}{23}{section*.14}
-\contentsline {subsubsection}{Cygwin}{23}{section*.15}
-\contentsline {subsection}{\numberline {5.2.4}Modul Tests}{23}{subsection.5.2.4}
-\contentsline {subsubsection}{Factory Test}{24}{section*.16}
-\contentsline {subsubsection}{Attribut-Validierungen}{24}{section*.17}
-\contentsline {subsubsection}{Klassen/Instanz Methoden}{25}{section*.18}
-\contentsline {subsubsection}{Gesteste Module}{25}{section*.19}
-\contentsline {subsection}{\numberline {5.2.5}Controller Tests}{25}{subsection.5.2.5}
-\contentsline {subsubsection}{Anwendungsf\IeC {\"a}lle der einzelnen Tests}{25}{section*.20}
-\contentsline {section}{\numberline {5.3}Auswertung}{25}{section.5.3}
-\contentsline {chapter}{\numberline {6}Neue Features}{26}{chapter.6}
-\contentsline {section}{\numberline {6.1}PaperTrail - Historisierung}{26}{section.6.1}
-\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{27}{section.6.2}
-\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{28}{chapter.7}
-\contentsline {section}{\numberline {7.1}Ergebnis}{28}{section.7.1}
-\contentsline {section}{\numberline {7.2}Ausblick}{28}{section.7.2}
-\contentsline {chapter}{\numberline {8}Anhang}{29}{chapter.8}
-\contentsline {chapter}{Abbildungsverzeichnis}{55}{chapter*.21}
-\contentsline {chapter}{Tabellenverzeichnis}{56}{chapter*.22}
-\contentsline {chapter}{Listings}{57}{chapter*.23}
+\contentsline {chapter}{\numberline {5}Testdriven Development}{21}{chapter.5}
+\contentsline {section}{\numberline {5.1}Analyse}{21}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Ist-Stand}{21}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Soll-Stand}{22}{subsection.5.1.2}
+\contentsline {section}{\numberline {5.2}Implementierung}{22}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Verwendete Gems}{22}{subsection.5.2.1}
+\contentsline {subsubsection}{RSpec}{22}{section*.8}
+\contentsline {subsubsection}{FactoryGirl}{22}{section*.9}
+\contentsline {subsubsection}{Faker}{23}{section*.10}
+\contentsline {subsection}{\numberline {5.2.2}Gems die zuk\IeC {\"u}nftig verwendet werden k\IeC {\"o}nnten}{23}{subsection.5.2.2}
+\contentsline {subsubsection}{Capybara}{23}{section*.11}
+\contentsline {subsubsection}{Guard-Spec}{23}{section*.12}
+\contentsline {subsection}{\numberline {5.2.3}Entwicklertools}{24}{subsection.5.2.3}
+\contentsline {subsubsection}{Sublime Text 2}{24}{section*.13}
+\contentsline {subsubsection}{RubyTest}{24}{section*.14}
+\contentsline {subsubsection}{Cygwin}{24}{section*.15}
+\contentsline {subsection}{\numberline {5.2.4}Modul Tests}{24}{subsection.5.2.4}
+\contentsline {subsubsection}{Factory Test}{25}{section*.16}
+\contentsline {subsubsection}{Attribut-Validierungen}{25}{section*.17}
+\contentsline {subsubsection}{Klassen/Instanz Methoden}{26}{section*.18}
+\contentsline {subsubsection}{HistoricRecord}{26}{section*.19}
+\contentsline {subsubsection}{Gesteste Module}{26}{section*.20}
+\contentsline {subsection}{\numberline {5.2.5}Controller Tests}{26}{subsection.5.2.5}
+\contentsline {subsubsection}{Anwendungsf\IeC {\"a}lle der einzelnen Tests}{26}{section*.21}
+\contentsline {section}{\numberline {5.3}Auswertung}{26}{section.5.3}
+\contentsline {chapter}{\numberline {6}Neue Features}{27}{chapter.6}
+\contentsline {section}{\numberline {6.1}PaperTrail - Historisierung}{27}{section.6.1}
+\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{28}{section.6.2}
+\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{29}{chapter.7}
+\contentsline {section}{\numberline {7.1}Ergebnis}{29}{section.7.1}
+\contentsline {section}{\numberline {7.2}Ausblick}{29}{section.7.2}
+\contentsline {chapter}{\numberline {8}Anhang}{30}{chapter.8}
+\contentsline {chapter}{Abbildungsverzeichnis}{56}{chapter*.22}
+\contentsline {chapter}{Tabellenverzeichnis}{57}{chapter*.23}
+\contentsline {chapter}{Listings}{58}{chapter*.24}
