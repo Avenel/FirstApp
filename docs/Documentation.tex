@@ -408,14 +408,16 @@ Der nächste Meilenstein stellt eine einheitliche, technisch und fachlich korrek
 In diesem Abschnitt wird die Umsetzung der Tests beschrieben. Dazu gehört eine kurze Zusammenfassung aller benutzten Gems und wie sie eingesetzt wurden. Im Anschluss werden nacheinander Modul und Controller Tests vorgestellt. Dabei werden Aufbau und Funktionsweise anhand von Beispielen erläutert. Darüber hinaus gibt es eine Auflistung in der alle getesteten Modulen verzeichnet sind.
 \subsection{Verwendete Gems}
 \subsubsection{RSpec}
-\textit{RSpec} (\url{http://rubygems.org/gems/rspec}) ist das wohl bekannteste Testing-Framework für Ruby on Rails Applikationen. Es ist im Sinne des \textit{Behaviour-Driven Development} entstanden und soll das Test-Driven Development unterstützen und leichter zugänglich machen. Das Verzeichnis \textit{/spec} birgt alle Dateien, die mit dem Testing in Verbindung stehen.
+\textit{RSpec} (s. \url{http://rubygems.org/gems/rspec}) ist das wohl bekannteste Testing-Framework für Ruby on Rails Applikationen. Es ist im Sinne des \textit{Behaviour-Driven Development} entstanden und soll das Test-Driven Development unterstützen und leichter zugänglich machen. Das Verzeichnis \textit{/spec} birgt alle Dateien, die mit dem Testing in Verbindung stehen.
 
 \subsubsection{FactoryGirl}
-\textit{Factory\_girl} \url{http://rubygems.org/gems/factory_girl} stellt ein alternatives Framework zu den Ruby Fixtures zur Verfügung, das es erlaubt Daten mit Hilfe einer \glqq Factory\grqq (=Fabrik, s. \url{http://de.wikipedia.org/wiki/Abstract_Factory}) zu generieren. In diesr Webapplikation lassen sich somit Beispieldaten für die Tests leichter erzeugen. Abbildung \vref{listing:default_factory} zeigt einen Ausschnitt einer typischen Factory.  
+\textit{Factory\_girl} (s. \url{http://rubygems.org/gems/factory_girl}) stellt ein alternatives Framework zu den Ruby Fixtures zur Verfügung, das es erlaubt Daten mit Hilfe einer \glqq Factory\grqq (=Fabrik, s. \url{http://de.wikipedia.org/wiki/Abstract_Factory}) zu generieren. In diesr Webapplikation lassen sich somit Beispieldaten für die Tests leichter erzeugen. Abbildung \vref{listing:default_factory} zeigt einen Ausschnitt einer typischen Factory.  
 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=3, lastline=12]{\string"../ozbapp/spec/factories/adressen\string".rb}\label{listing:default_factory}
 
 \subsubsection{Faker}
+\textit{Faker} (s. \url{https://rubygems.org/gems/faker}) ist ein Tool für die Erzeugung von Fake Adressen, Namen, Telefonnummern und mehr. Dieses Gem ergänzt sich prima mit den oben genannten Factories. Eine detaillierte Beschreibung aller Möglichkeiten können unter der folgenden URL entnommen werden: \url{http://rubydoc.info/github/stympy/faker/master/frames}.
+
 \subsection{Gems die zukünftig verwendet werden könnten}
 \subsubsection{Capybara}
 \subsubsection{Guard-Spec}
