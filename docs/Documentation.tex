@@ -419,8 +419,26 @@ In diesem Abschnitt wird die Umsetzung der Tests beschrieben. Dazu gehört eine 
 \textit{Faker} (s. \url{https://rubygems.org/gems/faker}) ist ein Tool für die Erzeugung von Fake Adressen, Namen, Telefonnummern und mehr. Dieses Gem ergänzt sich prima mit den oben genannten Factories. Eine detaillierte Beschreibung aller Möglichkeiten können unter der folgenden URL entnommen werden: \url{http://rubydoc.info/github/stympy/faker/master/frames}.
 
 \subsection{Gems die zukünftig verwendet werden könnten}
+In diesem Abschnitt werden Gems genannt, die in Zukunft den Test-Driven Development unterstützen könnten.
 \subsubsection{Capybara}
+\textit{Capybara} (s. \url{http://rubygems.org/gems/capybara}) hilft, die Benutzerinteraktionen mit der Web-Applikation zu simulieren. Somit lassen sich Integrations Tests implementieren, die noch enger mit der Weboberfläche verzahnt sind.
+
 \subsubsection{Guard-Spec}
+\textit{Guard-spec} (s. \url{http://rubygems.org/gems/guard-rspec}) dient dem Entwickler dazu, Tests automatisch (z.B. nach jedem Speichervorgang) auszuführen. 
+
+\subsection{Entwicklertools}
+In die Auswahl der Entwicklertools wurde viel Zeit investiert, die im Nachhinein durch gute Auswahl wieder eingespart wurde. Um den nachfolgenden Studenten diesen Aufwand zu ersparen, werden in diesem Abschnitt die verwendeten Entwicklertools kurz aufgelistet und erläutert. 
+
+\subsubsection{Sublime Text 2}
+\textit{Sublime Text 2} (s. \url{http://www.sublimetext.com/}) hat sich als ein sehr guter Texteditor (ähnlich VI und Textmate) herausgestellt. Er ist einfach zu bedienen, kann aber genauso viel wie seine Vorbilder. Durch Plugins kann der Funktionsumfang laufend erweitert werden. Diese fügen sich weniger aufdringlich in die Benutzeroberfläche ein (wie z.B. bei Notepad++). Weitere Links zu hilfreichen Webseiten können dem Wiki des Repositories entnommen werden (s. \url{https://github.com/Avenel/FirstApp/wiki/Sublime-Text-Setup}).
+Welche Plugins für das Test-Driven Development verwendet wurden, kann dem nun folgenden Abschnitt entnommen werden. 
+
+\subsubsection{RubyTest}
+\textit{RubyTest} (s. \url{https://github.com/mhartl/rails_tutorial_sublime_text}) ist ein Sublime Text 2 Plugin, dass den Entwickler bei der Ausführung der Tests hilft. Wie die Installation von statten geht und wie das Plugin benutzt wird, kann diesem Youtube Video entnommen werden \url{http://www.youtube.com/watch?v=05x1Jk4rT1A}. Man hat die Möglichkeit entweder alle Tests eines geöffneten Dokuments mit der Tastenkombination \textit{STRG+SHIFT+T}, oder nur einen einzelnen Test (in dem sich der Cursor befindet) mit der Tastenkombination \textit{STRG+SHIFT+R} auszuführen.
+
+
+\subsubsection{Cygwin}
+Falls man unter Windows entwickelt ist \textit{Cygwin} eine sehr gute Alternative zu der herkömmlichen Windows Kommandozeile. Die Standardinstallation von Cygwin, zu finden hier: \url{http://www.cygwin.com/}, reicht in der Regel aus. Der große Vorteil hier ist, dass das Fenster frei skalierbar ist und sich der Text (z.B. die Ausgabe des Serverlogs) leichter lesen und markieren lässt. 
 
 \subsection{Modul Tests}
 \subsubsection{Gesteste Module}
