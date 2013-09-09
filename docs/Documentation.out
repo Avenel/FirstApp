@@ -13,17 +13,18 @@
 \BOOKMARK [1][-]{section.4.1}{Webimport}{chapter.4}% 13
 \BOOKMARK [1][-]{section.4.2}{Darlehensverlauf}{chapter.4}% 14
 \BOOKMARK [1][-]{section.4.3}{HistoricRecord}{chapter.4}% 15
-\BOOKMARK [0][-]{chapter.5}{Testdriven Development}{}% 16
-\BOOKMARK [1][-]{section.5.1}{Analyse}{chapter.5}% 17
-\BOOKMARK [1][-]{section.5.2}{Implementierung}{chapter.5}% 18
-\BOOKMARK [1][-]{section.5.3}{Auswertung}{chapter.5}% 19
-\BOOKMARK [0][-]{chapter.6}{Neue Features}{}% 20
-\BOOKMARK [1][-]{section.6.1}{PaperTrail - Historisierung}{chapter.6}% 21
-\BOOKMARK [1][-]{section.6.2}{Deployment E-Mail Benachrichtigung}{chapter.6}% 22
-\BOOKMARK [0][-]{chapter.7}{Ergebnis und Ausblick}{}% 23
-\BOOKMARK [1][-]{section.7.1}{Ergebnis}{chapter.7}% 24
-\BOOKMARK [1][-]{section.7.2}{Ausblick}{chapter.7}% 25
-\BOOKMARK [0][-]{chapter.8}{Anhang}{}% 26
-\BOOKMARK [0][-]{chapter*.22}{Abbildungsverzeichnis}{}% 27
-\BOOKMARK [0][-]{chapter*.23}{Tabellenverzeichnis}{}% 28
-\BOOKMARK [0][-]{chapter*.24}{Listings}{}% 29
+\BOOKMARK [1][-]{section.4.4}{Umzug der Benutzerattribute in die Tabelle User}{chapter.4}% 16
+\BOOKMARK [0][-]{chapter.5}{Testdriven Development}{}% 17
+\BOOKMARK [1][-]{section.5.1}{Analyse}{chapter.5}% 18
+\BOOKMARK [1][-]{section.5.2}{Implementierung}{chapter.5}% 19
+\BOOKMARK [1][-]{section.5.3}{Auswertung}{chapter.5}% 20
+\BOOKMARK [0][-]{chapter.6}{Neue Features}{}% 21
+\BOOKMARK [1][-]{section.6.1}{PaperTrail - Historisierung}{chapter.6}% 22
+\BOOKMARK [1][-]{section.6.2}{Deployment E-Mail Benachrichtigung}{chapter.6}% 23
+\BOOKMARK [0][-]{chapter.7}{Ergebnis und Ausblick}{}% 24
+\BOOKMARK [1][-]{section.7.1}{Ergebnis}{chapter.7}% 25
+\BOOKMARK [1][-]{section.7.2}{Ausblick}{chapter.7}% 26
+\BOOKMARK [0][-]{chapter.8}{Anhang}{}% 27
+\BOOKMARK [0][-]{chapter*.22}{Abbildungsverzeichnis}{}% 28
+\BOOKMARK [0][-]{chapter*.23}{Tabellenverzeichnis}{}% 29
+\BOOKMARK [0][-]{chapter*.24}{Listings}{}% 30

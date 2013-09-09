@@ -36,6 +36,7 @@
 \contentsline {subsection}{\numberline {4.1.4}Punkteberechnung}{18}{subsection.4.1.4}
 \contentsline {section}{\numberline {4.2}Darlehensverlauf}{18}{section.4.2}
 \contentsline {section}{\numberline {4.3}HistoricRecord}{19}{section.4.3}
+\contentsline {section}{\numberline {4.4}Umzug der Benutzerattribute in die Tabelle User}{20}{section.4.4}
 \contentsline {chapter}{\numberline {5}Testdriven Development}{21}{chapter.5}
 \contentsline {section}{\numberline {5.1}Analyse}{21}{section.5.1}
 \contentsline {subsection}{\numberline {5.1.1}Ist-Stand}{21}{subsection.5.1.1}
