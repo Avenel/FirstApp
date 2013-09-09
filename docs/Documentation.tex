@@ -494,12 +494,27 @@ Falls die Methode eine private Methode ist, muss die Methode auf den folgenden W
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=337, lastline=338]{\string"../ozbapp/spec/models/ozb_konto_spec\string".rb}\label{listing:execute_private_methode}
 
 \subsubsection{HistoricRecord}
+Auch dieses Modul wurde gesondert getestet. Abbildung \vref{listing:historicRecordTestExample} zeigt stellvertretend die Art und Weise, wie jede einzelne Methode getestet wurde. Dabei ist es wichtig, dass zuerst jede einzelne Funktion für sich isoliert getestet wurde, bevor jedes einzelne Model nochmals eigenständig auf die korrekte Funktionsweise hin geprüft wurde.
+
+ \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=461, lastline=510]{\string"../ozbapp/spec/models/HistoricRecord_spec\string".rb}\label{listing:historicRecordTestExample}
 
 
+\subsubsection{Gesteste Models}
+Die folgenden Models wurden getestet.
 
-
-\subsubsection{Gesteste Module}
-
+\begin{itemize}
+     \item{Bank}
+     \item{Bankverbindung}
+     \item{Buergschaft}
+     \item{EEKonto}
+     \item{OZBKonto}
+     \item{OZBPerson}
+     \item{Person}
+     \item{Projektgruppe}
+     \item{User}
+     \item{Waehrung}
+     \item{ZEKonto}
+\end{itemize}
 
 \subsection{Controller Tests}
 \subsubsection{Anwendungsfälle der einzelnen Tests}
