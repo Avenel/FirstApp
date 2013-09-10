@@ -397,7 +397,7 @@ Diese Methode liefert den primären Schlüssel, bis auf das Attribut GueltigVon 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=11, lastline=13]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:getPrimaryKeys}
 
 \textbf{set\_primary\_keys}\\
-Die Methode \textit{set\_primary\_keys(values)} erwartet die Werte für den primären (zusammengesetzten) Schlüssel. Nach Aufruf entspricht der Wert des primären der angegebenen Werte. Abbildung \vref{listing:setPrimaryKeys} zeigt eine beispielhafte Implementierung.
+Die Methode \textit{set\_primary\_keys(values)} erwartet die Werte für den primären (zusammengesetzten) Schlüssel. Nach Aufruf entsprichen die Werte der primärschlüssel Attribute den angegebenen Werten. Abbildung \vref{listing:setPrimaryKeys} zeigt eine beispielhafte Implementierung.
 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=15, lastline=17]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:setPrimaryKeys}
 
@@ -471,7 +471,7 @@ Welche Plugins für das Test-Driven Development verwendet wurden, kann dem nun f
 Falls man unter Windows entwickelt ist \textit{Cygwin} eine sehr gute Alternative zu der herkömmlichen Windows Kommandozeile. Die Standardinstallation von Cygwin, zu finden hier: \url{http://www.cygwin.com/}, reicht in der Regel aus. Der große Vorteil hier ist, dass das Fenster frei skalierbar ist und sich der Text (z.B. die Ausgabe des Serverlogs) leichter lesen und markieren lässt. 
 
 \subsection{Modul Tests}
-Ein Modul Test besteht aus drei Teile:
+Ein Modul Test besteht aus drei Teilen:
 \begin{itemize}
      \item{Testing der Factory}
      \item{Testing der Attribut-Validierungen}
@@ -509,7 +509,7 @@ Die folgenden Models wurden getestet.
 \begin{itemize}
      \item{Bank}
      \item{Bankverbindung}
-     \item{Buergschaft}
+     \item{Buergschaft (Skelett)}
      \item{EEKonto}
      \item{OZBKonto}
      \item{OZBPerson}
@@ -521,6 +521,8 @@ Die folgenden Models wurden getestet.
 \end{itemize}
 
 \subsection{Controller Tests}
+
+
 \subsubsection{Anwendungsfälle der einzelnen Tests}
 
 % Auswertung der bisherigen manuellen Tests
