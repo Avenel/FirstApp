@@ -40,6 +40,10 @@ class OZBPerson < ActiveRecord::Base
 
 
   def ueberPerson_exists
+    if (self.UeberPnr.nil? or self.UeberPnr.blank?) then
+      return true
+    end
+    
     person = Person.where("Pnr = ?", self.UeberPnr)
     if person.empty? then
       errorString = String.new("Es konnte keine zugehörige Person zu der angegebenen Pnr (%(value)) gefunden werden.")
