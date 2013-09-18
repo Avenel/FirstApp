@@ -9,9 +9,7 @@
 	  <h3>Kontaktdaten wurden nicht aktualisiert:</h3>	
 	  <ul>
 	    <% @errors.each do |error| %>
-		  <% error.full_messages.each do |msg| %>
-		    <li><%= msg %></li>
-		  <% end %>
+		    <li><%= error %></li>
 	    <% end %>
 	  </ul>
     </div>
