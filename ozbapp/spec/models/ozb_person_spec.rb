@@ -31,7 +31,7 @@ describe OZBPerson  do
 									:UeberPnr => person.Pnr)).to be_valid
 	end
 
-	it "is invalid without a UeberPnr" do
+	it "is valid without a UeberPnr" do
 		expect(FactoryGirl.build(:OZBPerson, :UeberPnr => nil)).to be_invalid
 	end
 
