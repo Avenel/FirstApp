@@ -377,7 +377,7 @@ Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zug
 \textbf{Fehlerursachen:}
 
 \begin{itemize}
-     \item{Punkte wurde nicht richtig berechnet, wenn am Tage des abDatums noch Buchungen getätigt wurden}
+     \item{Punkte wurden nicht richtig berechnet, wenn am Tage des abDatums noch Buchungen getätigt wurden}
      \item{Die Sortierung der Buchungen stimmte nicht mit den Vorgaben überein}
      \item{Wiederverwendete ZE Konten wurden nicht richtig berücksichtigt}
      \item{Startsaldo wurde nicht korrekt berechnet, da die Tagesdifferenz zur letzten Währungsbuchung nicht berücksichtigt wurden}
@@ -387,6 +387,36 @@ Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zug
 
 % Lösung
 Diese Ursachen wurden bei der kompletten Neu-Implementierung beachtet und umgesetzt. Integrationstest, beschrieben in Kapitel \ref{} sichern die korrekte Funktionalität in den gegebenen Awendungsfällen.
+
+\section{HistoricRecord}
+Im Zuge des Test-Driven Development und dem damit verbundenen Refactoring, ist aufgefallen das für jedes historisierte Model im Grunde derselbe Quellcode geschrieben wurde, der für die Historisierung zuständig gewesen ist. Dieser lässt sich nur sehr schlecht warten und im allgemeinen ist großer, redundanter Quellcode, wie hier vorgefunden wurde, schlecht. Daher wurde ein neues Ruby-Modul implementiert: \textit{HistoricRecord}. Dieses Ruby-Modul lässt sich für jedes Model anwenden, wenn dies die folgenden Methoden implementiert und Kriterien beachtet.\\
+
+\textbf{get\_primary\_keys}\\
+Diese Methode liefert den primären Schlüssel, bis auf das Attribut GueltigVon (dies ist in jedem primären Schlüssel einer historisierten Klasse enthalten). Abbildung \vref{listing:getPrimaryKeys} zeigt eine beispielhafte Implementierung.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=11, lastline=13]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:getPrimaryKeys}
+
+\textbf{set\_primary\_keys}\\
+Die Methode \textit{set\_primary\_keys(values)} erwartet die Werte für den primären (zusammengesetzten) Schlüssel. Nach Aufruf entsprichen die Werte der primärschlüssel Attribute den angegebenen Werten. Abbildung \vref{listing:setPrimaryKeys} zeigt eine beispielhafte Implementierung.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=15, lastline=17]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:setPrimaryKeys}
+
+\textbf{getLatest}\\
+Die Methode \textit{getLatest} liefert die aktuellste Version der Model Instanz zurück, bevor die Änderungen abgespeichert werden. Sie ist notwendig, um die GueltigBis Zeit für diese Instanz neu zu setzen. Abbildung \vref{listing:getLatest} zeigt eine beispielhafte Implementierung.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=132, lastline=134]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:getLatest}
+
+\textbf{Attribute: GueltigVon, GueltigBis}\\
+Diese Attribute müssen auf jeden Fall vorhanden sein, sowohl als \textit{accessible attribute} als auch in der Datenbank. \\
+
+Sind diese Voraussetzungen erfüllt, muss das Modul noch eingebunden werden. Da Ruby keinen \textit{Polymorphismus} (Mehrfachvererbung) unterstüzt, wird \textit{Duck typing} (s. \url{http://en.wikipedia.org/wiki/Duck_typing}) angewandt. Abbildung \vref{listing:duckTyping} zeigt, wie es geht.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=2, lastline=5]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:duckTyping}
+
+
+\section{Umzug der Benutzerattribute in die Tabelle User}
+% TODO
+[TODO]
 
 \clearpage
 \chapter{Testdriven Development}
@@ -408,14 +438,91 @@ Der nächste Meilenstein stellt eine einheitliche, technisch und fachlich korrek
 In diesem Abschnitt wird die Umsetzung der Tests beschrieben. Dazu gehört eine kurze Zusammenfassung aller benutzten Gems und wie sie eingesetzt wurden. Im Anschluss werden nacheinander Modul und Controller Tests vorgestellt. Dabei werden Aufbau und Funktionsweise anhand von Beispielen erläutert. Darüber hinaus gibt es eine Auflistung in der alle getesteten Modulen verzeichnet sind.
 \subsection{Verwendete Gems}
 \subsubsection{RSpec}
+\textit{RSpec} (s. \url{http://rubygems.org/gems/rspec}) ist das wohl bekannteste Testing-Framework für Ruby on Rails Applikationen. Es ist im Sinne des \textit{Behaviour-Driven Development} entstanden und soll das Test-Driven Development unterstützen und leichter zugänglich machen. Das Verzeichnis \textit{/spec} birgt alle Dateien, die mit dem Testing in Verbindung stehen.
 
 \subsubsection{FactoryGirl}
-\subsubsection{Capybara}
-\subsubsection{Guard-Spec}
+\textit{Factory\_girl} (s. \url{http://rubygems.org/gems/factory_girl}) stellt ein alternatives Framework zu den Ruby Fixtures zur Verfügung, das es erlaubt Daten mit Hilfe einer \glqq Factory\grqq (=Fabrik, s. \url{http://de.wikipedia.org/wiki/Abstract_Factory}) zu generieren. In diesr Webapplikation lassen sich somit Beispieldaten für die Tests leichter erzeugen. Abbildung \vref{listing:default_factory} zeigt einen Ausschnitt einer typischen Factory.  
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=3, lastline=12]{\string"../ozbapp/spec/factories/adressen\string".rb}\label{listing:default_factory}
+
 \subsubsection{Faker}
+\textit{Faker} (s. \url{https://rubygems.org/gems/faker}) ist ein Tool für die Erzeugung von Fake Adressen, Namen, Telefonnummern und mehr. Dieses Gem ergänzt sich prima mit den oben genannten Factories. Eine detaillierte Beschreibung aller Möglichkeiten können unter der folgenden URL entnommen werden: \url{http://rubydoc.info/github/stympy/faker/master/frames}.
+
+\subsection{Gems die zukünftig verwendet werden könnten}
+In diesem Abschnitt werden Gems genannt, die in Zukunft den Test-Driven Development unterstützen könnten.
+\subsubsection{Capybara}
+\textit{Capybara} (s. \url{http://rubygems.org/gems/capybara}) hilft, die Benutzerinteraktionen mit der Web-Applikation zu simulieren. Somit lassen sich Integrations Tests implementieren, die noch enger mit der Weboberfläche verzahnt sind.
+
+\subsubsection{Guard-Spec}
+\textit{Guard-spec} (s. \url{http://rubygems.org/gems/guard-rspec}) dient dem Entwickler dazu, Tests automatisch (z.B. nach jedem Speichervorgang) auszuführen. 
+
+\subsection{Entwicklertools}
+In die Auswahl der Entwicklertools wurde viel Zeit investiert, die im Nachhinein durch gute Auswahl wieder eingespart wurde. Um den nachfolgenden Studenten diesen Aufwand zu ersparen, werden in diesem Abschnitt die verwendeten Entwicklertools kurz aufgelistet und erläutert. 
+
+\subsubsection{Sublime Text 2}
+\textit{Sublime Text 2} (s. \url{http://www.sublimetext.com/}) hat sich als ein sehr guter Texteditor (ähnlich VI und Textmate) herausgestellt. Er ist einfach zu bedienen, kann aber genauso viel wie seine Vorbilder. Durch Plugins kann der Funktionsumfang laufend erweitert werden. Diese fügen sich weniger aufdringlich in die Benutzeroberfläche ein (wie z.B. bei Notepad++). Weitere Links zu hilfreichen Webseiten können dem Wiki des Repositories entnommen werden (s. \url{https://github.com/Avenel/FirstApp/wiki/Sublime-Text-Setup}).
+Welche Plugins für das Test-Driven Development verwendet wurden, kann dem nun folgenden Abschnitt entnommen werden. 
+
+\subsubsection{RubyTest}
+\textit{RubyTest} (s. \url{https://github.com/mhartl/rails_tutorial_sublime_text}) ist ein Sublime Text 2 Plugin, dass den Entwickler bei der Ausführung der Tests hilft. Wie die Installation von statten geht und wie das Plugin benutzt wird, kann diesem Youtube Video entnommen werden \url{http://www.youtube.com/watch?v=05x1Jk4rT1A}. Man hat die Möglichkeit entweder alle Tests eines geöffneten Dokuments mit der Tastenkombination \textit{STRG+SHIFT+T}, oder nur einen einzelnen Test (in dem sich der Cursor befindet) mit der Tastenkombination \textit{STRG+SHIFT+R} auszuführen.
+
+
+\subsubsection{Cygwin}
+Falls man unter Windows entwickelt ist \textit{Cygwin} eine sehr gute Alternative zu der herkömmlichen Windows Kommandozeile. Die Standardinstallation von Cygwin, zu finden hier: \url{http://www.cygwin.com/}, reicht in der Regel aus. Der große Vorteil hier ist, dass das Fenster frei skalierbar ist und sich der Text (z.B. die Ausgabe des Serverlogs) leichter lesen und markieren lässt. 
+
 \subsection{Modul Tests}
-\subsubsection{Gesteste Module}
+Ein Modul Test besteht aus drei Teilen:
+\begin{itemize}
+     \item{Testing der Factory}
+     \item{Testing der Attribut-Validierungen}
+     \item{Testing der Klassen/Instanz Methoden}
+\end{itemize}
+
+\subsubsection{Factory Test}
+Wie bereits in einem früheren Abschnitt gezeigt, werden Factories verwendet um Testdaten zu generieren. Damit sichergestellt ist, dass diese auch korrekt funktionieren besteht der erste Test darin, genau dies sicherzustellen. Abbildung \vref{listing:default_test_factory} stellt beispielsweise einen solchen Test dar.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=6, lastline=9]{\string"../ozbapp/spec/models/bank_spec\string".rb}\label{listing:default_test_factory}
+
+\subsubsection{Attribut-Validierungen}
+Attribute müssen in den meisten Fällen bestimmten Kriterien entsprechen. Sie dürfen mal nur eine Nummer sein, mal einem bestimmten regulären Ausdruck entsrechen, müssen vorhanden sein oder auch nicht. Wichtig ist, dass man die folgenden Fälle, die Abbildung \vref{listing:default_test_attributes} zeigt abdeckt.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=29, lastline=45]{\string"../ozbapp/spec/models/bank_spec\string".rb}\label{listing:default_test_attributes}
+
+\subsubsection{Klassen/Instanz Methoden}
+Jede Klasse besitzt eigene (private) Methoden die auch getestet werden müssen. Das Prozedere ist auch hier dasselbe, man gibt eine Instanz des zu testenden Models vor, führt die Methode aus und erwartet ein Ergebnis.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=82, lastline=87]{\string"../ozbapp/spec/models/person_spec\string".rb}\label{listing:default_test_instance_methods}
+
+Falls die Methode eine private Methode ist, muss die Methode auf den folgenden Wege aufgerufen werden, wie es Abbildung \vref{listing:execute_private_methode} zeigt.
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=337, lastline=338]{\string"../ozbapp/spec/models/ozb_konto_spec\string".rb}\label{listing:execute_private_methode}
+
+\subsubsection{HistoricRecord}
+Auch dieses Modul wurde gesondert getestet. Abbildung \vref{listing:historicRecordTestExample} zeigt stellvertretend die Art und Weise, wie jede einzelne Methode getestet wurde. Dabei ist es wichtig, dass zuerst jede einzelne Funktion für sich isoliert getestet wurde, bevor jedes einzelne Model nochmals eigenständig auf die korrekte Funktionsweise hin geprüft wurde.
+
+ \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=461, lastline=510]{\string"../ozbapp/spec/models/HistoricRecord_spec\string".rb}\label{listing:historicRecordTestExample}
+
+
+\subsubsection{Gesteste Models}
+Die folgenden Models wurden getestet.
+
+\begin{itemize}
+     \item{Bank}
+     \item{Bankverbindung}
+     \item{Buergschaft (Skelett)}
+     \item{EEKonto}
+     \item{OZBKonto}
+     \item{OZBPerson}
+     \item{Person}
+     \item{Projektgruppe}
+     \item{User}
+     \item{Waehrung}
+     \item{ZEKonto}
+\end{itemize}
+
 \subsection{Controller Tests}
+
+
 \subsubsection{Anwendungsfälle der einzelnen Tests}
 
 % Auswertung der bisherigen manuellen Tests
