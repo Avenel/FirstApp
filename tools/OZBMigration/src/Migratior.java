@@ -509,12 +509,12 @@ public class Migratior {
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					queryInsertStmt.setInt(2, rs.getInt("MNR_P"));
 
-					// TODO
-					// Berechtigungen in der ozb_prod: i, j, n, l - WTF :D
-					// unsere neuen Berechtigungen: l = leseberechtigt, v =
-					// vollberechtigt
-					// setze jetzt erstmal alle auf leseberechtigt.
-					// queryInsertStmt.setString(3, rs.getString("AUT"));
+					/*
+					-- Partner: Berechtigungen in der ozb_prod: i, j, n, l
+					-- unsere neuen Berechtigungen: l = leseberechtigt, v = vollberechtigt
+					-- Wie sollen die Daten für die Migration angepasst werden?
+					-> alles auf l setzen. Änderungen können nach der Migration manuell gemacht werden
+					*/
 					queryInsertStmt.setString(3, "l");
 
 					queryInsertStmt.setTimestamp(4, new java.sql.Timestamp(
@@ -543,12 +543,22 @@ public class Migratior {
 					queryInsertStmt.setInt(1, rs.getInt("MNR"));
 					queryInsertStmt.setInt(2, rs.getInt("LFD-Nr"));
 					queryInsertStmt.setString(3, rs.getString("TELNr"));
-
-					// TODO es gibt unterschiedliche Telefontypen zu unseren
-					// Definitionen!
-					// Setze daher jetzt erstmal alles auf 'tel'.
-					// queryInsertStmt.setString(4, rs.getString("TELTYP"));
-					queryInsertStmt.setString(4, "tel");
+					
+					/*
+					-- Telefon: es gibt unterschiedliche Telefontypen zu unseren Definitionen
+					-- Alle per Default auf "tel" stellen?
+					-> Es gibt in ozb_prod nur noch büro und gesch
+					-> Vorschlag: Typ gesch in Tabelle Telefon in ozb_test ergänzen und büro und gesch diesem Typ zuordnen 
+					*/
+					String teltyp = rs.getString("TELTYP").toLowerCase().trim();
+					if ( teltyp.equals("büro") || teltyp.equals("gesch") )
+						queryInsertStmt.setString(4, "gesch");
+					else if ( teltyp.equals("fax"))
+						queryInsertStmt.setString(4, "fax");
+					else if ( teltyp.equals("mob"))
+						queryInsertStmt.setString(4, "mob");
+					else if ( teltyp.equals("tel") || teltyp.equals("priv"))
+						queryInsertStmt.setString(4, "tel");
 
 					try {
 						queryInsertStmt.executeUpdate();
@@ -618,6 +628,9 @@ public class Migratior {
 				// Bank
 				rs = stOzbProd
 						.executeQuery("SELECT `BLZ`,`BANK` FROM `Mitglied` WHERE BLZ is not null GROUP By BLZ");
+				
+				boolean dummyBankInserted = false;
+				
 				while (rs.next()) {
 					PreparedStatement queryInsertStmt = conOzbTest
 							.prepareStatement(queryInsertBank);
@@ -631,6 +644,18 @@ public class Migratior {
 						continue;
 					}
 					try {
+						//Dummy Bank fuer Dummy Bankverbindung hinzufuegen
+						if (!dummyBankInserted) {
+							PreparedStatement queryDummyInsertStmt = conOzbTest
+									.prepareStatement(queryInsertBank);
+							queryDummyInsertStmt.setInt(1, 00000000);
+							queryDummyInsertStmt.setString(2, "DUMMY BANK");
+							
+							queryDummyInsertStmt.execute();
+							
+							dummyBankInserted = true;
+						}
+						
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
 						// pw.println("Bank : " + " BLZ: "
@@ -645,6 +670,8 @@ public class Migratior {
 				// Bankverbindung
 				rs = stOzbProd
 						.executeQuery("select MNR,BANKKONTONR, BLZ from Mitglied WHERE BLZ is not null");
+				
+				boolean dummyBankverbindungInserted = false;
 
 				while (rs.next()) {
 
@@ -666,10 +693,28 @@ public class Migratior {
 									* 1000));
 					queryInsertStmt.setTimestamp(5, endOfTime);
 
-					// TODO Es gibt noch keine IBAN, also dummy wert
 					queryInsertStmt.setString(6, "###");
 
 					try {
+						//Dummy Bankkonto fuer EEKonto ohne BankID
+						if(!dummyBankverbindungInserted) {
+							PreparedStatement queryDummyInsertStmt = conOzbTest
+									.prepareStatement(queryInsertBankverbindung);
+							
+							queryDummyInsertStmt.setInt(1, 13);
+							queryDummyInsertStmt.setString(2, "DUMMY");
+							queryDummyInsertStmt.setInt(3, 00000000);
+							queryDummyInsertStmt.setTimestamp(4, new java.sql.Timestamp(
+									calendar.getTime().getTime() - 1 * 24 * 60 * 60
+											* 1000));
+							queryDummyInsertStmt.setTimestamp(5, endOfTime);
+							queryDummyInsertStmt.setString(6, "###");
+		
+							queryDummyInsertStmt.execute();
+							
+							dummyBankverbindungInserted = true;
+						}
+						
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
 						pw.println("Bankverbindung : " + " MNR: "
@@ -771,7 +816,7 @@ public class Migratior {
 
 				// OZBKonto 2
 				rs = stOzbProd
-						.executeQuery("select KTONR,MNR, DARLDAT, WHRG,DARL_SALDO, PKTESALDO, SALDODAT from Darlehen; ");
+						.executeQuery("select KTONR, MNR, STATUS, DARLDAT, ENDDAT, WHRG,DARL_SALDO, PKTESALDO, SALDODAT from Darlehen; ");
 				while (rs.next()) {
 
 					PreparedStatement queryInsertStmt = conOzbTest
@@ -797,10 +842,23 @@ public class Migratior {
 							rs.getBigDecimal("DARL_SALDO"));
 					queryInsertStmt.setInt(6, rs.getInt("PKTESALDO"));
 					queryInsertStmt.setDate(7, rs.getDate("SALDODAT"));
-					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(
-							calendar.getTime().getTime() - 1 * 24 * 60 * 60
-									* 1000));
-					queryInsertStmt.setTimestamp(9, endOfTime);
+					
+					/* Bei der Migration sollte historisiert werden. Für Status=E:  GueltigVon=DARLDAT und GueltigBis=ENDDAT
+					Für Status=A sollte eigentlich in GueltiVon nicht das Datum der Migration, sondern das DARLDAT, also das Beginndatum des Darlehens stehen 
+					*/
+					Date darldat = rs.getDate("DARLDAT");						
+					queryInsertStmt.setTimestamp(8, new java.sql.Timestamp(darldat.getTime()));
+					
+					if ( rs.getString("STATUS").equals("E") ) {
+						Date enddat = rs.getDate("ENDDAT");
+						if (enddat != null)
+							queryInsertStmt.setTimestamp(9, new java.sql.Timestamp(enddat.getTime()));
+						else
+							queryInsertStmt.setTimestamp(9, endOfTime);
+					} else {
+						queryInsertStmt.setTimestamp(9, endOfTime);
+					}
+					
 					try {
 						queryInsertStmt.executeUpdate();
 					} catch (SQLException e) {
@@ -858,9 +916,18 @@ public class Migratior {
 
 					queryInsertStmt.setInt(1, rs.getInt("KtoNr"));
 					if (rs.getInt("ID") == 0) {
-						// TODO Falls keine Bank gefunden wurde, setze ich hier
-						// erstmal 0 ein.
-						queryInsertStmt.setInt(2, 0);
+						/*
+						-- EEKonto: Wie sieht der Vorgang aus, wenn zu alten Daten keine BankID zugeordnet werden kann? Dummy-Datensatz?
+						-> Das Migrationsprogramm sollte nur die Bankverbindungen übernehmen, die der Tabelle Mitglied stehen.
+						-> Die Bankverbindungen in Tabelle Konto werden nicht migriert
+						-> In Tabelle EEKonto wird immer die BankID eingetragen, die zu der Bankverbindung dieses Mitglieds gehört
+						-> Derzeit sind in Tabelle Mitglied für die meisten neuen Mitglieder/Gesellschaftern noch keine Bankverbindungen eingetragen und
+						-> es wurden eine ganze Reihe von Bankverbindungen von ausgeschiedenen Mitgliedern/Gesellschaftern auf NULL zurück gesetzt
+						-> keine Ahnung, wer das gemacht hat
+						-> Daher: Alle einer Dummy-BLZ, z.B. 00000000 zuordnen. Korrektur später nach der Migration manuell
+						*/
+						// 1 setzen fuer manuelle nachbearbeitung, mit dummy bankverbindung
+						queryInsertStmt.setInt(2, 1);
 					} else {
 						queryInsertStmt.setInt(2, rs.getInt("ID"));
 					}
@@ -918,9 +985,12 @@ public class Migratior {
 					queryInsertStmt.setString(4, rs.getString("DARLNR"));
 					queryInsertStmt.setDate(5, rs.getDate("DARLDAT"));
 
-					// TODO ZE Enddatum darf nicht null sein -> dummy wert
+					/*
+					-- ZEKonto: Wenn das Enddatum nicht gesetzt ist (null), wie fortfahren?
+					->             ZEEndDatum auf '9999-12-31' setzen
+					*/
 					if (rs.getDate("ENDDAT") == null) {
-						queryInsertStmt.setString(6, "9999-01-01");
+						queryInsertStmt.setString(6, "9999-12-31");
 					} else {
 						queryInsertStmt.setDate(6, rs.getDate("ENDDAT"));
 					}
@@ -928,14 +998,13 @@ public class Migratior {
 					queryInsertStmt.setBigDecimal(7,
 							rs.getBigDecimal("DARLBETRAG"));
 					queryInsertStmt.setInt(8, rs.getInt("LAUFZEIT"));
-
-					// TODO wenn Zahlmodus nicht gegeben, setze dummy wert ein.
-					// Es gibt: m = monatlich, q = quartal, j = jaehrlich
+					/*
+					--			Wenn Zahlmodus = null, welchen Wert setzen?
+					->             ZahlModus auf Default m setzen
+					*/
 					if (rs.getString("ZAHLMODUS") == null
 							|| rs.getString("ZAHLMODUS").equals("")) {
-						queryInsertStmt.setString(9, "m"); // Dreckig, lieber
-															// Calendar Object
-															// nutzen.
+						queryInsertStmt.setString(9, "m"); 
 					} else {
 						queryInsertStmt.setString(9, rs.getString("ZAHLMODUS"));
 					}
@@ -947,9 +1016,18 @@ public class Migratior {
 					queryInsertStmt.setBigDecimal(12, rs.getBigDecimal("KDU"));
 					queryInsertStmt.setBigDecimal(13, rs.getBigDecimal("RDU"));
 					queryInsertStmt.setString(14, rs.getString("STATUS"));
-					queryInsertStmt.setTimestamp(15, new java.sql.Timestamp(
-							calendar.getTime().getTime() - 1 * 24 * 60 * 60
-									* 1000));
+					queryInsertStmt.setTimestamp(15, new java.sql.Timestamp(rs.getDate("DARLDAT").getTime()));
+					
+					if ( rs.getString("STATUS").equals("E") ) {
+						Date enddat = rs.getDate("ENDDAT");
+						if (enddat != null)
+							queryInsertStmt.setTimestamp(16, new java.sql.Timestamp(enddat.getTime()));
+						else
+							queryInsertStmt.setTimestamp(16, endOfTime);
+					} else {
+						queryInsertStmt.setTimestamp(16, endOfTime);
+					}
+					
 					queryInsertStmt.setTimestamp(16, endOfTime);
 					queryInsertStmt.setInt(17, rs.getInt("KALK_LEIHPUNKTE"));
 					queryInsertStmt.setInt(18, rs.getInt("TATS_LEIHPUNKTE"));
@@ -978,8 +1056,10 @@ public class Migratior {
 					queryInsertStmt.setInt(2, rs.getInt("MNR_G"));
 					queryInsertStmt.setString(3, rs.getString("ZE_NR"));
 					queryInsertStmt.setDate(4, rs.getDate("SICH_AB_DAT"));
-
-					// TODO Enddatum darf nicht null sein -> dummy wert
+					/*
+					-- Buergschaft: Wenn das Enddatum nicht gesetzt ist (null), wie fortfahren?
+					-> Kann so bleiben, wie es jetzt ist: 9999-01-01
+					*/
 					if (rs.getDate("SICH_BIS_DAT") == null) {
 						queryInsertStmt.setString(5, "9999-01-01");
 					} else {

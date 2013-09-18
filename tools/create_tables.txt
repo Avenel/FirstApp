@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `Telefon` (
   `Pnr` int(10) unsigned NOT NULL,
   `LfdNr` tinyint(2) unsigned NOT NULL,
   `TelefonNr` varchar(15) NOT NULL,  
-  `TelefonTyp` enum('tel', 'mob', 'fax'), -- tel = Festnetz, mob = Mobilfunk, fax = FAX...
+  `TelefonTyp` enum('tel', 'mob', 'fax', 'gesch'), -- tel = Festnetz, mob = Mobilfunk, fax = FAX..., gesch = buero oder geschaeftlich
   PRIMARY KEY (Pnr,LfdNr)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
