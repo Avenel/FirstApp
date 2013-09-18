@@ -26,7 +26,7 @@ class Telefon < ActiveRecord::Base
   validates :TelefonNr, :presence => true
 
   # enum TelefonTyp
-  AVAILABLE_TYPES = %W(tel mob fax) # tel = Festnetz, mob = Mobilfunk, fax = FAX
+  AVAILABLE_TYPES = %W(tel mob fax gesch) # tel = Festnetz, mob = Mobilfunk, fax = FAX, gesch = Geschaeft
   validates :TelefonTyp, :presence => true, :inclusion => { :in => AVAILABLE_TYPES, :message => "%{value} is not a valid telephone type (tel, mob, fax" } 
 
   # Associations 

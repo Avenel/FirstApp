@@ -252,6 +252,8 @@ class OZBPersonController < ApplicationController
           end
           #Datensatz speichern
           begin
+            puts ">>>> DEBUG save! operation <<<<<<"
+            puts @Adresse.inspect
             @Adresse.save!
           rescue Exception => e
             puts ">>>> DEBUG <<<<<<"
@@ -259,9 +261,11 @@ class OZBPersonController < ApplicationController
             puts e.backtrace.join("\n")
             @errors.push(e.message)
           end
+          puts ">>>> DEBUG save! END operation <<<<<<"
         end
 
        # Telefon, Mobil, Fax speichern
+       puts ">>>> DEBUG save Telefon <<<<<<"
         if @Telefon[0] != nil && !params[:telefon].empty? then
           #Fehler aufgetreten?
           if !@Telefon[0].valid? then
@@ -270,23 +274,29 @@ class OZBPersonController < ApplicationController
             puts ">>>> DEBUGS " + @errors.inspect
           end
           #Datensatz speichern
+          puts ">>>> DEBUG save! operation <<<<<<"
           @Telefon[0].save!
         end
 
+        puts ">>>> DEBUG save Mobil <<<<<<"
         if @Mobil[0] != nil && !params[:mobil].empty? then
         #if params[:mobil].length > 0 then
-          @Mobil[0].SachPnr = current_user.Mnr
+          #@Mobil[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?        
           if !@Mobil[0].valid? then
+            puts ">>>> ERROR VAldiation save operation <<<<<<"
+            puts @Mobil[0].errors
             @errors.push(@Mobil[0].errors)
           end
           #Datensatz speichern
+          puts ">>>> DEBUG save operation <<<<<<"
           @Mobil[0].save!
         end
 
+        puts ">>>> DEBUG save Fax <<<<<<"
         if @Fax[0] != nil && !params[:fax].empty? then
         #if params[:fax].length > 0 then          
-          @Fax[0].SachPnr = current_user.Mnr
+          #@Fax[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?
           if !@Fax[0].valid? then
             @errors.push(@Fax[0].errors)
