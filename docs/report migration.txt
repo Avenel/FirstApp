@@ -1,8 +1,3 @@
-Mitglied :  MNR: 156 Cannot add or update a child row: a foreign key constraint fails (`ozb_test`.`mitglied`, CONSTRAINT `mitglied_ibfk_1` FOREIGN KEY (`Mnr`) REFERENCES `ozbperson` (`Mnr`))
-SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@1f86e79: INSERT INTO mitglied (Mnr,RVDatum,GueltigVon,GueltigBis) VALUES (156,null,'2013-09-05 09:29:32','9999-12-31 23:59:59');
-
--- MNR 156 hat kein Konto und wird deshalb nicht in der OZBPerson angelegt.
------------------------------------------------------------------------------------------------
 Gesellschafter :  MNR: 1 Cannot add or update a child row: a foreign key constraint fails (`ozb_test`.`gesellschafter`, CONSTRAINT `gesellschafter_ibfk_1` FOREIGN KEY (`Mnr`) REFERENCES `ozbperson` (`Mnr`))
 SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@723646: INSERT INTO gesellschafter (Mnr,FASteuerNr,FALfdNr,FAIdNr,Wohnsitzfinanzamt,GueltigVon,GueltigBis) VALUES (1,'###',0,null,'###','2013-09-05 09:29:32','9999-12-31 23:59:59');
 
@@ -17,17 +12,6 @@ Can't process BLZ??????????, skipping.
 
 -- Dummy BLZen werden übersprungen
 -----------------------------------------------------------------------------------------------
-OZBKonto (1) :  KTONR: 70156 Cannot add or update a child row: a foreign key constraint fails (`ozb_test`.`ozbkonto`, CONSTRAINT `ozbkonto_ibfk_2` FOREIGN KEY (`Mnr`) REFERENCES `ozbperson` (`Mnr`))
-SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@571688: INSERT INTO ozbkonto (KtoNr,Mnr,KtoEinrDatum,WaehrungID,WSaldo,PSaldo,SaldoDatum,GueltigVon,GueltigBis) VALUES (70156,0,'2013-02-27','STR',null,0,null,'2013-09-06 09:24:27','9999-12-31 23:59:59');
-
--- Kein Mitglied mit ID '0' gefunden
------------------------------------------------------------------------------------------------
-OZBKonto (1) :  KTONR: 70157 Cannot add or update a child row: a foreign key constraint fails (`ozb_test`.`ozbkonto`, CONSTRAINT `ozbkonto_ibfk_2` FOREIGN KEY (`Mnr`) REFERENCES `ozbperson` (`Mnr`))
-SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@1884319: INSERT INTO ozbkonto (KtoNr,Mnr,KtoEinrDatum,WaehrungID,WSaldo,PSaldo,SaldoDatum,GueltigVon,GueltigBis) VALUES (70157,157,'2013-02-27','STR',null,0,null,'2013-09-06 09:24:27','9999-12-31 23:59:59');
-
--- Kein Mitglied mit ID '157' gefunden
------------------------------------------------------------------------------------------------
-
 ZBKonto (2) :  KTONR: 10035 Duplicate entry '10035-2013-09-06 09:24:27' for key 'PRIMARY'
 SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@e0f945: INSERT INTO ozbkonto (KtoNr,Mnr,KtoEinrDatum,WaehrungID,WSaldo,PSaldo,SaldoDatum,GueltigVon,GueltigBis) VALUES (10035,35,'2007-05-09','STR',0.00,0,null,'2013-09-06 09:24:27','9999-12-31 23:59:59');
 
@@ -39,9 +23,6 @@ SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@29de03: INSERT INTO ozbkonto (K
 
 OZBKonto (2) :  KTONR: 10008 Duplicate entry '10008-2013-09-06 09:24:27' for key 'PRIMARY'
 SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@1ce0314: INSERT INTO ozbkonto (KtoNr,Mnr,KtoEinrDatum,WaehrungID,WSaldo,PSaldo,SaldoDatum,GueltigVon,GueltigBis) VALUES (10008,8,'2012-03-08','STR',-2022.20,0,'2013-02-01','2013-09-06 09:24:27','9999-12-31 23:59:59');
-
-OZBKonto (2) :  KTONR: 10010 Duplicate entry '10010-2013-09-06 09:24:27' for key 'PRIMARY'
-SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@1a59727: INSERT INTO ozbkonto (KtoNr,Mnr,KtoEinrDatum,WaehrungID,WSaldo,PSaldo,SaldoDatum,GueltigVon,GueltigBis) VALUES (10010,10,'2013-01-22','STR',-6000.00,0,'2013-01-28','2013-09-06 09:24:27','9999-12-31 23:59:59');
 
 -- OZBKonto bereits aus Tabelle Konto angelegt, es existiert aber ein Darlehen, mit den gleichen PKs
 -----------------------------------------------------------------------------------------------
@@ -57,8 +38,6 @@ SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@a980fa: INSERT INTO zekonto (Kt
 ZEKonto :  KTONR: 10008 Duplicate entry '10008-2013-09-06 09:24:27' for key 'PRIMARY'
 SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@1716286: INSERT INTO zekonto (KtoNr,EEKtoNr,Pgnr,ZENr,ZEAbDatum,ZEEndDatum,ZEBetrag,Laufzeit,ZahlModus,TilgRate,NachsparRate,KDURate,RDURate,ZEStatus,GueltigVon,GueltigBis,Kalk_Leihpunkte,Tats_Leihpunkte,Sicherung) VALUES (10008,70008,1,'D120315','2012-03-15','2015-05-01',2800.00,3,'M',77.78,115.23,0.00,2.45,'A','2013-09-06 09:24:27','9999-12-31 23:59:59',56000,0,'Bürgin');
 
-ZEKonto :  KTONR: 10010 Duplicate entry '10010-2013-09-06 09:24:27' for key 'PRIMARY'
-SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@d861b7: INSERT INTO zekonto (KtoNr,EEKtoNr,Pgnr,ZENr,ZEAbDatum,ZEEndDatum,ZEBetrag,Laufzeit,ZahlModus,TilgRate,NachsparRate,KDURate,RDURate,ZEStatus,GueltigVon,GueltigBis,Kalk_Leihpunkte,Tats_Leihpunkte,Sicherung) VALUES (10010,70010,0,'D130129','2013-01-29','9999-01-01',6000.00,0,'M',0.00,0.00,0.00,0.00,'A','2013-09-06 09:24:27','9999-12-31 23:59:59',0,0,null);
 
 -- Es existieren in der Tabelle Darlehen mehrere Darlehen mit der gleichen KontoID. Da GültigVon auf das aktuelle Migrationsdatum gesetzt wird, entstehen doppelte Einträge.
 -- Wie sollte man diesen Spezialfall lösen?
@@ -132,7 +111,7 @@ SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@dccdfd: INSERT INTO users (id,e
 -----------------------------------------------------------------------------------------------
 
 -- Telefon: es gibt unterschiedliche Telefontypen zu unseren Definitionen
--- Alle per Default auf "tel" stellen?ja 
+-- Alle per Default auf "tel" stellen?
 -----------------------------------------------------------------------------------------------
 
 -- Währung: Initial Währungen?
@@ -144,7 +123,3 @@ SQL-Query: com.mysql.jdbc.JDBC4PreparedStatement@dccdfd: INSERT INTO users (id,e
 -----------------------------------------------------------------------------------------------
 -- Buergschaft: Wenn das Enddatum nicht gesetzt ist (null), wie fortfahren?
 -----------------------------------------------------------------------------------------------
-
-
-
-

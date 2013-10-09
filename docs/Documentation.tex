@@ -197,14 +197,24 @@ Ein sogenannter \glqq Feature Test\grqq ist in etwa vergleichbar mit einem \glqq
 \clearpage
 \chapter{Allgemeine Dokumentationen}
 \section{Das korrigierte ER-Diagramm}
-[Insert content, Micha]
+
+Das Entity Relationship Diagramm (s. \vref{fig:er_diagramm}) wurde hauptsächlich aus fachlicher Sicht gestaltet. Es repräsentiert die nicht-historisierte Assoziation zwischen den Entitäten. Entitäten, welche historisiert werden, beinhalten als Attribut \glqq GÜLTIG VON\grqq. Der bzw. die Primary Keys sind \underline{unterstrichen} Dargestellt. Die Foreign Keys hingegen werden nach ihrem Attributnamen mit \glqq (FK)\grqq\ gekennzeichnet. 
+
+\begin{figure}[H]
+     \begin{center}
+          \includegraphics[width=\textwidth]{Media/er_diagramm.pdf}
+     \end{center}
+     \caption{Entity Relationship Diagramm}
+     \label{fig:er_diagramm}
+\end{figure} 
+
+%[Insert content, Micha]
 % Wie sieht es aus?
 % Was wurde angepasst?
 % Beschreibung der Veränderungen am Code
 
 \section{Das korrigierte Relationenmodell}
-% Darstellung des ER-Diagramms in Tabellenform
-[Insert content, Micha]
+Während der Anfertigung der Unit-Tests ist aufgefallen, dass nicht alle Attribute in ihrer Gültigkeit spezifiziert worden sind. Aufgrund dessen mussten die o/ZB-Attribute überprüft werden und dementsprechend angepasst werden. Ebenso ergaben sich durch Änderungen am ER-Diagramm, Änderungen am Relationenmodell. Die Liste, der gemeinsamen Ausarbeitung aus dem Meeting vom 19.07.2013, befindet sich im Anhang (s. \vref{chapter:ozb_attribute}).
 
 \section{Deployment und Versionskontrolle}
 In diesem Abschnitt werden die Begriffe \textit{Deployment} und \textit{Versionskontrolle} erläutert. In jedem Teilabschnitt wird die aktuelle Umsetzung beschrieben. Der letzte Teil dieses Abschnitts beschäftigt sich mit dem \textit{Commit \& Deployment Workflow}.
@@ -542,8 +552,14 @@ s. Capify Skript: \glqq cap\_notify.rb\grqq
 \section{Ausblick}
 
 \clearpage
+\appendix
 \chapter{Anhang}\label{sec:appendix}
+\section{Test-Driven-Development Präsentation}
 \includepdf[pages={1-25}]{TDDPresentation.pdf}
+\clearpage
+\section{Definition der o/ZB Attribute}
+\label{chapter:ozb_attribute}
+\includepdf[pages=-, landscape=true]{Media/definition_ozb_attribute.pdf}
 
 \newpage
 %\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}

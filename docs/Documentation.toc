@@ -15,60 +15,62 @@
 \contentsline {subsection}{\numberline {2.3.4}Feature Tests}{6}{subsection.2.3.4}
 \contentsline {chapter}{\numberline {3}Allgemeine Dokumentationen}{8}{chapter.3}
 \contentsline {section}{\numberline {3.1}Das korrigierte ER-Diagramm}{8}{section.3.1}
-\contentsline {section}{\numberline {3.2}Das korrigierte Relationenmodell}{8}{section.3.2}
-\contentsline {section}{\numberline {3.3}Deployment und Versionskontrolle}{8}{section.3.3}
-\contentsline {subsection}{\numberline {3.3.1}Deployment}{8}{subsection.3.3.1}
-\contentsline {subsubsection}{Webserver - Apache}{9}{section*.3}
-\contentsline {subsubsection}{Anwendungsserver - Phusion Passenger}{9}{section*.4}
-\contentsline {subsubsection}{Capistrano}{9}{section*.5}
-\contentsline {subsection}{\numberline {3.3.2}Versionsverwaltung}{10}{subsection.3.3.2}
-\contentsline {subsubsection}{Git}{10}{section*.6}
-\contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{11}{subsection.3.3.3}
-\contentsline {subsubsection}{Das Capistrano Deploymentskript (Rezept)}{11}{section*.7}
-\contentsline {section}{\numberline {3.4}Datenbank Migration}{13}{section.3.4}
-\contentsline {subsection}{\numberline {3.4.1}Datenbank migrieren}{14}{subsection.3.4.1}
-\contentsline {subsection}{\numberline {3.4.2}Datenbank zur\IeC {\"u}cksetzen}{15}{subsection.3.4.2}
-\contentsline {chapter}{\numberline {4}Korrekturen, Bugfixes}{16}{chapter.4}
-\contentsline {section}{\numberline {4.1}Webimport}{16}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}Bugfix: Datei Upload}{16}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Laufzeitfehler}{17}{subsection.4.1.2}
-\contentsline {subsection}{\numberline {4.1.3}Anzahl der importierten Datens\IeC {\"a}tze}{17}{subsection.4.1.3}
-\contentsline {subsection}{\numberline {4.1.4}Punkteberechnung}{18}{subsection.4.1.4}
-\contentsline {section}{\numberline {4.2}Darlehensverlauf}{18}{section.4.2}
-\contentsline {section}{\numberline {4.3}HistoricRecord}{19}{section.4.3}
-\contentsline {section}{\numberline {4.4}Umzug der Benutzerattribute in die Tabelle User}{20}{section.4.4}
-\contentsline {chapter}{\numberline {5}Testdriven Development}{21}{chapter.5}
-\contentsline {section}{\numberline {5.1}Analyse}{21}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Ist-Stand}{21}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Soll-Stand}{22}{subsection.5.1.2}
-\contentsline {section}{\numberline {5.2}Implementierung}{22}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}Verwendete Gems}{22}{subsection.5.2.1}
-\contentsline {subsubsection}{RSpec}{22}{section*.8}
-\contentsline {subsubsection}{FactoryGirl}{22}{section*.9}
-\contentsline {subsubsection}{Faker}{23}{section*.10}
-\contentsline {subsection}{\numberline {5.2.2}Gems die zuk\IeC {\"u}nftig verwendet werden k\IeC {\"o}nnten}{23}{subsection.5.2.2}
-\contentsline {subsubsection}{Capybara}{23}{section*.11}
-\contentsline {subsubsection}{Guard-Spec}{23}{section*.12}
-\contentsline {subsection}{\numberline {5.2.3}Entwicklertools}{24}{subsection.5.2.3}
-\contentsline {subsubsection}{Sublime Text 2}{24}{section*.13}
-\contentsline {subsubsection}{RubyTest}{24}{section*.14}
-\contentsline {subsubsection}{Cygwin}{24}{section*.15}
-\contentsline {subsection}{\numberline {5.2.4}Modul Tests}{24}{subsection.5.2.4}
-\contentsline {subsubsection}{Factory Test}{25}{section*.16}
-\contentsline {subsubsection}{Attribut-Validierungen}{25}{section*.17}
-\contentsline {subsubsection}{Klassen/Instanz Methoden}{26}{section*.18}
-\contentsline {subsubsection}{HistoricRecord}{26}{section*.19}
-\contentsline {subsubsection}{Gesteste Models}{27}{section*.20}
-\contentsline {subsection}{\numberline {5.2.5}Controller Tests}{28}{subsection.5.2.5}
-\contentsline {subsubsection}{Anwendungsf\IeC {\"a}lle der einzelnen Tests}{28}{section*.21}
-\contentsline {section}{\numberline {5.3}Auswertung}{28}{section.5.3}
-\contentsline {chapter}{\numberline {6}Neue Features}{29}{chapter.6}
-\contentsline {section}{\numberline {6.1}PaperTrail - Historisierung}{29}{section.6.1}
-\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{30}{section.6.2}
-\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{31}{chapter.7}
-\contentsline {section}{\numberline {7.1}Ergebnis}{31}{section.7.1}
-\contentsline {section}{\numberline {7.2}Ausblick}{31}{section.7.2}
-\contentsline {chapter}{\numberline {8}Anhang}{32}{chapter.8}
-\contentsline {chapter}{Abbildungsverzeichnis}{58}{chapter*.22}
-\contentsline {chapter}{Tabellenverzeichnis}{59}{chapter*.23}
-\contentsline {chapter}{Listings}{60}{chapter*.24}
+\contentsline {section}{\numberline {3.2}Das korrigierte Relationenmodell}{9}{section.3.2}
+\contentsline {section}{\numberline {3.3}Deployment und Versionskontrolle}{10}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Deployment}{10}{subsection.3.3.1}
+\contentsline {subsubsection}{Webserver - Apache}{10}{section*.3}
+\contentsline {subsubsection}{Anwendungsserver - Phusion Passenger}{10}{section*.4}
+\contentsline {subsubsection}{Capistrano}{11}{section*.5}
+\contentsline {subsection}{\numberline {3.3.2}Versionsverwaltung}{11}{subsection.3.3.2}
+\contentsline {subsubsection}{Git}{12}{section*.6}
+\contentsline {subsection}{\numberline {3.3.3}Workflow, Umsetzung}{12}{subsection.3.3.3}
+\contentsline {subsubsection}{Das Capistrano Deploymentskript (Rezept)}{13}{section*.7}
+\contentsline {section}{\numberline {3.4}Datenbank Migration}{15}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Datenbank migrieren}{16}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Datenbank zur\IeC {\"u}cksetzen}{17}{subsection.3.4.2}
+\contentsline {chapter}{\numberline {4}Korrekturen, Bugfixes}{18}{chapter.4}
+\contentsline {section}{\numberline {4.1}Webimport}{18}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Bugfix: Datei Upload}{18}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Laufzeitfehler}{19}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Anzahl der importierten Datens\IeC {\"a}tze}{19}{subsection.4.1.3}
+\contentsline {subsection}{\numberline {4.1.4}Punkteberechnung}{20}{subsection.4.1.4}
+\contentsline {section}{\numberline {4.2}Darlehensverlauf}{20}{section.4.2}
+\contentsline {section}{\numberline {4.3}HistoricRecord}{21}{section.4.3}
+\contentsline {section}{\numberline {4.4}Umzug der Benutzerattribute in die Tabelle User}{22}{section.4.4}
+\contentsline {chapter}{\numberline {5}Testdriven Development}{23}{chapter.5}
+\contentsline {section}{\numberline {5.1}Analyse}{23}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Ist-Stand}{23}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Soll-Stand}{24}{subsection.5.1.2}
+\contentsline {section}{\numberline {5.2}Implementierung}{24}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Verwendete Gems}{24}{subsection.5.2.1}
+\contentsline {subsubsection}{RSpec}{24}{section*.8}
+\contentsline {subsubsection}{FactoryGirl}{24}{section*.9}
+\contentsline {subsubsection}{Faker}{25}{section*.10}
+\contentsline {subsection}{\numberline {5.2.2}Gems die zuk\IeC {\"u}nftig verwendet werden k\IeC {\"o}nnten}{25}{subsection.5.2.2}
+\contentsline {subsubsection}{Capybara}{25}{section*.11}
+\contentsline {subsubsection}{Guard-Spec}{25}{section*.12}
+\contentsline {subsection}{\numberline {5.2.3}Entwicklertools}{26}{subsection.5.2.3}
+\contentsline {subsubsection}{Sublime Text 2}{26}{section*.13}
+\contentsline {subsubsection}{RubyTest}{26}{section*.14}
+\contentsline {subsubsection}{Cygwin}{26}{section*.15}
+\contentsline {subsection}{\numberline {5.2.4}Modul Tests}{26}{subsection.5.2.4}
+\contentsline {subsubsection}{Factory Test}{27}{section*.16}
+\contentsline {subsubsection}{Attribut-Validierungen}{27}{section*.17}
+\contentsline {subsubsection}{Klassen/Instanz Methoden}{28}{section*.18}
+\contentsline {subsubsection}{HistoricRecord}{28}{section*.19}
+\contentsline {subsubsection}{Gesteste Models}{29}{section*.20}
+\contentsline {subsection}{\numberline {5.2.5}Controller Tests}{30}{subsection.5.2.5}
+\contentsline {subsubsection}{Anwendungsf\IeC {\"a}lle der einzelnen Tests}{30}{section*.21}
+\contentsline {section}{\numberline {5.3}Auswertung}{30}{section.5.3}
+\contentsline {chapter}{\numberline {6}Neue Features}{31}{chapter.6}
+\contentsline {section}{\numberline {6.1}PaperTrail - Historisierung}{31}{section.6.1}
+\contentsline {section}{\numberline {6.2}Deployment E-Mail Benachrichtigung}{32}{section.6.2}
+\contentsline {chapter}{\numberline {7}Ergebnis und Ausblick}{33}{chapter.7}
+\contentsline {section}{\numberline {7.1}Ergebnis}{33}{section.7.1}
+\contentsline {section}{\numberline {7.2}Ausblick}{33}{section.7.2}
+\contentsline {chapter}{\numberline {A}Anhang}{34}{appendix.A}
+\contentsline {section}{\numberline {A.1}Test-Driven-Development Pr\IeC {\"a}sentation}{34}{section.A.1}
+\contentsline {section}{\numberline {A.2}Definition der o/ZB Attribute}{60}{section.A.2}
+\contentsline {chapter}{Abbildungsverzeichnis}{82}{appendix*.22}
+\contentsline {chapter}{Tabellenverzeichnis}{83}{appendix*.23}
+\contentsline {chapter}{Listings}{84}{appendix*.24}
