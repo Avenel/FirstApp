@@ -45,7 +45,7 @@
     postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
 }
 
-\title{Testdriven Development am Beispiel der o/zb Webapplikation}
+\title{Testdriven Development am Beispiel der o/ZB Webapplikation}
 \author{Martin Briewig, Michael Leibel}
 
 
@@ -125,7 +125,7 @@ Die erste Phase wird von den Korrekturen am ER-Diagramm und dem dazugehörigen R
 %    -    Deployment, wie funktioniert das?
 Neben den Korrekturen am ER-Diagramm sind Dokumentationen der Vorgehens- und Funktionsweise des Datenbank Migrationstools notwendig. Hierfür sind zwei Batch-Skripte angefertigt worden, deren Nutzungs- und Funktionsweisen zu dokumentieren sind.\\
 
-Im Laufe der Zeit sind die verschiedensten Techniken zur Bereitstellung und Versionierung der o/zb Webanwendung verwendet worden. Es gilt nun, einen einheitlichen Vorgang zu definieren der für die nachfolgenden Projektgruppen verwendet werden soll. Basierend auf der anzufertigten Dokumentation, kann die Bereitstellung und Versionierung stetig verbessert werden.\\
+Im Laufe der Zeit sind die verschiedensten Techniken zur Bereitstellung und Versionierung der o/ZB Webanwendung verwendet worden. Es gilt nun, einen einheitlichen Vorgang zu definieren der für die nachfolgenden Projektgruppen verwendet werden soll. Basierend auf der anzufertigten Dokumentation, kann die Bereitstellung und Versionierung stetig verbessert werden.\\
 
 % Allgemeine Korrekturen:
 %    -    WebImport
@@ -177,7 +177,7 @@ Die Webanwendung liegt im Homeverzeichnis. Durch die Einführung von Capistrano 
 
 \section{Test-Driven Development}
 \subsection{Definition}
-\textit{Test-driven Development} (eng. für \glqq Testgetriebene Entwicklung\grqq) ist eine Entwicklungsmethode die besonders in Unternehmen, die agile Softwareentwicklungsmethoden anwenden, zu Hause ist. Der Entwicklungsprozess ist recht klein gehalten und verfolgt einen festen definierten Ablauf. Der Ablauf sieht vor, dass zunächst der Test für eine gewünschte Funktionalität geschrieben wird und im Anschluss daran wird der Programmcode geschrieben, der dafür sorgen soll das der Test korrekt abgeschlossen wird. Die nachfolgende Figur \vref{fig:tdd_process} zeigt den gewünschten Ablauf noch einmal im Detail.
+\textit{Test-driven Development} (engl. für \glqq Testgetriebene Entwicklung\grqq) ist eine Entwicklungsmethode die besonders in Unternehmen, die agile Softwareentwicklungsmethoden anwenden, Anwendung findet. Der Entwicklungsprozess ist recht klein gehalten und verfolgt einen fest definierten Ablauf. Der Ablauf sieht vor, dass zunächst der Test für eine gewünschte Funktionalität geschrieben wird und im Anschluss daran wird der Programmcode geschrieben, der dafür sorgen soll das der Test korrekt abgeschlossen wird. Die nachfolgende Figur \vref{fig:tdd_process} zeigt den gewünschten Ablauf noch einmal im Detail.
 
 \begin{figure}[H]
      \begin{center}
@@ -187,12 +187,12 @@ Die Webanwendung liegt im Homeverzeichnis. Durch die Einführung von Capistrano 
      \caption{Testdriven Development Prozess}
 \end{figure} 
 
-Diese Entwicklungsmethode stiftet die Programmierer dazu an, sehr schlanken (engl. \glqq dry\grqq) Programmcode zu schreiben und einen anderen Blick auf die Anwendung zu erhalten. Darüber hinaus steigert es während der Entwicklungsphase das Selbstbewusstsein des Programmieres, denn er kann mit Hilfe der Tests den Zustand der Anwendung schnell überblicken und sich sicher sein das sein Programmcode funktioniert - auch wenn der Umfang der Anwendung ansteigt. Außerdem steigert diese Entwicklungsmethode die Code-Qualität enorm und führt zu einer Steigerung der Produktivität des Entwicklerteams.\\
+Diese Entwicklungsmethode stiftet die Programmierer dazu an, sehr schlanken (engl. \glqq dry\grqq) Programmcode zu schreiben und einen anderen Blick auf die Anwendung zu erhalten. Darüber hinaus steigert es während der Entwicklungsphase das Selbstbewusstsein des Programmierers, denn er kann mit Hilfe der Tests den Zustand der Anwendung schnell überblicken und sich sicher sein das sein Programmcode funktioniert - auch wenn der Umfang der Anwendung ansteigt. Außerdem steigert diese Entwicklungsmethode die Code-Qualität enorm und führt zu einer Steigerung der Produktivität des Entwicklerteams.\\
 
 Es gibt verschiedene Arten von Tests, die auf verschiedenen Ebenen agieren. In den nachfolgenden Abschnitten werden diese kurz dargestellt und in einen Zusammenhang gebracht. Dabei wird auf die Vorgehensweise bei einer Ruby on Rails Webanwendung Rücksicht genommen. 
 
 \subsection{Modul Tests}
-\textit{Modul Tests}, oder auch \textit{Unit Tests}, sind Tests die die einzelnen Komponenten, bzw. Entitäten einer Anwendung testen. Das Ziel dieser Tests ist es, die sowohl fachliche als auch technische korrekte Funktionalität sicherzustellen. Die Tests stellen einen Vertrag dar, die das zu testende Modul erfüllen muss. Diese Testart ist ganz nach vorn im Testprozess einzuordnen und ist die Voraussetzung dafür um mit den Controller Tests fortfahren zu können. Ein Modul ist somit die kleinst zu testendende Einheit in einer Anwendung. Ein Modul Test soll sicherstellen, dass jedes kleine Teil eines Ganzen für sich allein gesehen korrekt funktioniert, sodass das eine Anwendung auf einer soliden Basis aufbauen kann. Bei der Implementierung eines Modul Tests ist zu beachten, dass das zu testende Modul isoliert getestet wird. D.h. es dürfen keine Modulübergreifende Interaktionen implementiert werden. Außerdem testen Modul Tests gemäß des \glqq Design-by-Contract\grqq Prinzips nicht die interne Umsetzung des Moduls, sondern ihre Ausgaben bei verschiedenen Eingaben.
+\textit{Modul Tests}, oder auch \textit{Unit Tests}, sind Tests die die einzelnen Komponenten, bzw. Entitäten einer Anwendung testen. Das Ziel dieser Tests ist es, die sowohl fachliche als auch technische korrekte Funktionalität sicherzustellen. Die Tests stellen einen Vertrag dar, die das zu testende Modul erfüllen muss. Diese Testart ist ganz nach vorn im Testprozess einzuordnen und ist die Voraussetzung dafür um mit den Controller Tests fortfahren zu können. Ein Modul ist somit die kleinst zu testende Einheit in einer Anwendung. Ein Modul Test soll sicherstellen, dass jedes kleine Teil eines Ganzen für sich allein gesehen korrekt funktioniert, sodass das eine Anwendung auf einer soliden Basis aufbauen kann. Bei der Implementierung eines Modul Tests ist zu beachten, dass das zu testende Modul isoliert getestet wird. D.h. es dürfen keine Modulübergreifende Interaktionen implementiert werden. Außerdem testen Modul Tests gemäß des \glqq Design-by-Contract\grqq Prinzips nicht die interne Umsetzung des Moduls, sondern ihre Ausgaben bei verschiedenen Eingaben.
 
 \subsection{Controller Tests}
 Der nächste Schritt besteht darin, die Funktionen eines Controllers zu testen. Ein \glqq Controller Test\grqq ist im Grunde nicht viel anders als ein Modul Test, allerdings werden hierbei auch die Interaktionen der verschiedenen Module untereinander getestet, falls der Controller dies leisten soll. Das Ziel ist die Sicherstellung, dass bei fest definierten Benutzereingaben die gewünschte Reaktion geschieht. Auch bei einem Controller Test werden alle Funktionen isoliert getestet. In der Testhierarchie besetzt der Controller Test die mittlere Position, zwischen den Modul Tests und den nun dargestellten Feature Tests.
@@ -205,7 +205,8 @@ Ein sogenannter \glqq Feature Test\grqq ist in etwa vergleichbar mit einem \glqq
 \chapter{Allgemeine Dokumentationen}
 \section{Das korrigierte ER-Diagramm}
 
-Das Entity Relationship Diagramm (s. \vref{fig:er_diagramm}) wurde hauptsächlich aus fachlicher Sicht gestaltet. Es repräsentiert die nicht-historisierte Assoziation zwischen den Entitäten. Entitäten, welche historisiert werden, beinhalten als Attribut \glqq GÜLTIG VON\grqq. Der bzw. die Primary Keys sind \underline{unterstrichen} Dargestellt. Die Foreign Keys hingegen werden nach ihrem Attributnamen mit \glqq (FK)\grqq\ gekennzeichnet. 
+Das Entity Relationship Diagramm (s. \vref{fig:er_diagramm}) wurde hauptsächlich aus fachlicher Sicht gestaltet. Es repräsentiert die nicht-historisierte Assoziation zwischen den Entitäten. Entitäten, welche historisiert werden, beinhalten als Attribut \glqq GÜLTIG VON\grqq. Der bzw. die Primary Keys sind \underline{unterstrichen} Dargestellt. Die Foreign Keys hingegen werden nach ihrem Attributnamen mit \glqq (FK)\grqq\ gekennzeichnet.\\
+Die Hauptunterschiede, die seit der letzten Version aufgetreten sind, beinhaltet Korrekturen der Assoziationen, neue Tabellen wie \glqq Währung\grqq und \glqq Umlage\grqq\ sowie die deutliche Kennzeichnung der Attribute. Außerdem ist das ER-Diagramm nun in einer editierbaren Form vorhanden und kann mit der frei verfügbaren und unter Windows, Unix/Linux und Mac OS X laufenden Anwendung \textit{yEd Graphic Editor}\footnote{\url{vgl. http://www.yworks.com/de/products_yed_about.html}} bearbeitet werden. 
 
 \begin{figure}[H]
      \begin{center}
@@ -221,7 +222,7 @@ Das Entity Relationship Diagramm (s. \vref{fig:er_diagramm}) wurde hauptsächlic
 % Beschreibung der Veränderungen am Code
 
 \section{Das korrigierte Relationenmodell}
-Während der Anfertigung der Unit-Tests ist aufgefallen, dass nicht alle Attribute in ihrer Gültigkeit spezifiziert worden sind. Aufgrund dessen mussten die o/ZB-Attribute überprüft werden und dementsprechend angepasst werden. Ebenso ergaben sich durch Änderungen am ER-Diagramm, Änderungen am Relationenmodell. Die Liste, der gemeinsamen Ausarbeitung aus dem Meeting vom 19.07.2013, befindet sich im Anhang (s. \vref{chapter:ozb_attribute}).
+Während der Anfertigung der Unit-Tests ist aufgefallen, dass nicht alle Attribute in ihrer Gültigkeit spezifiziert worden sind. Aufgrund dessen mussten die o/ZB-Attribute überprüft und dementsprechend angepasst werden. Ebenso ergaben sich durch Änderungen am ER-Diagramm, Änderungen am Relationenmodell. Die Liste, der gemeinsamen Ausarbeitung aus dem Meeting vom 19.07.2013, befindet sich im Anhang (s. \vref{chapter:ozb_attribute}).
 
 \section{Deployment und Versionskontrolle}
 In diesem Abschnitt werden die Begriffe \textit{Deployment} und \textit{Versionskontrolle} erläutert. In jedem Teilabschnitt wird die aktuelle Umsetzung beschrieben. Der letzte Teil dieses Abschnitts beschäftigt sich mit dem \textit{Commit \& Deployment Workflow}.
@@ -230,31 +231,31 @@ In diesem Abschnitt werden die Begriffe \textit{Deployment} und \textit{Versions
 % Was ist das? Deployment - Capistrano, Versionskontrolle - Git
 In der Softwareentwicklung wird unter dem Begriff \textit{Deployment} der Prozess zur \textit{Bereitstellung} und \textit{Verteilung} einer Software verstanden. Der Prozess ist von Software zu Software unterschiedlich, da z.B. die Konfiguration einer Software immer an die Umgebung angepasst werden muss, in der diese zum Einsatz kommt.\\
 
-Im Falle der o/zb muss der Deployment Prozess die Bereitstellung der o/zb Webanwendung auf einem Server bewerkstelligen. Dies wirft die folgenden Fragen auf: Welcher Webserver wird eingesetzt? Wie gelangt die RoR Webanwendung auf den Server? Und wie arbeiten Anwendungsserver und Webserver auf dem Server zusammen? Diese Fragen werden die nun folgenden Teilabschnitte (kurz) klären.
+Im Falle der o/ZB muss der Deployment Prozess die Bereitstellung der o/ZB Webanwendung auf einem Server bewerkstelligen. Dies wirft die folgenden Fragen auf: Welcher Webserver wird eingesetzt? Wie gelangt die RoR Webanwendung auf den Server? Und wie arbeiten Anwendungsserver und Webserver auf dem Server zusammen? Diese Fragen werden die nun folgenden Teilabschnitte (kurz) klären.
 
 \subsubsection{Webserver - Apache}
-Ein Webserver überträgt Daten an einen Client. Dabei kann dieser die Daten nur lokal oder auch weltweit zur Verfügung stellen. Er dient im Falle der o/zb Webanwendung dazu, die von RoR erzeugten Webseiten an den Clienten auszuliefern. Dies geschieht sobald er die Anfrage eines Clienten aufgenommen und an die RoR Anwendung weitergeleitet hat. Daraufhin verarbeitet die RoR Anwendung diese Anfrage und liefert dem Webserver das Ergebnis zurück. Der Webserver sendet nun diese Daten an den Clienten.\\
+Ein Webserver überträgt Daten an einen Client. Dabei kann dieser die Daten nur lokal oder auch weltweit zur Verfügung stellen. Er dient im Falle der o/ZB Webanwendung dazu, die von RoR erzeugten Webseiten an den Clienten auszuliefern. Dies geschieht sobald er die Anfrage eines Clienten aufgenommen und an die RoR Anwendung weitergeleitet hat. Daraufhin verarbeitet die RoR Anwendung diese Anfrage und liefert dem Webserver das Ergebnis zurück. Der Webserver sendet nun diese Daten an den Clienten.\\
 
-Auf dem Testsystem der o/zb (s. \vref{sec:Das_Testsystem}) kommt ein Apache Webserver in der Version 2.2.16 zum Einsatz. Auf dem Testsystem laufen bis zu vier Apache Instanzen gleichzeitig, um die Anfragen der Benutzer bedienen zu können. Weitere Informationen zum Apache Webserver sind unter der Adresse \url{http://www.apache.org} erreichbar.
+Auf dem Testsystem der o/ZB (s. \vref{sec:Das_Testsystem}) kommt ein Apache Webserver in der Version 2.2.16 zum Einsatz. Auf dem Testsystem laufen bis zu vier Apache Instanzen gleichzeitig, um die Anfragen der Benutzer bedienen zu können. Weitere Informationen zum Apache Webserver sind unter der Adresse \url{http://www.apache.org} erreichbar.
 
 \subsubsection{Anwendungsserver - Phusion Passenger}
 Ein \textit{Anwendungsserver} bietet einer Anwendung die benötigte Laufzeitumgebung, damit diese auch ausgeführt werden kann. Dazu stellt der Anwendungsserver der Anwendung spezielle Dienste zur Verfügung, die die Anwendung zur Ausführung benötigt.\\
-Im Fall der o/zb Webanwendung wird der weit verbreitete und leistungsstarke \textit{Phusion Passenger} Anwendungsserver in der Version 3.0.19 genutzt. Phusion Passenger ist ein Modul für den Apache Webserver und ist als ein sogenanntes \textit{RubyGem} (entspricht etwa einem Softwarepaket speziell für Ruby) verfügbar. Zudem ist es auch unter dem Namen \textit{mod\_rails} oder \textit{mod\_rack} bekannt. Weitere Informationen können auf der Webseite von Phusion \url{https://www.phusionpassenger.com/} entnommen werden. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Phusion_Passenger}}
+Im Fall der o/ZB Webanwendung wird der weit verbreitete und leistungsstarke \textit{Phusion Passenger} Anwendungsserver in der Version 3.0.19 genutzt. Phusion Passenger ist ein Modul für den Apache Webserver und ist als ein sogenanntes \textit{RubyGem} (entspricht etwa einem Softwarepaket speziell für Ruby) verfügbar. Zudem ist es auch unter dem Namen \textit{mod\_rails} oder \textit{mod\_rack} bekannt. Weitere Informationen können auf der Webseite von Phusion \url{https://www.phusionpassenger.com/} entnommen werden. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Phusion_Passenger}}
 
 \subsubsection{Capistrano}
-Wie Eingangs dieses Abschnittes erwähnt worden ist, sind bei einem Deployment Prozess die Schritte notwendig, die die Bereitstellung der Software bewerkstelligen. Diese Schritte müssen nicht immer manuell ausgeführt werden, sondern können automatisiert werden. Dafür eignet sich im Falle der o/zb Webanwendung die Software \textit{Capistrano}. Diese Software ist ein Open Source Werkzeug, das (Batch-) Skripte auf Servern, z.B. mit der Hilfe einer \textit{Secure Shell (SSH)}, ausführt. Dem zur Folge ist ihr Haupteinsatzzweck in der Softwareverteilung wiederzufinden. Capistrano ist genauso wie die o/zb Webanwendung auch in Ruby geschrieben und als RubyGem verfügbar. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Capistrano_(Software)}}\\
+Wie Eingangs dieses Abschnittes erwähnt worden ist, sind bei einem Deployment Prozess die Schritte notwendig, die die Bereitstellung der Software bewerkstelligen. Diese Schritte müssen nicht immer manuell ausgeführt werden, sondern können automatisiert werden. Dafür eignet sich im Falle der o/ZB Webanwendung die Software \textit{Capistrano}. Diese Software ist ein Open Source Werkzeug, das (Batch-) Skripte auf Servern, z.B. mit der Hilfe einer \textit{Secure Shell (SSH)}, ausführt. Dem zur Folge ist ihr Haupteinsatzzweck in der Softwareverteilung wiederzufinden. Capistrano ist genauso wie die o/ZB Webanwendung auch in Ruby geschrieben und als RubyGem verfügbar. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Capistrano_(Software)}}\\
 
-Bei Capistrano bestimmen sogenannte Deployment Rezepte (\glqq Deployment Recipies\grqq) wie der Deployment Prozess verläuft. Auch für die o/zb Webanwendung wurde ein Rezept geschrieben, welches im Abschnitt \vref{subsec:deployment_recipe} beschrieben wird.
+Bei Capistrano bestimmen sogenannte Deployment Rezepte (\glqq Deployment Recipies\grqq) wie der Deployment Prozess verläuft. Auch für die o/ZB Webanwendung wurde ein Rezept geschrieben, welches im Abschnitt \vref{subsec:deployment_recipe} beschrieben wird.
 
 \subsection{Versionsverwaltung}
 Für einen stabilen und guten Softwareentwicklungsprozess ist eine Versionsverwaltung in der heutigen Zeit unabdingbar. Die Hauptaufgaben bestehen aus der Protokollierung der vorgenommenen Änderungen an Quelltexten, Skripten und anderen Dokumenten. Der Wiederherstellung von alten Zuständen, sodass versehentliche Änderungen oder Änderungen, die z.B. zu Laufzeitfehlern führten, zurückgenommen werden können. Die Archivierung jedes neuen Proejktzustands. Die Koordinierung des gemeinsamen Datei-Zugriffs der am Projekt beteiligten Entwickler. Und zu guter Letzt ermöglicht eine Versionsverwaltung die gleichzeitige Erzeugung mehrerer Entwicklungszweige (sogenannter \glqq Branches\grqq) eines Projektes. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Versionsverwaltung}}
 
 \subsubsection{Git}
 % Wie sieht aktuelle Setup aus?
-Für das Projekt der o/zb Stuttgart wird die weit verbreitete, freie Software \textit{Git} verwendet. Es wurde ursprünglich für die Quelltext-Verwaltung des Linux Kernels entwickelt.\\
+Für das Projekt der o/ZB Stuttgart wird die weit verbreitete, freie Software \textit{Git} verwendet. Es wurde ursprünglich für die Quelltext-Verwaltung des Linux Kernels entwickelt.\\
 Git ist im Gegensatz zu den Traditionellen Versionsverwaltungen wie z.B. \textit{SVN} oder \textit{Mercurial} ein verteiltes Versionsverwaltungssystem. Es gibt keinen zentralen Server auf dem das Projekt gespeichert wird, sodass jeder Entwickler eine lokale Kopie des gesamten Repositorys vorliegen hat - \textit{clone}. Dem zur Folge hat der Entwickler die Möglichkeit auch ohne Netzwerkzugriff die einzelnen Zustände seiner Arbeit festzuhalten - \textit{commit}. Besteht wieder ein Netzwerkzugriff kann er seine Änderungen auf das von den Entwicklern gemeinsam genutztes Projekt-Depot (\textit{Repository}) hochladen - \textit{push}. Zuvor muss er sich jedoch mit dem gemeinsamen Repository synchronisieren - \textit{pull}. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Git}}\\
 
-Das aktuelle, gemeinsame Repository des o/zb Projektes wird von dem bekannten Git-Hoster \textit{GitHub} bereitgestellt. Die Adresse zum Repository lautet: \url{https://github.com/Avenel/FirstApp}.
+Das aktuelle, gemeinsame Repository des o/ZB Projektes wird von dem bekannten Git-Hoster \textit{GitHub} bereitgestellt. Die Adresse zum Repository lautet: \url{https://github.com/Avenel/FirstApp}.
 
 \subsection{Workflow, Umsetzung}
 % Workflow: Git add/commit/push, cap deploy
@@ -352,7 +353,7 @@ In diesem Batch Skript wird die Testdatenbank auf den ursprünglichen Zustand zu
 \chapter{Korrekturen, Bugfixes}
 % WebImport
 \section{Webimport}
-In der o/zb Webanwendung sorgt der sogenannte \textit{Webimport} für die Übertragung der in einer CSV Datei hinterlegten Kontobewegungen. Weitere Informationen zu dem Webimport kann der Projekt Dokuementation WS 12/13 (ab S.53) entnommen werden.\\
+In der o/ZB Webanwendung sorgt der sogenannte \textit{Webimport} für die Übertragung der in einer CSV Datei hinterlegten Kontobewegungen. Weitere Informationen zu dem Webimport kann der Projekt Dokuementation WS 12/13 (ab S.53) entnommen werden.\\
 
 Zum Zeitpunkt der Aufnahme der Arbeiten an diesem Projekt funktionierte der Webimport nicht korrekt. Die folgenden Punkte sind aufgefallen:
 
