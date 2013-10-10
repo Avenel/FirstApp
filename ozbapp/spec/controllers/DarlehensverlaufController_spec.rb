@@ -5,13 +5,15 @@ describe DarlehensverlaufController do
 	# GET Requests
 	# new
 	describe "GET #new" do
+
+		# if you need to reset your db after each test, remove comments.
 		before :all do
 			# load data of the test-db into the tdd db
 			#puts "migrate testing data"
 		 	#`script/datenbank_tdd_migrieren.bat`
 		end
 
-		# create test data for EEKonto 70073		
+		# EEKonto 70073		
 		context "Show Darlehensverlauf of EEKonto 70073" do
 			context "parameters: anzeigen, vonDatum and bisDatum are nil" do
 				it "returns the 10 latest buchungen" do

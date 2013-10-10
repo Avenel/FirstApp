@@ -38,6 +38,13 @@
 
 \usepackage[]{acronym}
 
+
+\lstset{
+    frame=single,
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+
 \title{Testdriven Development am Beispiel der o/zb Webapplikation}
 \author{Martin Briewig, Michael Leibel}
 
@@ -425,8 +432,7 @@ Sind diese Voraussetzungen erfüllt, muss das Modul noch eingebunden werden. Da 
 
 
 \section{Umzug der Benutzerattribute in die Tabelle User}
-% TODO
-[TODO]
+Im Zuge der Korrektur des ER-Diagramms, ist der Wunsch nach einer Trennung zwischen den technischen und fachlichen Attributen in der Tabelle \textit{OZBPerson} aufgekommen. Somit ist eine weitere, rein technische, Tabelle \textit{Users} entstanden. Diese Tabelle wurde mit Hilfe von Devise (Gem für Login, Sessionmanagement) generiert. Jedes OZBMitglied, und deren Partner, erhalten einen eigenen Login. Die ID in der Tabelle Users entspricht der Mnr in der Tabelle OZBPerson, sodass ein einfaches Mapping erfolgen kann.
 
 \clearpage
 \chapter{Testdriven Development}
@@ -531,9 +537,47 @@ Die folgenden Models wurden getestet.
 \end{itemize}
 
 \subsection{Controller Tests}
+Dieser Abschnitt beschäftigt sich mit der Frage: \textit{Wie werden Controller mit Hilfe von RSpec getestet?}. Zu Demonstrationszwecken, wurde hier der Controller \textit{DarlehensVerlauf} genutzt. Die von Herrn Kienle durchgeführten Testfälle, siehe dazu die Testberichte II, IV und Va,   wurden hier größten Teils abgedeckt und sollen zeigen, dass das manuelle Testen durch die automatisierten Tests abgelöst werden kann.
 
 
 \subsubsection{Anwendungsfälle der einzelnen Tests}
+Für jeden Anwendungsfall, kann ein Kontext definiert werden. Dieser dient einer übersichtlichen Implementierung der Testfälle und gibt Aufschluss darüber, worum es in einem Testfall geht. Abbildung \vref{listing:test_contexts} gibt Aufschluss darüber, wie der Controller Test aufgebaut ist.\\
+
+\begin{lstlisting}[language=Ruby, frame=single, caption=Aufbau Controller Test Darlehensverlauf, tabsize=2, flexiblecolumns=true, captionpos=b]
+describe DarlehensverlaufController
+	describe "GET new"
+		context "Show Darlehensverlauf of EEKonto 70073" do
+			context "parameters: anzeigen, vonDatum and bisDatum are nil" do
+				it "returns the 10 latest buchungen" do
+				it "renders the correct view" do
+			context "from 01.11.2010 - 05.12.2010" do
+				it "shows bookings from 01.11.2010 to 05.12.2010 and correct points and saldi" do
+		context "ZEKonto 10073 [Reused]" do
+			context "Show from 15.08.2011 - 15.02.2012" do
+				it "shows bookings from 15.08.2011 to 15.12.2012 and correct points and saldi" do
+		context "ZEKonto 10038 [Reused]" do
+			it "shows bookings from 02.02.2011 to 16.11.2012 and correct points and saldi" do
+			it "shows bookings from 15.03.2011 to 16.11.2012 and correct points and saldi" do
+		
+	describe "GET kontoauszug" do
+		it "renders the correct template" do
+
+	describe "Class and instance methods" do
+\end{lstlisting}\label{listing:test_contexts}
+
+Im Folgenden wird beispielhaft beschrieben, wie ein einzelner Test implementiert wird. Normalerweise besteht ein Test aus der Berechnung des erwarteten Ergebnisses, der Programm Ausführung und dem anschließenden Vergleich des erwarteten Ergebnisses mit dem realen. 
+
+Abbilung \vref{listing:calculate_expected_results} zeigt die Vorbereitung, der Berechnung der zu erwartenden Ergebnisse. Die letzten Kontobuchungen werden geladen, überprüft ob diese auch bestehen, anschließend werden die verschiedenen Tagessaldi mit den Werten aus den Testberichten Herrn Kienles belegt und die erwartete Punkteanzahl in dem vorgegebenen Intervall berechnet.\\
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=76, lastline=93]{\string"../ozbapp/spec/controllers/DarlehensverlaufController_spec\string".rb}\label{listing:calculate_expected_results}
+
+Die Ausführung des Programms erfolgt durch einen \textit{GET-Aufruf}, s. Abbildung \vref{listing:get_result}. Dieser wird mit den Parametern versehen, die für den bestehenden Anwendungsfall notwendig sind. Der Darlehensverlauf Controller empfängt diesen GET-Befehl mit den dazugehörigen Parametern, und berechnet das Ergebnis: In diesem Fall eine HTML Seite. Dazu gehören auch die zugehörigen Controller-Instanzvariablen, die für den HTML Output maßgeblich sind.\\
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=95, lastline=96]{\string"../ozbapp/spec/controllers/DarlehensverlaufController_spec\string".rb}\label{listing:get_result}
+
+Um nun auf das Ergebnis zugreifen zu können, um die vom Controller berechneten Werte mit den erwarteten Werten zu vergleichen, wird mit Hilfe des \textit{assigns-Befehl} auf die gewünschten Instanzvariablen zugegriffen. Dies zeigt Abbildung \vref{listing:compare__results}.\\
+
+\lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=96, lastline=113]{\string"../ozbapp/spec/controllers/DarlehensverlaufController_spec\string".rb}\label{listing:compare__results}
 
 % Auswertung der bisherigen manuellen Tests
 \section{Auswertung}
