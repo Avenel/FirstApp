@@ -591,21 +591,35 @@ Für eine Evaluierung wurde probeweise dieses Gem an diesem Projekt ausprobiert.
 
 
 \section{Deployment E-Mail Benachrichtigung}
-Im Zuge der Modellierung eines Deploymentprozesses, wurde auch ein Skript geschrieben, das den Beteiligten eine E-Mail zusendet, sobald eine neue Version erfolgreich auf dem Alotech Server deployed wurde. Das Skript ist gut kommentiert, daher verweisen wir für technische Details auf das Skript selbst: Capify Skript: \glqq cap\_notify.rb\grqq. Zu finden ist es im Anhang.
+Im Zuge der Modellierung eines Deploymentprozesses, wurde auch ein Skript geschrieben, das den Beteiligten eine E-Mail zusendet, sobald eine neue Version erfolgreich auf dem Alotech Server deployed wurde. Das Skript ist gut kommentiert, daher verweisen wir für technische Details auf das Skript selbst: Capify Skript: \glqq cap\_notify.rb\grqq. Zu finden ist es im Anhang, s. \vref{listing:capify_notify}.
 
 \chapter{Ergebnis und Ausblick}
 \section{Ergebnis}
-Bugfixes\\
-Deployment Prozess\\
-Grundelemente sind genau spezifiziert worden\\
-Tests sichern das diese Grundelemente auch so bestehen bleiben (unit tests)\\
-Refactoring: alle modelle, migrationstool\\
-Best Practices, Einführung Controller Tests
+Zum Abschluss dieser Projektarbeit werden die Ergebnisse zusammengefasst. 
+
+\subsection{Bugfixes}
+Zu Beginn der Projektarbeit wurden ein paar Fehler bekannt gegeben, die Anwendungskritisch sind. In Kapitel 4 wurden diese Fehler behandelt und weitere größere Umbauarbeiten genannt, die zu Verbesserungen der Anwendung in den Punkten Wartbarkeit und Fehleranfälligkeit führten.
+
+\subsection{Deployment Prozess}
+Jede Gruppe hatte bislang ihre eigenen Strategien, die Anwendung auf einem Webserver zu deployen. Dies führte zu Missverständnissen und hat viel Zeit gekostet. Damit dies in Zukunft nicht mehr passiert, wurde ein kompletter Deployment Prozess beschrieben und implementiert, der auch eine Systembeschreibung des Alvotech-Servers beinhaltet.
+
+\subsection{Datenmodell}
+Im Laufe der Projektarbeit ist ein solides und fixiertes Datenmodell entstanden, welches nun als endgültige Basis den zukünftigen Gruppen dienen wird.
+
+\subsection{Unit Tests}
+Es sind eine große Anzahl an Unit Tests entstanden, die Absichern, dass das nun festgelegte Datenmodell technisch und fachlich korrekt implementiert ist. 
+
+\subsection{Refactoring}
+Im Zuge der Umbauarbeiten des Datenmodells, wurden auch die Tests angepasst. Dies hat auch zur Folge, dass alle Modelle an das nun fixierte Datenmodell angepasst werden mussten. Darüber hinaus wurde sehr auf eine einheitliche Implementierungsweise geachtet. Wenn das Datenmodell Veränderungen erfahren hat, so muss auch das Migrationstool angepasst werden. Hierbei wurden auch Sonderfälle, wie fehlende Bankleitzahlen, E-Mail Adressen und weiteres beachtet.
+
+\subsection{Best Practices, Einführung Feature Tests}
+Ein weiteres Ziel dieser Projektarbeit, die Einführung des TDD, wurde erfolgreich umgesetzt. Den zukünftigen Gruppen stehen bereits evaluierte Lösungen bereit, sowohl die konkrete Test-Implementierung als auch die Tools, damit die weitere Entwicklung reibungslos von statten gehen wird.\\
+Darüber hinaus wurde neben den Unit Tests auch ein Feature Test implementiert, der auf bereits in Testberichten dokumentierten Anwendungsfällen basiert und eine automatisierte Abhandlung der manuellen Tests aufzeigt.
 
 \section{Ausblick}
-Weitere Tests, Unit Tests vervollständigen\\
-Bestehende Controller Funktionalitäten schritt für schritt durch Tests abdecken und fixen\\
-TDD beibehalten, um für eine bessere Qualität zu sorgen
+Beim abschließenden Kollogium wurden die weiteren Schritte zusammen besprochen. Es sollen weitere Tests entstehen, die den noch verbliebenen Teil der ungetesteten Modelle abdecken. Darüber hinaus wurde beschlossen, dass nun eingeführte Vorgehensmodell für die weitere Entwicklung strikt einzubehalten. Somit sollen in Zukunft vorerst keine weiteren Funktionalitäten implementiert werden, sondern die bisherigen durch Feature Tests auf ihre korrekte Funktionalität in sowohl technischer als auch fachlicher Hinsicht überprüft und ggf. korrigiert werden. Außerdem wurde der Einsatz des Gems PaperTrail erwogen.\\
+
+Zum Abschluss bedanken wir uns recht herzlich für die gute Zusammenarbeit mit Herrn Kienle, Herrn Weltke, Herrn Kleinert und Herrn Schaefer.
 
 \clearpage
 \appendix
@@ -616,6 +630,98 @@ TDD beibehalten, um für eine bessere Qualität zu sorgen
 \section{Definition der o/ZB Attribute}
 \label{chapter:ozb_attribute}
 \includepdf[pages=-, landscape=true]{Media/definition_ozb_attribute.pdf}
+
+\clearpage
+\begin{lstlisting}[language=Ruby, frame=single, caption=notify.rb, tabsize=2, flexiblecolumns=true, captionpos=b]
+require "action_mailer"
+require "tlsmail" 
+
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+  :enable_starttls_auto => true,
+  :tls => true,
+  :address => "smtp.gmail.com",
+  :port => 587,
+  :domain => "googlemail.com",
+  :authentication => "plain",
+  :user_name => "",
+  :password => ""
+}
+ 
+class Notifier < ActionMailer::Base
+  default :from => "E-MAIL adress"
+  
+  def deploy_notification(cap_vars)
+    now = Time.now
+    msg = "Performed a deploy operation on #{now.strftime("%m/%d/%Y")} at #{now.strftime("%I:%M %p")} to #{cap_vars.host}"
+    
+    mail(:to => cap_vars.notify_emails, 
+         :subject => "Deployed #{cap_vars.application} to #{cap_vars.stage}") do |format|
+      format.text { render :text => msg}
+      format.html { render :text => "<p>" + msg + "<\p>"}
+    end
+  end
+end
+\end{lstlisting}\label{listing:capify_notify}
+
+\clearpage
+\begin{lstlisting}[language=Ruby, frame=single, caption=deploy.rb, tabsize=2, flexiblecolumns=true, captionpos=b]
+# cap email notifier
+load "config/cap_notify.rb"
+
+set :application, "ozbapp"
+
+server "188.64.45.50", :web, :app, :db, :primary => true
+
+set :scm, "git"
+set :repository, "https://github.com/Avenel/FirstApp.git"
+set :branch, "master"
+
+set :user, "ozbapp"
+set :deploy_to, "/home/#{user}/apps/#{application}"
+set :deploy_via, :remote_cache
+set :use_sudo, false
+set :host, "ozbapp.mooo.com"
+set :stage, "ozbapp.mooo.com"
+
+require 'net/ssh/proxy/socks5'
+
+# Setup email notification
+set :notify_emails, ["TKienle@t-online.de", "frank.schaefer@hs-karlsruhe.de", "stefan.welte@stud.uni-karlsruhe.de"]
+
+namespace :deploy do
+
+	desc "Tell Passenger to restart the app."
+	task :restart do
+		run "mkdir #{current_path}/ozbapp/tmp"
+		run "cat > #{current_path}/ozbapp/tmp/restart.txt"
+		run "touch #{current_path}/ozbapp/tmp/restart.txt"
+	end
+
+	desc "Renew SymLink"
+	task :renew_symlink do
+		run "rm /home/ozbapp/ozbapp"
+		run "ln -s /home/ozbapp/apps/ozbapp/current/ozbapp /home/ozbapp/ozbapp"
+	end
+
+	desc "Renew create_tables.txt"
+	task :renew_create_tables do
+		run "rm /home/ozbapp/create_tables.txt"
+		run "cp -f /home/ozbapp/apps/ozbapp/current/tools/create_tables.txt /home/ozbapp/create_tables.txt"
+	end
+
+	# Create task to send a notification
+	desc "Send email notification"
+	task :send_notification do
+		Notifier.deploy_notification(self).deliver 
+	end
+
+end
+
+after 'deploy:update_code', 'deploy:renew_symlink'
+after :deploy, 'deploy:renew_create_tables'
+after :deploy, 'deploy:send_notification'
+\end{lstlisting}\label{listing:capify_deploy}
 
 \newpage
 %\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
