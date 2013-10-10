@@ -583,17 +583,28 @@ Um nun auf das Ergebnis zugreifen zu können, um die vom Controller berechneten 
 \section{Auswertung}
 Die Auswertung befindet sich im Anhang Kapitel \vref{sec:appendix}.
 
-\chapter{Neue Features}
+\chapter{Features}
 \section{PaperTrail - Historisierung}
+Im Laufe der Projektarbeit ist uns eine Alternative zu der damalig bestehenden Historisierungsfunktion bekannt geworden. Es handelt sich dabei um ein RoR Gem \textit{PaperTrail}. Die Webseite \url{https://github.com/airblade/paper_trail} liefert nähere Details zu diesem Gem. Zusammenfassend löst dieses Gem  Auditing und/oder Versionierung in einer sehr eleganten und einfach anzuwendenden Weise. Es erzeugt dazu eine weitere, große Tabelle, in der jede Datensatzänderung einen Platz findet. Die Datensätze können mit vom Entwickler angereicherten Informationen versehen werden, um weiteren Anforderungen gerecht zu werden. Das Verhalten von PaperTrail lässt sich durch den Entwickler prima steuern, z.B. können nur bestimmte Attribute historisiert werden. Außerdem lassen sich Datensätze zu jeder vorherigen Version zurücksetzen, oder gelöschte wiederherstellen.\\
+Für eine Evaluierung wurde probeweise dieses Gem an diesem Projekt ausprobiert. Wir sind zu dem Ergebnis gekommen, dass es sich prima für die gedachten Zwecke eignen würde. Allerdings kam dieses Gem noch nicht zum Einsatz, daher wurde wie schon in einem früheren beschrieben, die Historisierung in ein eigenständiges Modul ausgelagert und nicht komplett durch dieses Gem ersetzt.
 
-\clearpage
 
 \section{Deployment E-Mail Benachrichtigung}
-s. Capify Skript: \glqq cap\_notify.rb\grqq
+Im Zuge der Modellierung eines Deploymentprozesses, wurde auch ein Skript geschrieben, das den Beteiligten eine E-Mail zusendet, sobald eine neue Version erfolgreich auf dem Alotech Server deployed wurde. Das Skript ist gut kommentiert, daher verweisen wir für technische Details auf das Skript selbst: Capify Skript: \glqq cap\_notify.rb\grqq. Zu finden ist es im Anhang.
 
 \chapter{Ergebnis und Ausblick}
 \section{Ergebnis}
+Bugfixes\\
+Deployment Prozess\\
+Grundelemente sind genau spezifiziert worden\\
+Tests sichern das diese Grundelemente auch so bestehen bleiben (unit tests)\\
+Refactoring: alle modelle, migrationstool\\
+Best Practices, Einführung Controller Tests
+
 \section{Ausblick}
+Weitere Tests, Unit Tests vervollständigen\\
+Bestehende Controller Funktionalitäten schritt für schritt durch Tests abdecken und fixen\\
+TDD beibehalten, um für eine bessere Qualität zu sorgen
 
 \clearpage
 \appendix
