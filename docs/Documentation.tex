@@ -107,7 +107,7 @@ Fachbereich: Informatik (Master)
 
 \pagenumbering{arabic} 
 \chapter{Einleitung}
-Die ohne Zins Bewegung Stuttgart arbeitet nun seit einigen Jahren mit der Hochschule Karlsruhe zusammen an einer Webanwendung. Diese Webanwendung soll die Geschäftsprozesse der Bewegung unterstützen und verwalten. Im Laufe der letzten Jahre ist aus der ursprünglichen Idee eine komplexe Webanwendung entstanden, die nun gründlich auf Fehler überprüft und gegebenfalls ausgebessert werden soll. 
+Die ohne Zins Bewegung Stuttgart arbeitet nun seit einigen Jahren mit der Hochschule Karlsruhe zusammen an einer Webanwendung. Diese Webanwendung soll die Geschäftsprozesse der Bewegung unterstützen und verwalten. Im Laufe der letzten Jahre ist aus der ursprünglichen Idee eine komplexe Webanwendung entstanden, die nun gründlich auf Fehler überprüft und gegebenenfalls ausgebessert werden soll. 
 Diese Aufgabe wird nun uns, Herr Briewig und Herr Leibel, anvertraut. Im Folgenden wird eine detaillierte Aufgabenstellung formuliert, an dieser sich diese Projektarbeit messen lassen wird.  
 
 \section{Aufgabenbeschreibung}
@@ -248,7 +248,7 @@ Wie Eingangs dieses Abschnittes erwähnt worden ist, sind bei einem Deployment P
 Bei Capistrano bestimmen sogenannte Deployment Rezepte (\glqq Deployment Recipies\grqq) wie der Deployment Prozess verläuft. Auch für die o/ZB Webanwendung wurde ein Rezept geschrieben, welches im Abschnitt \vref{subsec:deployment_recipe} beschrieben wird.
 
 \subsection{Versionsverwaltung}
-Für einen stabilen und guten Softwareentwicklungsprozess ist eine Versionsverwaltung in der heutigen Zeit unabdingbar. Die Hauptaufgaben bestehen aus der Protokollierung der vorgenommenen Änderungen an Quelltexten, Skripten und anderen Dokumenten. Der Wiederherstellung von alten Zuständen, sodass versehentliche Änderungen oder Änderungen, die z.B. zu Laufzeitfehlern führten, zurückgenommen werden können. Die Archivierung jedes neuen Proejktzustands. Die Koordinierung des gemeinsamen Datei-Zugriffs der am Projekt beteiligten Entwickler. Und zu guter Letzt ermöglicht eine Versionsverwaltung die gleichzeitige Erzeugung mehrerer Entwicklungszweige (sogenannter \glqq Branches\grqq) eines Projektes. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Versionsverwaltung}}
+Für einen stabilen und guten Softwareentwicklungsprozess ist eine Versionsverwaltung in der heutigen Zeit unabdingbar. Die Hauptaufgaben bestehen aus der Protokollierung der vorgenommenen Änderungen an Quelltexten, Skripten und anderen Dokumenten. Der Wiederherstellung von alten Zuständen, sodass versehentliche Änderungen oder Änderungen, die z.B. zu Laufzeitfehlern führten, zurückgenommen werden können. Die Archivierung jedes neuen Projektzustands. Die Koordinierung des gemeinsamen Datei-Zugriffs der am Projekt beteiligten Entwickler. Und zu guter Letzt ermöglicht eine Versionsverwaltung die gleichzeitige Erzeugung mehrerer Entwicklungszweige (sogenannter \glqq Branches\grqq) eines Projektes. \footnote{vgl. \url{http://de.wikipedia.org/wiki/Versionsverwaltung}}
 
 \subsubsection{Git}
 % Wie sieht aktuelle Setup aus?
@@ -345,7 +345,7 @@ Dieses Batch Skript importiert zunächst einen aktuellen Stand der Produktivdate
 \lstinputlisting[language=bash, frame=single, caption=datenbank\_migrieren.sh, tabsize=2, flexiblecolumns=true, captionpos=b]{\string"../tools/datenbank_migrieren\string".sh}
 
 \subsection{Datenbank zurücksetzen}
-In diesem Batch Skript wird die Testdatenbank auf den ursprünglichen Zustand zurückgesetzt. Der ursprüngliche Zustand liegt in dem MySql Dump \textit{dump.sql}. Zur Ausführung genügt auch hier der folgende Befehl \textit{./datenbank\_ruecksetzen.sh}. \\
+In diesem Batch Skript wird die Testdatenbank auf den ursprünglichen Zustand zurückgesetzt. Der ursprüngliche Zustand liegt in dem MySQL Dump \textit{dump.sql}. Zur Ausführung genügt auch hier der folgende Befehl \textit{./datenbank\_ruecksetzen.sh}. \\
 
 \lstinputlisting[language=bash, frame=single, caption=datenbank\_migrieren.sh, tabsize=2, flexiblecolumns=true, captionpos=b]{\string"../tools/datenbank_ruecksetzen\string".sh}
 
@@ -353,7 +353,7 @@ In diesem Batch Skript wird die Testdatenbank auf den ursprünglichen Zustand zu
 \chapter{Korrekturen, Bugfixes}
 % WebImport
 \section{Webimport}
-In der o/ZB Webanwendung sorgt der sogenannte \textit{Webimport} für die Übertragung der in einer CSV Datei hinterlegten Kontobewegungen. Weitere Informationen zu dem Webimport kann der Projekt Dokuementation WS 12/13 (ab S.53) entnommen werden.\\
+In der o/ZB Webanwendung sorgt der sogenannte \textit{Webimport} für die Übertragung der in einer CSV Datei hinterlegten Kontobewegungen. Weitere Informationen zu dem Webimport kann der Projekt Dokumentation WS 12/13 (ab S.53) entnommen werden.\\
 
 Zum Zeitpunkt der Aufnahme der Arbeiten an diesem Projekt funktionierte der Webimport nicht korrekt. Die folgenden Punkte sind aufgefallen:
 
@@ -380,7 +380,7 @@ Die Exceptions treten beim Speichervorgang auf, dem zur Folge wurde um jeden Spe
 \subsection{Anzahl der importierten Datensätze}
 Eine weitere Auffälligkeit bestand in der angezeigten Anzahl der importierten Datensätze. Diese Zahl zeigte ggf. zu viele importierten Datensätze an. Unter einem Datensatz versteht man eine Kontobewegung in der CSV Datei.\\
 
-Einer der Fehler tritt in Zeile 318 auf. Dort werden bei einer bestimmten Kontobewegung zwei Buchungen durchgeführt. Beide Buchungen wurden mitgezählt, obwohl der Auslöser nur \textit{ein} Datensatz gewesen ist. Durch Auskommentieren und einem Hinweiß konnte dieser Fehler korrigiert werden.\\
+Einer der Fehler tritt in Zeile 318 auf. Dort werden bei einer bestimmten Kontobewegung zwei Buchungen durchgeführt. Beide Buchungen wurden mitgezählt, obwohl der Auslöser nur \textit{ein} Datensatz gewesen ist. Durch Auskommentieren und einem Hinweis konnte dieser Fehler korrigiert werden.\\
 
 \lstinputlisting[language=Ruby, frame=single, caption=webimport\_controller.rb, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=313, lastline=321]{\string"../ozbapp/app/controllers/webimport_controller\string".rb}\label{listing:webimport_nil}
 
@@ -390,7 +390,7 @@ Beim Import der Buchungen werden zum Zeitpunkt der Übernahme noch keine Punkte 
 
 % Darlehensverlauf
 \section{Darlehensverlauf}
-Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zuge in den von Herrn Kienle angefertigten Tests, konnten die auftretenen Fehler analysiert und kategorisiert werden. Aufgrund des relativ unstrukturierten und unübersichtlichen Programmcodes, wurde beschlossen diese Funktionalität, basierend den Spezifikationen die sich aus den Tests und Dokumentationen ableiten ließen, neu zu implementieren.\\
+Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zuge in den von Herrn Kienle angefertigten Tests, konnten die aufgetretenen Fehler analysiert und kategorisiert werden. Aufgrund des relativ unstrukturierten und unübersichtlichen Programmcodes, wurde beschlossen diese Funktionalität, basierend den Spezifikationen die sich aus den Tests und Dokumentationen ableiten ließen, neu zu implementieren.\\
 
 \textbf{Fehlerursachen:}
 
@@ -404,7 +404,7 @@ Der Darlehensverlauf ist zum Zeitpunkt der Übernahme fehlerhaft gewesen. Im Zug
 \end{itemize} 
 
 % Lösung
-Diese Ursachen wurden bei der kompletten Neu-Implementierung beachtet und umgesetzt. Integrationstest, beschrieben in Kapitel \ref{} sichern die korrekte Funktionalität in den gegebenen Awendungsfällen.
+Diese Ursachen wurden bei der kompletten Neu-Implementierung beachtet und umgesetzt. Integrationstest, beschrieben in Kapitel \ref{} sichern die korrekte Funktionalität in den gegebenen Anwendungsfällen.
 
 \section{HistoricRecord}
 Im Zuge des Test-Driven Development und dem damit verbundenen Refactoring, ist aufgefallen das für jedes historisierte Model im Grunde derselbe Quellcode geschrieben wurde, der für die Historisierung zuständig gewesen ist. Dieser lässt sich nur sehr schlecht warten und im allgemeinen ist großer, redundanter Quellcode, wie hier vorgefunden wurde, schlecht. Daher wurde ein neues Ruby-Modul implementiert: \textit{HistoricRecord}. Dieses Ruby-Modul lässt sich für jedes Model anwenden, wenn dies die folgenden Methoden implementiert und Kriterien beachtet.\\
@@ -415,7 +415,7 @@ Diese Methode liefert den primären Schlüssel, bis auf das Attribut GueltigVon 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=11, lastline=13]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:getPrimaryKeys}
 
 \textbf{set\_primary\_keys}\\
-Die Methode \textit{set\_primary\_keys(values)} erwartet die Werte für den primären (zusammengesetzten) Schlüssel. Nach Aufruf entsprichen die Werte der primärschlüssel Attribute den angegebenen Werten. Abbildung \vref{listing:setPrimaryKeys} zeigt eine beispielhafte Implementierung.
+Die Methode \textit{set\_primary\_keys(values)} erwartet die Werte für den primären (zusammengesetzten) Schlüssel. Nach Aufruf entsprechen die Werte der Primärschlüssel Attribute den angegebenen Werten. Abbildung \vref{listing:setPrimaryKeys} zeigt eine beispielhafte Implementierung.
 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=15, lastline=17]{\string"../ozbapp/app/models/ozb_konto\string".rb}\label{listing:setPrimaryKeys}
 
@@ -437,7 +437,7 @@ Im Zuge der Korrektur des ER-Diagramms, ist der Wunsch nach einer Trennung zwisc
 
 \clearpage
 \chapter{Testdriven Development}
-In diesem Kapitel wird die Einführung und Durchführung der Eigenschaften der Testgetriebenen Entwicklung beschrieben. Im Zuge dessen wird zunächst eine Analyse des Ist und des Soll Standes durchgeführt, bevor mit der Umsetzung und Durchführung fortgefahren wird. Das Ziel ist die Einführung und Durchführung von Tests, um den Zustand der Webanwendung darzulegen und um die aufgezeigten Mängel zu beseitigen und mit Hilfe der Tests nicht wieder eintreten zu lassen.    
+In diesem Kapitel wird die Einführung und Durchführung der Eigenschaften der testgetriebenen Entwicklung beschrieben. Im Zuge dessen wird zunächst eine Analyse des Ist und des Soll Standes durchgeführt, bevor mit der Umsetzung und Durchführung fortgefahren wird. Das Ziel ist die Einführung und Durchführung von Tests, um den Zustand der Webanwendung darzulegen und um die aufgezeigten Mängel zu beseitigen und mit Hilfe der Tests nicht wieder eintreten zu lassen.    
 
 \section{Analyse}
 % Ist-Analyse: Es gibt keine Tests, Fehlerbehaftete Anwendung
@@ -458,7 +458,7 @@ In diesem Abschnitt wird die Umsetzung der Tests beschrieben. Dazu gehört eine 
 \textit{RSpec} (s. \url{http://rubygems.org/gems/rspec}) ist das wohl bekannteste Testing-Framework für Ruby on Rails Applikationen. Es ist im Sinne des \textit{Behaviour-Driven Development} entstanden und soll das Test-Driven Development unterstützen und leichter zugänglich machen. Das Verzeichnis \textit{/spec} birgt alle Dateien, die mit dem Testing in Verbindung stehen.
 
 \subsubsection{FactoryGirl}
-\textit{Factory\_girl} (s. \url{http://rubygems.org/gems/factory_girl}) stellt ein alternatives Framework zu den Ruby Fixtures zur Verfügung, das es erlaubt Daten mit Hilfe einer \glqq Factory\grqq (=Fabrik, s. \url{http://de.wikipedia.org/wiki/Abstract_Factory}) zu generieren. In diesr Webapplikation lassen sich somit Beispieldaten für die Tests leichter erzeugen. Abbildung \vref{listing:default_factory} zeigt einen Ausschnitt einer typischen Factory.  
+\textit{Factory\_girl} (s. \url{http://rubygems.org/gems/factory_girl}) stellt ein alternatives Framework zu den Ruby Fixtures zur Verfügung, das es erlaubt Daten mit Hilfe einer \glqq Factory\grqq (=Fabrik, s. \url{http://de.wikipedia.org/wiki/Abstract_Factory}) zu generieren. In dieser Webapplikation lassen sich somit Beispieldaten für die Tests leichter erzeugen. Abbildung \vref{listing:default_factory} zeigt einen Ausschnitt einer typischen Factory.  
 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=3, lastline=12]{\string"../ozbapp/spec/factories/adressen\string".rb}\label{listing:default_factory}
 
