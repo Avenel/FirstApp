@@ -25,7 +25,7 @@
 \setlength\parindent{0pt} 
 \usepackage{float}
 
-\usepackage{hyperref}
+%\usepackage{hyperref}
 \linespread{1.3}
 \usepackage{multicol}
 \usepackage[german]{varioref}
@@ -33,8 +33,6 @@
 \usepackage{pdfpages}
 
 \bibliographystyle{alphadin}
-
-\setcounter{tocdepth}{1}
 
 \usepackage[]{acronym}
 
@@ -50,8 +48,7 @@
 
 
 \begin{document}
-
-\pagestyle{empty}
+\thispagestyle{empty}
 \begin{center}
 
 \begin{figure}[h]
@@ -86,9 +83,8 @@ Fachbereich: Informatik (Master)
 \end{center}
 
 \clearpage{}
-
-\pagenumbering{roman} 
-
+%\pagenumbering{roman} 
+\frontmatter
 \tableofcontents{}
 
 \clearpage{}
@@ -105,7 +101,8 @@ Fachbereich: Informatik (Master)
 
 \newpage
 
-\pagenumbering{arabic} 
+%\pagenumbering{arabic} 
+\mainmatter
 \chapter{Einleitung}
 Die ohne Zins Bewegung Stuttgart arbeitet nun seit einigen Jahren mit der Hochschule Karlsruhe zusammen an einer Webanwendung. Diese Webanwendung soll die Geschäftsprozesse der Bewegung unterstützen und verwalten. Im Laufe der letzten Jahre ist aus der ursprünglichen Idee eine komplexe Webanwendung entstanden, die nun gründlich auf Fehler überprüft und gegebenenfalls ausgebessert werden soll. 
 Diese Aufgabe wird nun uns, Herr Briewig und Herr Leibel, anvertraut. Im Folgenden wird eine detaillierte Aufgabenstellung formuliert, an dieser sich diese Projektarbeit messen lassen wird.  
@@ -153,7 +150,6 @@ Dies Phase steht im Zeichen der Einführung der Testgetriebenen Entwicklung (\gl
 Nachdem sich ein detaillierter Überblick über den Zustand der Webanwendung verschafft worden ist, wird das Datenmodell festgelegt, implementiert und erneut getestet. Ist dies abgeschlossen, werden beispielhafte Integrationstest implementiert und dokumentiert. Diese dienen dann den Nachfolgern als Anhaltspunkt für den weiteren Werdegang dieser Webanwendung. Außerdem werden grobe Fehler in der Webanwendung behoben.
 
 
-\clearpage
 \chapter{Hintergrundwissen}
 \section{Das o/ZB Projekt}
 Die Solidargemeinschaft o/ZB Stuttgart wurde am 21. Januar 2005 als GbR von 10 GesellschafterInnen gegründet und hatte Mitte des Jahres bereits 100 Mitglieder.
@@ -468,7 +464,7 @@ In diesem Abschnitt wird die Umsetzung der Tests beschrieben. Dazu gehört eine 
 \subsection{Gems die zukünftig verwendet werden könnten}
 In diesem Abschnitt werden Gems genannt, die in Zukunft den Test-Driven Development unterstützen könnten.
 \subsubsection{Capybara}
-\textit{Capybara} (s. \url{http://rubygems.org/gems/capybara}) hilft, die Benutzerinteraktionen mit der Web-Applikation zu simulieren. Somit lassen sich Integrations Tests implementieren, die noch enger mit der Weboberfläche verzahnt sind.
+\textit{Capybara} (s. \url{http://rubygems.org/gems/capybara}) hilft, die Benutzerinteraktionen mit der Web-Applikation zu simulieren. Somit lassen sich Integrations-Tests implementieren, die noch enger mit der Weboberfläche verzahnt sind.
 
 \subsubsection{Guard-Spec}
 \textit{Guard-spec} (s. \url{http://rubygems.org/gems/guard-rspec}) dient dem Entwickler dazu, Tests automatisch (z.B. nach jedem Speichervorgang) auszuführen. 
@@ -481,7 +477,7 @@ In die Auswahl der Entwicklertools wurde viel Zeit investiert, die im Nachhinein
 Welche Plugins für das Test-Driven Development verwendet wurden, kann dem nun folgenden Abschnitt entnommen werden. 
 
 \subsubsection{RubyTest}
-\textit{RubyTest} (s. \url{https://github.com/mhartl/rails_tutorial_sublime_text}) ist ein Sublime Text 2 Plugin, dass den Entwickler bei der Ausführung der Tests hilft. Wie die Installation von statten geht und wie das Plugin benutzt wird, kann diesem Youtube Video entnommen werden \url{http://www.youtube.com/watch?v=05x1Jk4rT1A}. Man hat die Möglichkeit entweder alle Tests eines geöffneten Dokuments mit der Tastenkombination \textit{STRG+SHIFT+T}, oder nur einen einzelnen Test (in dem sich der Cursor befindet) mit der Tastenkombination \textit{STRG+SHIFT+R} auszuführen.
+\textit{RubyTest} (s. \url{https://github.com/mhartl/rails_tutorial_sublime_text}) ist ein Sublime Text 2 Plugin, dass den Entwickler bei der Ausführung der Tests hilft. Wie die Installation von statten geht und wie das Plugin benutzt wird, kann diesem YouTube Video entnommen werden \url{http://www.youtube.com/watch?v=05x1Jk4rT1A}. Man hat die Möglichkeit entweder alle Tests eines geöffneten Dokuments mit der Tastenkombination \textit{STRG+SHIFT+T}, oder nur einen einzelnen Test (in dem sich der Cursor befindet) mit der Tastenkombination \textit{STRG+SHIFT+R} auszuführen.
 
 
 \subsubsection{Cygwin}
@@ -501,7 +497,7 @@ Wie bereits in einem früheren Abschnitt gezeigt, werden Factories verwendet um 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=6, lastline=9]{\string"../ozbapp/spec/models/bank_spec\string".rb}\label{listing:default_test_factory}
 
 \subsubsection{Attribut-Validierungen}
-Attribute müssen in den meisten Fällen bestimmten Kriterien entsprechen. Sie dürfen mal nur eine Nummer sein, mal einem bestimmten regulären Ausdruck entsrechen, müssen vorhanden sein oder auch nicht. Wichtig ist, dass man die folgenden Fälle, die Abbildung \vref{listing:default_test_attributes} zeigt abdeckt.
+Attribute müssen in den meisten Fällen bestimmten Kriterien entsprechen. Sie dürfen mal nur eine Nummer sein, mal einem bestimmten regulären Ausdruck entsprechen, müssen vorhanden sein oder auch nicht. Wichtig ist, dass man die folgenden Fälle, die Abbildung \vref{listing:default_test_attributes} zeigt abdeckt.
 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=29, lastline=45]{\string"../ozbapp/spec/models/bank_spec\string".rb}\label{listing:default_test_attributes}
 
@@ -520,7 +516,7 @@ Auch dieses Modul wurde gesondert getestet. Abbildung \vref{listing:historicReco
  \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=461, lastline=510]{\string"../ozbapp/spec/models/HistoricRecord_spec\string".rb}\label{listing:historicRecordTestExample}
 
 
-\subsubsection{Gesteste Models}
+\subsubsection{Getestete Models}
 Die folgenden Models wurden getestet.
 
 \begin{itemize}
@@ -568,7 +564,7 @@ describe DarlehensverlaufController
 
 Im Folgenden wird beispielhaft beschrieben, wie ein einzelner Test implementiert wird. Normalerweise besteht ein Test aus der Berechnung des erwarteten Ergebnisses, der Programm Ausführung und dem anschließenden Vergleich des erwarteten Ergebnisses mit dem realen. 
 
-Abbilung \vref{listing:calculate_expected_results} zeigt die Vorbereitung, der Berechnung der zu erwartenden Ergebnisse. Die letzten Kontobuchungen werden geladen, überprüft ob diese auch bestehen, anschließend werden die verschiedenen Tagessaldi mit den Werten aus den Testberichten Herrn Kienles belegt und die erwartete Punkteanzahl in dem vorgegebenen Intervall berechnet.\\
+Abbildung \vref{listing:calculate_expected_results} zeigt die Vorbereitung, der Berechnung der zu erwartenden Ergebnisse. Die letzten Kontobuchungen werden geladen, überprüft ob diese auch bestehen, anschließend werden die verschiedenen Tagessaldi mit den Werten aus den Testberichten Herrn Kienles belegt und die erwartete Punkteanzahl in dem vorgegebenen Intervall berechnet.\\
 
 \lstinputlisting[language=Ruby, frame=single, caption=Factory der Adressen, tabsize=2, flexiblecolumns=true, captionpos=b, firstline=76, lastline=93]{\string"../ozbapp/spec/controllers/DarlehensverlaufController_spec\string".rb}\label{listing:calculate_expected_results}
 
@@ -598,7 +594,7 @@ Im Zuge der Modellierung eines Deploymentprozesses, wurde auch ein Skript geschr
 Zum Abschluss dieser Projektarbeit werden die Ergebnisse zusammengefasst. 
 
 \subsection{Bugfixes}
-Zu Beginn der Projektarbeit wurden ein paar Fehler bekannt gegeben, die Anwendungskritisch sind. In Kapitel 4 wurden diese Fehler behandelt und weitere größere Umbauarbeiten genannt, die zu Verbesserungen der Anwendung in den Punkten Wartbarkeit und Fehleranfälligkeit führten.
+Zu Beginn der Projektarbeit wurden ein paar Fehler bekannt gegeben, die anwendungskritisch sind. In Kapitel 4 wurden diese Fehler behandelt und weitere größere Umbauarbeiten genannt, die zu Verbesserungen der Anwendung in den Punkten Wartbarkeit und Fehleranfälligkeit führten.
 
 \subsection{Deployment Prozess}
 Jede Gruppe hatte bislang ihre eigenen Strategien, die Anwendung auf einem Webserver zu deployen. Dies führte zu Missverständnissen und hat viel Zeit gekostet. Damit dies in Zukunft nicht mehr passiert, wurde ein kompletter Deployment Prozess beschrieben und implementiert, der auch eine Systembeschreibung des Alvotech-Servers beinhaltet.
@@ -617,7 +613,7 @@ Ein weiteres Ziel dieser Projektarbeit, die Einführung des TDD, wurde erfolgrei
 Darüber hinaus wurde neben den Unit Tests auch ein Feature Test implementiert, der auf bereits in Testberichten dokumentierten Anwendungsfällen basiert und eine automatisierte Abhandlung der manuellen Tests aufzeigt.
 
 \section{Ausblick}
-Beim abschließenden Kollogium wurden die weiteren Schritte zusammen besprochen. Es sollen weitere Tests entstehen, die den noch verbliebenen Teil der ungetesteten Modelle abdecken. Darüber hinaus wurde beschlossen, dass nun eingeführte Vorgehensmodell für die weitere Entwicklung strikt einzubehalten. Somit sollen in Zukunft vorerst keine weiteren Funktionalitäten implementiert werden, sondern die bisherigen durch Feature Tests auf ihre korrekte Funktionalität in sowohl technischer als auch fachlicher Hinsicht überprüft und ggf. korrigiert werden. Außerdem wurde der Einsatz des Gems PaperTrail erwogen.\\
+Beim abschließenden Kolloquium wurden die weiteren Schritte zusammen besprochen. Es sollen weitere Tests entstehen, die den noch verbliebenen Teil der ungetesteten Modelle abdecken. Darüber hinaus wurde beschlossen, dass nun eingeführte Vorgehensmodell für die weitere Entwicklung strikt einzubehalten. Somit sollen in Zukunft vorerst keine weiteren Funktionalitäten implementiert werden, sondern die bisherigen durch Feature Tests auf ihre korrekte Funktionalität in sowohl technischer als auch fachlicher Hinsicht überprüft und ggf. korrigiert werden. Außerdem wurde der Einsatz des Gems PaperTrail erwogen.\\
 
 Zum Abschluss bedanken wir uns recht herzlich für die gute Zusammenarbeit mit Herrn Kienle, Herrn Weltke, Herrn Kleinert und Herrn Schaefer.
 
@@ -625,11 +621,11 @@ Zum Abschluss bedanken wir uns recht herzlich für die gute Zusammenarbeit mit H
 \appendix
 \chapter{Anhang}\label{sec:appendix}
 \section{Test-Driven-Development Präsentation}
-\includepdf[pages={1-25}]{TDDPresentation.pdf}
+\includepdf[pages={1-25}, pagecommand={\thispagestyle{plain}}]{TDDPresentation.pdf}
 \clearpage
 \section{Definition der o/ZB Attribute}
 \label{chapter:ozb_attribute}
-\includepdf[pages=-, landscape=true]{Media/definition_ozb_attribute.pdf}
+\includepdf[pages=-, landscape=true, scale=0.8, pagecommand={\thispagestyle{plain}}]{Media/definition_ozb_attribute.pdf}
 
 \clearpage
 \begin{lstlisting}[language=Ruby, frame=single, caption=notify.rb, tabsize=2, flexiblecolumns=true, captionpos=b]

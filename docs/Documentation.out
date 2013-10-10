@@ -1,32 +1,62 @@
 \BOOKMARK [0][-]{chapter.1}{Einleitung}{}% 1
 \BOOKMARK [1][-]{section.1.1}{Aufgabenbeschreibung}{chapter.1}% 2
-\BOOKMARK [0][-]{chapter.2}{Hintergrundwissen}{}% 3
-\BOOKMARK [1][-]{section.2.1}{Das o/ZB Projekt}{chapter.2}% 4
-\BOOKMARK [1][-]{section.2.2}{Das Testsystem}{chapter.2}% 5
-\BOOKMARK [1][-]{section.2.3}{Test-Driven Development}{chapter.2}% 6
-\BOOKMARK [0][-]{chapter.3}{Allgemeine Dokumentationen}{}% 7
-\BOOKMARK [1][-]{section.3.1}{Das korrigierte ER-Diagramm}{chapter.3}% 8
-\BOOKMARK [1][-]{section.3.2}{Das korrigierte Relationenmodell}{chapter.3}% 9
-\BOOKMARK [1][-]{section.3.3}{Deployment und Versionskontrolle}{chapter.3}% 10
-\BOOKMARK [1][-]{section.3.4}{Datenbank Migration}{chapter.3}% 11
-\BOOKMARK [0][-]{chapter.4}{Korrekturen, Bugfixes}{}% 12
-\BOOKMARK [1][-]{section.4.1}{Webimport}{chapter.4}% 13
-\BOOKMARK [1][-]{section.4.2}{Darlehensverlauf}{chapter.4}% 14
-\BOOKMARK [1][-]{section.4.3}{HistoricRecord}{chapter.4}% 15
-\BOOKMARK [1][-]{section.4.4}{Umzug der Benutzerattribute in die Tabelle User}{chapter.4}% 16
-\BOOKMARK [0][-]{chapter.5}{Testdriven Development}{}% 17
-\BOOKMARK [1][-]{section.5.1}{Analyse}{chapter.5}% 18
-\BOOKMARK [1][-]{section.5.2}{Implementierung}{chapter.5}% 19
-\BOOKMARK [1][-]{section.5.3}{Auswertung}{chapter.5}% 20
-\BOOKMARK [0][-]{chapter.6}{Features}{}% 21
-\BOOKMARK [1][-]{section.6.1}{PaperTrail - Historisierung}{chapter.6}% 22
-\BOOKMARK [1][-]{section.6.2}{Deployment E-Mail Benachrichtigung}{chapter.6}% 23
-\BOOKMARK [0][-]{chapter.7}{Ergebnis und Ausblick}{}% 24
-\BOOKMARK [1][-]{section.7.1}{Ergebnis}{chapter.7}% 25
-\BOOKMARK [1][-]{section.7.2}{Ausblick}{chapter.7}% 26
-\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 27
-\BOOKMARK [1][-]{section.A.1}{Test-Driven-Development Pr\344sentation}{appendix.A}% 28
-\BOOKMARK [1][-]{section.A.2}{Definition der o/ZB Attribute}{appendix.A}% 29
-\BOOKMARK [0][-]{appendix*.22}{Abbildungsverzeichnis}{}% 30
-\BOOKMARK [0][-]{appendix*.23}{Tabellenverzeichnis}{}% 31
-\BOOKMARK [0][-]{appendix*.24}{Listings}{}% 32
+\BOOKMARK [2][-]{subsection.1.1.1}{Phase 1: Korrekturen, Dokumentieren}{section.1.1}% 3
+\BOOKMARK [2][-]{subsection.1.1.2}{Phase 2: Korrektur der Darlehensverlaufsanzeige}{section.1.1}% 4
+\BOOKMARK [2][-]{subsection.1.1.3}{Phase 3: Einrichtung Testdriven Development, Erstellung der Model Tests}{section.1.1}% 5
+\BOOKMARK [2][-]{subsection.1.1.4}{Phase 4: Datenmodellkorrekturen, Implementierung Integrationtests}{section.1.1}% 6
+\BOOKMARK [0][-]{chapter.2}{Hintergrundwissen}{}% 7
+\BOOKMARK [1][-]{section.2.1}{Das o/ZB Projekt}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.2}{Das Testsystem}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.3}{Test-Driven Development}{chapter.2}% 10
+\BOOKMARK [2][-]{subsection.2.3.1}{Definition}{section.2.3}% 11
+\BOOKMARK [2][-]{subsection.2.3.2}{Modul Tests}{section.2.3}% 12
+\BOOKMARK [2][-]{subsection.2.3.3}{Controller Tests}{section.2.3}% 13
+\BOOKMARK [2][-]{subsection.2.3.4}{Feature Tests}{section.2.3}% 14
+\BOOKMARK [0][-]{chapter.3}{Allgemeine Dokumentationen}{}% 15
+\BOOKMARK [1][-]{section.3.1}{Das korrigierte ER-Diagramm}{chapter.3}% 16
+\BOOKMARK [1][-]{section.3.2}{Das korrigierte Relationenmodell}{chapter.3}% 17
+\BOOKMARK [1][-]{section.3.3}{Deployment und Versionskontrolle}{chapter.3}% 18
+\BOOKMARK [2][-]{subsection.3.3.1}{Deployment}{section.3.3}% 19
+\BOOKMARK [2][-]{subsection.3.3.2}{Versionsverwaltung}{section.3.3}% 20
+\BOOKMARK [2][-]{subsection.3.3.3}{Workflow, Umsetzung}{section.3.3}% 21
+\BOOKMARK [1][-]{section.3.4}{Datenbank Migration}{chapter.3}% 22
+\BOOKMARK [2][-]{subsection.3.4.1}{Datenbank migrieren}{section.3.4}% 23
+\BOOKMARK [2][-]{subsection.3.4.2}{Datenbank zur\374cksetzen}{section.3.4}% 24
+\BOOKMARK [0][-]{chapter.4}{Korrekturen, Bugfixes}{}% 25
+\BOOKMARK [1][-]{section.4.1}{Webimport}{chapter.4}% 26
+\BOOKMARK [2][-]{subsection.4.1.1}{Bugfix: Datei Upload}{section.4.1}% 27
+\BOOKMARK [2][-]{subsection.4.1.2}{Laufzeitfehler}{section.4.1}% 28
+\BOOKMARK [2][-]{subsection.4.1.3}{Anzahl der importierten Datens\344tze}{section.4.1}% 29
+\BOOKMARK [2][-]{subsection.4.1.4}{Punkteberechnung}{section.4.1}% 30
+\BOOKMARK [1][-]{section.4.2}{Darlehensverlauf}{chapter.4}% 31
+\BOOKMARK [1][-]{section.4.3}{HistoricRecord}{chapter.4}% 32
+\BOOKMARK [1][-]{section.4.4}{Umzug der Benutzerattribute in die Tabelle User}{chapter.4}% 33
+\BOOKMARK [0][-]{chapter.5}{Testdriven Development}{}% 34
+\BOOKMARK [1][-]{section.5.1}{Analyse}{chapter.5}% 35
+\BOOKMARK [2][-]{subsection.5.1.1}{Ist-Stand}{section.5.1}% 36
+\BOOKMARK [2][-]{subsection.5.1.2}{Soll-Stand}{section.5.1}% 37
+\BOOKMARK [1][-]{section.5.2}{Implementierung}{chapter.5}% 38
+\BOOKMARK [2][-]{subsection.5.2.1}{Verwendete Gems}{section.5.2}% 39
+\BOOKMARK [2][-]{subsection.5.2.2}{Gems die zuk\374nftig verwendet werden k\366nnten}{section.5.2}% 40
+\BOOKMARK [2][-]{subsection.5.2.3}{Entwicklertools}{section.5.2}% 41
+\BOOKMARK [2][-]{subsection.5.2.4}{Modul Tests}{section.5.2}% 42
+\BOOKMARK [2][-]{subsection.5.2.5}{Controller Tests}{section.5.2}% 43
+\BOOKMARK [1][-]{section.5.3}{Auswertung}{chapter.5}% 44
+\BOOKMARK [0][-]{chapter.6}{Features}{}% 45
+\BOOKMARK [1][-]{section.6.1}{PaperTrail - Historisierung}{chapter.6}% 46
+\BOOKMARK [1][-]{section.6.2}{Deployment E-Mail Benachrichtigung}{chapter.6}% 47
+\BOOKMARK [0][-]{chapter.7}{Ergebnis und Ausblick}{}% 48
+\BOOKMARK [1][-]{section.7.1}{Ergebnis}{chapter.7}% 49
+\BOOKMARK [2][-]{subsection.7.1.1}{Bugfixes}{section.7.1}% 50
+\BOOKMARK [2][-]{subsection.7.1.2}{Deployment Prozess}{section.7.1}% 51
+\BOOKMARK [2][-]{subsection.7.1.3}{Datenmodell}{section.7.1}% 52
+\BOOKMARK [2][-]{subsection.7.1.4}{Unit Tests}{section.7.1}% 53
+\BOOKMARK [2][-]{subsection.7.1.5}{Refactoring}{section.7.1}% 54
+\BOOKMARK [2][-]{subsection.7.1.6}{Best Practices, Einf\374hrung Feature Tests}{section.7.1}% 55
+\BOOKMARK [1][-]{section.7.2}{Ausblick}{chapter.7}% 56
+\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 57
+\BOOKMARK [1][-]{section.A.1}{Test-Driven-Development Pr\344sentation}{appendix.A}% 58
+\BOOKMARK [1][-]{section.A.2}{Definition der o/ZB Attribute}{appendix.A}% 59
+\BOOKMARK [0][-]{appendix*.22}{Abbildungsverzeichnis}{}% 60
+\BOOKMARK [0][-]{appendix*.23}{Tabellenverzeichnis}{}% 61
+\BOOKMARK [0][-]{appendix*.24}{Listings}{}% 62
