@@ -1,5 +1,15 @@
 class Punkteberechnung
 
+  def self.calculate(date_begin, date_end, amount, account_number, round_down = true)
+    exact_score = self.calc_score(date_begin, date_end, amount, account_number)
+
+    if(round_down)
+      return exact_score.round
+    else
+      return exact_score
+    end
+  end
+
   def self.calc_score(date_begin, date_end, money_begin, kontonummer)
     t  = Array.new
     # morgiges Datum
