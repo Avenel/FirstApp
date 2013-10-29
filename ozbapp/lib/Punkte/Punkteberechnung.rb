@@ -1,5 +1,6 @@
 class Punkteberechnung
 
+  # Calculates a rounded score per default. If you want to have the exact score set round_down to false.
   def self.calculate(date_begin, date_end, amount, account_number, round_down = true)
     exact_score = self.calc_score_new(date_begin, date_end, amount, account_number)
 
@@ -10,12 +11,27 @@ class Punkteberechnung
     end
   end
 
+  # Calculates the exact score.
   def self.calc_score_new(date_begin, date_end, amount, account_number)
     account_classes = get_affected_account_classes(date_begin, date_end, account_number)
-    #days_in_account_classes = get_days_in_account_classes(account_classes)
+    days_in_account_classes = get_days_in_account_classes(account_classes, date_begin, date_end)
 
+    score = 0
+
+    days_in_account_classes.each_with_index do |(account_class, days), i|
+      factor = get_factor_for_account_class(account_classes[i])
+      score += days/30.0 * amount * factor
+    end
+
+    return score
   end
 
+  # Returns the factor for an account class. E.g. class B --> 0.75
+  def self.get_factor_for_account_class(account_class) 
+    account_class.kontenklasse.Prozent / 100
+  end
+
+  # Calculates the days spent in the given account classes.
   def self.get_days_in_account_classes(account_classes, date_begin, date_end)
     days_in_account_classes = Hash.new 
     
@@ -28,6 +44,7 @@ class Punkteberechnung
     return days_in_account_classes
   end
 
+  # Retrieves the affected account classes for the given dates and account number
   def self.get_affected_account_classes(date_begin, date_end, account_number) 
     account_class_on_begin = KklVerlauf.find(:all, 
       :conditions => ["KtoNr = ? AND KKLAbDatum <= ?", account_number, date_begin], 
@@ -45,6 +62,17 @@ class Punkteberechnung
 
     return all_account_classes.flatten
   end
+
+  # Berechnet Anzahl der Tage zwischen zwei Datumsangaben auf der Grundlage 360 Tage im Jahr und 30 Tage im Monat
+  # Simuliert Excel-Funktion TAGE360(datum,datum,art)
+  def self.count_days_exact(first_time, second_time)
+    # Es wurde beobachtet, dass das Ergebnis mit Nachkommastellen berechnet wird => Rundung nötig!
+    return ((second_time.to_time.to_i - first_time.to_time.to_i) / 86400.0).round(0) # integer / float => float
+  end
+
+
+
+  # ---- Deprecated methods follow. To be removed in future versions. ---- #
 
   def self.calc_score(date_begin, date_end, money_begin, kontonummer)
     t  = Array.new
@@ -156,13 +184,4 @@ class Punkteberechnung
     
     return mtage
   end
-
-  # Berechnet Anzahl der Tage zwischen zwei Datumsangaben auf der Grundlage 360 Tage im Jahr und 30 Tage im Monat
-  # Simuliert Excel-Funktion TAGE360(datum,datum,art)
-
-  def self.count_days_exact(first_time, second_time)
-    # Es wurde beobachtet, dass das Ergebnis mit Nachkommastellen berechnet wird => Rundung nötig!
-    return ((second_time.to_time.to_i - first_time.to_time.to_i) / 86400.0).round(0) # integer / float => float
-  end
-
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'Punkteberechnung'
 
 describe Punkteberechnung, "#calculate()" do
-  it "returns 233" do
+  it "returns 483" do
     date_begin = "2008-07-15".to_time
     date_end = "2008-08-05".to_time
     amount = 1000
@@ -10,7 +10,7 @@ describe Punkteberechnung, "#calculate()" do
 
     points = Punkteberechnung::calculate(date_begin, date_end, amount, account_number)
     
-    expect(points).to eq 233
+    expect(points).to eq 483
   end 
 end
 
@@ -45,3 +45,17 @@ describe Punkteberechnung, "#get_days_in_account_classes()" do
     expect(5).to eq 4
   end 
 end
+
+describe Punkteberechnung, "#get_factor_for_account_class()" do
+	it "returns 0.75 for class B" do
+		date_begin = "2008-07-15".to_time
+	    date_end = "2008-08-05".to_time
+	    account_number = 70013
+		account_classes = Punkteberechnung::get_affected_account_classes(date_begin, date_end, account_number)
+		
+		factor = Punkteberechnung::get_factor_for_account_class(account_classes[0]).to_f
+
+		expect(factor).to eq 0.75
+	end
+end
+
