@@ -10,6 +10,28 @@ class Punkteberechnung
     end
   end
 
+  def self.calc_score_new(date_begin, date_end, amount, account_number)
+    
+  end
+
+  def self.get_affected_account_classes(date_begin, date_end, account_number) 
+    account_class_on_begin = KklVerlauf.find(:all, 
+      :conditions => ["KtoNr = ? AND KKLAbDatum <= ?", account_number, date_begin], 
+      :order => "KKLAbDatum DESC"
+    ).first
+
+    account_classes_in_period = KklVerlauf.find(:all, 
+      :conditions => ["KtoNr = ? AND KKLAbDatum <= ? AND KKLAbDatum > ?", account_number, date_end, date_begin], 
+      :order => "KKLAbDatum ASC"
+    )
+
+    all_account_classes = Array.new
+    all_account_classes << account_class_on_begin
+    all_account_classes << account_classes_in_period
+
+    return all_account_classes.flatten
+  end
+
   def self.calc_score(date_begin, date_end, money_begin, kontonummer)
     t  = Array.new
     # morgiges Datum
