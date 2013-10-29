@@ -1,7 +1,7 @@
 class Punkteberechnung
 
   def self.calculate(date_begin, date_end, amount, account_number, round_down = true)
-    exact_score = self.calc_score(date_begin, date_end, amount, account_number)
+    exact_score = self.calc_score_new(date_begin, date_end, amount, account_number)
 
     if(round_down)
       return exact_score.round
@@ -11,7 +11,21 @@ class Punkteberechnung
   end
 
   def self.calc_score_new(date_begin, date_end, amount, account_number)
+    account_classes = get_affected_account_classes(date_begin, date_end, account_number)
+    #days_in_account_classes = get_days_in_account_classes(account_classes)
+
+  end
+
+  def self.get_days_in_account_classes(account_classes, date_begin, date_end)
+    days_in_account_classes = Hash.new 
     
+    account_classes.each_with_index do |account_class, i|
+      from_date = i == 0 ? date_begin : account_class.KKLAbDatum
+      to_date = account_classes[i+1].nil? ? date_end : account_classes[i+1].KKLAbDatum
+
+      days_in_account_classes[account_class.KKL] = count_days_exact(from_date, to_date)
+    end
+    return days_in_account_classes
   end
 
   def self.get_affected_account_classes(date_begin, date_end, account_number) 

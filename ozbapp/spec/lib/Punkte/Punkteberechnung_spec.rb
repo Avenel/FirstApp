@@ -34,9 +34,14 @@ describe Punkteberechnung, "#get_days_in_account_classes()" do
     account_number = 70013
 	account_classes = Punkteberechnung::get_affected_account_classes(date_begin, date_end, account_number)
     
-    days_in_account_classes = Punkteberechnung::get_days_in_account_classes(account_classes)
+    days_in_account_classes = Punkteberechnung::get_days_in_account_classes(account_classes, date_begin, date_end)
     
-    expect(days_in_account_classes["B"]).to eq 16
-    expect(days_in_account_classes["C"]).to eq 5
+    expect(days_in_account_classes["B"]).to eq 17
+    expect(days_in_account_classes["C"]).to eq 4
+  end 
+
+  it "works for a longer period with more than 2 account classes" do
+  	#todo
+    expect(5).to eq 4
   end 
 end
