@@ -107,7 +107,7 @@ class WebimportController < ApplicationController
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
                     :Punkte       => nil,
-                    :PSaldoAcc    => 0
+                    :PSaldoAcc    => pkte_acc
                   )
                   
                   begin 
@@ -429,7 +429,7 @@ class WebimportController < ApplicationController
             :conditions => { :KtoNr => ktoNr }, 
             :order => "Belegdatum ASC, Typ DESC, Habenbetrag DESC, Sollbetrag DESC, PSaldoAcc DESC"
           )
-          
+
           saldo_acc      = 0.0 # wSaldoAcc
           pkte_acc       = 0 # pSaldoAcc
           first_time     = b.first.Belegdatum
@@ -440,7 +440,6 @@ class WebimportController < ApplicationController
 
           # Berechne Daten für die nächste Buchung
           b.each do |buchung|
-
             if (buchung.Typ == "w")
               second_time = buchung.Belegdatum
               saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
@@ -494,9 +493,8 @@ class WebimportController < ApplicationController
                    @error += "Etwas ist schiefgelaufen.<br /><br />"
                    @error += e.message + "<br /><br />"
                 end
+              end
             end
-          end
-          
           # das End-Saldo ins Konto eintragen
           konto = OzbKonto.find(:all, :conditions => { :KtoNr => ktoNr }).first
           
