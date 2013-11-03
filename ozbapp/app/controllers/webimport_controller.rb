@@ -54,7 +54,7 @@ class WebimportController < ApplicationController
             sollbetrag         = 0.0
             typ                = "w"
             pkte_acc           = 0
-            storno             = 0
+            #storno             = 0
             belegnummernkreis  = r[2]
             belegnummer        = r[3].to_i
             buchungstext       = r[4].to_s
@@ -93,21 +93,21 @@ class WebimportController < ApplicationController
                   sollbetrag      = betrag * (-1.0)
                   
                   b = Buchung.new(
-                    :BuchJahr     => buchungsjahr,
                     :KtoNr        => kontonummer,
+                    :BuchJahr     => buchungsjahr,
                     :BnKreis      => belegnummernkreis,
                     :BelegNr      => belegnummer,
                     :Typ          => typ,
-                    :Belegdatum   => buchungsdatum,
                     :BuchDatum    => wertstellungsdatum,
+                    :Belegdatum   => buchungsdatum,
                     :Buchungstext => buchungstext,
                     :Sollbetrag   => sollbetrag,
                     :Habenbetrag  => habenbetrag,
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => nil,
-                    :PSaldoAcc    => pkte_acc
+                    :PSaldoAcc    => pkte_acc,
+                    :Punkte       => nil
                   )
                   
                   begin 
@@ -430,87 +430,88 @@ class WebimportController < ApplicationController
             :order => "Belegdatum ASC, Typ DESC, Habenbetrag DESC, Sollbetrag DESC, PSaldoAcc DESC"
           )
 
-          saldo_acc      = 0.0 # wSaldoAcc
-          pkte_acc       = 0 # pSaldoAcc
-          first_time     = b.first.Belegdatum
-          last_saldo_acc = 0.0
-          end_pkte_acc   = 0
-          
-          last_saldo_data = nil
+          if (b.empty?)
+              @error += "Keine Konto mit dem Kontonummer: #{ktoNr} gefunden. <br />"
+          else
+            saldo_acc      = 0.0 # wSaldoAcc
+            pkte_acc       = 0 # pSaldoAcc
+            first_time     = b.first.Belegdatum
+            last_saldo_acc = 0.0
+            end_pkte_acc   = 0
+            last_saldo_data = nil
 
-          # Berechne Daten für die nächste Buchung
-          b.each do |buchung|
-            if (buchung.Typ == "w")
-              second_time = buchung.Belegdatum
-              saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
-              
-              if (second_time != first_time)
-                pkte_acc     = Punkteberechnung::calc_score(first_time, second_time, last_saldo_acc, ktoNr).to_i
-                end_pkte_acc = end_pkte_acc + pkte_acc
-              end
-              
-              b = Buchung.find(
-                :all, 
-                :conditions => ["KtoNr = ? AND BelegNr = ? AND BelegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
-              )
-
-              b.each do |bu|
-                bu.WSaldoAcc = saldo_acc
-                bu.PSaldoAcc = pkte_acc
-                bu.Punkte    = end_pkte_acc
-
-                begin
-                   bu.save
-                rescue Exception => e
-                   @error += "Etwas ist schiefgelaufen.<br /><br />"
-                   @error += e.message + "<br /><br />"
+            # Berechne Daten für die nächste Buchung
+            b.each do |buchung|
+              if (buchung.Typ == "w")
+                second_time = buchung.Belegdatum
+                saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
+                
+                if (second_time != first_time)
+                  pkte_acc     = Punkteberechnung::calc_score(first_time, second_time, last_saldo_acc, ktoNr).to_i
+                  end_pkte_acc = end_pkte_acc + pkte_acc
                 end
                 
+                b = Buchung.find(
+                  :all, 
+                  :conditions => ["KtoNr = ? AND BelegNr = ? AND BelegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
+                )
+
+                b.each do |bu|
+                  bu.WSaldoAcc = saldo_acc
+                  bu.PSaldoAcc = pkte_acc
+                  bu.Punkte    = end_pkte_acc
+
+                  begin
+                     bu.save
+                  rescue Exception => e
+                     @error += "Etwas ist schiefgelaufen.<br/><br/>"
+                     @error += e.message + "<br /><br />"
+                  end
+                end
+
+                first_time      = second_time
+                last_saldo_acc  = saldo_acc
+                pkte_acc        = 0
+                last_saldo_data = buchung.Belegdatum
               end
-
-              first_time      = second_time
-              last_saldo_acc  = saldo_acc
-              pkte_acc        = 0
-              last_saldo_data = buchung.Belegdatum
-            end
-            
-            if (buchung.Typ == "p")
-              end_pkte_acc = end_pkte_acc + buchung.Sollbetrag + buchung.Habenbetrag
               
-              b = Buchung.find(
-                :all, 
-                :conditions => ["ktoNr = ? AND belegNr = ? AND belegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
-              )
+              if (buchung.Typ == "p")
+                end_pkte_acc = end_pkte_acc + buchung.Sollbetrag + buchung.Habenbetrag
+                
+                b = Buchung.find(
+                  :all, 
+                  :conditions => ["ktoNr = ? AND belegNr = ? AND belegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
+                )
 
-              b.each do |bu|
-                bu.WSaldoAcc = saldo_acc
-                bu.PSaldoAcc = 0.00
-                bu.Punkte    = end_pkte_acc
+                b.each do |bu|
+                  bu.WSaldoAcc = saldo_acc
+                  bu.PSaldoAcc = 0.00
+                  bu.Punkte    = end_pkte_acc
+
+                  begin
+                     bu.save
+                  rescue Exception => e
+                     @error += "Etwas ist schiefgelaufen.<br /><br />"
+                     @error += e.message + "<br /><br />"
+                  end
+                end
+              end
+              # das End-Saldo ins Konto eintragen
+              konto = OzbKonto.find(:all, :conditions => { :KtoNr => ktoNr }).first
+              
+              if (!konto.nil?)
+                konto.WSaldo     = saldo_acc
+                konto.PSaldo     = end_pkte_acc
+                konto.SaldoDatum = last_saldo_data 
 
                 begin
-                   bu.save
+                  konto.save
                 rescue Exception => e
                    @error += "Etwas ist schiefgelaufen.<br /><br />"
                    @error += e.message + "<br /><br />"
                 end
               end
             end
-          # das End-Saldo ins Konto eintragen
-          konto = OzbKonto.find(:all, :conditions => { :KtoNr => ktoNr }).first
-          
-          if !konto.nil?
-            konto.WSaldo     = saldo_acc
-            konto.PSaldo     = end_pkte_acc
-            konto.SaldoDatum = last_saldo_data 
-
-            begin
-              konto.save
-            rescue Exception => e
-               @error += "Etwas ist schiefgelaufen.<br /><br />"
-               @error += e.message + "<br /><br />"
-            end
-          end
-
           end
         end
       end
