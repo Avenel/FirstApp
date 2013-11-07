@@ -5,7 +5,7 @@ class Punkteberechnung
     exact_score = self.calc_score_new(date_begin, date_end, amount, account_number)
 
     if(round_down)
-      return exact_score.round
+      return exact_score.to_i
     else
       return exact_score
     end
