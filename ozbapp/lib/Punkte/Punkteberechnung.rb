@@ -63,11 +63,9 @@ class Punkteberechnung
     return all_account_classes.flatten
   end
 
-  # Berechnet Anzahl der Tage zwischen zwei Datumsangaben auf der Grundlage 360 Tage im Jahr und 30 Tage im Monat
-  # Simuliert Excel-Funktion TAGE360(datum,datum,art)
+  # Berechnet Anzahl der Tage zwischen zwei Datumsangaben
   def self.count_days_exact(first_time, second_time)
-    # Es wurde beobachtet, dass das Ergebnis mit Nachkommastellen berechnet wird => Rundung nötig!
-    return ((second_time.to_time.to_i - first_time.to_time.to_i) / 86400.0).round(0) # integer / float => float
+    return ((second_time.to_time - first_time.to_time) / 1.day).to_i
   end
 
 
