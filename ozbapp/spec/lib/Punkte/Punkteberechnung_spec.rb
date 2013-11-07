@@ -14,19 +14,6 @@ describe Punkteberechnung, "#calculate()" do
   end 
 end
 
-describe Punkteberechnung, "#calc_score()" do
-  it "returns 483" do
-    date_begin = "2008-07-15".to_time
-    date_end = "2008-08-05".to_time
-    amount = 1000
-    account_number = 70013
-
-    points = Punkteberechnung::calc_score(date_begin, date_end, amount, account_number)
-    
-    expect(points).to eq 483
-  end 
-end
-
 describe Punkteberechnung, "#get_affected_account_classes()" do
   it "returns B and C as affected account classes" do
     date_begin = "2008-07-15".to_time
