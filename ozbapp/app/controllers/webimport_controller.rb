@@ -3,58 +3,71 @@
 class WebimportController < ApplicationController
   require "CSVImporter"
   require "Punkteberechnung"
-  
+
+
+  # constructor
+  def initialize
+    @csv              = CSVImporter.new
+    @error            = ""
+    @notice           = ""
+    @imported_records = 0
+    @row_counter      = 0
+    @rows             = 0
+  end
+
   def index
     render "index"
   end
+
+  def read_status(file)
+      @error    = file.error
+      @notice   = file.notice
+      @rows     = file.rows
+  end
+
+
+  # CSV-File
+  def read_csv_file
+        uploaded_io = params[:webimport][:file]
+        uploaded_disk = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
+        
+        File.open(uploaded_disk, 'wb') do |file|
+          file.write(uploaded_io.read)
+        end
+        
+        # import CSV-File
+        @csv.import_from_file(uploaded_disk, ["Belegdatum", "Buchungsdatum", "Belegnummernkreis", "Belegnummer", "Buchungstext", "Buchungsbetrag Euro", "Sollkonto", "Habenkonto"])
+
+        # delete CSV-File
+        require 'fileutils'
+        FileUtils.rm(uploaded_disk)
+  end
+
+
   
   def csvimport_buchungen
     if !params[:webimport].nil? && !params[:webimport][:file].nil?
-      # CSV-File
-      uploaded_io = params[:webimport][:file]
-      
-      uploaded_disk = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
-      
-      File.open(uploaded_disk, 'wb') do |file|
-        file.write(uploaded_io.read)
-      end
-      
-      # import CSV-File
-      csv = CSVImporter.new
-      csv.import_from_file(uploaded_disk, ["Belegdatum", "Buchungsdatum", "Belegnummernkreis", "Belegnummer", "Buchungstext", "Buchungsbetrag Euro", "Sollkonto", "Habenkonto"])
-      
-      # <-> compared to old import.php:
-      # $buchungsdatum, $wertstellungsdatum, $belegnummernkreis, $belegnummer, $buchungstext, $betrag, $sollkontonummer, $habenkontonummer
-      
-      # delete CSV-File
-      require 'fileutils'
-      FileUtils.rm(uploaded_disk)
-      
-      # sort rows by ...
-      # rows = csv.rows.sort_by { |r| r[0] }
-      rows = csv.rows
 
-      @error  = csv.error
-      @notice = csv.notice
-      
-      imported_records = 0
-      row_counter      = 0
+      # read the csv fiel
+      self.read_csv_file
+
+      # read satus
+      self.read_status(@csv)
       
       collect_konten = Array.new
-      rows.each do |r|
+      @rows.each do |r|
         begin
           ActiveRecord::Base.transaction do
             if r.nil? || r.empty? || r[0].nil?
               next
             end
 
-            row_counter        += 1
+            @row_counter        += 1
             
             habenbetrag        = 0.0
             sollbetrag         = 0.0
             typ                = "w"
             pkte_acc           = 0
-            #storno             = 0
             belegnummernkreis  = r[2]
             belegnummer        = r[3].to_i
             buchungstext       = r[4].to_s
@@ -113,7 +126,7 @@ class WebimportController < ApplicationController
                   begin 
                     b.save
                     collect_konten << kontonummer
-                    imported_records += 1
+                    @imported_records += 1
                   rescue Exception => e
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
                     @error += e.message + "<br /><br />"
@@ -160,7 +173,7 @@ class WebimportController < ApplicationController
                   begin 
                     b.save
                     collect_konten << kontonummer
-                    imported_records += 1
+                    @imported_records += 1
                   rescue Exception => e
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
                     @error += e.message + "<br /><br />"
@@ -204,7 +217,7 @@ class WebimportController < ApplicationController
                   begin 
                     b.save
                     collect_konten << kontonummer
-                    imported_records += 1
+                    @imported_records += 1
                   rescue Exception => e
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
                     @error += e.message + "<br /><br />"
@@ -278,7 +291,7 @@ class WebimportController < ApplicationController
                   begin 
                     b.save
                     collect_konten << kontonummer
-                    imported_records += 1
+                    @imported_records += 1
                   rescue Exception => e
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
                     @error += e.message + "<br /><br />"
@@ -371,7 +384,7 @@ class WebimportController < ApplicationController
                   begin 
                     b.save
                     collect_konten << kontonummer
-                    imported_records += 1
+                    @imported_records += 1
                   rescue Exception => e
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
                     @error += e.message + "<br /><br />"
@@ -403,7 +416,7 @@ class WebimportController < ApplicationController
                   begin 
                     b.save
                     collect_konten << kontonummer
-                    imported_records += 1
+                    @imported_records += 1
                   rescue Exception => e
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
                     @error += e.message + "<br /><br />"
@@ -516,8 +529,8 @@ class WebimportController < ApplicationController
         end
       end
       
-      @notice += "<br /><br />" + csv.number_records.to_s + " von " + csv.rows.size.to_s + " Datensätzen eingelesen."
-      @notice += "<br />" + imported_records.to_s + " Datensätze importiert."
+      @notice += "<br /><br />" + @csv.number_records.to_s + " von " + @csv.rows.size.to_s + " Datensätzen eingelesen."
+      @notice += "<br />" + @imported_records.to_s + " Datensätze importiert."
     else
       @error = "Bitte geben Sie eine CSV-Datei an."
     end
