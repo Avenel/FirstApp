@@ -43,21 +43,28 @@ describe Punkteberechnung do
   end
 
 	it "calculates the factor 0.75 for class B" do
-		date_begin = "2008-07-15".to_time
-    date_end = "2008-08-05".to_time
-	  account_number = 70013
-		account_class_changes = Punkteberechnung.get_affected_account_class_changes(date_begin, date_end, account_number)
-		
-		factor = Punkteberechnung.get_factor_for_account_class(account_class_changes[0].kontenklasse).to_f
-
-		expect(factor).to eq 0.75
+		account_class = Kontenklasse.find("B")
+    factor = Punkteberechnung.get_factor_for_account_class(account_class)
+    expect(factor).to eq 0.75 
 	end
 
-  it "calculates the factor 0.5 for class C"
+  it "calculates the factor 0.5 for class C" do
+    account_class = Kontenklasse.find("C")
+    factor = Punkteberechnung.get_factor_for_account_class(account_class)
+    expect(factor).to eq 0.5
+  end
 
-  it "calculates the factor 0.25 for class D"
+  it "calculates the factor 0.25 for class D" do
+    account_class = Kontenklasse.find("D")
+    factor = Punkteberechnung.get_factor_for_account_class(account_class)
+    expect(factor).to eq 0.25
+  end
   
-  it "calculates the factor 0.0 for class E"
+  it "calculates the factor 0.0 for class E" do
+    account_class = Kontenklasse.find("E")
+    factor = Punkteberechnung.get_factor_for_account_class(account_class)
+    expect(factor).to eq 0.0
+  end
 
   it "returns 16 days" do
     date_begin = "2008-07-15".to_time
