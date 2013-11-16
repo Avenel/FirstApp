@@ -8,7 +8,7 @@ describe Punkteberechnung do
     amount = 1000
     account_number = 70013
 
-    points = Punkteberechnung::calculate(date_begin, date_end, amount, account_number)
+    points = Punkteberechnung.calculate(date_begin, date_end, amount, account_number)
     
     expect(points).to eq 483
   end 
@@ -18,7 +18,7 @@ describe Punkteberechnung do
     date_end = "2008-08-05".to_time
     account_number = 70013
 
-    account_classes = Punkteberechnung::get_affected_account_classes(date_begin, date_end, account_number)
+    account_classes = Punkteberechnung.get_affected_account_class_changes(date_begin, date_end, account_number)
     
     expect(account_classes[0].KKL).to eq 'B'
     expect(account_classes[1].KKL).to eq 'C'
@@ -28,23 +28,27 @@ describe Punkteberechnung do
     date_begin = "2008-07-15".to_time
     date_end = "2008-08-05".to_time
     account_number = 70013
-    account_classes = Punkteberechnung::get_affected_account_classes(date_begin, date_end, account_number)
+    account_classes = Punkteberechnung.get_affected_account_class_changes(date_begin, date_end, account_number)
     
-    days_in_account_classes = Punkteberechnung::get_days_in_account_classes(account_classes, date_begin, date_end)
+    days_in_account_classes = Punkteberechnung.get_days_in_account_classes(account_classes, date_begin, date_end)
     
     expect(days_in_account_classes["B"]).to eq 16
     expect(days_in_account_classes["C"]).to eq 5
   end 
 
-  it "calculates the factor 1.0 for class A" 
+  it "calculates the factor 1.0 for class A" do
+    account_class = Kontenklasse.find("A")
+    factor = Punkteberechnung.get_factor_for_account_class(account_class)
+    expect(factor).to eq 1.0 
+  end
 
 	it "calculates the factor 0.75 for class B" do
 		date_begin = "2008-07-15".to_time
     date_end = "2008-08-05".to_time
 	  account_number = 70013
-		account_classes = Punkteberechnung::get_affected_account_classes(date_begin, date_end, account_number)
+		account_class_changes = Punkteberechnung.get_affected_account_class_changes(date_begin, date_end, account_number)
 		
-		factor = Punkteberechnung::get_factor_for_account_class(account_classes[0]).to_f
+		factor = Punkteberechnung.get_factor_for_account_class(account_class_changes[0].kontenklasse).to_f
 
 		expect(factor).to eq 0.75
 	end
@@ -59,7 +63,7 @@ describe Punkteberechnung do
     date_begin = "2008-07-15".to_time
     date_end = "2008-08-01".to_time
     
-    days = Punkteberechnung::count_days_exact(date_begin, date_end)
+    days = Punkteberechnung.count_days_exact(date_begin, date_end)
 
     expect(days).to eq 16
   end
@@ -68,7 +72,7 @@ describe Punkteberechnung do
     date_begin = "2008-08-01".to_time
     date_end = "2008-08-05".to_time
     
-    days = Punkteberechnung::count_days_exact(date_begin, date_end)
+    days = Punkteberechnung.count_days_exact(date_begin, date_end)
 
     expect(days).to eq 5
   end
@@ -77,7 +81,7 @@ describe Punkteberechnung do
     date_begin = "2013-01-01".to_time
     date_end = "2013-02-01".to_time
     
-    days = Punkteberechnung::count_days_exact(date_begin, date_end)
+    days = Punkteberechnung.count_days_exact(date_begin, date_end)
 
     expect(days).to eq 31
   end
