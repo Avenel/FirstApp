@@ -40,6 +40,11 @@ class Punkteberechnung
       to_date = account_class_changes[i+1].nil? ? date_end : account_class_changes[i+1].KKLAbDatum
 
       days_in_account_classes[account_class.KKL] = count_days_exact(from_date, to_date)
+
+      if (i > 0) # add one day between an account class change.
+        days_in_account_classes[account_class.KKL] = days_in_account_classes[account_class.KKL] + 1
+      end
+
     end
     return days_in_account_classes
   end

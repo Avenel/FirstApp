@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'Punkteberechnung'
 
 describe Punkteberechnung do
+
   it "calculates a score of 483" do
     date_begin = "2008-07-15".to_time
     date_end = "2008-08-05".to_time
@@ -24,7 +25,18 @@ describe Punkteberechnung do
     expect(account_classes[1].KKL).to eq 'C'
   end 
 
-  it "returns 16 days for class B and 5 days for class C" do
+  it "returns 5 days for class C" do
+    date_begin = "2008-07-15".to_time
+    date_end = "2008-08-05".to_time
+    account_number = 70013
+    account_classes = Punkteberechnung.get_affected_account_class_changes(date_begin, date_end, account_number)
+    
+    days_in_account_classes = Punkteberechnung.get_days_in_account_classes(account_classes, date_begin, date_end)
+    
+    expect(days_in_account_classes["C"]).to eq 5
+  end 
+
+  it "returns 16 days for class B" do
     date_begin = "2008-07-15".to_time
     date_end = "2008-08-05".to_time
     account_number = 70013
@@ -33,7 +45,6 @@ describe Punkteberechnung do
     days_in_account_classes = Punkteberechnung.get_days_in_account_classes(account_classes, date_begin, date_end)
     
     expect(days_in_account_classes["B"]).to eq 16
-    expect(days_in_account_classes["C"]).to eq 5
   end 
 
   it "calculates the factor 1.0 for class A" do
@@ -66,22 +77,22 @@ describe Punkteberechnung do
     expect(factor).to eq 0.0
   end
 
-  it "returns 16 days" do
+  it "returns 17 days" do
     date_begin = "2008-07-15".to_time
     date_end = "2008-08-01".to_time
     
     days = Punkteberechnung.count_days_exact(date_begin, date_end)
 
-    expect(days).to eq 16
+    expect(days).to eq 17
   end
 
-  it "returns 5 days" do
+  it "returns 4 days" do
     date_begin = "2008-08-01".to_time
     date_end = "2008-08-05".to_time
     
     days = Punkteberechnung.count_days_exact(date_begin, date_end)
 
-    expect(days).to eq 5
+    expect(days).to eq 4
   end
 
   it "returns 31 days" do
