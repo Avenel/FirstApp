@@ -104,6 +104,24 @@ describe Punkteberechnung do
     expect(days).to eq 31
   end
 
+  it "returns 366 days because 2000 was a leapyear" do
+    date_begin = "2000-01-01".to_time
+    date_end = "2001-01-01".to_time
+    
+    days = Punkteberechnung.count_days_exact(date_begin, date_end)
+
+    expect(days).to eq 366
+  end
+
+  it "returns 365 days because 2001 was not a leapyear" do
+    date_begin = "2001-01-01".to_time
+    date_end = "2002-01-01".to_time
+    
+    days = Punkteberechnung.count_days_exact(date_begin, date_end)
+
+    expect(days).to eq 365
+  end
+
   it "works for a longer period with more than 2 account classes"
 
   it "works for more than one booking in one day"
