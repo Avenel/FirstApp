@@ -14,6 +14,32 @@ describe Punkteberechnung do
     expect(points).to eq 483
   end 
 
+  it "calculates a score of 1328" do
+    date_begin = "2008-07-09".to_time
+    date_end = "2008-08-05".to_time
+    amount = 2097.63
+    account_number = 70013
+
+    points = Punkteberechnung.calculate(date_begin, date_end, amount, account_number)
+    
+    expect(points).to eq 1328
+  end 
+
+  it "works for a longer period with more than 2 account class changes" 
+
+  it "works for more than one booking in one day"
+
+  it "works for exact calculation without rounding" do
+    date_begin = "2008-07-09".to_time
+    date_end = "2008-08-05".to_time
+    amount = 2097.63
+    account_number = 70013
+
+    points = Punkteberechnung.calculate(date_begin, date_end, amount, account_number, false)
+    
+    expect(points).to eq 1328.499
+  end
+
   it "returns B and C as affected account classes" do
     date_begin = "2008-07-15".to_time
     date_end = "2008-08-05".to_time
@@ -122,7 +148,4 @@ describe Punkteberechnung do
     expect(days).to eq 365
   end
 
-  it "works for a longer period with more than 2 account classes"
-
-  it "works for more than one booking in one day"
 end
