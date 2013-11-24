@@ -3,16 +3,19 @@
 class WebimportController < ApplicationController
   require "CSVImporter"
   require "Punkteberechnung"
+  require "raw_data"
 
 
   # constructor
   def initialize
+    super
+    
     @csv              = CSVImporter.new
     @error            = ""
     @notice           = ""
     @imported_records = 0
-    @row_counter      = 0
     @rows             = 0
+    @info             = ""
   end
 
   def index
@@ -62,7 +65,6 @@ class WebimportController < ApplicationController
               next
             end
 
-            @row_counter        += 1
             
             habenbetrag        = 0.0
             sollbetrag         = 0.0
@@ -124,13 +126,17 @@ class WebimportController < ApplicationController
                   )
                   
                   begin 
-                    b.save
+                    succ = b.save
+                    logger.debug "##======================================================================"
+                    logger.debug succ.to_s
+                    logger.debug b.errors.inspect
+                    logger.debug "##======================================================================"
                     collect_konten << kontonummer
                     @imported_records += 1
                   rescue Exception => e
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
                     @error += e.message + "<br /><br />"
-                  end
+                  end 
                   next
                 end
                 
@@ -166,12 +172,16 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => nil,
+                    :Punkte       => -24,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
-                    b.save
+                    succ = b.save
+                    logger.debug "##======================================================================"
+                    logger.debug succ.to_s
+                    logger.debug b.errors.inspect
+                    logger.debug "##======================================================================"
                     collect_konten << kontonummer
                     @imported_records += 1
                   rescue Exception => e
@@ -210,12 +220,16 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => nil,
+                    :Punkte       => -24,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
-                    b.save
+                    succ = b.save
+                    logger.debug "##======================================================================"
+                    logger.debug succ.to_s
+                    logger.debug b.errors.inspect
+                    logger.debug "##======================================================================"
                     collect_konten << kontonummer
                     @imported_records += 1
                   rescue Exception => e
@@ -243,12 +257,16 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => nil,
+                    :Punkte       => -24,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
-                    b.save
+                    succ = b.save
+                    logger.debug "##======================================================================"
+                    logger.debug succ.to_s
+                    logger.debug b.errors.inspect
+                    logger.debug "##======================================================================"
                     collect_konten << kontonummer
                     # Nur 1x zählen!
                     # imported_records += 1
@@ -284,12 +302,16 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => nil,
+                    :Punkte       => -24,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
-                    b.save
+                    succ = b.save
+                    logger.debug "##======================================================================"
+                    logger.debug succ.to_s
+                    logger.debug b.errors.inspect
+                    logger.debug "##======================================================================"
                     collect_konten << kontonummer
                     @imported_records += 1
                   rescue Exception => e
@@ -319,12 +341,16 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => nil,
+                    :Punkte       => 0,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
-                    b.save
+                    succ = b.save
+                    logger.debug "##======================================================================"
+                    logger.debug succ.to_s
+                    logger.debug b.errors.inspect
+                    logger.debug "##======================================================================"
                     collect_konten << kontonummer
                     # Nur 1x zaehlen!
                     #imported_records += 1
@@ -377,12 +403,16 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => nil,
+                    :Punkte       => 0,
                     :PSaldoAcc    => 0
                   )
 
                   begin 
-                    b.save
+                    succ = b.save
+                    logger.debug "##======================================================================"
+                    logger.debug succ.to_s
+                    logger.debug b.errors.inspect
+                    logger.debug "##======================================================================"
                     collect_konten << kontonummer
                     @imported_records += 1
                   rescue Exception => e
@@ -409,12 +439,16 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => nil,
+                    :Punkte       => 0,
                     :PSaldoAcc    => 0
                   )
 
                   begin 
-                    b.save
+                    succ = b.save
+                    logger.debug "##======================================================================"
+                    logger.debug succ.to_s
+                    logger.debug b.errors.inspect
+                    logger.debug "##======================================================================"
                     collect_konten << kontonummer
                     @imported_records += 1
                   rescue Exception => e
