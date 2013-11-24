@@ -17,6 +17,25 @@
 	</div>
 <% end %>
 
+<% if !@info.blank? %>
+	<div class="alert alert-warning">
+		<button class="close" data-dismiss="alert">&times;</button>
+		<table class="table .table-striped">
+			<tr>
+				<th >Belegdatum</th>
+				<th >Buchungsdatum</th>
+				<th >Belegnummernkreis</th>
+				<th >Belegnummer</th>
+				<th >Buchungstext</th>
+				<th >Buchungsbetrag Euro</th>
+				<th >Sollkonto</th>
+				<th >Habenkonto</th>
+			</tr>
+			<%= @info.html_safe %>
+		</table>
+	</div>
+<% end %>
+
 <div class="alert alert-info">
 	<ol>
 		<li>Wählen Sie zunächst eine CSV-Datei auf Ihrem Computer aus.</li>
@@ -32,14 +51,17 @@
 			<strong>CSV-Datei:</strong>
 		</div>
 		
-		<div class="span10">
+		<div class="span8">
 			<div class="input-append">
 			   <input id="fakefile-field" class="input-large" type="text">
 			   <a id="fakefile-button" class="btn">Auswählen...</a>
 			</div>
 		</div>
+		<div class="span2">
+ 			<%= form.submit :value => "importieren", :class => "btn btn-primary" %>
+		</div>
 	</div>
- 	<%= form.submit :value => "importieren", :class => "btn btn-primary" %>
+
 	
 	<br />
 	

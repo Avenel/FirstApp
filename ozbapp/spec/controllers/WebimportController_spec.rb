@@ -13,10 +13,10 @@ describe WebimportController do
      wc = WebimportController.new
    	 expect(wc.instance_variable_get(:@csv)).to be_kind_of(CSVImporter)
    	 expect(wc.instance_variable_get(:@rows)).to eq 0
-   	 expect(wc.instance_variable_get(:@row_counter)).to eq 0
    	 expect(wc.instance_variable_get(:@imported_records)).to eq 0
    	 expect(wc.instance_variable_get(:@notice)).to eq ""
-   	 expect(wc.instance_variable_get(:@error)).to eq ""
+     expect(wc.instance_variable_get(:@error)).to eq ""
+   	 expect(wc.instance_variable_get(:@info)).to eq ""
     end
 
     it "read the status" do 
