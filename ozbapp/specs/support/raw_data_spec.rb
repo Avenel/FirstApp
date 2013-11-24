@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 require 'spec_helper'
 require 'raw_data'
 
@@ -50,45 +52,158 @@ describe RawData do
 	end
 	
 
-	context "checks the point-lend transcation" do
-		it "is a valid point-lend transaction with a cteditor account 88888" do
-			@rd.Habenkonto = 88888
-     		expect(@rd.isPointsLendTransaction).to eq true
-		end		
+	context "isPointsLendTransaction" do
+		context "is valid" do
+			it "is a valid  with a cteditor account 88888 and a debitor account starting with 8" do
+				@rd.Habenkonto = 88888
+				@rd.Sollkonto = 84321
+	     		expect(@rd.isPointsLendTransaction).to eq true
+			end		
+		end
+		context "is invalid" do
+			it "is an invalid with creditor and debitor accounts not startin with 8" do
+	     		expect(@rd.isPointsLendTransaction).to eq false
+			end		
 
-		it "is an invalid point-lend transaction" do
-     		expect(@rd.isPointsLendTransaction).to eq false
-		end		
-
-		it "is an invalid point-lend transaction with a debitor account 88888" do
-			@rd.Sollkonto = 88888
-     		expect(@rd.isPointsLendTransaction).to eq false
+			it "is an invalid with a debitor account 88888 and creditor not starting with 8" do
+				@rd.Sollkonto = 88888
+	     		expect(@rd.isPointsLendTransaction).to eq false
+			end			
+			it "is an invalid with a creditor account 88888 and debitor nont starting wiht 8" do
+				@rd.Habenkonto = 88888
+	     		expect(@rd.isPointsLendTransaction).to eq false
+			end
 		end
 	end
 
 
-	context "the currency transactions check" do
-		it "is a valid currency transaction" do
+	context "isCurrencyTransaction" do
+		context "is valid" do
+				it "with valid accounts" do
      		expect(@rd.isCurrencyTransaction).to eq true
-		end		
+			end	
+		end
+		context "is invalid" do
+			it "with a creditor account 88888" do
+				@rd.Habenkonto = 88888
+	     		expect(@rd.isCurrencyTransaction).to eq false
+			end		
 
-		it "is an invalid currency transaction with a creditor account 88888" do
-			@rd.Habenkonto = 88888
-     		expect(@rd.isCurrencyTransaction).to eq false
-		end		
+			it "with a debitor account 88888" do
+				@rd.Sollkonto = 88888
+	     		expect(@rd.isCurrencyTransaction).to eq false
+			end		
 
-		it "is an invalid currency transaction with a debitor account 88888" do
-			@rd.Sollkonto = 88888
-     		expect(@rd.isCurrencyTransaction).to eq false
-		end		
-
-		it "is an invalid currency transaction with a debitor and creditor account 88888" do
-			@rd.Sollkonto = 88888
-			@rd.Habenkonto = 88888
-     		expect(@rd.isCurrencyTransaction).to eq false
+			it "with a debitor and creditor account 88888" do
+				@rd.Sollkonto = 88888
+				@rd.Habenkonto = 88888
+	     		expect(@rd.isCurrencyTransaction).to eq false
+			end
 		end
 	end
 
+	context "isPonitsTransaction" do
+		context "is valid" do
+			it "with accounts starting with 8 and deffering from an 88888 account" do
+	     		@rd.Sollkonto = 81234
+				@rd.Habenkonto = 84321
+	     		expect(@rd.isPonitsTransaction).to eq true
+			end		
+		end
+
+		context "is invalid" do
+			it "with a creditor account 88888" do
+				@rd.Habenkonto = 88888
+	     		expect(@rd.isPonitsTransaction).to eq false
+			end		
+
+			it "with a debitor account 88888" do
+				@rd.Sollkonto = 88888
+	     		expect(@rd.isPonitsTransaction).to eq false
+			end		
+
+			it "with a debitor and creditor account 88888" do
+				@rd.Sollkonto = 88888
+				@rd.Habenkonto = 88888
+	     		expect(@rd.isPonitsTransaction).to eq false
+			end		
+
+			it "with a debitor account starting with 8 and creditor not starting wiht 8" do
+				@rd.Sollkonto = 81234
+				@rd.Habenkonto = 74321
+	     		expect(@rd.isPonitsTransaction).to eq false
+			end
+
+			it "with a creditor account starting with 8 and debitor not starting wiht 8" do
+				@rd.Sollkonto = 71234
+				@rd.Habenkonto = 84321
+	     		expect(@rd.isPonitsTransaction).to eq false
+			end
+		end
+	end
+
+
+	context "isPointsLendStornoTransaction" do
+		context "is valid" do
+			it "with accounts starting with 8 and deffering from an 88888 account" do
+	     		@rd.Sollkonto = 88888
+				@rd.Habenkonto = 84321
+	     		expect(@rd.isPointsLendStornoTransaction).to eq true
+			end		
+		end
+
+		context "is invalid" do
+			it "with a creditor account 88888 and a debitor account starting with 7" do
+				@rd.Habenkonto = 88888
+	     		expect(@rd.isPointsLendStornoTransaction).to eq false
+			end		
+
+			it "with a debitor account 88888 and a creditor account starintg with 7" do
+				@rd.Sollkonto = 88888
+	     		expect(@rd.isPointsLendStornoTransaction).to eq false
+			end		
+
+			it "with a debitor and creditor accounts 88888" do
+				@rd.Sollkonto = 88888
+				@rd.Habenkonto = 88888
+	     		expect(@rd.isPointsLendStornoTransaction).to eq false
+			end		
+
+			it "with a debitor account starting with 8 and creditor not starting wiht 8" do
+				@rd.Sollkonto = 81234
+				@rd.Habenkonto = 74321
+	     		expect(@rd.isPointsLendStornoTransaction).to eq false
+			end
+
+			it "with a creditor account starting with 8 and debitor not starting wiht 8" do
+				@rd.Sollkonto = 71234
+				@rd.Habenkonto = 84321
+	     		expect(@rd.isPointsLendStornoTransaction).to eq false
+			end
+		end
+	end
+
+
+	context "isStorno" do
+		context "is valid" do
+			it "with valid currency transaction Buchungstext" do
+				@rd.Buchungstext = "<Storno> 70140-70120 Überweisungs abbruch"
+				expect(@rd.isStorno).to eq true
+			end			
+			it "with valid points transaction Buchungstext" do
+				@rd.Sollkonto = 81234
+				@rd.Habenkonto = 84321
+				@rd.Buchungstext = "<Storno> 70140-70120 Überweisungs abbruch"
+				expect(@rd.isStorno).to eq true
+			end			
+		end
+
+		context "is invalid" do
+		  it "with no proper storno flag in the Buchungstext" do
+		    expect(@rd.isStorno).to eq false
+		  end
+		end
+	end
 
 
 end 

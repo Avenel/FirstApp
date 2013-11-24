@@ -29,19 +29,26 @@ class RawData
   end
 
   def isPointsLendTransaction
-    return @Habenkonto == 88888 && @Sollkonto != 88888
+    return @Habenkonto == 88888 && @Sollkonto != 88888 && @Sollkonto.to_s[0] == "8"
+
   end  
 
   def isPointsLendStornoTransaction
-    return  @Sollkonto == 88888 && @Habenkonto != 88888
+    return  @Sollkonto == 88888 && @Habenkonto != 88888 && @Habenkonto.to_s[0] == "8" 
   end
 
   def isPonitsTransaction
-    return @Habenkonto[0] == "8" && @Sollkonto[0] == "8" && @Sollkonto != 88888 && @Habenkonto != 88888
+    return @Habenkonto.to_s[0] == "8" && @Sollkonto.to_s[0] == "8" && @Sollkonto != 88888 && @Habenkonto != 88888
   end
 
   def isCurrencyTransaction
-    return @Habenkonto[0] != "8" && @Sollkonto[0] != "8"
+    return @Habenkonto.to_s[0] != "8" && @Sollkonto.to_s[0] != "8"
+  end
+
+  def isStorno
+    transaction_head = @Buchungstext.split(" ")
+    left_side = transaction_head[0].split("-")
+    return left_side[0].index("<Storno>") != nil
   end
 
 end
