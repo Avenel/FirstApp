@@ -28,6 +28,20 @@ class RawData
     return @Sollkonto.size + 1
   end
 
+  #todo
+  def getPoints
+    if self.isPonitsTransaction?
+      return @Betrag.to_i
+    else
+      return 0
+    end    
+  end
+
+  #todo
+  def getLoanNumber
+    return @Buchungstext.split(" ")[0].split("-")[1].to_i
+  end
+
   def isPointsLendTransaction
     return @Habenkonto == 88888 && @Sollkonto != 88888 && @Sollkonto.to_s[0] == "8"
 
@@ -38,7 +52,8 @@ class RawData
   end
 
   def isPonitsTransaction
-    return @Habenkonto.to_s[0] == "8" && @Sollkonto.to_s[0] == "8" && @Sollkonto != 88888 && @Habenkonto != 88888
+    #&& @Sollkonto != 88888 && @Habenkonto != 88888
+    return @Habenkonto.to_s[0] == "8" && @Sollkonto.to_s[0] == "8"
   end
 
   def isCurrencyTransaction
@@ -46,9 +61,9 @@ class RawData
   end
 
   def isStorno
-    transaction_head = @Buchungstext.split(" ")
-    left_side = transaction_head[0].split("-")
-    return left_side[0].index("<Storno>") != nil
+    return @Buchungstext.split(" ")[0].split("-")[0].index("<Storno>") != nil
   end
+
+
 
 end

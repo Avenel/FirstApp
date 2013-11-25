@@ -50,6 +50,42 @@ describe RawData do
 	it "gets the credit account lenght" do
      	expect(@rd.getCreditAccountLenght).to eq 5
 	end
+
+	#todo
+	context "getPoints" do
+		context "is valid" do
+			it "with debitor and creditor accounts starting with an 8" do
+			  	@rd.Habenkonto = 81234
+				@rd.Sollkonto = 84321
+				@rd.Betrag = 123.0
+	     		expect(@rd.getPoints).to eq 123
+			end
+		end
+		context "is invalid" do
+			it "with debitor and creditor accounts not starint with an 8" do
+			  	@rd.Habenkonto = 71234
+				@rd.Sollkonto = 74321
+				expect(@rd.getPoints).to eq 0
+			end
+		  	it "with creditor account not starint with an 8" do
+			  	@rd.Habenkonto = 81234
+				@rd.Sollkonto = 74321
+				expect(@rd.getPoints).to eq 0
+			end
+		  	it "with debitor account not starint with an 8" do
+			  	@rd.Habenkonto = 71234
+				@rd.Sollkonto = 84321
+				expect(@rd.getPoints).to eq 0
+			end
+		end
+	  
+	end
+
+	#todo
+	it "get the loan number form the Buchungstext" do
+		@rd.Buchungstext = "D70012-60140 Gutschrift von Hannelore"
+		expect(@rd.getPoints).to eq 60140	  
+	end
 	
 
 	context "isPointsLendTransaction" do
