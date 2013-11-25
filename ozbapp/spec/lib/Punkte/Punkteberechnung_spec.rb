@@ -9,9 +9,9 @@ describe Punkteberechnung do
     amount = 1000
     account_number = 70013
 
-    points = Punkteberechnung.calculate(date_begin, date_end, amount, account_number)
+    score = Punkteberechnung.calculate(date_begin, date_end, amount, account_number)
     
-    expect(points).to eq 483
+    expect(score).to eq 483
   end 
 
   it "calculates a score of 1328" do
@@ -20,12 +20,12 @@ describe Punkteberechnung do
     amount = 2097.63
     account_number = 70013
 
-    points = Punkteberechnung.calculate(date_begin, date_end, amount, account_number)
+    score = Punkteberechnung.calculate(date_begin, date_end, amount, account_number)
     
-    expect(points).to eq 1328
+    expect(score).to eq 1328
   end 
 
-  it "works for a longer period with more than 2 account class changes" 
+  it "works for a longer period with more than 2 account class changes"
 
   it "works for more than one booking in one day"
 
@@ -35,9 +35,9 @@ describe Punkteberechnung do
     amount = 2097.63
     account_number = 70013
 
-    points = Punkteberechnung.calculate(date_begin, date_end, amount, account_number, false)
+    score = Punkteberechnung.calculate(date_begin, date_end, amount, account_number, false)
     
-    expect(points).to eq 1328.499
+    expect(score).to eq 1328.499
   end
 
   it "returns B and C as affected account classes" do
