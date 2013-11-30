@@ -1,6 +1,9 @@
 #!/bin/env ruby
 # encoding: utf-8
 class WebimportController < ApplicationController
+
+  before_filter :authenticate_user!
+
   require "CSVImporter"
   require "Punkteberechnung"
   require "raw_data"
@@ -67,7 +70,6 @@ class WebimportController < ApplicationController
             habenbetrag        = 0.0
             sollbetrag         = 0.0
             typ                = "w"
-            pkte_acc           = 0
             belegnummernkreis  = r[2]
             belegnummer        = r[3].to_i
             buchungstext       = r[4].to_s
@@ -366,6 +368,7 @@ class WebimportController < ApplicationController
                 end
               # Gewöhnliche Buchung oder Storno-Buchung
               else
+                #TODO PUNKTE STORNO
                 
                 if (gesellschafter.index("<Storno>") != nil)
                   # wenn Storno-Buchung lösche die entsprechende Buchung aus DB
