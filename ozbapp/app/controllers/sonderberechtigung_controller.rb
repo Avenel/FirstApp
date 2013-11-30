@@ -3,6 +3,7 @@
 class SonderberechtigungController < ApplicationController
 #  protect_from_forgery
   before_filter :authenticate_user!
+  load_and_authorize_resource :only => [:createBerechtigungRollen, :deleteBerechtigungRollen, :editRollen, :editBerechtigungenRollen, :createSonderberechtigung]
   
   @@Rollen2 = Hash["Mitglied", "M", "Fördermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]  
   #Workaround - Da Ruby 1.8.7 die key()-Funktion nicht kennt
@@ -19,129 +20,105 @@ class SonderberechtigungController < ApplicationController
   end
   
 
-  def createBerechtigungRollen
-    if is_allowed(current_user, 7) then
-       
-      @errors = Array.new                                       
-      begin    
-        #Beginne Transaktion
-        ActiveRecord::Base.transaction do
-    
-          @OZBPerson = OZBPerson.find(params[:mnr])
-          @Person = Person.get(@OZBPerson.Mnr)
-          
-         
-          
-          
-          # Keine Berechtigung dieser Art gefunden
-          if    !Sonderberechtigung.find(:first, :conditions => {:Mnr =>params[:mnr], :Berechtigung => params[:berechtigung]}) &&
-                !Sonderberechtigung.find(:first, :conditions => {:Mnr =>params[:mnr], :Berechtigung => 'IT'}) &&
-                ( !params[:email].blank? || !@Person.EMail.blank? ) then
-            @bereitsVorhanden = false
+  def createBerechtigungRollen       
+    @errors = Array.new                                       
+    begin    
+      #Beginne Transaktion
+      ActiveRecord::Base.transaction do
   
-            # Berechtigung erstellen und validieren
-             
-            if params[:email].blank? && !@Person.EMail.blank? then
-              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => @Person.EMail, :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
-            else
-              @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
-            end
-            
-            #Fehler aufgetreten?
-            if !@new_Sonderberechtigung.valid? then
-              @errors.push(@new_Sonderberechtigung.errors)
-            end
-            
-            if params[:berechtigung] = 'IT' then
-              @alle_Sonderberechtigungen = Sonderberechtigung.find(:all, :conditions => {:Mnr => params[:mnr]})
-              
-              @alle_Sonderberechtigungen.each do |sb|
-                sb.delete
-              end
-            end
-            
-                      
-            # Weiterleitung bei erfolgreicher Speicherung  
-            flash[:success] = "Berechtigung "+params[:berechtigung]+" wurde "+@Person.Vorname+", "+@Person.Name+" erfolgreich verliehen."
-            redirect_to "/Verwaltung/Rollen"
-            # Eine solche Berechtigung ist gefunden worden
+        @OZBPerson = OZBPerson.find(params[:mnr])
+        @Person = Person.get(@OZBPerson.Mnr)
+        
+       
+        
+        
+        # Keine Berechtigung dieser Art gefunden
+        if    !Sonderberechtigung.find(:first, :conditions => {:Mnr =>params[:mnr], :Berechtigung => params[:berechtigung]}) &&
+              !Sonderberechtigung.find(:first, :conditions => {:Mnr =>params[:mnr], :Berechtigung => 'IT'}) &&
+              ( !params[:email].blank? || !@Person.EMail.blank? ) then
+          @bereitsVorhanden = false
+
+          # Berechtigung erstellen und validieren
+           
+          if params[:email].blank? && !@Person.EMail.blank? then
+            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => @Person.EMail, :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
           else
-            if (!params[:email].blank? || !@Person.EMail.blank?) then
-              @bereitsVorhanden = true
-            else
-              @bereitsVorhanden = false
+            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
+          end
+          
+          #Fehler aufgetreten?
+          if !@new_Sonderberechtigung.valid? then
+            @errors.push(@new_Sonderberechtigung.errors)
+          end
+          
+          if params[:berechtigung] = 'IT' then
+            @alle_Sonderberechtigungen = Sonderberechtigung.find(:all, :conditions => {:Mnr => params[:mnr]})
+            
+            @alle_Sonderberechtigungen.each do |sb|
+              sb.delete
             end
           end
-          @new_Sonderberechtigung.save!
+          
+                    
+          # Weiterleitung bei erfolgreicher Speicherung  
+          flash[:success] = "Berechtigung "+params[:berechtigung]+" wurde "+@Person.Vorname+", "+@Person.Name+" erfolgreich verliehen."
+          redirect_to "/Verwaltung/Rollen"
+          # Eine solche Berechtigung ist gefunden worden
+        else
+          if (!params[:email].blank? || !@Person.EMail.blank?) then
+            @bereitsVorhanden = true
+          else
+            @bereitsVorhanden = false
+          end
         end
-      # Bei Fehlern Daten retten
-      rescue
-        @Berechtigungen = @@Berechtigungen2.sort
-        @bereitsVorhanden = false ? flash[:error] = "Berechtigung konnte nicht hinzugefügt werden." : flash[:notice] = "Berechtigung bereits vorhanden."
-        session[:return_to] = request.referer
-        redirect_to session[:return_to]
-      end        
-    else
-      redirect_to "/MeineKonten"
-    end
+        @new_Sonderberechtigung.save!
+      end
+    # Bei Fehlern Daten retten
+    rescue
+      @Berechtigungen = @@Berechtigungen2.sort
+      @bereitsVorhanden = false ? flash[:error] = "Berechtigung konnte nicht hinzugefügt werden." : flash[:notice] = "Berechtigung bereits vorhanden."
+      session[:return_to] = request.referer
+      redirect_to session[:return_to]
+    end        
   end
 
 
-  def deleteBerechtigungRollen
-    if is_allowed(current_user, 7) then
-      
-      @Sonderberechtigung = Sonderberechtigung.find(params[:id])
-      @Sonderberechtigung.delete
-      
-      flash[:success] = "Berechtigung wurde erfolgreich gelöscht."
-      #session[:return_to] = request.referer
-      redirect_to "/Verwaltung/Rollen"
-    else
-      redirect_to "/MeineKonten"
-    end
+  def deleteBerechtigungRollen      
+    @Sonderberechtigung = Sonderberechtigung.find(params[:id])
+    @Sonderberechtigung.delete
+    
+    flash[:success] = "Berechtigung wurde erfolgreich gelöscht."
+    #session[:return_to] = request.referer
+    redirect_to "/Verwaltung/Rollen"
   end
  
   
   
-  def editRollen
-    if isCurrentUserAdmin then
-      
-      @falseTrue =["Nein", "Ja"]
-      @Berechtigung =["IT", "RW", "MV", "ZE", "OeA"]
-      @Rollen = @@Rollen
+  def editRollen  
+    @falseTrue =["Nein", "Ja"]
+    @Berechtigung =["IT", "RW", "MV", "ZE", "OeA"]
+    @Rollen = @@Rollen
+  
+    @Berechtigungen = @@Berechtigungen2.sort
+    @BerechtigungsName = @@Berechtigungen
     
-      if is_allowed(current_user, 7) then 
-
-        @Berechtigungen = @@Berechtigungen2.sort
-        @BerechtigungsName = @@Berechtigungen
-        
-        @OZBPersonen ||= Array.new
-        @Sonderberechtigungen = Sonderberechtigung.find(:all)
-        
-          @Sonderberechtigungen.each do |sonderberechtigung|
-            @OZBPerson = OZBPerson.find(sonderberechtigung.Mnr)
-            unless @OZBPersonen.include?(@OZBPerson)
-              @OZBPersonen << @OZBPerson
-            end
-          end
-        @OZBPersonen.sort! { |a,b| a.Mnr <=> b.Mnr }
-          
-        @new_Sonderberechtigung = Sonderberechtigung.new
-      else
-        redirect_to "/MeineKonten"
+    @OZBPersonen ||= Array.new
+    @Sonderberechtigungen = Sonderberechtigung.find(:all)
+    
+      @Sonderberechtigungen.each do |sonderberechtigung|
+        @OZBPerson = OZBPerson.find(sonderberechtigung.Mnr)
+        unless @OZBPersonen.include?(@OZBPerson)
+          @OZBPersonen << @OZBPerson
+        end
       end
+    @OZBPersonen.sort! { |a,b| a.Mnr <=> b.Mnr }
       
-    else
-      redirect_to "/MeineKonten"
-    end    
+    @new_Sonderberechtigung = Sonderberechtigung.new
   end
   
   
  ### Mitglieder Administrationsrechte geben ###
-  def editBerechtigungenRollen
-    if is_allowed(current_user, 7) then 
-      
-      
+  def editBerechtigungenRollen      
       #@OZBPerson = OZBPerson.find(params[:Mnr])
      # @Person = Person.get(@OZBPerson.Mnr)
       
@@ -150,33 +127,26 @@ class SonderberechtigungController < ApplicationController
       
 
       @new_Sonderberechtigung = Sonderberechtigung.new
-    else
-      redirect_to "/MeineKonten"
-    end
   end
   
   
   def createSonderberechtigung   
-    if is_allowed(current_user, 7) then
-      @nil = nil
-      @AktiveOzbPersonen = OZBPerson.find(:all, :conditions => {:Austrittsdatum => @nil})
-      @DistinctPersonen ||= Array.new
-      @AktiveOzbPersonen.each do |ozbperson|
-        @Person = Person.get(ozbperson.Mnr)
-        unless @DistinctPersonen.include?(@Person)
-          @DistinctPersonen << @Person
-        end
+    @nil = nil
+    @AktiveOzbPersonen = OZBPerson.find(:all, :conditions => {:Austrittsdatum => @nil})
+    @DistinctPersonen ||= Array.new
+    @AktiveOzbPersonen.each do |ozbperson|
+      @Person = Person.get(ozbperson.Mnr)
+      unless @DistinctPersonen.include?(@Person)
+        @DistinctPersonen << @Person
       end
-      
-    
-      @mnr = nil
-      @Berechtigungen = @@Berechtigungen2.sort
-      @BerechtigungsName = @@Berechtigungen
-        
-      @new_Sonderberechtigung = Sonderberechtigung.new
-    else
-      redirect_to "/MeineKonten"
     end
+    
+  
+    @mnr = nil
+    @Berechtigungen = @@Berechtigungen2.sort
+    @BerechtigungsName = @@Berechtigungen
+      
+    @new_Sonderberechtigung = Sonderberechtigung.new
   end
   
 

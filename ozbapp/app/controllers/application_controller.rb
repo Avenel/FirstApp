@@ -1,11 +1,23 @@
+require "authentication"
+
 class ApplicationController < ActionController::Base
+  include Authentication
   protect_from_forgery
+
+  helper_method :is_allowed
+  helper_method :isUserAdmin
+  helper_method :isUserInGroup
 
 
 Rails.logger.level = 0
 #############NEU20.02.13##################
  
  after_filter :store_location
+
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:error] = "Sie haben keine Berechtigung diese Seite anzuzeigen!"
+    render "/application/access_denied"
+  end 
 
  def store_location
   session[:previous_url] = request.fullpath unless request.fullpath =~ /\/OZBPerson/
@@ -21,47 +33,12 @@ Rails.logger.level = 0
  end
  
  #############ENDE_NEU#############
-
-  ### to get "isCurrentUserInGroup" method available to both controllers and views
-  helper_method :isCurrentUserInGroup
-  def isCurrentUserInGroup(group)
-    return !(Sonderberechtigung.find(:all, :conditions => {:Mnr => current_user.Mnr, :Berechtigung => group})).first.nil?
-  end
-
-  helper_method :isCurrentUserAdmin
-  def isCurrentUserAdmin
-    return !(Sonderberechtigung.find(:all, :conditions => {:Mnr => current_user.Mnr})).first.nil?  
-  end
   
   helper_method :getCurrentLocation
   def getCurrentLocation
     return request.path
     #return request.path_parameters['controller']
   end
-
-
-  helper_method :is_allowed
-  def is_allowed(ozb_person, gescheaftsvorfallnr)   
-    if ozb_person && ozb_person.Mnr
-      if prozess = Geschaeftsprozess.where(:ID => gescheaftsvorfallnr).first
-        return true if prozess.IT && Sonderberechtigung.where(:Mnr => ozb_person.Mnr).where(:Berechtigung => "IT").first
-        return true if prozess.MV && Sonderberechtigung.where(:Mnr => ozb_person.Mnr).where(:Berechtigung => "MV").first
-        return true if prozess.RW && Sonderberechtigung.where(:Mnr => ozb_person.Mnr).where(:Berechtigung => "RW").first
-        return true if prozess.ZE && Sonderberechtigung.where(:Mnr => ozb_person.Mnr).where(:Berechtigung => "ZE").first
-        return true if prozess.OeA && Sonderberechtigung.where(:Mnr => ozb_person.Mnr).where(:Berechtigung => "OeA").first
-      else
-        #Kein Prozess mit der id gefunden
-        puts "kein Prozess"
-      end
-    else 
-      #Kein gültige OZBPerson angegeben
-      puts "kein Person"
-    end
-    return false
-  end
-
-
-
   
   def searchOZBPerson
     #Suchkriterien: mnr, pnr, rolle, name, ktoNr

@@ -206,6 +206,10 @@
 			<h4>Logindaten</h4>
 			<table class="table-hover" width="100%" cellpadding="10" cellspacing="">
 				<tr>
+				<th align="left"><font color="red">*</font>PNr / MNr</th>
+				<td><%= text_field_tag :Pnr, @new_Pnr %></td>
+				</tr>
+				<tr>
 				<th align="left" style="width: 180px;"><font color="red">*</font>Passwort:</th>
 				<td><%= password_field_tag :passwort, params[:passwort] %></td>
 				</tr>

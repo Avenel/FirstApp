@@ -3,6 +3,7 @@
 class VerwaltungController < ApplicationController
 #  protect_from_forgery
   before_filter :authenticate_user!
+  load_and_authorize_resource :class => false, :only => [:newOZBPerson, :createOZBPerson, :listOZBPersonen, :detailsOZBPerson, :editPersonaldaten, :updatePersonaldaten, :editKontaktdaten, :updateKontaktdaten, :editRolle, :updateRolle, :editBerechtigungen, :createBerechtigung, :deleteBerechtigung]
 
   # Zugriff der Methoden aus der View. NU
   helper_method :sort_column, :sort_direction, :rollen_bezeichnung
@@ -23,24 +24,21 @@ class VerwaltungController < ApplicationController
 
 ### Mitglieder hinzufügen ###
   def newOZBPerson
-    if is_allowed(current_user, 3) then
-      @DistinctPersonen    = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
-      @Rollen              = @@Rollen2
-      @Rollen2             = @@Rollen
-      @new_Person          = Person.new
-      @new_OZBPerson       = OZBPerson.new
-      @new_Student         = Student.new
-      @new_Foerdermitglied = Foerdermitglied.new
-      @new_Gesellschafter  = Gesellschafter.new
-      @new_Partner         = Partner.new
-      @new_Mitglied        = Mitglied.new     
-      @new_Telefon         = Telefon.new
-      @new_Fax             = Telefon.new
-      @new_Mobil           = Telefon.new
-      @new_Adresse         = Adresse.new      
-    else
-      redirect_to "/MeineKonten"
-    end
+    @DistinctPersonen    = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
+    @Rollen              = @@Rollen2
+    @Rollen2             = @@Rollen
+    @new_Person          = Person.new
+    @new_OZBPerson       = OZBPerson.new
+    @new_Student         = Student.new
+    @new_Foerdermitglied = Foerdermitglied.new
+    @new_Gesellschafter  = Gesellschafter.new
+    @new_Partner         = Partner.new
+    @new_Mitglied        = Mitglied.new     
+    @new_Telefon         = Telefon.new
+    @new_Fax             = Telefon.new
+    @new_Mobil           = Telefon.new
+    @new_Adresse         = Adresse.new   
+    @new_Pnr             = Person.last.Pnr + 1
   end
 
   def createOZBPerson
@@ -51,12 +49,12 @@ class VerwaltungController < ApplicationController
     ActiveRecord::Base.transaction do
        ## Person erstellen und validieren
         @new_Person = Person.new(
-            :Pnr          => Person.last.Pnr + 1, 
+            :Pnr          => params[:Pnr], 
             :Rolle        => params[:rolle], 
             :Name         => params[:name], 
             :Vorname      => params[:vorname], 
             :Geburtsdatum => params[:gebDatum], 
-            :Email        => params[:email],
+            :EMail        => params[:email],
             :SachPnr      => current_user.Mnr 
         )
 
@@ -64,25 +62,47 @@ class VerwaltungController < ApplicationController
         if !@new_Person.valid? then
           @errors.push(@new_Person.errors)
         end
-              
-       ## Login erstellen und validieren
+
+        logger.debug("new Person valid!")
+
         # Achtung: UberPnr erweitern: Definition + Maske
+        logger.debug(current_user.Mnr)
+
         @new_OZBPerson = OZBPerson.new(
             :Mnr            => @new_Person.Pnr, 
             :UeberPnr       => current_user.Mnr, 
-            :email          => params[:email], 
-            :password       => params[:passwort], 
+            #:email          => params[:email], 
+            #:password       => params[:passwort], 
             :Antragsdatum   => params[:antragsdatum],
             :Aufnahmedatum  => params[:aufnahmedatum],
             :Austrittsdatum => params[:austrittsdatum],
-            :PWAendDatum    => Date.today, #NU
+            #:PWAendDatum    => Date.today, #NU
             :SachPnr        => current_user.Mnr
         )
+
+        logger.debug("new OZBPerson")
 
         #Fehler aufgetreten?
         if !@new_OZBPerson.valid? then
           @errors.push(@new_OZBPerson.errors)
         end
+
+        logger.debug("new OZBPerson valid")
+
+        # Login erstellen und validieren
+        @new_user = User.new(
+            :id => @new_OZBPerson.Mnr,
+            :email => @new_Person.EMail,
+            :password => params[:passwort],
+            :password_confirmation => params[:passwort]
+        )
+
+        #Fehler aufgetreten?
+        if !@new_user.valid? then
+          @errors.push(@new_user.errors)
+        end
+
+        logger.debug("new user valid!")
                
        ## Adresse erstellen und validieren
         @new_Adresse = Adresse.new( 
@@ -150,6 +170,8 @@ class VerwaltungController < ApplicationController
           end
         end 
 
+        logger.debug("here")
+
        ## Rolle erstellen und validieren       
         @new_Gesellschafter = Gesellschafter.new( 
             :Mnr               => @new_OZBPerson.Mnr, 
@@ -193,6 +215,8 @@ class VerwaltungController < ApplicationController
             :SachPnr        => current_user.Mnr 
         )    
 
+        logger.debug("here2")
+
         error = false
         case params[:rolle]
         when "G"
@@ -228,11 +252,22 @@ class VerwaltungController < ApplicationController
         end
 
         if !error       
-          ## OZBPerson speichern
-          if @new_OZBPerson.save!
-            ## Person speichern
-            @new_Person.save!
+          logger.debug("her3")
+          ## Person speichern
+          if @new_Person.save!
+
+            ## OZBPerson speichern
+            if @new_OZBPerson.save!
+              logger.debug("her4")
+
+              ## User speichern
+              @new_user.save!
+              logger.debug("her5")
+            end
+            
           end
+
+          logger.debug("her6")
 
          ## Rolle speichern        
           case params[:rolle]
@@ -287,7 +322,9 @@ class VerwaltungController < ApplicationController
     rescue
       @DistinctPersonen = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
       @Rollen = @@Rollen2
-      @Rollen2 = @@Rollen  
+      @Rollen2 = @@Rollen 
+      puts "123"
+      puts @errors
       render "newOZBPerson"
     end   
   end 
@@ -295,59 +332,47 @@ class VerwaltungController < ApplicationController
 
 ### Alle Mitglieder anzeigen ###
   def listOZBPersonen
-    if isCurrentUserAdmin then
-      @OZBPersonen = OZBPerson.joins(:Person).order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 25)
-    else
-      redirect_to "/MeineKonten"
-    end    
+    @OZBPersonen = OZBPerson.joins(:Person).order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 25)
   end
 
 
 ### Details einer Person anzeigen ###
   def detailsOZBPerson
-    if isCurrentUserAdmin then
-      @OZBPerson = OZBPerson.find(params[:Mnr])
-      @Person    = Person.get(@OZBPerson.Mnr)
-      @Adresse   = Adresse.get(@Person.Pnr)
-      
-      @Telefon   = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "tel"})
-      @Fax       = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "fax"})
-      @Mobil     = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "mob"})
+    @OZBPerson = OZBPerson.find(params[:Mnr])
+    @Person    = Person.get(@OZBPerson.Mnr)
+    @Adresse   = Adresse.get(@Person.Pnr)
+    
+    @Telefon   = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "tel"})
+    @Fax       = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "fax"})
+    @Mobil     = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "mob"})
 
-      @Tel       = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr}, :order => "LfdNr ASC")
+    @Tel       = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr}, :order => "LfdNr ASC")
 
-      @Rollen    = @@Rollen  
-      @Rollen2   = @@Rollen2
-      case @Person.Rolle
-      when "M"
-        @Mitglied = Mitglied.get(@OZBPerson.Mnr)
-      when "F"
-        @Foerdermitglied = Foerdermitglied.get(@Person.Pnr)
-      when "P"
-        @Partner = Partner.get(@OZBPerson.Mnr)
-        #if !@Partner.nil? then
-        #  @PartnerPerson = Person.get(@Partner.Pnr_P)
-        #end
-      when "G"
-        @Gesellschafter = Gesellschafter.get(@OZBPerson.Mnr)
-      when "S"
-        @Student = Student.get(@OZBPerson.Mnr)
-      end
-    else
-      redirect_to "/MeineKonten"
-    end      
+    @Rollen    = @@Rollen  
+    @Rollen2   = @@Rollen2
+    case @Person.Rolle
+    when "M"
+      @Mitglied = Mitglied.get(@OZBPerson.Mnr)
+    when "F"
+      @Foerdermitglied = Foerdermitglied.get(@Person.Pnr)
+    when "P"
+      @Partner = Partner.get(@OZBPerson.Mnr)
+      #if !@Partner.nil? then
+      #  @PartnerPerson = Person.get(@Partner.Pnr_P)
+      #end
+    when "G"
+      @Gesellschafter = Gesellschafter.get(@OZBPerson.Mnr)
+    when "S"
+      @Student = Student.get(@OZBPerson.Mnr)
+    end    
   end
 
 
 ### Mitglieder bearbeiten: Personaldaten ###
   def editPersonaldaten
-    if is_allowed(current_user, 3) then
-      @OZBPerson = OZBPerson.find(params[:Mnr])
-      @Person    = Person.get(@OZBPerson.Mnr)
-      @Fullname  = @Person.Name + ", " + @Person.Vorname
-    else
-      redirect_to "/MeineKonten"      
-    end
+    @OZBPerson = OZBPerson.find(params[:Mnr])
+    @Person    = Person.get(@OZBPerson.Mnr)
+    @Fullname  = @Person.Name + ", " + @Person.Vorname
   end
   
   def updatePersonaldaten
@@ -397,17 +422,13 @@ class VerwaltungController < ApplicationController
 
 ### Mitglieder bearbeiten: Kontaktdaten ###
   def editKontaktdaten
-    if is_allowed(current_user, 3) then
-      @OZBPerson = OZBPerson.find(params[:Mnr])
-      @Person    = Person.get(@OZBPerson.Mnr)
-      @Fullname  = @Person.Name + ", " + @Person.Vorname
-      @Adresse   = Adresse.get(@Person.Pnr)
-      @Telefon   = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "tel"})
-      @Fax       = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "fax"})
-      @Mobil     = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "mob"})
-    else
-      redirect_to "/MeineKonten"
-    end  
+    @OZBPerson = OZBPerson.find(params[:Mnr])
+    @Person    = Person.get(@OZBPerson.Mnr)
+    @Fullname  = @Person.Name + ", " + @Person.Vorname
+    @Adresse   = Adresse.get(@Person.Pnr)
+    @Telefon   = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "tel"})
+    @Fax       = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "fax"})
+    @Mobil     = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "mob"})  
   end
 
   def updateKontaktdaten
@@ -587,52 +608,47 @@ class VerwaltungController < ApplicationController
 
 ### Mitglieder bearbeiten: Rolle ###
   def editRolle
-    if is_allowed(current_user, 3) then
-      
-      @OZBPerson        = OZBPerson.find(params[:Mnr])
-      @Person           = Person.get(@OZBPerson.Mnr)
-      
-      @DistinctPersonen = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
-      @Rollen           = @@Rollen2
-      @Rollen2          = @@Rollen
-      
-      @Student          = Student.new
-      @Foerdermitglied  = Foerdermitglied.new
-      @Gesellschafter   = Gesellschafter.new
-      @Partner          = Partner.new
-      @Mitglied         = Mitglied.new    
-      
-      case @Person.Rolle
-      when "M"
-        @Mitglied = Mitglied.get(@OZBPerson.Mnr)
-      when "F"
-        @Foerdermitglied = Foerdermitglied.get(@Person.Pnr)
-      when "P"
-        @Partner = Partner.get(@OZBPerson.Mnr)
-        #if !@Partner.nil? then
-        #  @PartnerPerson = Person.get(@Partner.Pnr_P)
-        #else
-        #  @Partner = Partner.new(:Mnr => @OZBPerson.Mnr, :Pnr_P => 0, :Berechtigung => "")          
-        #end
-      when "G"
-        @Gesellschafter = Gesellschafter.get(@OZBPerson.Mnr)
-      when "S"
-        @Student = Student.get(@OZBPerson.Mnr)
-      end
+    @OZBPerson        = OZBPerson.find(params[:Mnr])
+    @Person           = Person.get(@OZBPerson.Mnr)
+    
+    @DistinctPersonen = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
+    @Rollen           = @@Rollen2
+    @Rollen2          = @@Rollen
+    
+    @Student          = Student.new
+    @Foerdermitglied  = Foerdermitglied.new
+    @Gesellschafter   = Gesellschafter.new
+    @Partner          = Partner.new
+    @Mitglied         = Mitglied.new    
+    
+    case @Person.Rolle
+    when "M"
+      @Mitglied = Mitglied.get(@OZBPerson.Mnr)
+    when "F"
+      @Foerdermitglied = Foerdermitglied.get(@Person.Pnr)
+    when "P"
+      @Partner = Partner.get(@OZBPerson.Mnr)
+      #if !@Partner.nil? then
+      #  @PartnerPerson = Person.get(@Partner.Pnr_P)
+      #else
+      #  @Partner = Partner.new(:Mnr => @OZBPerson.Mnr, :Pnr_P => 0, :Berechtigung => "")          
+      #end
+    when "G"
+      @Gesellschafter = Gesellschafter.get(@OZBPerson.Mnr)
+    when "S"
+      @Student = Student.get(@OZBPerson.Mnr)
+    end
 
-      @Berechtigungen = @@Berechtigungen2.sort
-      @BerechtigungsName = @@Berechtigungen
-      
-      @Sonderberechtigung = Sonderberechtigung.find(:all, :conditions => {:Mnr => @OZBPerson.Mnr})
-      @hasSonderberechtigung = false
-      if !@Sonderberechtigung.first().nil? then
-        @hasSonderberechtigung = true
-      end
+    @Berechtigungen = @@Berechtigungen2.sort
+    @BerechtigungsName = @@Berechtigungen
+    
+    @Sonderberechtigung = Sonderberechtigung.find(:all, :conditions => {:Mnr => @OZBPerson.Mnr})
+    @hasSonderberechtigung = false
+    if !@Sonderberechtigung.first().nil? then
+      @hasSonderberechtigung = true
+    end
 
-      @new_Sonderberechtigung = Sonderberechtigung.new      
-    else
-      redirect_to "/MeineKonten"
-    end    
+    @new_Sonderberechtigung = Sonderberechtigung.new        
   end
 
   def updateRolle
@@ -854,62 +870,58 @@ class VerwaltungController < ApplicationController
   
 
 ### Mitglieder löschen ### 
-  def deleteOZBPerson
-    if is_allowed(current_user, 5) then     
-      begin    
-       #Beginne Transaktion
-        ActiveRecord::Base.transaction do   
-          @OZBPerson = OZBPerson.find(params[:Mnr])
-          @Person = Person.get(@OZBPerson.Mnr)
-          @Person.GueltigBis = Time.now
-          @Person.save!
+  def deleteOZBPerson     
+    begin    
+     #Beginne Transaktion
+      ActiveRecord::Base.transaction do   
+        @OZBPerson = OZBPerson.find(params[:Mnr])
+        @Person = Person.get(@OZBPerson.Mnr)
+        @Person.GueltigBis = Time.now
+        @Person.save!
 
-          @Student         = Student.new
-          @Foerdermitglied = Foerdermitglied.new
-          @Gesellschafter  = Gesellschafter.new
-          @Partner         = Partner.new
-          @Mitglied        = Mitglied.new 
-          
-          @Rolle = @Person.Rolle.to_s
-          
-          case @Rolle
-            when "G"
-            @Gesellschafter             = Gesellschafter.get(@OZBPerson.Mnr)
-            @Gesellschafter.GueltigBis  = Time.now
-            @Gesellschafter.SachPnr     = current_user.Mnr
-            @Gesellschafter.save(:validation => false)
-            when "S"
-            @Student                    = Student.get(@OZBPerson.Mnr) 
-            @Student.GueltigBis         = Time.now
-            @Student.SachPnr            = current_user.Mnr
-            @Student.save(:validation => false)
-            when "M"
-            @Mitglied                   = Mitglied.get(@OZBPerson.Mnr)
-            @Mitglied.GueltigBis        = Time.now
-            @Mitglied.SachPnr           = current_user.Mnr
-            @Mitglied.save(:validation => false)
-            when "P"
-            @Partner                    = Partner.get(@OZBPerson.Mnr)
-            @Partner.GueltigBis         = Time.now
-            @Partner.SachPnr            = current_user.Mnr
-            @Partner.save(:validation => false)
-            when "F"
-            @Foerdermitglied            = Foerdermitglied.get(@Person.Pnr)
-            @Foerdermitglied.GueltigBis = Time.now
-            @Foerdermitglied.SachPnr    = current_user.Mnr
-            @Foerdermitglied.save(:validation => false)
-          end         
-          
-          flash[:notice] = "Person wurde erfolgreich gelöscht."
-          redirect_to :action => "listOZBPersonen"               
-        end
-      # Bei Fehlern Daten reten
-      rescue
-        redirect_to "/MeineKonten"
-      end 
-    else
+        @Student         = Student.new
+        @Foerdermitglied = Foerdermitglied.new
+        @Gesellschafter  = Gesellschafter.new
+        @Partner         = Partner.new
+        @Mitglied        = Mitglied.new 
+        
+        @Rolle = @Person.Rolle.to_s
+        
+        case @Rolle
+          when "G"
+          @Gesellschafter             = Gesellschafter.get(@OZBPerson.Mnr)
+          @Gesellschafter.GueltigBis  = Time.now
+          @Gesellschafter.SachPnr     = current_user.Mnr
+          @Gesellschafter.save(:validation => false)
+          when "S"
+          @Student                    = Student.get(@OZBPerson.Mnr) 
+          @Student.GueltigBis         = Time.now
+          @Student.SachPnr            = current_user.Mnr
+          @Student.save(:validation => false)
+          when "M"
+          @Mitglied                   = Mitglied.get(@OZBPerson.Mnr)
+          @Mitglied.GueltigBis        = Time.now
+          @Mitglied.SachPnr           = current_user.Mnr
+          @Mitglied.save(:validation => false)
+          when "P"
+          @Partner                    = Partner.get(@OZBPerson.Mnr)
+          @Partner.GueltigBis         = Time.now
+          @Partner.SachPnr            = current_user.Mnr
+          @Partner.save(:validation => false)
+          when "F"
+          @Foerdermitglied            = Foerdermitglied.get(@Person.Pnr)
+          @Foerdermitglied.GueltigBis = Time.now
+          @Foerdermitglied.SachPnr    = current_user.Mnr
+          @Foerdermitglied.save(:validation => false)
+        end         
+        
+        flash[:notice] = "Person wurde erfolgreich gelöscht."
+        redirect_to :action => "listOZBPersonen"               
+      end
+    # Bei Fehlern Daten reten
+    rescue
       redirect_to "/MeineKonten"
-    end
+    end 
   end
  
   @@Berechtigungen2 = Hash[" Bitte auswählen", "", "Administrator", "IT", "Mitgliederverwaltung", "MV", "Finanzenverwaltung", "RW", "Projekteverwaltung", "ZE", "Öffentlichkeitsverwaltung", "OeA"]  
@@ -919,80 +931,67 @@ class VerwaltungController < ApplicationController
  
 ### Mitglieder Administrationsrechte geben ###
   def editBerechtigungen
-    if is_allowed(current_user, 7) then 
-      @OZBPerson = OZBPerson.find(params[:Mnr])
-      @Person = Person.get(@OZBPerson.Mnr)
-      
-      @Geschaeftsprozesse = Geschaeftsprozess.all
+    @OZBPerson = OZBPerson.find(params[:Mnr])
+    @Person = Person.get(@OZBPerson.Mnr)
+    
+    @Geschaeftsprozesse = Geschaeftsprozess.all
 
-      @Berechtigungen = @@Berechtigungen2.sort
-      @BerechtigungsName = @@Berechtigungen
-      
-      @Sonderberechtigung = Sonderberechtigung.find(:all, :conditions => {:Mnr => @OZBPerson.Mnr})
-      @hasSonderberechtigung = false
-      if !@Sonderberechtigung.first().nil? then
-        @hasSonderberechtigung = true
-      end
-
-      @new_Sonderberechtigung = Sonderberechtigung.new
-    else
-      redirect_to "/MeineKonten"
+    @Berechtigungen = @@Berechtigungen2.sort
+    @BerechtigungsName = @@Berechtigungen
+    
+    @Sonderberechtigung = Sonderberechtigung.find(:all, :conditions => {:Mnr => @OZBPerson.Mnr})
+    @hasSonderberechtigung = false
+    if !@Sonderberechtigung.first().nil? then
+      @hasSonderberechtigung = true
     end
+
+    @new_Sonderberechtigung = Sonderberechtigung.new
   end
 
   def createBerechtigung
-    if is_allowed(current_user, 7) then 
-      @errors = Array.new                                       
-      begin    
-        #Beginne Transaktion
-        ActiveRecord::Base.transaction do
-          @sonderberechtigung = Sonderberechtigung.where("Mnr = ? AND Email = ? AND Berechtigung = ?", params[:Mnr], params[:email], params[:berechtigung])
+    @errors = Array.new                                       
+    begin    
+      #Beginne Transaktion
+      ActiveRecord::Base.transaction do
+        @sonderberechtigung = Sonderberechtigung.where("Mnr = ? AND Email = ? AND Berechtigung = ?", params[:Mnr], params[:email], params[:berechtigung])
 
-          if @sonderberechtigung.empty?
-            @OZBPerson = OZBPerson.find(params[:Mnr])
-            @Person    = Person.get(@OZBPerson.Mnr)
+        if @sonderberechtigung.empty?
+          @OZBPerson = OZBPerson.find(params[:Mnr])
+          @Person    = Person.get(@OZBPerson.Mnr)
 
-            ## Person erstellen und validieren
-            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr => @OZBPerson.Mnr, :EMail => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr )
-            #Fehler aufgetreten?
-            if !@new_Sonderberechtigung.valid? then
-              @errors.push(@new_Sonderberechtigung.errors)
-            end
-            
-            @new_Sonderberechtigung.save!
-                      
-            # Weiterleitung bei erfolgreicher Speicherung  
-            flash[:notice] = "Berechtigung wurde erfolgreich hinzugefügt."
-            session[:return_to] = request.referer
-            redirect_to session[:return_to]       
-          else
-            flash[:error] = "Diese Berechtigung ist bereits vorhanden!"
-            redirect_to session[:return_to]       
+          ## Person erstellen und validieren
+          @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr => @OZBPerson.Mnr, :EMail => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr )
+          #Fehler aufgetreten?
+          if !@new_Sonderberechtigung.valid? then
+            @errors.push(@new_Sonderberechtigung.errors)
           end
+          
+          @new_Sonderberechtigung.save!
+                    
+          # Weiterleitung bei erfolgreicher Speicherung  
+          flash[:notice] = "Berechtigung wurde erfolgreich hinzugefügt."
+          session[:return_to] = request.referer
+          redirect_to session[:return_to]       
+        else
+          flash[:error] = "Diese Berechtigung ist bereits vorhanden!"
+          redirect_to session[:return_to]       
         end
-      # Bei Fehlern Daten reten
-      rescue
-        @Berechtigungen = @@Berechtigungen2.sort
-        render "editBerechtigungen"
-      end        
-    else
-      redirect_to "editBerechtigungen"
-    end    
+      end
+    # Bei Fehlern Daten reten
+    rescue
+      @Berechtigungen = @@Berechtigungen2.sort
+      render "editBerechtigungen"
+    end          
   end
 
   def deleteBerechtigung
-    if is_allowed(current_user, 7) then
-      
-       @Sonderberechtigung = Sonderberechtigung.find(params[:id])
-       @Sonderberechtigung.delete
-      
-      # Weiterleitung bei erfolgreicher Speicherung  
-      flash[:notice] = "Berechtigung wurde erfolgreich gelöscht."
-      session[:return_to] = request.referer
-        redirect_to session[:return_to]
-    else
-      redirect_to "/MeineKonten"
-    end
+    @Sonderberechtigung = Sonderberechtigung.find(params[:id])
+    @Sonderberechtigung.delete
+    
+    # Weiterleitung bei erfolgreicher Speicherung  
+    flash[:notice] = "Berechtigung wurde erfolgreich gelöscht."
+    session[:return_to] = request.referer
+      redirect_to session[:return_to]
   end
 
   def searchOZBPerson

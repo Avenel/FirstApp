@@ -8,9 +8,9 @@ class Geschaeftsprozess < ActiveRecord::Base
 
 	# Validations
 	validates :Beschreibung, :presence => true
-	validates :IT, :presence => true
-	validates :MV, :presence => true
-	validates :RW, :presence => true
-	validates :ZE, :presence => true
-	validates :OeA, :presence => true
+	validates :IT, :inclusion => {:in => [true, false]}
+	validates :MV, :inclusion => {:in => [true, false]}
+	validates :RW, :inclusion => {:in => [true, false]}
+	validates :ZE, :inclusion => {:in => [true, false]}
+	validates :OeA, :inclusion => {:in => [true, false]}
 end

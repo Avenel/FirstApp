@@ -2,6 +2,7 @@
 class OZBPersonController < ApplicationController  
   #protect_from_forgery
   before_filter :authenticate_user!
+  load_and_authorize_resource :only => [:editRolle]
   
   @@sop_rollen = Hash["Alle Rollen", "", "Mitglied", "M", "Fördermitglied", "F", "Partner", "P", "Gesellschafter", "G", "Student", "S"]
   
@@ -43,12 +44,8 @@ class OZBPersonController < ApplicationController
 
 ### Mitglieder bearbeiten: Personaldaten ###
   def editPersonaldaten
-      if is_allowed(current_user, 3)
-        @OZBPerson = OZBPerson.find(current_user.Mnr)
-        @Person    = Person.get(@OZBPerson.Mnr)
-      else
-        redirect_to "/MeineKonten"
-      end
+    @OZBPerson = OZBPerson.find(current_user.Mnr)
+    @Person    = Person.get(@OZBPerson.Mnr)
   end
   
   def updatePersonaldaten
@@ -319,36 +316,32 @@ class OZBPersonController < ApplicationController
 
 ### Mitglieder bearbeiten: Rolle ###
   def editRolle
-      if is_allowed(current_user, 20)
-        @OZBPerson = OZBPerson.find(current_user.Mnr)
-        @Person    = Person.get(@OZBPerson.Mnr)
+    @OZBPerson = OZBPerson.find(current_user.Mnr)
+    @Person    = Person.get(@OZBPerson.Mnr)
+    
+    @DistinctPersonen = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
+    @Rollen = @@Rollen
+    @Rolle2 = @@Rollen2
         
-        @DistinctPersonen = Person.find(:all, :select => "DISTINCT Pnr, Name, Vorname")
-        @Rollen = @@Rollen
-        @Rolle2 = @@Rollen2
-            
-        @Student         = Student.new
-        @Foerdermitglied = Foerdermitglied.new
-        @Gesellschafter  = Gesellschafter.new
-        @Partner         = Partner.new
-        @Mitglied        = Mitglied.new    
-        
-        case @Person.Rolle
-        when "M"
-        @Mitglied        = Mitglied.get(@OZBPerson.Mnr)
-        when "F"
-        @Foerdermitglied = Foerdermitglied.get(@Person.Pnr)
-        when "P"
-        @Partner         = Partner.get(@OZBPerson.Mnr)
-        @PartnerPerson   = Person.get(@Partner.Pnr_P)
-        when "G"
-        @Gesellschafter  = Gesellschafter.get(@OZBPerson.Mnr)
-        when "S"
-        @Student         = Student.get(@OZBPerson.Mnr)
-        end
-      else
-        redirect_to "/MeineKonten"
-      end
+    @Student         = Student.new
+    @Foerdermitglied = Foerdermitglied.new
+    @Gesellschafter  = Gesellschafter.new
+    @Partner         = Partner.new
+    @Mitglied        = Mitglied.new    
+    
+    case @Person.Rolle
+    when "M"
+    @Mitglied        = Mitglied.get(@OZBPerson.Mnr)
+    when "F"
+    @Foerdermitglied = Foerdermitglied.get(@Person.Pnr)
+    when "P"
+    @Partner         = Partner.get(@OZBPerson.Mnr)
+    @PartnerPerson   = Person.get(@Partner.Pnr_P)
+    when "G"
+    @Gesellschafter  = Gesellschafter.get(@OZBPerson.Mnr)
+    when "S"
+    @Student         = Student.get(@OZBPerson.Mnr)
+    end
   end
 
   def updateRolle

@@ -35,7 +35,7 @@
               <ul class="dropdown-menu">
                 <li <% if getCurrentLocation == "/Verwaltung/Veranstaltungen" %>class="active"<%end%>><a href="/Verwaltung/Veranstaltungen">Veranstaltungen</a>
                 </li>
-                <% if isCurrentUserAdmin %>
+                <% if isUserAdmin(current_user) %>
                 <li <% if getCurrentLocation == "/Verwaltung/WebImport" %>class="active"<%end%>><a href="/Verwaltung/WebImport">WebImport</a></li>
                 <li <% if getCurrentLocation == "/Verwaltung/Darlehensvertrag" %>class="active"<%end%>><a href="/Verwaltung/Darlehensvertrag">Darlehensvertrag</a></li>
                 <%end%>

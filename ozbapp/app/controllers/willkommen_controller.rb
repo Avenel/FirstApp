@@ -6,11 +6,11 @@ class WillkommenController < ApplicationController
   	# If user admin, check if referer is given and redirect to manage page
   	if !request.referer.nil?
 
-		if (URI(request.referer).path == ('/OZBPerson/Anmeldung') && isCurrentUserAdmin)
+		if (URI(request.referer).path == ('/OZBPerson/Anmeldung') && isUserAdmin(current_user))
 			redirect_to '/Verwaltung/Mitglieder'	
 		end
 		
-		if (URI(request.referer).path == ('/OZBPerson/edit') && isCurrentUserAdmin)
+		if (URI(request.referer).path == ('/OZBPerson/edit') && isUserAdmin(current_user))
 			redirect_to '/Verwaltung/Mitglieder'	
 		end
 	

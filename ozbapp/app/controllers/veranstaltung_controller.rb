@@ -3,6 +3,7 @@
 class VeranstaltungController < ApplicationController
 #  protect_from_forgery
   before_filter :authenticate_user!
+  load_and_authorize_resource :only => [:createDeleteTeilnahme, :createVeranstaltung, :editVeranstaltungen, :newVeranstaltung]
   
   
   def listTeilnahmen
@@ -32,26 +33,24 @@ class VeranstaltungController < ApplicationController
   end
   
   
-  def createDeleteTeilnahme
-    if is_allowed(current_user, 20) then #ÄNern später geschäftsprozess anpassen
+  def createDeleteTeilnahme      
+    if (params[:delete] == "true") then
       
-      if (params[:delete] == "true") then
+      @Teilnahme = Teilnahme.find(:first, :conditions =>{:Vnr => params[:vnr1], :Pnr => params[:pnr1], :TeilnArt => params[:teilnArt2]})
+      if !@Teilnahme.nil? then
+        @Teilnahme.delete
         
-        @Teilnahme = Teilnahme.find(:first, :conditions =>{:Vnr => params[:vnr1], :Pnr => params[:pnr1], :TeilnArt => params[:teilnArt2]})
-        if !@Teilnahme.nil? then
-          @Teilnahme.delete
-          
-          flash[:notice] = "Teilnahme wurde gelöscht."
-          session[:return_to] = request.referer
-          redirect_to session[:return_to]
-        else
-          flash[:error] = "Teilnahme konnte nicht gelöscht werden."
-          session[:return_to] = request.referer
-          redirect_to session[:return_to]
-        end
-    
+        flash[:notice] = "Teilnahme wurde gelöscht."
+        session[:return_to] = request.referer
+        redirect_to session[:return_to]
       else
-      
+        flash[:error] = "Teilnahme konnte nicht gelöscht werden."
+        session[:return_to] = request.referer
+        redirect_to session[:return_to]
+      end
+  
+    else
+    
       @errors = Array.new 
       begin    
         #Beginne Transaktion
@@ -93,10 +92,6 @@ class VeranstaltungController < ApplicationController
         redirect_to session[:return_to]
       end
     end
-    else
-      redirect_to "/MeineKonten"
-    end
-    
   end
   
   
@@ -192,76 +187,68 @@ class VeranstaltungController < ApplicationController
   
   
   def createVeranstaltung
-    if is_allowed(current_user, 20) then #ÄNern später geschäftsprozess anpassen
+    @errors = Array.new                                       
+    begin    
+      #Beginne Transaktion
+      ActiveRecord::Base.transaction do
         
-      @errors = Array.new                                       
-      begin    
-        #Beginne Transaktion
-        ActiveRecord::Base.transaction do
-          
-          # Veranstaltung erstellen und validieren
-          @new_Veranstaltung = Veranstaltung.new(:Vnr => Veranstaltung.last.Vnr + 1, :VANr => params[:VANr], :VADatum => params[:vadatum], :VAOrt =>params[:vaort], :SachPnr => current_user.Mnr)
-          
-          #Fehler aufgetreten?
-          if !@new_Veranstaltung.valid? then
-            @errors.push(@new_Veranstaltung.errors)
-          end
-          
-          #neu
-          
-          @EinzuladendeMitglieder = Array.new
-          
-          if params[:VANr] == '2' then
-            @EinzuladendeMitglieder = OZBPerson.find(:all, :conditions => {:Schulungsdatum => nil, :Austrittsdatum => nil})
-          end
-          
-          if params[:VANr] == '1' then
-            @OZBPersonen = Array.new
-            @OZBPersonen = OZBPerson.find(:all, :conditions => {:Austrittsdatum => nil})
-            @OZBPersonen.each do |person|
-              @Person = Person.find(:first, :conditions => ['Pnr = ? AND GueltigBis > ?', person.Mnr, DateTime.now])
-              case @Person.Rolle
-              when "M"
-                  @EinzuladendeMitglieder << OZBPerson.find(@Person.Pnr)
-              when "G"
-                  @EinzuladendeMitglieder << OZBPerson.find(@Person.Pnr)
-              when "P"
-                  @EinzuladendeMitglieder << OZBPerson.find(@Person.Pnr)
-              end
-            end
-          end          
-
-          @new_Veranstaltung.save!
-          
-          if !@EinzuladendeMitglieder.blank? then
-            @teilnArt = 'l'
-            
-            @EinzuladendeMitglieder.each do |mitglied|
-              begin
-                ActiveRecord::Base.transaction  do
-                  @new_Teilnahme = Teilnahme.new(:Vnr => @new_Veranstaltung.Vnr, :Pnr => mitglied.Mnr,  :TeilnArt => @teilnArt, :SachPnr => current_user.Mnr)
-                  @new_Teilnahme.save
-                end
-              rescue
-              end
-            end
-          end
-          
-
-          flash[:success] = "Veranstaltung wurde erfolgreich hinzugefügt."
-          redirect_to "/Verwaltung/Veranstaltungen"
+        # Veranstaltung erstellen und validieren
+        @new_Veranstaltung = Veranstaltung.new(:Vnr => Veranstaltung.last.Vnr + 1, :VANr => params[:VANr], :VADatum => params[:vadatum], :VAOrt =>params[:vaort], :SachPnr => current_user.Mnr)
+        
+        #Fehler aufgetreten?
+        if !@new_Veranstaltung.valid? then
+          @errors.push(@new_Veranstaltung.errors)
         end
-      rescue
-        flash[:error] = "Veranstaltung konnte nicht hinzugefügt werden."
-        session[:return_to] = request.referer
-        redirect_to session[:return_to]
+        
+        #neu
+        
+        @EinzuladendeMitglieder = Array.new
+        
+        if params[:VANr] == '2' then
+          @EinzuladendeMitglieder = OZBPerson.find(:all, :conditions => {:Schulungsdatum => nil, :Austrittsdatum => nil})
+        end
+        
+        if params[:VANr] == '1' then
+          @OZBPersonen = Array.new
+          @OZBPersonen = OZBPerson.find(:all, :conditions => {:Austrittsdatum => nil})
+          @OZBPersonen.each do |person|
+            @Person = Person.find(:first, :conditions => ['Pnr = ? AND GueltigBis > ?', person.Mnr, DateTime.now])
+            case @Person.Rolle
+            when "M"
+                @EinzuladendeMitglieder << OZBPerson.find(@Person.Pnr)
+            when "G"
+                @EinzuladendeMitglieder << OZBPerson.find(@Person.Pnr)
+            when "P"
+                @EinzuladendeMitglieder << OZBPerson.find(@Person.Pnr)
+            end
+          end
+        end          
+
+        @new_Veranstaltung.save!
+        
+        if !@EinzuladendeMitglieder.blank? then
+          @teilnArt = 'l'
+          
+          @EinzuladendeMitglieder.each do |mitglied|
+            begin
+              ActiveRecord::Base.transaction  do
+                @new_Teilnahme = Teilnahme.new(:Vnr => @new_Veranstaltung.Vnr, :Pnr => mitglied.Mnr,  :TeilnArt => @teilnArt, :SachPnr => current_user.Mnr)
+                @new_Teilnahme.save
+              end
+            rescue
+            end
+          end
+        end
+        
+
+        flash[:success] = "Veranstaltung wurde erfolgreich hinzugefügt."
+        redirect_to "/Verwaltung/Veranstaltungen"
       end
-      
-      
-      
-    else
-      redirect_to "/MeineKonten"
-    end 
+    rescue
+      flash[:error] = "Veranstaltung konnte nicht hinzugefügt werden."
+      session[:return_to] = request.referer
+      redirect_to session[:return_to]
+    end
   end
   
   
@@ -271,45 +258,33 @@ class VeranstaltungController < ApplicationController
   @@Veranstaltungen = Hash["", "Nicht angegeben", "1", "Gesellschaftsversammlung","2","Schulung","3","Vortrag","4","Seminar"]
   
   def editVeranstaltungen
-    if is_allowed(current_user, 7) then
-      
-      @Veranstaltungen = @@Veranstaltungen2.sort
-      @VeranstaltungsName = @@Veranstaltungen
-      @Veranstaltung = Veranstaltung.paginate(:page => params[:page], :per_page => 25)
-      @Veranstaltungsarten = Veranstaltungsart.find(:all)
-      @new_Veranstaltung = Veranstaltung.new
-      @VeranstaltungenUndArt = Array.new
-      @edit = false
-      
-      @Veranstaltung.each do |v|
-        veranstaltungsart = Veranstaltungsart.find(v.VANr)
-        @VeranstaltungenUndArt << [v,veranstaltungsart]  
-      end
-      
-    else
-      redirect_to "/MeineKonten"
+    @Veranstaltungen = @@Veranstaltungen2.sort
+    @VeranstaltungsName = @@Veranstaltungen
+    @Veranstaltung = Veranstaltung.paginate(:page => params[:page], :per_page => 25)
+    @Veranstaltungsarten = Veranstaltungsart.find(:all)
+    @new_Veranstaltung = Veranstaltung.new
+    @VeranstaltungenUndArt = Array.new
+    @edit = false
+    
+    @Veranstaltung.each do |v|
+      veranstaltungsart = Veranstaltungsart.find(v.VANr)
+      @VeranstaltungenUndArt << [v,veranstaltungsart]  
     end
   end
   
   
-  def newVeranstaltung
-    if is_allowed(current_user, 7) then
-      
-      @Veranstaltungen = @@Veranstaltungen2.sort
-      @VeranstaltungsName = @@Veranstaltungen
-      @Veranstaltung = Veranstaltung.paginate(:page => params[:page], :per_page => 25)
-      @Veranstaltungsarten = Veranstaltungsart.find(:all)
-      @new_Veranstaltung = Veranstaltung.new
-      @new_Teilnahme = Teilnahme.new
-      @VeranstaltungenUndArt = Array.new
+  def newVeranstaltung      
+    @Veranstaltungen = @@Veranstaltungen2.sort
+    @VeranstaltungsName = @@Veranstaltungen
+    @Veranstaltung = Veranstaltung.paginate(:page => params[:page], :per_page => 25)
+    @Veranstaltungsarten = Veranstaltungsart.find(:all)
+    @new_Veranstaltung = Veranstaltung.new
+    @new_Teilnahme = Teilnahme.new
+    @VeranstaltungenUndArt = Array.new
 
-      @Veranstaltung.each do |v|
-        veranstaltungsart = Veranstaltungsart.find(v.VANr)
-        @VeranstaltungenUndArt << [v,veranstaltungsart]  
-      end
-      
-    else
-      redirect_to "/MeineKonten"
+    @Veranstaltung.each do |v|
+      veranstaltungsart = Veranstaltungsart.find(v.VANr)
+      @VeranstaltungenUndArt << [v,veranstaltungsart]  
     end
   end
   

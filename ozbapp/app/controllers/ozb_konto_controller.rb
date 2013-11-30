@@ -1,30 +1,8 @@
 # encoding: UTF-8
 class OzbKontoController < ApplicationController
   before_filter :authenticate_user!
+  load_and_authorize_resource :only => [:index, :new, :create, :edit, :update, :delete, :verlauf]
   before_filter :person_details
-  
-  # Authorizations for available pages
-  before_filter { |c| c.check_authorization_for_action(c) }
-  
-  # checks if the authorization for the current logged in user is correct to
-  # access the requested site.
-  #
-  # TODO: This should be moved to the application layer
-  def check_authorization_for_action(c)
-    if ( c.action_name == "index" && !is_allowed(current_user, 11)) ||
-       ((c.action_name == "new" || c.action_name == "create") && (!is_allowed(current_user, 13) && !is_allowed(current_user, 15))) ||
-       ((c.action_name == "edit" || c.action_name == "update") && (!is_allowed(current_user, 14) && !is_allowed(current_user, 16))) ||
-       ( c.action_name == "delete" && (!is_allowed(current_user, 14) && !is_allowed(current_user, 16))) ||
-       ( c.action_name == "verlauf" && !is_allowed(current_user, 11))
-
-        flash[:error] = "Sie haben keine Berechtigung, um diese Seite anzuzeigen."
-
-        # view variables: OZBPerson, Person
-        person_details
-        
-        render "application/access_denied"
-    end
-  end
   
   def person_details
     @OZBPerson = OZBPerson.find(params[:Mnr])

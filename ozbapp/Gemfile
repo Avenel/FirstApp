@@ -9,6 +9,9 @@ gem 'composite_primary_keys'
 # Login-Manager
 gem 'devise'
 
+# Use Cancan for role implementation
+gem "cancan", "~> 1.6.10"
+
 #Listendarstellung
 gem 'will_paginate'
 
@@ -41,7 +44,7 @@ gem 'capistrano'
 gem "rspec-rails", :group => [:test, :development]
 group :test do
   # Factory Girl ersetzt die RoR Fixtures 
-  gem "factory_girl_rails"
+  gem "factory_girl_rails", "~> 3.6.0"
 
   # Capybara führt Benutzerinteraktionen aus
   gem "capybara"
