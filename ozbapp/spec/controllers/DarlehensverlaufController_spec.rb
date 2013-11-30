@@ -276,8 +276,8 @@ describe DarlehensverlaufController do
 			# create test data
 			before :all do
 				# load data of the test-db into the tdd db
-				puts "migrate testing data"
-			 	`script/datenbank_tdd_migrieren.bat`
+				#puts "migrate testing data"
+			 	#`script/datenbank_tdd_migrieren.bat`
 			end
 
 			it "returns 1, if given valid Konto is related to KKL: 'A'" do

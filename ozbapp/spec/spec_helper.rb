@@ -36,6 +36,12 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+  
+  config.include Devise::TestHelpers, :type => :controller
+
+  config.before(:suite) do
+    require "#{Rails.root}/db/seeds_test.rb"
+  end
 
   FactoryGirl.factories.clear
   FactoryGirl.reload
