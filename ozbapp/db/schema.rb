@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130813190332) do
+ActiveRecord::Schema.define(:version => 0) do
 
   create_table "adresse", :id => false, :force => true do |t|
     t.integer  "Pnr",                      :null => false
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(:version => 20130813190332) do
     t.datetime "GueltigVon",                                                 :null => false
     t.datetime "GueltigBis",                                                 :null => false
     t.integer  "BankID",                                                     :null => false
-    t.decimal  "Kreditlimit", :precision => 5, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "Kreditlimit", :precision => 7, :scale => 2, :default => 0.0, :null => false
     t.integer  "SachPnr"
   end
 
@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(:version => 20130813190332) do
     t.datetime "GueltigVon",                                                 :null => false
     t.datetime "GueltigBis",                                                 :null => false
     t.string   "Region",         :limit => 30,                               :null => false
-    t.decimal  "Foerderbeitrag",               :precision => 5, :scale => 2, :null => false
+    t.decimal  "Foerderbeitrag",               :precision => 7, :scale => 2, :null => false
     t.string   "MJ",             :limit => 0
     t.integer  "SachPnr"
   end
@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(:version => 20130813190332) do
     t.datetime "GueltigBis",                                               :null => false
     t.integer  "Mnr",                                                      :null => false
     t.date     "KtoEinrDatum",                                             :null => false
-    t.string   "Waehrung",     :limit => 3,                                :null => false
+    t.string   "WaehrungID",   :limit => 3,                                :null => false
     t.decimal  "WSaldo",                    :precision => 10, :scale => 2
     t.integer  "PSaldo"
     t.date     "SaldoDatum"
@@ -166,11 +166,10 @@ ActiveRecord::Schema.define(:version => 20130813190332) do
   end
 
   add_index "ozbkonto", ["Mnr"], :name => "Mnr"
-  add_index "ozbkonto", ["Waehrung"], :name => "Waehrung"
+  add_index "ozbkonto", ["WaehrungID"], :name => "WaehrungID"
 
   create_table "ozbperson", :primary_key => "Mnr", :force => true do |t|
     t.integer "UeberPnr"
-    t.date    "PWAendDatum",    :null => false
     t.date    "Antragsdatum",   :null => false
     t.date    "Aufnahmedatum"
     t.date    "Austrittsdatum"
@@ -188,15 +187,15 @@ ActiveRecord::Schema.define(:version => 20130813190332) do
   end
 
   create_table "person", :id => false, :force => true do |t|
-    t.integer  "Pnr",                                         :null => false
-    t.datetime "GueltigVon",                                  :null => false
-    t.datetime "GueltigBis",                                  :null => false
+    t.integer  "Pnr",                                           :null => false
+    t.datetime "GueltigVon",                                    :null => false
+    t.datetime "GueltigBis",                                    :null => false
     t.string   "Rolle",        :limit => 0
-    t.string   "Name",         :limit => 30,                  :null => false
-    t.string   "Vorname",      :limit => 20, :default => "",  :null => false
+    t.string   "Name",         :limit => 30,                    :null => false
+    t.string   "Vorname",      :limit => 20, :default => "",    :null => false
     t.date     "Geburtsdatum"
     t.string   "EMail"
-    t.string   "SperrKZ",      :limit => 0,  :default => "0"
+    t.boolean  "SperrKZ",                    :default => false
     t.integer  "SachPnr"
   end
 
@@ -206,22 +205,22 @@ ActiveRecord::Schema.define(:version => 20130813190332) do
 
   create_table "sonderberechtigung", :primary_key => "ID", :force => true do |t|
     t.integer "Mnr",                        :null => false
-    t.string  "Email",        :limit => 40, :null => false
+    t.string  "EMail",        :limit => 40, :null => false
     t.string  "Berechtigung", :limit => 0,  :null => false
   end
 
   add_index "sonderberechtigung", ["Mnr"], :name => "Mnr"
 
   create_table "student", :id => false, :force => true do |t|
-    t.integer  "Mnr",                         :null => false
-    t.datetime "GueltigVon",                  :null => false
-    t.datetime "GueltigBis",                  :null => false
-    t.string   "AusbildBez",    :limit => 30, :null => false
-    t.string   "InstitutName",  :limit => 30, :null => false
-    t.string   "Studienort",    :limit => 30, :null => false
-    t.date     "Studienbeginn",               :null => false
-    t.date     "Studienende",                 :null => false
-    t.string   "Abschluss",     :limit => 20, :null => false
+    t.integer  "Mnr",           :null => false
+    t.datetime "GueltigVon",    :null => false
+    t.datetime "GueltigBis",    :null => false
+    t.string   "AusbildBez",    :null => false
+    t.string   "InstitutName",  :null => false
+    t.string   "Studienort",    :null => false
+    t.date     "Studienbeginn", :null => false
+    t.date     "Studienende",   :null => false
+    t.string   "Abschluss",     :null => false
     t.integer  "SachPnr"
   end
 
@@ -292,18 +291,6 @@ ActiveRecord::Schema.define(:version => 20130813190332) do
   create_table "veranstaltungsart", :primary_key => "VANr", :force => true do |t|
     t.string "VABezeichnung", :limit => 30, :null => false
   end
-
-  create_table "versions", :force => true do |t|
-    t.string   "item_type",  :null => false
-    t.integer  "item_id",    :null => false
-    t.string   "event",      :null => false
-    t.string   "whodunnit"
-    t.text     "object"
-    t.datetime "created_at"
-    t.datetime "GueltigBis"
-  end
-
-  add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
 
   create_table "waehrung", :primary_key => "Code", :force => true do |t|
     t.string "Bezeichnung", :limit => 30, :null => false

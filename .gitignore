@@ -2,11 +2,13 @@
 ## OZB App Specific
 #################
 ozbapp/tmp/
+
+ozbapp/config/deploy.rb
+ozbapp/config/cap_notify.rb
+
 ozbapp/log/
-config/deploy.rb
 ozbapp/log/development.log
 ozbapp/log/production.log
-config/cap_notify.rb
 
 tools/dump.sql
 tools/log.txt
