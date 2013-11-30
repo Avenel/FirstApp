@@ -18,20 +18,45 @@
 <% end %>
 
 <% if !@info.blank? %>
-	<div class="alert alert-warning">
+	<div class="alert alert-warning"  style="overflow: auto; width: 890px;">
 		<button class="close" data-dismiss="alert">&times;</button>
-		<table class="table .table-striped">
-			<tr>
-				<th >Belegdatum</th>
-				<th >Buchungsdatum</th>
-				<th >Belegnummernkreis</th>
-				<th >Belegnummer</th>
-				<th >Buchungstext</th>
-				<th >Buchungsbetrag Euro</th>
-				<th >Sollkonto</th>
-				<th >Habenkonto</th>
-			</tr>
-			<%= @info.html_safe %>
+		<table class="table table-bordered table-striped tablesorter">
+			<thead>
+				<tr>
+					<th class="header">Jahr</th>
+					<th class="header">Kontonr.</th>
+					<th class="header">Belegbk.</th>
+					<th class="header">Belegnr.</th>
+					<th class="header">Type</th>
+					<th class="header">Belegsdat.</th>
+					<th class="header">Buchungsdat.</th>
+					<th class="header">Buchungstext</th>
+					<th class="header">Sollbetrag</th>
+					<th class="header">Habenbetrag</th>
+					<th class="header">Sollkonto</th>
+					<th class="header">Habenkonto</th>
+					<th class="header">Pnkte</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @info.each do |row| %>
+		         <tr>
+		           <td class="zentriert"><%= row.BuchJahr.to_s %></td>
+		           <td class="zentriert"><%= row.KtoNr.to_s %></td>
+		           <td class="zentriert"><%= row.BnKreis.to_s %></td>
+		           <td class="zentriert"><%= row.BelegNr.to_s %></td>
+		           <td class="zentriert"><%= row.Typ.to_s %></td>
+		           <td class="zentriert"><%= row.Belegdatum.to_s %></td>
+		           <td class="zentriert"><%= row.BuchDatum.to_s %></td>
+		           <td class="zentriert"><%= row.Buchungstext.to_s %></td>
+		           <td class="zentriert"><%= row.Sollbetrag.to_s %></td>
+		           <td class="zentriert"><%= row.Habenbetrag.to_s %></td>
+		           <td class="zentriert"><%= row.SollKtoNr.to_s %></td>
+		           <td class="zentriert"><%= row.HabenKtoNr.to_s %></td>
+		           <td class="zentriert"><%= row.Punkte.to_s %></td>
+		         <tr>
+				<% end %>
+			</tbody>
 		</table>
 	</div>
 <% end %>

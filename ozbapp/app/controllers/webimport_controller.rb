@@ -15,7 +15,7 @@ class WebimportController < ApplicationController
     @notice           = ""
     @imported_records = 0
     @rows             = 0
-    @info             = ""
+    @info             = Array.new
   end
 
   def index
@@ -45,8 +45,6 @@ class WebimportController < ApplicationController
         require 'fileutils'
         FileUtils.rm(uploaded_disk)
   end
-
-
   
   def csvimport_buchungen
     if !params[:webimport].nil? && !params[:webimport][:file].nil?
@@ -90,7 +88,7 @@ class WebimportController < ApplicationController
               if (h == 5 && s == 5)
                 # Abbuchung-Leihpunkte-Buchung
                 if (habenkontonummer == 88888 && sollkontonummer != 88888)
-                  
+
                   # Eine Abbuchung-Leihpunkte-Buchung. Buchung wird in DB eingetragen.
                   temp            = buchungstext.split(" ")
                   temp2           = temp[0].split("-")
@@ -121,12 +119,13 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :PSaldoAcc    => pkte_acc,
-                    :Punkte       => nil
+                    :PSaldoAcc    => 0,
+                    :Punkte       => 0
                   )
                   
                   begin 
                     succ = b.save
+                    @info << b
                     logger.debug "##======================================================================"
                     logger.debug succ.to_s
                     logger.debug b.errors.inspect
@@ -172,12 +171,13 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => -24,
+                    :Punkte       => 0,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
                     succ = b.save
+                    @info << b
                     logger.debug "##======================================================================"
                     logger.debug succ.to_s
                     logger.debug b.errors.inspect
@@ -188,16 +188,15 @@ class WebimportController < ApplicationController
                     @error += "Etwas ist schiefgelaufen.<br /><br />"
                     @error += e.message + "<br /><br />"
                   end
-                  
-                  
-
                   next
                 end
                 
                 # Punkteüberweisung-Buchung
-                if (habenkontonummer[0] == "8" && sollkontonummer[0] == "8" && sollkontonummer != 88888 && habenkontonummer != 88888)
+                if (habenkontonummer.to_s[0] == "8" && sollkontonummer.to_s[0] == "8" && sollkontonummer != 88888 && habenkontonummer != 88888)
                   # Eine Punkteüberweisung-Buchung. Buchung wird in DB eingetragen.
-                  
+                  logger.debug "##======================================================================"
+                  logger.debug "FUND POINTS TRANSACTION"
+                  logger.debug "##======================================================================"
                   # Erste Buchung
                   temp         = buchungstext.split(" ")
                   temp2        = temp[0].split("-")
@@ -220,12 +219,13 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => -24,
+                    :Punkte       => 0,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
                     succ = b.save
+                    @info << b
                     logger.debug "##======================================================================"
                     logger.debug succ.to_s
                     logger.debug b.errors.inspect
@@ -257,12 +257,13 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => -24,
+                    :Punkte       => 0,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
                     succ = b.save
+                    @info << b
                     logger.debug "##======================================================================"
                     logger.debug succ.to_s
                     logger.debug b.errors.inspect
@@ -279,7 +280,7 @@ class WebimportController < ApplicationController
                 end
                 
                 # Konto-zu-Konto-Buchung
-                if (habenkontonummer[0] != "8" && sollkontonummer[0] != "8")
+                if (habenkontonummer.to_s[0]  != "8" && sollkontonummer.to_s[0]  != "8")
                   # Eine Konto-zu-Konto-Buchung.Buchung wird in DB eingetragen.
                   
                   # Erste Buchung
@@ -302,12 +303,13 @@ class WebimportController < ApplicationController
                     :SollKtoNr    => sollkontonummer,
                     :HabenKtoNr   => habenkontonummer,
                     :WSaldoAcc    => 0.0,
-                    :Punkte       => -24,
+                    :Punkte       => 0,
                     :PSaldoAcc    => 0
                   )
                   
                   begin 
                     succ = b.save
+                    @info << b
                     logger.debug "##======================================================================"
                     logger.debug succ.to_s
                     logger.debug b.errors.inspect
@@ -347,6 +349,7 @@ class WebimportController < ApplicationController
                   
                   begin 
                     succ = b.save
+                    @info << b
                     logger.debug "##======================================================================"
                     logger.debug succ.to_s
                     logger.debug b.errors.inspect
@@ -380,6 +383,7 @@ class WebimportController < ApplicationController
                   )
 
                   b.delete
+                  @info << b
                   collect_konten << kontonummer
                   next
                 end
@@ -409,6 +413,7 @@ class WebimportController < ApplicationController
 
                   begin 
                     succ = b.save
+                    @info << b
                     logger.debug "##======================================================================"
                     logger.debug succ.to_s
                     logger.debug b.errors.inspect
@@ -445,6 +450,7 @@ class WebimportController < ApplicationController
 
                   begin 
                     succ = b.save
+                    @info << b
                     logger.debug "##======================================================================"
                     logger.debug succ.to_s
                     logger.debug b.errors.inspect
@@ -477,86 +483,82 @@ class WebimportController < ApplicationController
             :order => "Belegdatum ASC, Typ DESC, Habenbetrag DESC, Sollbetrag DESC, PSaldoAcc DESC"
           )
 
-          if (b.empty?)
-              @error += "Keine Konto mit dem Kontonummer: #{ktoNr} gefunden. <br />"
-          else
-            saldo_acc      = 0.0 # wSaldoAcc
-            pkte_acc       = 0 # pSaldoAcc
-            first_time     = b.first.Belegdatum
-            last_saldo_acc = 0.0
-            end_pkte_acc   = 0
-            last_saldo_data = nil
+          saldo_acc      = 0.0 # wSaldoAcc
+          pkte_acc       = 0 # pSaldoAcc
+          first_time     = b.first.Belegdatum
+          last_saldo_acc = 0.0
+          end_pkte_acc   = 0
+          last_saldo_data = nil
 
-            # Berechne Daten für die nächste Buchung
-            b.each do |buchung|
-              if (buchung.Typ == "w")
-                second_time = buchung.Belegdatum
-                saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
-                
-                if (second_time != first_time)
-                  pkte_acc     = Punkteberechnung::calc_score(first_time, second_time, last_saldo_acc, ktoNr).to_i
-                  end_pkte_acc = end_pkte_acc + pkte_acc
-                end
-                
-                b = Buchung.find(
-                  :all, 
-                  :conditions => ["KtoNr = ? AND BelegNr = ? AND BelegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
-                )
-
-                b.each do |bu|
-                  bu.WSaldoAcc = saldo_acc
-                  bu.PSaldoAcc = pkte_acc
-                  bu.Punkte    = end_pkte_acc
-
-                  begin
-                     bu.save
-                  rescue Exception => e
-                     @error += "Etwas ist schiefgelaufen.<br/><br/>"
-                     @error += e.message + "<br /><br />"
-                  end
-                end
-
-                first_time      = second_time
-                last_saldo_acc  = saldo_acc
-                pkte_acc        = 0
-                last_saldo_data = buchung.Belegdatum
+          # Berechne Daten für die nächste Buchung
+          b.each do |buchung|
+            if (buchung.Typ == "w")
+              second_time = buchung.Belegdatum
+              saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
+              
+              if (second_time != first_time)
+                pkte_acc     = Punkteberechnung.calculate(first_time, second_time, last_saldo_acc, ktoNr)
+                end_pkte_acc = end_pkte_acc + pkte_acc
               end
               
-              if (buchung.Typ == "p")
-                end_pkte_acc = end_pkte_acc + buchung.Sollbetrag + buchung.Habenbetrag
-                
-                b = Buchung.find(
-                  :all, 
-                  :conditions => ["ktoNr = ? AND belegNr = ? AND belegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
-                )
+              b = Buchung.find(
+                :all, 
+                :conditions => ["KtoNr = ? AND BelegNr = ? AND BelegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
+              )
 
-                b.each do |bu|
-                  bu.WSaldoAcc = saldo_acc
-                  bu.PSaldoAcc = 0.00
-                  bu.Punkte    = end_pkte_acc
-
-                  begin
-                     bu.save
-                  rescue Exception => e
-                     @error += "Etwas ist schiefgelaufen.<br /><br />"
-                     @error += e.message + "<br /><br />"
-                  end
-                end
-              end
-              # das End-Saldo ins Konto eintragen
-              konto = OzbKonto.find(:all, :conditions => { :KtoNr => ktoNr }).first
-              
-              if (!konto.nil?)
-                konto.WSaldo     = saldo_acc
-                konto.PSaldo     = end_pkte_acc
-                konto.SaldoDatum = last_saldo_data 
+              b.each do |bu|
+                bu.WSaldoAcc = saldo_acc
+                bu.PSaldoAcc = pkte_acc
+                bu.Punkte    = end_pkte_acc
 
                 begin
-                  konto.save
+                   bu.save
+                rescue Exception => e
+                   @error += "Etwas ist schiefgelaufen.<br/><br/>"
+                   @error += e.message + "<br /><br />"
+                end
+              end
+
+              first_time      = second_time
+              last_saldo_acc  = saldo_acc
+              pkte_acc        = 0
+              last_saldo_data = buchung.Belegdatum
+            end
+            
+            if (buchung.Typ == "p")
+              end_pkte_acc = end_pkte_acc + buchung.Sollbetrag + buchung.Habenbetrag
+              
+              b = Buchung.find(
+                :all, 
+                :conditions => ["ktoNr = ? AND belegNr = ? AND belegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
+              )
+
+              b.each do |bu|
+                bu.WSaldoAcc = saldo_acc
+                bu.PSaldoAcc = 0.00
+                bu.Punkte    = end_pkte_acc
+
+                begin
+                   bu.save
                 rescue Exception => e
                    @error += "Etwas ist schiefgelaufen.<br /><br />"
                    @error += e.message + "<br /><br />"
                 end
+              end
+            end
+            # das End-Saldo ins Konto eintragen
+            konto = OzbKonto.find(:all, :conditions => { :KtoNr => ktoNr }).first
+            
+            if (!konto.nil?)
+              konto.WSaldo     = saldo_acc
+              konto.PSaldo     = end_pkte_acc
+              konto.SaldoDatum = last_saldo_data 
+
+              begin
+                konto.save
+              rescue Exception => e
+                 @error += "Etwas ist schiefgelaufen.<br /><br />"
+                 @error += e.message + "<br /><br />"
               end
             end
           end
@@ -568,7 +570,7 @@ class WebimportController < ApplicationController
     else
       @error = "Bitte geben Sie eine CSV-Datei an."
     end
-    
+
     render "index"
   end
 end

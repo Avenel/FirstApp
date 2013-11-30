@@ -51,7 +51,6 @@ describe RawData do
      	expect(@rd.getCreditAccountLenght).to eq 5
 	end
 
-	#todo
 	context "getPoints" do
 		context "is valid" do
 			it "with debitor and creditor accounts starting with an 8" do
@@ -67,26 +66,33 @@ describe RawData do
 				@rd.Sollkonto = 74321
 				expect(@rd.getPoints).to eq 0
 			end
-		  	it "with creditor account not starint with an 8" do
+		  	it "with debitor account not starint with an 8" do
 			  	@rd.Habenkonto = 81234
 				@rd.Sollkonto = 74321
 				expect(@rd.getPoints).to eq 0
 			end
-		  	it "with debitor account not starint with an 8" do
+		  	it "with creditor account not starint with an 8" do
 			  	@rd.Habenkonto = 71234
 				@rd.Sollkonto = 84321
 				expect(@rd.getPoints).to eq 0
 			end
 		end
-	  
 	end
 
-	#todo
+	it "get debitor account number from Buchungstext" do
+		@rd.Buchungstext = "70140-70013 Überweisung Punkte an Hannelore"
+		expect(@rd.getDebitorAccount).to eq 70140	  
+	end
+
+	it "get creditor account number from Buchungstext" do
+		@rd.Buchungstext = "70140-70013 Überweisung Punkte an Hannelore"
+		expect(@rd.getCreditorAccount).to eq 70013	  
+	end
+
 	it "get the loan number form the Buchungstext" do
 		@rd.Buchungstext = "D70012-60140 Gutschrift von Hannelore"
-		expect(@rd.getPoints).to eq 60140	  
+		expect(@rd.getLoanNumber).to eq 60140	  
 	end
-	
 
 	context "isPointsLendTransaction" do
 		context "is valid" do
@@ -148,22 +154,6 @@ describe RawData do
 		end
 
 		context "is invalid" do
-			it "with a creditor account 88888" do
-				@rd.Habenkonto = 88888
-	     		expect(@rd.isPonitsTransaction).to eq false
-			end		
-
-			it "with a debitor account 88888" do
-				@rd.Sollkonto = 88888
-	     		expect(@rd.isPonitsTransaction).to eq false
-			end		
-
-			it "with a debitor and creditor account 88888" do
-				@rd.Sollkonto = 88888
-				@rd.Habenkonto = 88888
-	     		expect(@rd.isPonitsTransaction).to eq false
-			end		
-
 			it "with a debitor account starting with 8 and creditor not starting wiht 8" do
 				@rd.Sollkonto = 81234
 				@rd.Habenkonto = 74321
@@ -223,13 +213,13 @@ describe RawData do
 	context "isStorno" do
 		context "is valid" do
 			it "with valid currency transaction Buchungstext" do
-				@rd.Buchungstext = "<Storno> 70140-70120 Überweisungs abbruch"
+				@rd.Buchungstext = "<Storno>0140-0120 Überweisungs abbruch"
 				expect(@rd.isStorno).to eq true
 			end			
 			it "with valid points transaction Buchungstext" do
 				@rd.Sollkonto = 81234
 				@rd.Habenkonto = 84321
-				@rd.Buchungstext = "<Storno> 70140-70120 Überweisungs abbruch"
+				@rd.Buchungstext = "<Storno>0140-0120 Überweisungs abbruch"
 				expect(@rd.isStorno).to eq true
 			end			
 		end

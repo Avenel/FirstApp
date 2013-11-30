@@ -28,16 +28,22 @@ class RawData
     return @Sollkonto.size + 1
   end
 
-  #todo
+  def getDebitorAccount
+    return @Buchungstext.split(" ")[0].split("-")[0].to_i
+  end
+
+  def getCreditorAccount
+    return @Buchungstext.split(" ")[0].split("-")[1].to_i
+  end
+
   def getPoints
-    if self.isPonitsTransaction?
+    if self.isPonitsTransaction
       return @Betrag.to_i
     else
       return 0
     end    
   end
 
-  #todo
   def getLoanNumber
     return @Buchungstext.split(" ")[0].split("-")[1].to_i
   end
