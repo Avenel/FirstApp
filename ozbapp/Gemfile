@@ -44,7 +44,7 @@ gem 'capistrano'
 gem "rspec-rails", :group => [:test, :development]
 group :test do
   # Factory Girl ersetzt die RoR Fixtures 
-  gem "factory_girl_rails", "~> 3.6.0"
+  gem "factory_girl_rails"
 
   # Capybara führt Benutzerinteraktionen aus
   gem "capybara"
