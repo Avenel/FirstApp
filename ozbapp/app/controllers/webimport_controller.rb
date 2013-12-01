@@ -2,6 +2,8 @@
 # encoding: utf-8
 class WebimportController < ApplicationController
 
+  before_filter :authenticate_user!
+
   require "Punkteberechnung"
   require "CSVImporter"
   require "raw_data"
@@ -55,6 +57,34 @@ class WebimportController < ApplicationController
     rescue Exception => e
       @error += "Etwas ist schiefgelaufen.<br /><br />"
       @error += e.message + "<br /><br />"
+    end 
+  end
+
+  def deleteTransaction(transaction)
+    begin 
+    b = Buchung.find(
+      :all, 
+      :conditions => 
+      { 
+          :BnKreis    => transaction.getRecieptNrRegion, 
+          :BelegNr    => transaction.getRecieptNr, 
+          :Belegdatum => transaction.getRecieptDate, 
+          :KtoNr      => transaction.getDebitorAccount
+      }
+    )
+
+    b[0].destroy
+    @info << b[0]
+    @collect_konten << transaction.getDebitorAccount
+    @deleted_recods += 1
+
+    rescue Exception => e
+      @error += "Etwas ist schiefgelaufen:<br />"
+      if b.size > 0
+        @error += e.message + "<br /><br />"
+      else
+         @error += "Keinen Datensatz gefunden <br /><br />"
+      end
     end 
   end
 
@@ -132,34 +162,6 @@ class WebimportController < ApplicationController
     )
 
     self.saveTransaction(b, count)   
-  end
-
-
-  def deleteTransaction(transaction)
-    begin 
-    b = Buchung.find(
-      :all, 
-      :conditions => 
-      { 
-          :BnKreis    => transaction.getRecieptNrRegion, 
-          :BelegNr    => transaction.getRecieptNr, 
-          :Belegdatum => transaction.getRecieptDate, 
-          :KtoNr      => transaction.getDebitorAccount
-      }
-    )
-
-    b[0].destroy
-    @info << b[0]
-    @collect_konten << transaction.getDebitorAccount
-    @deleted_recods += 1
-    rescue Exception => e
-      @error += "Etwas ist schiefgelaufen:<br />"
-      if b.size > 0
-        @error += e.message + "<br /><br />"
-      else
-         @error += "Keinen Datensatz gefunden <br /><br />"
-      end
-    end 
   end
 
   def csvimport_buchungen
