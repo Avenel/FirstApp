@@ -80,7 +80,7 @@ class Buchung < ActiveRecord::Base
   #Nicht spezifiziert (außer DB-Einschraenkung)
   validates :Sollbetrag, 
     :presence => {:message => "Bitte geben Sie einen Betrag (Soll) an." }, 
-    :format => { :with => /^\d{,10}[.]?\d{0,2}$/, 
+    :format => { :with => /^[-]?\d{,10}[.]?\d{0,2}$/, 
       :message => "Bitte geben Sie einen gültigen Betrag an." }
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
@@ -133,7 +133,7 @@ class Buchung < ActiveRecord::Base
 
   def kto_soll_exists
     kto = OzbKonto.latest(self.SollKtoNr)
-    if kto.nil? then
+    if kto.nil? && !kto.to_s[0] == "8" then
       errors.add :SollKtoNr, "existiert nicht: #{self.SollKtoNr}."
       return false
     else
@@ -143,7 +143,7 @@ class Buchung < ActiveRecord::Base
 
   def kto_haben_exists
     kto = OzbKonto.latest(self.HabenKtoNr)
-    if kto.nil? then
+    if kto.nil? && !kto.to_s[0] == "8" then
       errors.add :HabenKtoNr, "existiert nicht: #{self.HabenKtoNr}."
       return false
     else

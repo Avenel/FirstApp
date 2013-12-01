@@ -64,7 +64,7 @@ class CSVImporter
           end
           
           if (not_included.size > 0)
-            @error = "Folgende Spalten sind nicht vorhanden: " + not_included.join(", ")
+            @error = "Folgende Spalten sind nicht vorhanden:" + not_included.join(", ")
             break
           end
           
@@ -88,7 +88,7 @@ class CSVImporter
         # done -> wenn alle Zeilen abgelaufen wurden
         @processed      = true
         @number_records = n
-        @notice         = "Folgende Spalten wurden aus der Datei verwendet: " + def_cols.join(", ")
+        @notice         = "Folgende Spalten wurden aus der Datei verwendet:  <br /> " + def_cols.join(", ")
       end
     end
   end
