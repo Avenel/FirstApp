@@ -1,7 +1,6 @@
 #!/bin/env ruby
 # encoding: utf-8
 class RawData
-
   attr_accessor :Belegdatum, :Buchungsdatum, :BelegNrKreis, :BelegNr, :Buchungstext, :Betrag, :Sollkonto, :Habenkonto
 
   # constructor
@@ -16,23 +15,58 @@ class RawData
     @Habenkonto     = csv_record[7].strip.to_i
   end
 
+
+  def getRecieptDate
+    return @Belegdatum
+  end
+
+  def getTransactionDate
+    return @Buchungsdatum
+  end
+
+  def getRecieptNrRegion
+    return @BelegNrKreis
+  end
+
+  def getRecieptNr
+    return @BelegNr
+  end
+
+  def getText
+    return @Buchungstext 
+  end
+
+  def getAmount
+    return @Betrag
+  end
+
+  def getDebitorAccount
+    return @Sollkonto
+  end
+
+  def getCreditorAccount
+    return @Habenkonto
+  end
+
+
+
   def getBookingYear
      return  @Buchungsdatum[0..3].to_i
   end
 
   def getCreditAccountLenght
-    return @Habenkonto.size + 1
+    return @Habenkonto.to_s.size
   end
 
   def getDebitAccountLenght
-    return @Sollkonto.size + 1
+    return @Sollkonto.to_s.size
   end
 
-  def getDebitorAccount
+  def getDebitorAccountFromText
     return @Buchungstext.split(" ")[0].split("-")[0].to_i
   end
 
-  def getCreditorAccount
+  def getCreditorAccountFromText
     return @Buchungstext.split(" ")[0].split("-")[1].to_i
   end
 
@@ -44,13 +78,23 @@ class RawData
     end    
   end
 
+  def getType
+    if self.isPonitsTransaction
+      return "p"
+    else
+      return "w"
+    end
+  end
+
   def getLoanNumber
     return @Buchungstext.split(" ")[0].split("-")[1].to_i
   end
 
+
+
+
   def isPointsLendTransaction
     return @Habenkonto == 88888 && @Sollkonto != 88888 && @Sollkonto.to_s[0] == "8"
-
   end  
 
   def isPointsLendStornoTransaction
@@ -58,7 +102,6 @@ class RawData
   end
 
   def isPonitsTransaction
-    #&& @Sollkonto != 88888 && @Habenkonto != 88888
     return @Habenkonto.to_s[0] == "8" && @Sollkonto.to_s[0] == "8"
   end
 
@@ -69,7 +112,4 @@ class RawData
   def isStorno
     return @Buchungstext.split(" ")[0].split("-")[0].index("<Storno>") != nil
   end
-
-
-
 end

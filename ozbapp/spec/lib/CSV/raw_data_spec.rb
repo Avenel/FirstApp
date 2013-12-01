@@ -30,11 +30,23 @@ describe RawData do
    	 expect(@rd.instance_variable_get(:@Belegdatum)).to eq 	 "2012-11-02"
    	 expect(@rd.instance_variable_get(:@Buchungsdatum)).to eq "2013-10-13"
    	 expect(@rd.instance_variable_get(:@BelegNrKreis)).to eq  "U-"
-   	 expect(@rd.instance_variable_get(:@BelegNr)).to eq 		 808
-   	 expect(@rd.instance_variable_get(:@Buchungstext)).to eq  "0012-0140 Gutschrift von Hannelore"
+   	 expect(@rd.instance_variable_get(:@BelegNr)).to eq 	 808
+   	 expect(@rd.instance_variable_get(:@Buchungstext)).to eq "0012-0140 Gutschrift von Hannelore"
      expect(@rd.instance_variable_get(:@Betrag)).to eq 		 200
    	 expect(@rd.instance_variable_get(:@Sollkonto)).to eq 	 70012
    	 expect(@rd.instance_variable_get(:@Habenkonto)).to eq	 70140
+    end
+
+    it "gets all data properly" do
+
+     expect(@rd.getRecieptDate).to eq 	 	"2012-11-02"
+   	 expect(@rd.getTransactionDate).to eq 	"2013-10-13"
+   	 expect(@rd.getRecieptNrRegion).to eq  	"U-"
+   	 expect(@rd.getRecieptNr).to eq 		808
+   	 expect(@rd.getText).to eq 				"0012-0140 Gutschrift von Hannelore"
+     expect(@rd.getAmount).to eq 		 	200
+   	 expect(@rd.getCreditorAccount).to eq 	70140
+   	 expect(@rd.getDebitorAccount).to eq	70012
     end
 
 
@@ -45,10 +57,19 @@ describe RawData do
 
 	it "gets the credit account lenght" do
      	expect(@rd.getCreditAccountLenght).to eq 5
+     	@rd.Habenkonto = 1234
+		expect(@rd.getCreditAccountLenght).to eq 4
+		@rd.Habenkonto = 123
+		expect(@rd.getCreditAccountLenght).to eq 3
 	end	
 
-	it "gets the credit account lenght" do
-     	expect(@rd.getCreditAccountLenght).to eq 5
+
+	it "gets the debit account lenght" do
+     	expect(@rd.getDebitAccountLenght).to eq 5
+     	@rd.Sollkonto = 1234
+		expect(@rd.getDebitAccountLenght).to eq 4
+		@rd.Sollkonto = 123
+		expect(@rd.getDebitAccountLenght).to eq 3
 	end
 
 	context "getPoints" do
@@ -81,17 +102,44 @@ describe RawData do
 
 	it "get debitor account number from Buchungstext" do
 		@rd.Buchungstext = "70140-70013 Überweisung Punkte an Hannelore"
-		expect(@rd.getDebitorAccount).to eq 70140	  
+		expect(@rd.getDebitorAccountFromText).to eq 70140	  
 	end
 
 	it "get creditor account number from Buchungstext" do
 		@rd.Buchungstext = "70140-70013 Überweisung Punkte an Hannelore"
-		expect(@rd.getCreditorAccount).to eq 70013	  
+		expect(@rd.getCreditorAccountFromText).to eq 70013	  
 	end
 
 	it "get the loan number form the Buchungstext" do
 		@rd.Buchungstext = "D70012-60140 Gutschrift von Hannelore"
 		expect(@rd.getLoanNumber).to eq 60140	  
+	end
+
+	context "getType" do
+		context "is a points transaction" do
+			it "with a valid points transaction" do
+				@rd.Habenkonto = 81234
+				@rd.Sollkonto = 84321
+		     	expect(@rd.getType).to eq "p"
+			end
+			it "with a strorno points transaction" do
+				@rd.Habenkonto = 81234
+				@rd.Sollkonto = 88888
+		     	expect(@rd.getType).to eq "p"
+			end			
+			it "with a points lend transaction" do
+				@rd.Habenkonto = 88888
+				@rd.Sollkonto = 84321
+		     	expect(@rd.getType).to eq "p"
+			end
+		end
+		context "is a currency transaction" do
+			it "with a both acount starting with a 7" do
+				@rd.Habenkonto = 71234
+				@rd.Sollkonto = 74321
+		     	expect(@rd.getType).to eq "w"
+			end
+		end
 	end
 
 	context "isPointsLendTransaction" do
@@ -213,7 +261,7 @@ describe RawData do
 	context "isStorno" do
 		context "is valid" do
 			it "with valid currency transaction Buchungstext" do
-				@rd.Buchungstext = "<Storno>0140-0120 Überweisungs abbruch"
+				@rd.Buchungstext = "<Storno>0140-0005 Überweisung abbruch"
 				expect(@rd.isStorno).to eq true
 			end			
 			it "with valid points transaction Buchungstext" do

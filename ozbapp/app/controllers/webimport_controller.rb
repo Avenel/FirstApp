@@ -2,484 +2,243 @@
 # encoding: utf-8
 class WebimportController < ApplicationController
 
-  before_filter :authenticate_user!
-
-  require "CSVImporter"
   require "Punkteberechnung"
+  require "CSVImporter"
   require "raw_data"
-
 
   # constructor
   def initialize
     super
     
-    @csv              = CSVImporter.new
     @error            = ""
     @notice           = ""
     @imported_records = 0
-    @rows             = 0
+    @deleted_recods   = 0
     @info             = Array.new
+    @collect_konten   = Array.new
   end
 
   def index
     render "index"
   end
 
-  def read_status(file)
-      @error    = file.error
-      @notice   = file.notice
-      @rows     = file.rows
-  end
-
-
   # CSV-File
-  def read_csv_file
-        uploaded_io = params[:webimport][:file]
-        uploaded_disk = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
-        
-        File.open(uploaded_disk, 'wb') do |file|
-          file.write(uploaded_io.read)
-        end
-        
-        # import CSV-File
-        @csv.import_from_file(uploaded_disk, ["Belegdatum", "Buchungsdatum", "Belegnummernkreis", "Belegnummer", "Buchungstext", "Buchungsbetrag Euro", "Sollkonto", "Habenkonto"])
+  def read_csv_file(uploaded_io)
+    csv = CSVImporter.new
+    uploaded_disk = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
+    
+    File.open(uploaded_disk, 'wb') do |file|
+      file.write(uploaded_io.read)
+    end
 
-        # delete CSV-File
-        require 'fileutils'
-        FileUtils.rm(uploaded_disk)
+    # import CSV-File
+    csv.import_from_file(uploaded_disk, ["Belegdatum", "Buchungsdatum", "Belegnummernkreis", "Belegnummer", "Buchungstext", "Buchungsbetrag Euro", "Sollkonto", "Habenkonto"])
+
+    # delete CSV-File
+    require 'fileutils'
+    FileUtils.rm(uploaded_disk)
+
+    return csv
   end
-  
+
+
+  def saveTransaction(buchung, count = nil)
+    begin 
+      buchung.save
+      @info << buchung
+      @collect_konten << buchung.KtoNr
+
+      if count.nil? 
+       @imported_records += 1
+      end
+
+    rescue Exception => e
+      @error += "Etwas ist schiefgelaufen.<br /><br />"
+      @error += e.message + "<br /><br />"
+    end 
+  end
+
+
+  def getOriginalAccountNumber(loanNumber)
+    return ZeKonto.find(
+                        :all, 
+                        :conditions => 
+                        { 
+                          :ZENr       => loanNumber, 
+                          :GueltigBis => "9999-12-31 23:59:59" 
+                        }
+                      ).first.EEKtoNr
+  end
+
+
+  def debitTrasnaction(transaction, accountNumber = nil, count = nil)
+   
+    multipicator = 1.0 
+
+    #if no 
+    if accountNumber.nil?
+      accountNumber = transaction.getDebitorAccount
+    end
+
+    # add a negativ multipicator if its a point transaction
+    if transaction.isPonitsTransaction
+      multipicator = (-1.0)
+    end
+
+    b = Buchung.new(
+      :KtoNr        => accountNumber,
+      :BuchJahr     => transaction.getBookingYear,
+      :BnKreis      => transaction.getRecieptNrRegion,
+      :BelegNr      => transaction.getRecieptNr,
+      :Typ          => transaction.getType,
+      :BuchDatum    => transaction.getTransactionDate,
+      :Belegdatum   => transaction.getRecieptDate,
+      :Buchungstext => transaction.getText,
+      :Sollbetrag   => transaction.getAmount * (multipicator),
+      :Habenbetrag  => 0.0,
+      :SollKtoNr    => transaction.getDebitorAccount,
+      :HabenKtoNr   => transaction.getCreditorAccount,
+      :WSaldoAcc    => 0.0,
+      :PSaldoAcc    => 0,
+      :Punkte       => 0
+    )
+
+    self.saveTransaction(b, count)   
+  end
+
+  def creaditTransaction(transaction, accountNumber = nil, count = nil)
+
+    #if a loan number is supplyed -> get the original account number from the database
+    if accountNumber.nil?
+      accountNumber = transaction.getCreditorAccount
+    end
+
+    b = Buchung.new(
+      :KtoNr        => accountNumber,
+      :BuchJahr     => transaction.getBookingYear,
+      :BnKreis      => transaction.getRecieptNrRegion,
+      :BelegNr      => transaction.getRecieptNr,
+      :Typ          => transaction.getType,
+      :BuchDatum    => transaction.getTransactionDate,
+      :Belegdatum   => transaction.getRecieptDate,
+      :Buchungstext => transaction.getText,
+      :Sollbetrag   => 0.0,
+      :Habenbetrag  => transaction.getAmount,
+      :SollKtoNr    => transaction.getDebitorAccount,
+      :HabenKtoNr   => transaction.getCreditorAccount,
+      :WSaldoAcc    => 0.0,
+      :PSaldoAcc    => 0,
+      :Punkte       => 0
+    )
+
+    self.saveTransaction(b, count)   
+  end
+
+
+  def deleteTransaction(transaction)
+    begin 
+    b = Buchung.find(
+      :all, 
+      :conditions => 
+      { 
+          :BnKreis    => transaction.getRecieptNrRegion, 
+          :BelegNr    => transaction.getRecieptNr, 
+          :Belegdatum => transaction.getRecieptDate, 
+          :KtoNr      => transaction.getDebitorAccount
+      }
+    )
+
+    b[0].destroy
+    @info << b[0]
+    @collect_konten << transaction.getDebitorAccount
+    @deleted_recods += 1
+    rescue Exception => e
+      @error += "Etwas ist schiefgelaufen:<br />"
+      if b.size > 0
+        @error += e.message + "<br /><br />"
+      else
+         @error += "Keinen Datensatz gefunden <br /><br />"
+      end
+    end 
+  end
+
   def csvimport_buchungen
     if !params[:webimport].nil? && !params[:webimport][:file].nil?
 
-      # read the csv fiel
-      self.read_csv_file
+      # read the csv file
+      csv = self.read_csv_file(params[:webimport][:file])
 
       # read satus
-      self.read_status(@csv)
+      @error    = csv.error
+      @notice   = csv.notice
       
-      collect_konten = Array.new
-      @rows.each do |r|
+      csv.rows.each do |r|
         begin
           ActiveRecord::Base.transaction do
             if r.nil? || r.empty? || r[0].nil?
               next
             end
+            transaction = RawData.new(r)
 
-            
-            habenbetrag        = 0.0
-            sollbetrag         = 0.0
-            typ                = "w"
-            belegnummernkreis  = r[2]
-            belegnummer        = r[3].to_i
-            buchungstext       = r[4].to_s
-            sollkontonummer    = r[6].strip.to_i
-            habenkontonummer   = r[7].strip.to_i
-            buchungsdatum      = Date.strptime(r[0], "%d.%m.%Y").strftime("%Y-%m-%d")
-            buchungsjahr       = Date.strptime(r[0], "%d.%m.%Y").strftime("%Y").to_i
-            wertstellungsdatum = Date.strptime(r[1], "%d.%m.%Y").strftime("%Y-%m-%d")
-            betrag             = (r[5].gsub(/\./, '').gsub(/,/, '.')).to_f
-            s                  = r[6].length # Länge Sollkonto
-            h                  = r[7].length # Länge Habenkonto
+            if transaction.getCreditAccountLenght == 5 && transaction.getDebitAccountLenght == 5
 
-            temp           = buchungstext.split(" ")
-            gesellschafter = temp[0]
-            
-            if (h == 5 || s == 5)
-              # Abbuchung-Leihpunkte-Buchung, Storno-Abbuchung-Leihpunkte-Buchung, Punkteüberweisung-Buchung oder Konto-zu-Konto-Buchung
-              if (h == 5 && s == 5)
-                # Abbuchung-Leihpunkte-Buchung
-                if (habenkontonummer == 88888 && sollkontonummer != 88888)
-
-                  # Eine Abbuchung-Leihpunkte-Buchung. Buchung wird in DB eingetragen.
-                  temp            = buchungstext.split(" ")
-                  temp2           = temp[0].split("-")
-                  gesellschafter  = temp2[0]
-                  darlehensnummer = temp2[1].to_i
-                  typ             = "p"
-                  kontonummer     = ZeKonto.find(
-                                      :all, 
-                                      :conditions => 
-                                      { 
-                                        :ZENr       => darlehensnummer, 
-                                        :GueltigBis => "9999-12-31 23:59:59" 
-                                      }
-                                    ).first.EEKtoNr
-                  sollbetrag      = betrag * (-1.0)
-                  
-                  b = Buchung.new(
-                    :KtoNr        => kontonummer,
-                    :BuchJahr     => buchungsjahr,
-                    :BnKreis      => belegnummernkreis,
-                    :BelegNr      => belegnummer,
-                    :Typ          => typ,
-                    :BuchDatum    => wertstellungsdatum,
-                    :Belegdatum   => buchungsdatum,
-                    :Buchungstext => buchungstext,
-                    :Sollbetrag   => sollbetrag,
-                    :Habenbetrag  => habenbetrag,
-                    :SollKtoNr    => sollkontonummer,
-                    :HabenKtoNr   => habenkontonummer,
-                    :WSaldoAcc    => 0.0,
-                    :PSaldoAcc    => 0,
-                    :Punkte       => 0
-                  )
-                  
-                  begin 
-                    succ = b.save
-                    @info << b
-                    logger.debug "##======================================================================"
-                    logger.debug succ.to_s
-                    logger.debug b.errors.inspect
-                    logger.debug "##======================================================================"
-                    collect_konten << kontonummer
-                    @imported_records += 1
-                  rescue Exception => e
-                    @error += "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message + "<br /><br />"
-                  end 
-                  next
-                end
-                
-                # Storno-Abbuchung-Leihpunkte-Buchung
-                if (sollkontonummer == 88888 && habenkontonummer != 88888)
-                  # Eine Storno-Abbuchung-Leihpunkte-Buchung. Buchung wird in DB eingetragen.
-                  temp            = buchungstext.split(" ")
-                  temp2           = temp[0].split("-")
-                  gesellschafter  = temp2[0]
-                  darlehensnummer = temp2[1].to_i
-                  typ             = "p"
-                  kontonummer     = ZeKonto.find(
-                                      :all, 
-                                      :conditions => 
-                                      { 
-                                        :ZENr => darlehensnummer, 
-                                        :GueltigBis => "9999-12-31 23:59:59" 
-                                      }
-                                    ).first.EEKtoNr
-                  sollbetrag      = betrag
-                  
-                  b = Buchung.new(
-                    :BuchJahr     => buchungsjahr,
-                    :KtoNr        => kontonummer,
-                    :BnKreis      => belegnummernkreis,
-                    :BelegNr      => belegnummer,
-                    :Typ          => typ,
-                    :Belegdatum   => buchungsdatum,
-                    :BuchDatum    => wertstellungsdatum,
-                    :Buchungstext => buchungstext,
-                    :Sollbetrag   => sollbetrag,
-                    :Habenbetrag  => habenbetrag,
-                    :SollKtoNr    => sollkontonummer,
-                    :HabenKtoNr   => habenkontonummer,
-                    :WSaldoAcc    => 0.0,
-                    :Punkte       => 0,
-                    :PSaldoAcc    => 0
-                  )
-                  
-                  begin 
-                    succ = b.save
-                    @info << b
-                    logger.debug "##======================================================================"
-                    logger.debug succ.to_s
-                    logger.debug b.errors.inspect
-                    logger.debug "##======================================================================"
-                    collect_konten << kontonummer
-                    @imported_records += 1
-                  rescue Exception => e
-                    @error += "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message + "<br /><br />"
-                  end
-                  next
-                end
-                
-                # Punkteüberweisung-Buchung
-                if (habenkontonummer.to_s[0] == "8" && sollkontonummer.to_s[0] == "8" && sollkontonummer != 88888 && habenkontonummer != 88888)
-                  # Eine Punkteüberweisung-Buchung. Buchung wird in DB eingetragen.
-                  logger.debug "##======================================================================"
-                  logger.debug "FUND POINTS TRANSACTION"
-                  logger.debug "##======================================================================"
-                  # Erste Buchung
-                  temp         = buchungstext.split(" ")
-                  temp2        = temp[0].split("-")
-                  kontonummer  = temp2[0].to_i
-                  kontonummer2 = temp2[1].to_i
-                  sollbetrag   = betrag * (-1.0)
-                  typ          = "p"
-                  
-                  b = Buchung.new(
-                    :BuchJahr     => buchungsjahr,
-                    :KtoNr        => kontonummer,
-                    :BnKreis      => belegnummernkreis,
-                    :BelegNr      => belegnummer,
-                    :Typ          => typ,
-                    :Belegdatum   => buchungsdatum,
-                    :BuchDatum    => wertstellungsdatum,
-                    :Buchungstext => buchungstext,
-                    :Sollbetrag   => sollbetrag,
-                    :Habenbetrag  => habenbetrag,
-                    :SollKtoNr    => sollkontonummer,
-                    :HabenKtoNr   => habenkontonummer,
-                    :WSaldoAcc    => 0.0,
-                    :Punkte       => 0,
-                    :PSaldoAcc    => 0
-                  )
-                  
-                  begin 
-                    succ = b.save
-                    @info << b
-                    logger.debug "##======================================================================"
-                    logger.debug succ.to_s
-                    logger.debug b.errors.inspect
-                    logger.debug "##======================================================================"
-                    collect_konten << kontonummer
-                    @imported_records += 1
-                  rescue Exception => e
-                    @error += "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message + "<br /><br />"
-                  end
-                  
-                  # Zweite Buchung
-                  
-                  kontonummer = kontonummer2
-                  sollbetrag  = 0.0
-                  habenbetrag = betrag
-                  
-                  b = Buchung.new(
-                    :BuchJahr     => buchungsjahr,
-                    :KtoNr        => kontonummer,
-                    :BnKreis      => belegnummernkreis,
-                    :BelegNr      => belegnummer,
-                    :Typ          => typ,
-                    :Belegdatum   => buchungsdatum,
-                    :BuchDatum    => wertstellungsdatum,
-                    :Buchungstext => buchungstext,
-                    :Sollbetrag   => sollbetrag,
-                    :Habenbetrag  => habenbetrag,
-                    :SollKtoNr    => sollkontonummer,
-                    :HabenKtoNr   => habenkontonummer,
-                    :WSaldoAcc    => 0.0,
-                    :Punkte       => 0,
-                    :PSaldoAcc    => 0
-                  )
-                  
-                  begin 
-                    succ = b.save
-                    @info << b
-                    logger.debug "##======================================================================"
-                    logger.debug succ.to_s
-                    logger.debug b.errors.inspect
-                    logger.debug "##======================================================================"
-                    collect_konten << kontonummer
-                    # Nur 1x zählen!
-                    # imported_records += 1
-                  rescue Exception => e
-                    @error += "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message + "<br /><br />"
-                  end
-                  
-                  next
-                end
-                
-                # Konto-zu-Konto-Buchung
-                if (habenkontonummer.to_s[0]  != "8" && sollkontonummer.to_s[0]  != "8")
-                  # Eine Konto-zu-Konto-Buchung.Buchung wird in DB eingetragen.
-                  
-                  # Erste Buchung
-                  kontonummer = sollkontonummer
-                  sollbetrag  = betrag
-                  habenbetrag = 0.0
-                  typ         = "w"
-                  
-                  b = Buchung.new(
-                    :BuchJahr     => buchungsjahr,
-                    :KtoNr        => kontonummer,
-                    :BnKreis      => belegnummernkreis,
-                    :BelegNr      => belegnummer,
-                    :Typ          => typ,
-                    :Belegdatum   => buchungsdatum,
-                    :BuchDatum    => wertstellungsdatum,
-                    :Buchungstext => buchungstext,
-                    :Sollbetrag   => sollbetrag,
-                    :Habenbetrag  => habenbetrag,
-                    :SollKtoNr    => sollkontonummer,
-                    :HabenKtoNr   => habenkontonummer,
-                    :WSaldoAcc    => 0.0,
-                    :Punkte       => 0,
-                    :PSaldoAcc    => 0
-                  )
-                  
-                  begin 
-                    succ = b.save
-                    @info << b
-                    logger.debug "##======================================================================"
-                    logger.debug succ.to_s
-                    logger.debug b.errors.inspect
-                    logger.debug "##======================================================================"
-                    collect_konten << kontonummer
-                    @imported_records += 1
-                  rescue Exception => e
-                    @error += "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message + "<br /><br />"
-                  end
-                  
-                  
-                  
-                  # Zweite Buchung
-                  kontonummer = habenkontonummer
-                  sollbetrag  = 0.0
-                  habenbetrag = betrag
-                  typ         = "w"
-                  
-                  b = Buchung.new(
-                    :BuchJahr     => buchungsjahr,
-                    :KtoNr        => kontonummer,
-                    :BnKreis      => belegnummernkreis,
-                    :BelegNr      => belegnummer,
-                    :Typ          => typ,
-                    :Belegdatum   => buchungsdatum,
-                    :BuchDatum    => wertstellungsdatum,
-                    :Buchungstext => buchungstext,
-                    :Sollbetrag   => sollbetrag,
-                    :Habenbetrag  => habenbetrag,
-                    :SollKtoNr    => sollkontonummer,
-                    :HabenKtoNr   => habenkontonummer,
-                    :WSaldoAcc    => 0.0,
-                    :Punkte       => 0,
-                    :PSaldoAcc    => 0
-                  )
-                  
-                  begin 
-                    succ = b.save
-                    @info << b
-                    logger.debug "##======================================================================"
-                    logger.debug succ.to_s
-                    logger.debug b.errors.inspect
-                    logger.debug "##======================================================================"
-                    collect_konten << kontonummer
-                    # Nur 1x zaehlen!
-                    #imported_records += 1
-                  rescue Exception => e
-                    @error += "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message + "<br /><br />"
-                  end
-
-                  next
-                end
-              # Gewöhnliche Buchung oder Storno-Buchung
-              else
-                #TODO PUNKTE STORNO
-                
-                if (gesellschafter.index("<Storno>") != nil)
-                  # wenn Storno-Buchung lösche die entsprechende Buchung aus DB
-                  kontonummer = sollkontonummer.to_i
-                  
-                  b = Buchung.find(
-                    :all, 
-                    :conditions => 
-                    { 
-                      :BnKreis    => belegnummernkreis, 
-                      :BelegNr    => belegnummer, 
-                      :Belegdatum => buchungsdatum, 
-                      :KtoNr      => kontonummer 
-                    }
-                  )
-
-                  b.delete
-                  @info << b
-                  collect_konten << kontonummer
-                  next
-                end
-                
-                # Eine gewöhnliche Buchung. Buchung wird in DB eingetragen.
-                if (h == 5)
-                  kontonummer = habenkontonummer
-                  habenbetrag = betrag
-                  
-                  b = Buchung.new(
-                    :BuchJahr     => buchungsjahr,
-                    :KtoNr        => kontonummer,
-                    :BnKreis      => belegnummernkreis,
-                    :BelegNr      => belegnummer,
-                    :Typ          => typ,
-                    :Belegdatum   => buchungsdatum,
-                    :BuchDatum    => wertstellungsdatum,
-                    :Buchungstext => buchungstext,
-                    :Sollbetrag   => sollbetrag,
-                    :Habenbetrag  => habenbetrag,
-                    :SollKtoNr    => sollkontonummer,
-                    :HabenKtoNr   => habenkontonummer,
-                    :WSaldoAcc    => 0.0,
-                    :Punkte       => 0,
-                    :PSaldoAcc    => 0
-                  )
-
-                  begin 
-                    succ = b.save
-                    @info << b
-                    logger.debug "##======================================================================"
-                    logger.debug succ.to_s
-                    logger.debug b.errors.inspect
-                    logger.debug "##======================================================================"
-                    collect_konten << kontonummer
-                    @imported_records += 1
-                  rescue Exception => e
-                    @error += "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message + "<br /><br />"
-                  end
-                
-                  next
-                elsif (s == 5)
-                  kontonummer = sollkontonummer
-                  sollbetrag  = betrag
-                  
-                  b = Buchung.new(
-                    :BuchJahr     => buchungsjahr,
-                    :KtoNr        => kontonummer,
-                    :BnKreis      => belegnummernkreis,
-                    :BelegNr      => belegnummer,
-                    :Typ          => typ,
-                    :Belegdatum   => buchungsdatum,
-                    :BuchDatum    => wertstellungsdatum,
-                    :Buchungstext => buchungstext,
-                    :Sollbetrag   => sollbetrag,
-                    :Habenbetrag  => habenbetrag,
-                    :SollKtoNr    => sollkontonummer,
-                    :HabenKtoNr   => habenkontonummer,
-                    :WSaldoAcc    => 0.0,
-                    :Punkte       => 0,
-                    :PSaldoAcc    => 0
-                  )
-
-                  begin 
-                    succ = b.save
-                    @info << b
-                    logger.debug "##======================================================================"
-                    logger.debug succ.to_s
-                    logger.debug b.errors.inspect
-                    logger.debug "##======================================================================"
-                    collect_konten << kontonummer
-                    @imported_records += 1
-                  rescue Exception => e
-                    @error += "Etwas ist schiefgelaufen.<br /><br />"
-                    @error += e.message + "<br /><br />"
-                  end
-                  
-                  next
-                end
+              # => Abbuchung-Leihpunkte-Buchung
+              if transaction.isPointsLendTransaction
+                self.debitTrasnaction(transaction, self.getOriginalAccountNumber(transaction.getLoanNumber))
+                next
               end
+              
+              # => Storno-Abbuchung-Leihpunkte-Buchung
+              if transaction.isPointsLendStornoTransaction
+                self.creaditTransaction(transaction, self.getOriginalAccountNumber(transaction.getLoanNumber))
+                next
+              end
+              
+              # => Punkteüberweisung-Buchung
+              if transaction.isPonitsTransaction && transaction.getCreditorAccount != 88888 && transaction.getDebitorAccount != 88888
+                #Soll Buchung
+                self.debitTrasnaction(transaction, transaction.getDebitorAccountFromText)
+                  
+                # Haben Buchung
+                self.creaditTransaction(transaction, transaction.getCreditorAccountFromText)
+                next
+              end
+              
+              # Konto-zu-Konto-Buchung
+              if transaction.isCurrencyTransaction
+                # Eine Konto-zu-Konto-Buchung.Buchung wird in DB eingetragen.              
+                self.debitTrasnaction(transaction)
+                self.creaditTransaction(transaction, nil, true)
+                next
+              end
+            # => Gewöhnliche Buchung 
+            # => Storno-Buchung
             else
-              # Eine FIBU-Buchung wird ignoriert.
+              if transaction.isStorno
+              # wenn Storno-Buchung lösche die entsprechende Buchung aus DB
+                deleteTransaction(transaction)
+                next
+              end
+
+              # Eine gewöhnliche Buchung. Buchung wird in DB eingetragen.
+              if transaction.getCreditAccountLenght == 5
+                self.creaditTransaction(transaction)
+                next
+
+              elsif transaction.getDebitAccountLenght == 5
+                self.debitTrasnaction(transaction)
+                next
+              end
             end
           end
         end
       end
       
       # berechnen der Saldo und Punktesaldo für Konten
-      if (collect_konten.size == 0 )
+      if ( @collect_konten.size == 0 )
         @error += "Keine der zu importierenden Konten in der Datenbank eingetragen"
       else
-        collect_konten.uniq.each do |ktoNr|
+         @collect_konten.uniq.each do |ktoNr|
           b = Buchung.find(
             :all, 
             :conditions => { :KtoNr => ktoNr }, 
@@ -568,8 +327,11 @@ class WebimportController < ApplicationController
         end
       end
       
-      @notice += "<br /><br />" + @csv.number_records.to_s + " von " + @csv.rows.size.to_s + " Datensätzen eingelesen."
+      @notice += "<br /><br />" + csv.number_records.to_s + " von " + csv.rows.size.to_s + " Datensätzen eingelesen."
       @notice += "<br />" + @imported_records.to_s + " Datensätze importiert."
+      if @deleted_recods > 0
+        @notice += "<br />" + @deleted_recods.to_s + " Datensätze strorniert."
+      end
     else
       @error = "Bitte geben Sie eine CSV-Datei an."
     end

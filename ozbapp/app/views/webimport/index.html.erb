@@ -20,22 +20,19 @@
 <% if !@info.blank? %>
 	<div class="alert alert-warning"  style="overflow: auto; width: 890px;">
 		<button class="close" data-dismiss="alert">&times;</button>
-		<table class="table table-bordered table-striped tablesorter">
+		<table class="table table-bordered table-striped" width="100%">
 			<thead>
 				<tr>
 					<th class="header">Jahr</th>
-					<th class="header">Kontonr.</th>
-					<th class="header">Belegbk.</th>
-					<th class="header">Belegnr.</th>
-					<th class="header">Type</th>
+					<th class="header">Ktonr.</th>
+					<th class="header">BBK</th>
+					<th class="header">Bnr.</th>
+					<th class="header">T</th>
 					<th class="header">Belegsdat.</th>
 					<th class="header">Buchungsdat.</th>
 					<th class="header">Buchungstext</th>
-					<th class="header">Sollbetrag</th>
-					<th class="header">Habenbetrag</th>
-					<th class="header">Sollkonto</th>
-					<th class="header">Habenkonto</th>
-					<th class="header">Pnkte</th>
+					<th class="header">Soll</th>
+					<th class="header">Haben</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,16 +45,18 @@
 		           <td class="zentriert"><%= row.Typ.to_s %></td>
 		           <td class="zentriert"><%= row.Belegdatum.to_s %></td>
 		           <td class="zentriert"><%= row.BuchDatum.to_s %></td>
-		           <td class="zentriert"><%= row.Buchungstext.to_s %></td>
+		           <td class=""><%= row.Buchungstext.to_s %></td>
 		           <td class="zentriert"><%= row.Sollbetrag.to_s %></td>
 		           <td class="zentriert"><%= row.Habenbetrag.to_s %></td>
-		           <td class="zentriert"><%= row.SollKtoNr.to_s %></td>
-		           <td class="zentriert"><%= row.HabenKtoNr.to_s %></td>
-		           <td class="zentriert"><%= row.Punkte.to_s %></td>
 		         <tr>
 				<% end %>
 			</tbody>
 		</table>
+	<ul>
+		<li>(BBK) Belegbuchungskreis </li>
+		<li>(Bnr.) Belegnummer</li>
+		<li>(T) Tüp</li>
+	</ul>
 	</div>
 <% end %>
 
