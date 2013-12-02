@@ -145,7 +145,7 @@
 	  				<%= @BerechtigungsName.fetch(b.Berechtigung) %>
 	  				(<%= b.Berechtigung %>)
 	  			</td>
-	  			<td><%= b.Email %></td>
+	  			<td><%= b.EMail %></td>
 
 	  			<% delete_link = "/Verwaltung/OZBPerson/" + @OZBPerson.Mnr.to_s + "/Sonderberechtigung/" + b.ID.to_s + "/Loeschen" %>
 	   			<td style="text-align: right;"><%= link_to "Löschen", delete_link, :class => "btn btn-danger btn-small" %></td>

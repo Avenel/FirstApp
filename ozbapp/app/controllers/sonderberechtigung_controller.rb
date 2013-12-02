@@ -20,7 +20,7 @@ class SonderberechtigungController < ApplicationController
   end
   
 
-  def createBerechtigungRollen       
+  def createBerechtigungRollen      
     @errors = Array.new                                       
     begin    
       #Beginne Transaktion
@@ -28,7 +28,6 @@ class SonderberechtigungController < ApplicationController
   
         @OZBPerson = OZBPerson.find(params[:mnr])
         @Person = Person.get(@OZBPerson.Mnr)
-        
        
         
         

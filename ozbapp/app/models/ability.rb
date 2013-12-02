@@ -9,37 +9,37 @@ class Ability
     user ||= User.new
 
     if is_allowed(user, 17)
-        can :index, BuergschaftController
+        can :index, Buergschaft
     end
 
     if is_allowed(user, 18)
-        can [:new, :create, :delete], BuergschaftController
+        can [:new, :create, :delete], Buergschaft
     end
 
     if is_allowed(user, 19)
-        can [:edit, :update, :updateB], BuergschaftController
+        can [:edit, :update, :updateB], Buergschaft
     end
 
     if is_allowed(user, 11)
-        can [:index, :verlauf], OzbKontoController
+        can [:index, :verlauf], OzbKonto
     end
 
     if is_allowed(user, 13) && is_allowed(user, 15)
-        can [:new, :create], OzbKontoController
+        can [:new, :create], OzbKonto
     end
 
     if is_allowed(user, 14)
-        can [:edit, :update, :delete], OzbKontoController
+        can [:edit, :update, :delete], OzbKonto
     end
 
     if is_allowed(user, 20)
-        can [:editRolle], OZBPersonController
-        can [:createDeleteTeilnahme, :createVeranstaltung], VeranstaltungController
+        can [:editRolle], OZBPerson
+        can [:createDeleteTeilnahme, :createVeranstaltung], Veranstaltung
     end
 
     if is_allowed(user, 7)
-        can [:createBerechtigungRollen, :deleteBerechtigungRollen, :editRollen, :editBerechtigungenRollen, :createSonderberechtigung], SonderberechtigungController
-        can [:editVeranstaltungen, :newVeranstaltung], VeranstaltungController
+        can [:createBerechtigungRollen, :deleteBerechtigungRollen, :editRollen, :editBerechtigungenRollen, :createSonderberechtigung], Sonderberechtigung
+        can [:editVeranstaltungen, :newVeranstaltung], Veranstaltung
         can [:editBerechtigungen, :createBerechtigung, :deleteBerechtigung], :verwaltung
     end
 

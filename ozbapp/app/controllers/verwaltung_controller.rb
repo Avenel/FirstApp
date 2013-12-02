@@ -524,11 +524,11 @@ class VerwaltungController < ApplicationController
         end
         
  
-       # Email
+       # EMail
         # @OZBPerson.email = params[:email]
         @OZBPerson.SachPnr = current_user.Mnr
         
-       # Email bei OZBPerson speichern         
+       # EMail bei OZBPerson speichern         
         #Fehler aufgetreten?
         if !@OZBPerson.valid? then
           @errors.push(@OZBPerson.errors)
@@ -536,10 +536,10 @@ class VerwaltungController < ApplicationController
         @OZBPerson.save!
 
          
-       if @Person.Email != params[:email] then
-        @Person.Email   = params[:email]
+       if @Person.EMail != params[:email] then
+        @Person.EMail   = params[:email]
         @Person.SachPnr = current_user.Mnr
-       # Email bei Person speichern       
+       # EMail bei Person speichern       
         #Fehler aufgetreten?
         if !@Person.valid? then
           @errors.push(@Person.errors)
@@ -953,14 +953,14 @@ class VerwaltungController < ApplicationController
     begin    
       #Beginne Transaktion
       ActiveRecord::Base.transaction do
-        @sonderberechtigung = Sonderberechtigung.where("Mnr = ? AND Email = ? AND Berechtigung = ?", params[:Mnr], params[:email], params[:berechtigung])
+        @sonderberechtigung = Sonderberechtigung.where("Mnr = ? AND EMail = ? AND Berechtigung = ?", params[:Mnr], params[:email], params[:berechtigung])
 
         if @sonderberechtigung.empty?
           @OZBPerson = OZBPerson.find(params[:Mnr])
           @Person    = Person.get(@OZBPerson.Mnr)
 
           ## Person erstellen und validieren
-          @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr => @OZBPerson.Mnr, :EMail => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr )
+          @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr => @OZBPerson.Mnr, :EMail => params[:email], :Berechtigung => params[:berechtigung])
           #Fehler aufgetreten?
           if !@new_Sonderberechtigung.valid? then
             @errors.push(@new_Sonderberechtigung.errors)

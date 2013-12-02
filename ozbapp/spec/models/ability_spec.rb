@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Ability do
-  # BuergschaftController
-  describe "BuergschaftController" do
+  # Buergschaft
+  describe "Buergschaft" do
 
     # Index
     describe "action index" do
@@ -11,42 +11,42 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, BuergschaftController).to be_true
+        expect(ability.can? :index, Buergschaft).to be_true
       end
 
       it "should show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, BuergschaftController).to be_true
+        expect(ability.can? :index, Buergschaft).to be_true
       end
 
       it "should show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, BuergschaftController).to be_true
+        expect(ability.can? :index, Buergschaft).to be_true
       end
 
       it "should show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, BuergschaftController).to be_true
+        expect(ability.can? :index, Buergschaft).to be_true
       end
 
       it "should show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, BuergschaftController).to be_true
+        expect(ability.can? :index, Buergschaft).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :index, BuergschaftController).to be_true
+        expect(ability.cannot? :index, Buergschaft).to be_true
       end
     end
 
@@ -57,54 +57,54 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :new, BuergschaftController).to be_true
-        expect(ability.can? :create, BuergschaftController).to be_true
-        expect(ability.can? :delete, BuergschaftController).to be_true
+        expect(ability.can? :new, Buergschaft).to be_true
+        expect(ability.can? :create, Buergschaft).to be_true
+        expect(ability.can? :delete, Buergschaft).to be_true
       end
 
       it "should not show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :new, BuergschaftController).to be_true
-        expect(ability.cannot? :create, BuergschaftController).to be_true
-        expect(ability.cannot? :delete, BuergschaftController).to be_true
+        expect(ability.cannot? :new, Buergschaft).to be_true
+        expect(ability.cannot? :create, Buergschaft).to be_true
+        expect(ability.cannot? :delete, Buergschaft).to be_true
       end
 
       it "should not show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :new, BuergschaftController).to be_true
-        expect(ability.cannot? :create, BuergschaftController).to be_true
-        expect(ability.cannot? :delete, BuergschaftController).to be_true
+        expect(ability.cannot? :new, Buergschaft).to be_true
+        expect(ability.cannot? :create, Buergschaft).to be_true
+        expect(ability.cannot? :delete, Buergschaft).to be_true
       end
 
       it "should show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :new, BuergschaftController).to be_true
-        expect(ability.can? :create, BuergschaftController).to be_true
-        expect(ability.can? :delete, BuergschaftController).to be_true
+        expect(ability.can? :new, Buergschaft).to be_true
+        expect(ability.can? :create, Buergschaft).to be_true
+        expect(ability.can? :delete, Buergschaft).to be_true
       end
 
       it "should not show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :new, BuergschaftController).to be_true
-        expect(ability.cannot? :create, BuergschaftController).to be_true
-        expect(ability.cannot? :delete, BuergschaftController).to be_true
+        expect(ability.cannot? :new, Buergschaft).to be_true
+        expect(ability.cannot? :create, Buergschaft).to be_true
+        expect(ability.cannot? :delete, Buergschaft).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :new, BuergschaftController).to be_true
-        expect(ability.cannot? :create, BuergschaftController).to be_true
-        expect(ability.cannot? :delete, BuergschaftController).to be_true
+        expect(ability.cannot? :new, Buergschaft).to be_true
+        expect(ability.cannot? :create, Buergschaft).to be_true
+        expect(ability.cannot? :delete, Buergschaft).to be_true
       end
     end
 
@@ -115,54 +115,54 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :edit, BuergschaftController).to be_true
-        expect(ability.can? :update, BuergschaftController).to be_true
-        expect(ability.can? :updateB, BuergschaftController).to be_true
+        expect(ability.can? :edit, Buergschaft).to be_true
+        expect(ability.can? :update, Buergschaft).to be_true
+        expect(ability.can? :updateB, Buergschaft).to be_true
       end
 
       it "should not show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :edit, BuergschaftController).to be_true
-        expect(ability.cannot? :update, BuergschaftController).to be_true
-        expect(ability.cannot? :updateB, BuergschaftController).to be_true
+        expect(ability.cannot? :edit, Buergschaft).to be_true
+        expect(ability.cannot? :update, Buergschaft).to be_true
+        expect(ability.cannot? :updateB, Buergschaft).to be_true
       end
 
       it "should not show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :edit, BuergschaftController).to be_true
-        expect(ability.cannot? :update, BuergschaftController).to be_true
-        expect(ability.cannot? :updateB, BuergschaftController).to be_true
+        expect(ability.cannot? :edit, Buergschaft).to be_true
+        expect(ability.cannot? :update, Buergschaft).to be_true
+        expect(ability.cannot? :updateB, Buergschaft).to be_true
       end
 
       it "should show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :edit, BuergschaftController).to be_true
-        expect(ability.can? :update, BuergschaftController).to be_true
-        expect(ability.can? :updateB, BuergschaftController).to be_true
+        expect(ability.can? :edit, Buergschaft).to be_true
+        expect(ability.can? :update, Buergschaft).to be_true
+        expect(ability.can? :updateB, Buergschaft).to be_true
       end
 
       it "should not show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :edit, BuergschaftController).to be_true
-        expect(ability.cannot? :update, BuergschaftController).to be_true
-        expect(ability.cannot? :updateB, BuergschaftController).to be_true
+        expect(ability.cannot? :edit, Buergschaft).to be_true
+        expect(ability.cannot? :update, Buergschaft).to be_true
+        expect(ability.cannot? :updateB, Buergschaft).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :edit, BuergschaftController).to be_true
-        expect(ability.cannot? :update, BuergschaftController).to be_true
-        expect(ability.cannot? :updateB, BuergschaftController).to be_true
+        expect(ability.cannot? :edit, Buergschaft).to be_true
+        expect(ability.cannot? :update, Buergschaft).to be_true
+        expect(ability.cannot? :updateB, Buergschaft).to be_true
       end
     end
 
@@ -178,48 +178,48 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, OzbKontoController).to be_true
-        expect(ability.can? :verlauf, OzbKontoController).to be_true
+        expect(ability.can? :index, OzbKonto).to be_true
+        expect(ability.can? :verlauf, OzbKonto).to be_true
       end
 
       it "should show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, OzbKontoController).to be_true
-        expect(ability.can? :verlauf, OzbKontoController).to be_true
+        expect(ability.can? :index, OzbKonto).to be_true
+        expect(ability.can? :verlauf, OzbKonto).to be_true
       end
 
       it "should show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, OzbKontoController).to be_true
-        expect(ability.can? :verlauf, OzbKontoController).to be_true
+        expect(ability.can? :index, OzbKonto).to be_true
+        expect(ability.can? :verlauf, OzbKonto).to be_true
       end
 
       it "should show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, OzbKontoController).to be_true
-        expect(ability.can? :verlauf, OzbKontoController).to be_true
+        expect(ability.can? :index, OzbKonto).to be_true
+        expect(ability.can? :verlauf, OzbKonto).to be_true
       end
 
       it "should show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :index, OzbKontoController).to be_true
-        expect(ability.can? :verlauf, OzbKontoController).to be_true
+        expect(ability.can? :index, OzbKonto).to be_true
+        expect(ability.can? :verlauf, OzbKonto).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :index, OzbKontoController).to be_true
-        expect(ability.cannot? :verlauf, OzbKontoController).to be_true
+        expect(ability.cannot? :index, OzbKonto).to be_true
+        expect(ability.cannot? :verlauf, OzbKonto).to be_true
       end
     end
 
@@ -230,48 +230,48 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :new, OzbKontoController).to be_true
-        expect(ability.can? :create, OzbKontoController).to be_true
+        expect(ability.can? :new, OzbKonto).to be_true
+        expect(ability.can? :create, OzbKonto).to be_true
       end
 
       it "should not show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :new, OzbKontoController).to be_true
-        expect(ability.cannot? :create, OzbKontoController).to be_true
+        expect(ability.cannot? :new, OzbKonto).to be_true
+        expect(ability.cannot? :create, OzbKonto).to be_true
       end
 
       it "should show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :new, OzbKontoController).to be_true
-        expect(ability.can? :create, OzbKontoController).to be_true
+        expect(ability.can? :new, OzbKonto).to be_true
+        expect(ability.can? :create, OzbKonto).to be_true
       end
 
       it "should not show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :new, OzbKontoController).to be_true
-        expect(ability.cannot? :create, OzbKontoController).to be_true
+        expect(ability.cannot? :new, OzbKonto).to be_true
+        expect(ability.cannot? :create, OzbKonto).to be_true
       end
 
       it "should not show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :new, OzbKontoController).to be_true
-        expect(ability.cannot? :create, OzbKontoController).to be_true
+        expect(ability.cannot? :new, OzbKonto).to be_true
+        expect(ability.cannot? :create, OzbKonto).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :new, OzbKontoController).to be_true
-        expect(ability.cannot? :create, OzbKontoController).to be_true
+        expect(ability.cannot? :new, OzbKonto).to be_true
+        expect(ability.cannot? :create, OzbKonto).to be_true
       end
     end
 
@@ -282,54 +282,54 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :edit, OzbKontoController).to be_true
-        expect(ability.can? :update, OzbKontoController).to be_true
-        expect(ability.can? :delete, OzbKontoController).to be_true
+        expect(ability.can? :edit, OzbKonto).to be_true
+        expect(ability.can? :update, OzbKonto).to be_true
+        expect(ability.can? :delete, OzbKonto).to be_true
       end
 
       it "should not show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :edit, OzbKontoController).to be_true
-        expect(ability.cannot? :update, OzbKontoController).to be_true
-        expect(ability.cannot? :delete, OzbKontoController).to be_true
+        expect(ability.cannot? :edit, OzbKonto).to be_true
+        expect(ability.cannot? :update, OzbKonto).to be_true
+        expect(ability.cannot? :delete, OzbKonto).to be_true
       end
 
       it "should show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :edit, OzbKontoController).to be_true
-        expect(ability.can? :update, OzbKontoController).to be_true
-        expect(ability.can? :delete, OzbKontoController).to be_true
+        expect(ability.can? :edit, OzbKonto).to be_true
+        expect(ability.can? :update, OzbKonto).to be_true
+        expect(ability.can? :delete, OzbKonto).to be_true
       end
 
       it "should not show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :edit, OzbKontoController).to be_true
-        expect(ability.cannot? :update, OzbKontoController).to be_true
-        expect(ability.cannot? :delete, OzbKontoController).to be_true
+        expect(ability.cannot? :edit, OzbKonto).to be_true
+        expect(ability.cannot? :update, OzbKonto).to be_true
+        expect(ability.cannot? :delete, OzbKonto).to be_true
       end
 
       it "should not show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :edit, OzbKontoController).to be_true
-        expect(ability.cannot? :update, OzbKontoController).to be_true
-        expect(ability.cannot? :delete, OzbKontoController).to be_true
+        expect(ability.cannot? :edit, OzbKonto).to be_true
+        expect(ability.cannot? :update, OzbKonto).to be_true
+        expect(ability.cannot? :delete, OzbKonto).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :edit, OzbKontoController).to be_true
-        expect(ability.cannot? :update, OzbKontoController).to be_true
-        expect(ability.cannot? :delete, OzbKontoController).to be_true
+        expect(ability.cannot? :edit, OzbKonto).to be_true
+        expect(ability.cannot? :update, OzbKonto).to be_true
+        expect(ability.cannot? :delete, OzbKonto).to be_true
       end
     end
 
@@ -345,42 +345,42 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :editRolle, OZBPersonController).to be_true
+        expect(ability.can? :editRolle, OZBPerson).to be_true
       end
 
       it "should show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :editRolle, OZBPersonController).to be_true
+        expect(ability.can? :editRolle, OZBPerson).to be_true
       end
 
       it "should not show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :editRolle, OZBPersonController).to be_true
+        expect(ability.cannot? :editRolle, OZBPerson).to be_true
       end
 
       it "should not show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :editRolle, OZBPersonController).to be_true
+        expect(ability.cannot? :editRolle, OZBPerson).to be_true
       end
 
       it "should show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :editRolle, OZBPersonController).to be_true
+        expect(ability.can? :editRolle, OZBPerson).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :editRolle, OZBPersonController).to be_true
+        expect(ability.cannot? :editRolle, OZBPerson).to be_true
       end
     end
   end
@@ -395,72 +395,72 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :createBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.can? :deleteBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.can? :editRollen, SonderberechtigungController).to be_true
-        expect(ability.can? :editBerechtigungenRollen, SonderberechtigungController).to be_true
-        expect(ability.can? :createSonderberechtigung, SonderberechtigungController).to be_true
+        expect(ability.can? :createBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.can? :deleteBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.can? :editRollen, Sonderberechtigung).to be_true
+        expect(ability.can? :editBerechtigungenRollen, Sonderberechtigung).to be_true
+        expect(ability.can? :createSonderberechtigung, Sonderberechtigung).to be_true
       end
 
       it "should not show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :createBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :deleteBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editBerechtigungenRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :createSonderberechtigung, SonderberechtigungController).to be_true
+        expect(ability.cannot? :createBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :deleteBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editBerechtigungenRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :createSonderberechtigung, Sonderberechtigung).to be_true
       end
 
       it "should not show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :createBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :deleteBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editBerechtigungenRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :createSonderberechtigung, SonderberechtigungController).to be_true
+        expect(ability.cannot? :createBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :deleteBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editBerechtigungenRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :createSonderberechtigung, Sonderberechtigung).to be_true
       end
 
       it "should not show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :createBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :deleteBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editBerechtigungenRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :createSonderberechtigung, SonderberechtigungController).to be_true
+        expect(ability.cannot? :createBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :deleteBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editBerechtigungenRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :createSonderberechtigung, Sonderberechtigung).to be_true
       end
 
       it "should not show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :createBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :deleteBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editBerechtigungenRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :createSonderberechtigung, SonderberechtigungController).to be_true
+        expect(ability.cannot? :createBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :deleteBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editBerechtigungenRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :createSonderberechtigung, Sonderberechtigung).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :createBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :deleteBerechtigungRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :editBerechtigungenRollen, SonderberechtigungController).to be_true
-        expect(ability.cannot? :createSonderberechtigung, SonderberechtigungController).to be_true
+        expect(ability.cannot? :createBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :deleteBerechtigungRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :editBerechtigungenRollen, Sonderberechtigung).to be_true
+        expect(ability.cannot? :createSonderberechtigung, Sonderberechtigung).to be_true
       end
     end
   end
 
-  # VeranstaltungController
-  describe "VeranstaltungController" do
+  # Veranstaltung
+  describe "Veranstaltung" do
 
     # :createDeleteTeilnahme, :createVeranstaltung
     describe "action :createDeleteTeilnahme, :createVeranstaltung" do
@@ -469,99 +469,99 @@ describe Ability do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :createDeleteTeilnahme, VeranstaltungController).to be_true
-        expect(ability.can? :createVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.can? :createDeleteTeilnahme, Veranstaltung).to be_true
+        expect(ability.can? :createVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :createDeleteTeilnahme, VeranstaltungController).to be_true
-        expect(ability.can? :createVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.can? :createDeleteTeilnahme, Veranstaltung).to be_true
+        expect(ability.can? :createVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should not show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :createDeleteTeilnahme, VeranstaltungController).to be_true
-        expect(ability.cannot? :createVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.cannot? :createDeleteTeilnahme, Veranstaltung).to be_true
+        expect(ability.cannot? :createVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should not show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :createDeleteTeilnahme, VeranstaltungController).to be_true
-        expect(ability.cannot? :createVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.cannot? :createDeleteTeilnahme, Veranstaltung).to be_true
+        expect(ability.cannot? :createVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :createDeleteTeilnahme, VeranstaltungController).to be_true
-        expect(ability.can? :createVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.can? :createDeleteTeilnahme, Veranstaltung).to be_true
+        expect(ability.can? :createVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :createDeleteTeilnahme, VeranstaltungController).to be_true
-        expect(ability.cannot? :createVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.cannot? :createDeleteTeilnahme, Veranstaltung).to be_true
+        expect(ability.cannot? :createVeranstaltung, Veranstaltung).to be_true
       end
     end
 
-    # action :editVeranstaltungControlleren, :newVeranstaltungController
+    # action :editVeranstaltungen, :newVeranstaltung
     describe "action :editVeranstaltungen, :newVeranstaltung" do
       it "should show for auth it" do
         user = FactoryGirl.create(:user_auth_it)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.can? :editVeranstaltungen, VeranstaltungController).to be_true
-        expect(ability.can? :newVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.can? :editVeranstaltungen, Veranstaltung).to be_true
+        expect(ability.can? :newVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should not show for auth mv" do
         user = FactoryGirl.create(:user_auth_mv)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :editVeranstaltungen, VeranstaltungController).to be_true
-        expect(ability.cannot? :newVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.cannot? :editVeranstaltungen, Veranstaltung).to be_true
+        expect(ability.cannot? :newVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should not show for auth rw" do
         user = FactoryGirl.create(:user_auth_rw)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :editVeranstaltungen, VeranstaltungController).to be_true
-        expect(ability.cannot? :newVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.cannot? :editVeranstaltungen, Veranstaltung).to be_true
+        expect(ability.cannot? :newVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should not show for auth ze" do
         user = FactoryGirl.create(:user_auth_ze)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :editVeranstaltungen, VeranstaltungController).to be_true
-        expect(ability.cannot? :newVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.cannot? :editVeranstaltungen, Veranstaltung).to be_true
+        expect(ability.cannot? :newVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should not show for auth oea" do
         user = FactoryGirl.create(:user_auth_oea)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :editVeranstaltungen, VeranstaltungController).to be_true
-        expect(ability.cannot? :newVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.cannot? :editVeranstaltungen, Veranstaltung).to be_true
+        expect(ability.cannot? :newVeranstaltung, Veranstaltung).to be_true
       end
 
       it "should not show for no auth " do
         user = FactoryGirl.create(:user)
         expect(user).to be_valid
         ability = Ability.new(user)
-        expect(ability.cannot? :editVeranstaltungen, VeranstaltungController).to be_true
-        expect(ability.cannot? :newVeranstaltung, VeranstaltungController).to be_true
+        expect(ability.cannot? :editVeranstaltungen, Veranstaltung).to be_true
+        expect(ability.cannot? :newVeranstaltung, Veranstaltung).to be_true
       end
     end
   end
