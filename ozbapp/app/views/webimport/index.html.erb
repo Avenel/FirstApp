@@ -17,6 +17,49 @@
 	</div>
 <% end %>
 
+<% if !@info.blank? %>
+	<div class="alert alert-warning"  style="overflow: auto; width: 890px;">
+		<button class="close" data-dismiss="alert">&times;</button>
+		<table class="table table-bordered table-striped" width="100%">
+			<thead>
+				<tr>
+					<th class="header">Jahr</th>
+					<th class="header">Ktonr.</th>
+					<th class="header">BBK</th>
+					<th class="header">Bnr.</th>
+					<th class="header">T</th>
+					<th class="header">Belegsdat.</th>
+					<th class="header">Buchungsdat.</th>
+					<th class="header">Buchungstext</th>
+					<th class="header">Soll</th>
+					<th class="header">Haben</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @info.each do |row| %>
+		         <tr>
+		           <td class="zentriert"><%= row.BuchJahr.to_s %></td>
+		           <td class="zentriert"><%= row.KtoNr.to_s %></td>
+		           <td class="zentriert"><%= row.BnKreis.to_s %></td>
+		           <td class="zentriert"><%= row.BelegNr.to_s %></td>
+		           <td class="zentriert"><%= row.Typ.to_s %></td>
+		           <td class="zentriert"><%= row.Belegdatum.to_s %></td>
+		           <td class="zentriert"><%= row.BuchDatum.to_s %></td>
+		           <td class=""><%= row.Buchungstext.to_s %></td>
+		           <td class="zentriert"><%= row.Sollbetrag.to_s %></td>
+		           <td class="zentriert"><%= row.Habenbetrag.to_s %></td>
+		         <tr>
+				<% end %>
+			</tbody>
+		</table>
+	<ul>
+		<li>(BBK) Belegbuchungskreis </li>
+		<li>(Bnr.) Belegnummer</li>
+		<li>(T) Tüp</li>
+	</ul>
+	</div>
+<% end %>
+
 <div class="alert alert-info">
 	<ol>
 		<li>Wählen Sie zunächst eine CSV-Datei auf Ihrem Computer aus.</li>
@@ -32,17 +75,20 @@
 			<strong>CSV-Datei:</strong>
 		</div>
 		
-		<div class="span10">
+		<div class="span8">
 			<div class="input-append">
 			   <input id="fakefile-field" class="input-large" type="text">
 			   <a id="fakefile-button" class="btn">Auswählen...</a>
 			</div>
 		</div>
+		<div class="span2">
+ 			<%= form.submit :value => "importieren", :class => "btn btn-primary" %>
+		</div>
 	</div>
+
 	
 	<br />
 	
-	<%= form.submit :value => "importieren", :class => "btn btn-primary" %>
 <% end %> 
 
 <!-- http://duckranger.com/2012/06/pretty-file-input-field-in-bootstrap/ -->
