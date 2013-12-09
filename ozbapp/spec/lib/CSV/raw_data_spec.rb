@@ -8,7 +8,7 @@ describe RawData do
 	before(:each) do
 	 	csv_record = [
 	 		"02.11.2012", 
-	 		"13.10.2013", 
+	 		"13.10.2013",
 	 		"U-", 
 	 		"808",
 	 		"0012-0140 Gutschrift von Hannelore", 
