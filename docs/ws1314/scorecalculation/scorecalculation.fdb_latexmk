@@ -1,0 +1,16 @@
+# Fdb version 3
+["pdflatex"] 1386672899 "scorecalculation.tex" "scorecalculation.pdf" "scorecalculation" 
+  "/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty" 1156702488 2266 7054435e4584a41cf53b0a7ca624d0cb ""
+  "/usr/share/texmf-texlive/tex/latex/koma-script/scrbase.sty" 1248645244 24710 3cd2c2ad265c75a2f8a62bbca716f28f ""
+  "/usr/share/texmf-texlive/tex/latex/koma-script/scrkbase.sty" 1248645244 8464 1a3cb7b532a9bc64f1ff0e6ede74cce1 ""
+  "/usr/share/texmf-texlive/tex/latex/koma-script/scrlfile.sty" 1238459141 7861 c1f4063ca4fe18a76d49a92a02192f5a ""
+  "/usr/share/texmf-texlive/tex/latex/koma-script/scrreprt.cls" 1248645244 111736 87b0cd86f81e082bd8871f801d6699be ""
+  "/usr/share/texmf-texlive/tex/latex/koma-script/scrsize11pt.clo" 1248645244 6103 f20ae0d1b464280f700b732b6cfb4991 ""
+  "/usr/share/texmf-texlive/tex/latex/koma-script/tocbasic.sty" 1248113403 13040 b135f0688b1a68c90edd0bd0b1c9ea14 ""
+  "/usr/share/texmf-texlive/tex/latex/koma-script/typearea.sty" 1248645244 34773 608e991c8a0b22cd79430c304629ca0c ""
+  "scorecalculation.aux" 1386672900 162 279d590df462ac86f7c8570debe2d54e ""
+  "scorecalculation.tex" 1386672897 104 49c57d0d2eda85bd9f876bbda5f921a9 ""
+  (generated)
+  "scorecalculation.aux"
+  "scorecalculation.log"
+  "scorecalculation.pdf"
