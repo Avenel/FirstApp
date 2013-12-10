@@ -17,6 +17,15 @@ tools/testdbDump.sql
 ozbapp/script/testdbDump.sql
 dump.sql
 
+##########################
+## Documentation specific
+##########################
+docs/ws1314/scorecalculation/*.fdb_latexmk
+docs/ws1314/scorecalculation/*.log
+docs/ws1314/scorecalculation/*.synctex.gz
+docs/ws1314/scorecalculation/*.pdf
+docs/ws1314/scorecalculation/*.aux
+docs/ws1314/scorecalculation/*.out
 
 #################
 ## Eclipse
