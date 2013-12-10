@@ -1,5 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1386674317 "scorecalculation.tex" "scorecalculation.pdf" "scorecalculation" 
+["pdflatex"] 1386695152 "scorecalculation.tex" "scorecalculation.pdf" "scorecalculation" 
+  "/usr/share/texmf-texlive/tex/generic/german/ngerman.sty" 1137109563 25632 d70ea97296f66a85c45abe5184f2c62a ""
   "/usr/share/texmf-texlive/tex/latex/base/inputenc.sty" 1254151887 4388 1cb2ca8d423695bd22ea8d126c276f33 ""
   "/usr/share/texmf-texlive/tex/latex/base/omsenc.dfu" 1254151887 1868 39c80c053f689193a1ca9a83d05b2744 ""
   "/usr/share/texmf-texlive/tex/latex/base/ot1enc.dfu" 1254151887 2620 9a36ef7e0369aa29d9d298a6bf19588e ""
@@ -14,8 +15,8 @@
   "/usr/share/texmf-texlive/tex/latex/koma-script/tocbasic.sty" 1248113403 13040 b135f0688b1a68c90edd0bd0b1c9ea14 ""
   "/usr/share/texmf-texlive/tex/latex/koma-script/typearea.sty" 1248645244 34773 608e991c8a0b22cd79430c304629ca0c ""
   "/usr/share/texmf-texlive/tex/latex/setspace/setspace.sty" 1137110789 21972 cc53f66d4e62f6e032b3f45042648ee8 ""
-  "scorecalculation.aux" 1386674317 735 b72947c95e9550d37c2b94d6f967fe86 ""
-  "scorecalculation.tex" 1386674316 681 8dd7fe1acb49f49fc1c60dc9c298c72c ""
+  "scorecalculation.aux" 1386695152 995 8c9ff107f86d8abadbc70a7574d50c6f ""
+  "scorecalculation.tex" 1386695151 2403 6e04b9cd22ed690b8de4ae651259354f ""
   (generated)
   "scorecalculation.out"
   "scorecalculation.aux"

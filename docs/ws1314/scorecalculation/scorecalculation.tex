@@ -1,20 +1,35 @@
 \documentclass[12pt]{scrreprt}
 
 \usepackage[utf8]{inputenc}
+\usepackage{ngerman}
 \usepackage[onehalfspacing]{setspace}
 
 \begin{document}
   
-\chapter{Punkteberechnung}
+\chapter{Punkteberechnung (verfasst von Thomas Eger)}
+
+Innerhalb der existierenden Web-Anwendung zur administrativen Unterstützung der verschiedenen o/ZB wird ein Mechanismus benötigt, der dafür zuständig ist, die für Kontenbewegungen entstehenden Punkte zu ermitteln. Die Berechnungen dazu sind im bestehenden System redundant implementiert. \\
+
+Dieser Teil der Projektarbeit dokumentiert das Refactoring zur Zusammenfassung dieser Berechnungen, die dabei entstandenen Programmteile, sowie deren Verwendung. Zunächst sollen jedoch einige fachliche Erläuterungn einen einfacheren Einstieg in die Programmierung ermöglichen.  
 
 \section{Fachliche Erläuterungen}
-Erklärung des OZB-Punktesystems.
-Erklärung der Formel.
 
-\section{Alte Implementierung}
+\subsection{Überblick über das Punktesystem der o/ZB}
+Für das Ansparen werden statt Zinsen sogenannte Sparpunkte vergeben. Das Sparen findet in zeitlich begrenzten Phasen statt, in denen beispielsweise monatlich über ein Jahr ein bestimmter Währungs-Betrag angelegt wird. Nach Ablauf einer solchen Ansparphase kann das Währungs-Guthaben wieder entnommen werden. Die Sparpunkte bleiben auf dem Konto. \\
+
+Wenn das angesparte Guthaben nicht für das umzusetzende Projekt ausreicht kann eine Zusatzentnahme erfolgen. Dies entspricht in etwa einem Darlehen auf der Bank. Entsprechend der Vergabe von Punkten beim Ansparen, muss der Darlehensnehmer genügend Sparpunkte angesammelt haben, damit eine Zusatzentnahme möglich wird. Es besteht auch die Möglichkeit Punkte zu leihen oder zu schenken. \\
+
+Um in der Web-Anwendung die Punkte korrekt darstellen zu können, bedarf es einer Formel zu deren Berechnung über eine gegebene Zeitspanne, mit einem gegebenen Wäh{"-}rungs-Betrag. Diese soll im Folgenden erläutert werden. 
+
+\subsection{Berechnung der Punkte}
+Erklärung der Formel, erklärung der Kontenklassen und Kontenklassenverlauf
+
+\newpage
+
+\section{Analyse der alten Implementierung}
 Redundanz. 
-Dokumentation der redundanten Stellen mit Dateinamen.
 Keine Tests.
+Dokumentation der redundanten Stellen mit Dateinamen.
 
 \section{Refactoring}
 
@@ -22,10 +37,10 @@ Keine Tests.
 
 \subsection{Vorgehensweise}
 
-\subsection{Umsetzung}
+\subsection{Realisierung}
 Klasse Punkteberechnung.
 Dokumentation und detaillierte Erklärung der Methoden mit Listings.
-Dokumentation und detaillierte Erklärung der Tests.
+Dokumentation und detaillierte Erklärung der Testfälle.
 
 \section{Offene Punkte}
 Darlehensvertrag.
