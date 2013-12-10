@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.11.26)  10 DEC 2013 18:05
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.11.26)  10 DEC 2013 19:47
 entering extended mode
  %&-line parsing enabled.
 **scorecalculation.tex
@@ -321,57 +321,148 @@ ngerman -- \language number for French undefined, default 255 used.
 Package: setspace 2000/12/01 6.7 Contributed and Supported LaTeX2e package
 
 Package: `setspace' 6.7 <2000/12/01>
-) (./scorecalculation.aux)
+) (/usr/share/texmf-texlive/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip47
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-texlive/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks17
+\ex@=\dimen104
+))
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen105
+)
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count89
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count90
+\leftroot@=\count91
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count92
+\DOTSCASE@=\count93
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box27
+\strutbox@=\box28
+\big@size=\dimen106
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count94
+\c@MaxMatrixCols=\count95
+\dotsspace@=\muskip10
+\c@parentequation=\count96
+\dspbrk@lvl=\count97
+\tag@help=\toks18
+\row@=\count98
+\column@=\count99
+\maxfields@=\count100
+\andhelp@=\toks19
+\eqnshift@=\dimen107
+\alignsep@=\dimen108
+\tagshift@=\dimen109
+\tagwidth@=\dimen110
+\totwidth@=\dimen111
+\lineht@=\dimen112
+\@envbody=\toks20
+\multlinegap=\skip48
+\multlinetaggap=\skip49
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+))
+(./scorecalculation.aux)
 \openout1 = `scorecalculation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
 
 Kapitel 1.
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--12
+Underfull \hbox (badness 10000) in paragraph at lines 14--15
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 18--19
+Underfull \hbox (badness 10000) in paragraph at lines 21--22
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 20--21
+Underfull \hbox (badness 10000) in paragraph at lines 23--24
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
 
  []
 
 [1
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+ []
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 31.
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 31.
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
+) [2] [3] [4]
 (./scorecalculation.aux) ) 
 Here is how much of TeX's memory you used:
- 1595 strings out of 495021
- 22601 string characters out of 1181034
- 96015 words of memory out of 3000000
- 4826 multiletter control sequences out of 15000+50000
- 5421 words of font info for 20 fonts, out of 3000000 for 9000
+ 2528 strings out of 495021
+ 33133 string characters out of 1181034
+ 109876 words of memory out of 3000000
+ 5716 multiletter control sequences out of 15000+50000
+ 10075 words of font info for 38 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 35i,6n,35p,423b,150s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 35i,11n,35p,524b,273s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/share/texmf-texlive/fonts/type1/public/amsfonts
-/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmssbx10
-.pfb>
-Output written on scorecalculation.pdf (3 pages, 37047 bytes).
+/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.
+pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/s
+hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-t
+exlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts
+/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public
+/amsfonts/cm/cmssbx10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts
+/cm/cmsy10.pfb>
+Output written on scorecalculation.pdf (4 pages, 94331 bytes).
 PDF statistics:
- 20 PDF objects out of 1000 (max. 8388607)
+ 47 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -4,6 +4,9 @@
 \usepackage{ngerman}
 \usepackage[onehalfspacing]{setspace}
 
+\usepackage{amsmath}
+\usepackage{amssymb}
+
 \begin{document}
   
 \chapter{Punkteberechnung (verfasst von Thomas Eger)}
@@ -19,27 +22,93 @@ Für das Ansparen werden statt Zinsen sogenannte Sparpunkte vergeben. Das Sparen
 
 Wenn das angesparte Guthaben nicht für das umzusetzende Projekt ausreicht kann eine Zusatzentnahme erfolgen. Dies entspricht in etwa einem Darlehen auf der Bank. Entsprechend der Vergabe von Punkten beim Ansparen, muss der Darlehensnehmer genügend Sparpunkte angesammelt haben, damit eine Zusatzentnahme möglich wird. Es besteht auch die Möglichkeit Punkte zu leihen oder zu schenken. \\
 
-Um in der Web-Anwendung die Punkte korrekt darstellen zu können, bedarf es einer Formel zu deren Berechnung über eine gegebene Zeitspanne, mit einem gegebenen Wäh{"-}rungs-Betrag. Diese soll im Folgenden erläutert werden. 
+Um in der Web-Anwendung die Punkte korrekt darstellen zu können, bedarf es einer Formel zu deren Berechnung über eine gegebene Zeitspanne, mit einem gegebenen Wäh{"-}rungs-Betrag. \\
+
+Weitere Parameter für die Berechnung ergeben sich aus dem Kontenklassenverlauf eines o/ZB-Mitglieds. Jedes Mitglied befindet sich zu jeder Zeit in einer Kontenklasse, die auch gewechselt werden kann. Der zeitliche Ablauf der Kontenklassenwechsel heisst Kontenklassenverlauf. Jeder Klasse ist ein Faktor zugeordnet. Die Kontenklassen in Tabelle 1.1 existieren zur Zeit dieser Projektarbeit. \\
+
+\begin{table}
+  \begin{center}
+    \begin{tabular}{|l|r|}
+      \hline
+      \textbf{Kontenklasse} & \textbf{Faktor}\\
+      \hline
+      A & 1,0\\
+      \hline
+      B & 0,75\\
+      \hline
+      C & 0,5\\
+      \hline
+      D & 0,25\\
+      \hline
+      E & 0,0\\
+      \hline
+    \end{tabular}
+    \caption{Vorhandene Kontenklassen}
+  \end{center}
+\end{table}
+\vspace{2mm}
 
 \subsection{Berechnung der Punkte}
-Erklärung der Formel, erklärung der Kontenklassen und Kontenklassenverlauf
+Die folgende Formel dient zur Berechnung der Punkte. 
+
+\begin{equation*}
+  Punkte = \sum_{i=0}^{K} \frac{t_i}{30} * k_i * w
+\end{equation*}
+
+\begin{align*}
+ K &= \text{Anzahl der Kontenklassenwechsel} \\
+ i &= \text{Index der momentanen Kontenklasse} \\
+ k_i &= \text{Faktor der momentanen Kontenklasse} \\
+ t_i &= \text{Anzahl Tage innerhalb der momentanen Kontenklasse} \\
+ w &= \text{Währungs-Betrag} 
+\end{align*}
+
+Es muss über die Kontenklassen innerhalb einer gegebenen Zeitspanne iteriert werden. Dabei werden in jedem Schritt die Anzahl der Tage mit dem Kontenklassenfaktor und dem Währungs-Betrag multipliziert. Die Summe der Teilergebnisse bildet die Punkte über die gegebene Zeitspanne mit dem gegebenen Währungs-Betrag. Die Division durch 30 dient als Skalierung für die tagesgenaue Berechnung der Punkte innerhalb von Monaten. Das folgende Beispiel soll die Anwendung der Formel verdeutlichen.
+
+\subsubsection{Beispiel}
+Es sollen die Punkte für das Konto 70013 im Zeitraum vom 15.07.2008 bis zum 05.08.2008 berechnet werden. Der Saldo auf diesem Konto beträgt 1000,0 Euro. Der dazugehörige Kontenklassenverlauf steht in Tabelle 1.2.
+
+\begin{table}
+  \begin{center}
+    \begin{tabular}{|l|r|r|}
+      \hline
+      \textbf{Kontenklasse} & \textbf{Faktor} & \textbf{Startdatum}\\
+      \hline
+      A & 1,0 & 01.01.2005\\
+      \hline
+      B & 0,75 & 01.01.2008\\
+      \hline
+      C & 0,5 & 01.08.2008\\
+      \hline
+      B & 0,75 & 01.01.2009\\
+      \hline
+    \end{tabular}
+    \caption{Kontenklassenverlauf für das Konto 70013}
+  \end{center}
+\end{table}
+\vspace{2mm}
+
+Vom 15.07.2008 bis 31.07.2008 sind es 16 Tage in Kontenklasse B, vom 01.08.2008 bis 05.08.2008 sind es  5 Tage in Kontenklasse C. Jetzt lassen sich alle Parameter in die Formel einsetzen:
+
+\begin{equation*}
+  Punkte = (\frac{16}{30} * 0,75 * 1000,0) + (\frac{5}{30} * 0,5 * 1000,0) = 400,0 + 83,33 = 483,33
+\end{equation*}
 
 \newpage
 
 \section{Analyse der alten Implementierung}
 Redundanz. 
 Keine Tests.
+
 Dokumentation der redundanten Stellen mit Dateinamen.
+Wurden wirklich alle Stellen gefunden?
 
-\section{Refactoring}
-
-\subsection{Problematik}
-
-\subsection{Vorgehensweise}
+\subsection{Anforderungen}
+Parameter, Rundung
 
 \subsection{Realisierung}
 Klasse Punkteberechnung.
-Dokumentation und detaillierte Erklärung der Methoden mit Listings.
+Dokumentation und detaillierte Erklärung der Methoden mit Listings. 
 Dokumentation und detaillierte Erklärung der Testfälle.
 
 \section{Offene Punkte}
