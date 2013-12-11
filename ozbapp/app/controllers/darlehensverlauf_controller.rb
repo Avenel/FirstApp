@@ -77,7 +77,7 @@ class DarlehensverlaufController < ApplicationController
       if !wurdeWiederverwendet then 
         if !@vorherigeBuchung.nil? then
           # Punkte für den Tagessaldo der ersten Buchung berechnen = ((DiffTage * WSaldoAcc) / 30) * KKL + Punkte vorherigeBuchung
-          punkte = Punkteberechnung.calculate(@vorherigeBuchung.Belegdatum.to_time, @vonDatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr], false)
+          punkte = Punkteberechnung.calculate(@vorherigeBuchung.Belegdatum.to_time, @vonDatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr])
           @tagessaldoPunkte = punkte + @vorherigeBuchung.PSaldoAcc
         else
           @tagessaldoPunkte = 0
@@ -96,7 +96,7 @@ class DarlehensverlaufController < ApplicationController
             kummuliertePSaldi += buchung.Punkte
           end
         end
-        @tagessaldoPunkte = Punkteberechnung.calculate( @vorherigeBuchung.Belegdatum.to_time, @vonDatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr], false) + kummuliertePSaldi
+        @tagessaldoPunkte = Punkteberechnung.calculate( @vorherigeBuchung.Belegdatum.to_time, @vonDatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr]) + kummuliertePSaldi
       end
 
       # Lege Tagessaldo Zeile an
@@ -134,7 +134,7 @@ class DarlehensverlaufController < ApplicationController
       # Die nachfolgend erste Währungsbuchung muss korrigiert werden
       # => Punkte der Buchung -= Punkte im Intervall: Buchung.Belegdatum -  vonDatum
       if !@Buchungen.first.nil? && !@vorherigeBuchung.nil? then
-        @Buchungen.first.Punkte = Punkteberechnung.calculate(@vonDatum.to_time, @vorherigeBuchung.Belegdatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr], false)
+        @Buchungen.first.Punkte = Punkteberechnung.calculate(@vonDatum.to_time, @vorherigeBuchung.Belegdatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr])
       end
 
       # Tagessaldozeile den Buchungen oben einfügen
@@ -164,7 +164,7 @@ class DarlehensverlaufController < ApplicationController
       # Die letzte (Währungs) Buchung vor dem bisDatum finden
       @letzteWaehrungsBuchung = Buchung.where("KtoNr = ? AND Belegdatum <= ? AND Typ = 'w'", params[:KtoNr], @bisDatum.to_date).order("Belegdatum DESC, Punkte ASC").limit(1).first
 
-      @punkteImIntervall = Punkteberechnung.calculate(@letzteWaehrungsBuchung.Belegdatum.to_time, @bisDatum.to_time, @differenzSollHaben, params[:KtoNr], false)
+      @punkteImIntervall = Punkteberechnung.calculate(@letzteWaehrungsBuchung.Belegdatum.to_time, @bisDatum.to_time, @differenzSollHaben, params[:KtoNr])
 
       # Lege Zeile für die erreichten Punkte an
       @erreichtePunkteZeile = @Buchungen.first.dup
