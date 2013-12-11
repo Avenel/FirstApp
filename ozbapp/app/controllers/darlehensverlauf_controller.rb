@@ -164,7 +164,7 @@ class DarlehensverlaufController < ApplicationController
       # Die letzte (Währungs) Buchung vor dem bisDatum finden
       @letzteWaehrungsBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @bisDatum.to_date).order("Belegdatum DESC, Punkte ASC").limit(1).first
 
-      @punkteImIntervall = Punkteberechnung.calculate(@letzteWaehrungsBuchung.Belegdatum.to_time, @bisDatum.to_time, @differenzSollHaben, params[:KtoNr])
+      @punkteImIntervall = Punkteberechnung.calculate(@letzteWaehrungsBuchung.Belegdatum.to_time, @bisDatum.to_time, @differenzSollHaben, params[:KtoNr], false)
 
       # Lege Zeile für die erreichten Punkte an
       @erreichtePunkteZeile = @Buchungen.first.dup
