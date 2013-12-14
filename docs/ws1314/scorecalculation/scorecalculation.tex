@@ -1,21 +1,32 @@
 \documentclass[12pt]{scrreprt}
 
+\usepackage[onehalfspacing]{setspace}
+
 \usepackage[utf8]{inputenc}
 \usepackage{ngerman}
-\usepackage[onehalfspacing]{setspace}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+\usepackage{listings}
+\usepackage[usenames,dvipsnames]{color}
+\lstloadlanguages{Ruby}
+\lstset{basicstyle=\ttfamily\color{black}, commentstyle = \ttfamily\color{grey}, keywordstyle=\ttfamily\color{Violet}, stringstyle=\color{blue}, breaklines=true}
+
 \begin{document}
+
+%\tableofcontents \newpage
   
 \chapter{Punkteberechnung (verfasst von Thomas Eger)}
 
+\section{Aufgabenstellung}
+
 Innerhalb der existierenden Web-Anwendung zur administrativen Unterstützung der verschiedenen o/ZB wird ein Mechanismus benötigt, der dafür zuständig ist, die für Kontenbewegungen entstehenden Punkte zu ermitteln. Die Berechnungen dazu sind im bestehenden System redundant implementiert. \\
 
-Dieser Teil der Projektarbeit dokumentiert das Refactoring zur Zusammenfassung dieser Berechnungen, die dabei entstandenen Programmteile, sowie deren Verwendung. Zunächst sollen jedoch einige fachliche Erläuterungn einen einfacheren Einstieg in die Programmierung ermöglichen.  
+Dieser Teil der Projektarbeit dokumentiert das Refactoring zur Zusammenfassung dieser Berechnungen, die dabei entstandenen Programmteile, sowie deren Verwendung. 
 
 \section{Fachliche Erläuterungen}
+Zunächst sollen einige fachliche Erläuterungn einen einfacheren Einstieg in die Programmierung ermöglichen.  
 
 \subsection{Überblick über das Punktesystem der o/ZB}
 Für das Ansparen werden statt Zinsen sogenannte Sparpunkte vergeben. Das Sparen findet in zeitlich begrenzten Phasen statt, in denen beispielsweise monatlich über ein Jahr ein bestimmter Währungs-Betrag angelegt wird. Nach Ablauf einer solchen Ansparphase kann das Währungs-Guthaben wieder entnommen werden. Die Sparpunkte bleiben auf dem Konto. \\
@@ -23,8 +34,6 @@ Für das Ansparen werden statt Zinsen sogenannte Sparpunkte vergeben. Das Sparen
 Wenn das angesparte Guthaben nicht für das umzusetzende Projekt ausreicht kann eine Zusatzentnahme erfolgen. Dies entspricht in etwa einem Darlehen auf der Bank. Entsprechend der Vergabe von Punkten beim Ansparen, muss der Darlehensnehmer genügend Sparpunkte angesammelt haben, damit eine Zusatzentnahme möglich wird. Es besteht auch die Möglichkeit Punkte zu leihen oder zu schenken. \\
 
 Um in der Web-Anwendung die Punkte korrekt darstellen zu können, bedarf es einer Formel zu deren Berechnung über eine gegebene Zeitspanne, mit einem gegebenen Wäh{"-}rungs-Betrag. \\
-
-Weitere Parameter für die Berechnung ergeben sich aus dem Kontenklassenverlauf eines o/ZB-Mitglieds. Jedes Mitglied befindet sich zu jeder Zeit in einer Kontenklasse, die auch gewechselt werden kann. Der zeitliche Ablauf der Kontenklassenwechsel heisst Kontenklassenverlauf. Jeder Klasse ist ein Faktor zugeordnet. Die Kontenklassen in Tabelle 1.1 existieren zur Zeit dieser Projektarbeit. \\
 
 \begin{table}
   \begin{center}
@@ -44,9 +53,12 @@ Weitere Parameter für die Berechnung ergeben sich aus dem Kontenklassenverlauf 
       \hline
     \end{tabular}
     \caption{Vorhandene Kontenklassen}
+    \label{kkl}
   \end{center}
 \end{table}
 \vspace{2mm}
+
+Weitere Parameter für die Berechnung ergeben sich aus dem Kontenklassenverlauf eines o/ZB-Mitglieds. Jedes Mitglied befindet sich zu jeder Zeit in einer Kontenklasse, die auch gewechselt werden kann. Der zeitliche Ablauf der Kontenklassenwechsel heisst Kontenklassenverlauf. Jeder Klasse ist ein Faktor zugeordnet. Die Kontenklassen in Tabelle \ref{kkl} existieren zur Zeit dieser Projektarbeit. \\
 
 \subsection{Berechnung der Punkte}
 Die folgende Formel dient zur Berechnung der Punkte. 
@@ -66,7 +78,7 @@ Die folgende Formel dient zur Berechnung der Punkte.
 Es muss über die Kontenklassen innerhalb einer gegebenen Zeitspanne iteriert werden. Dabei werden in jedem Schritt die Anzahl der Tage mit dem Kontenklassenfaktor und dem Währungs-Betrag multipliziert. Die Summe der Teilergebnisse bildet die Punkte über die gegebene Zeitspanne mit dem gegebenen Währungs-Betrag. Die Division durch 30 dient als Skalierung für die tagesgenaue Berechnung der Punkte innerhalb von Monaten. Das folgende Beispiel soll die Anwendung der Formel verdeutlichen.
 
 \subsubsection{Beispiel}
-Es sollen die Punkte für das Konto 70013 im Zeitraum vom 15.07.2008 bis zum 05.08.2008 berechnet werden. Der Saldo auf diesem Konto beträgt 1000,0 Euro. Der dazugehörige Kontenklassenverlauf steht in Tabelle 1.2.
+Es sollen die Punkte für das Konto 70013 im Zeitraum vom 15.07.2008 bis zum 05.08.2008 berechnet werden. Der Saldo auf diesem Konto beträgt 1000,0 Euro. Der dazugehörige Kontenklassenverlauf steht in Tabelle \ref{kklverlauf}.
 
 \begin{table}
   \begin{center}
@@ -84,6 +96,7 @@ Es sollen die Punkte für das Konto 70013 im Zeitraum vom 15.07.2008 bis zum 05.
       \hline
     \end{tabular}
     \caption{Kontenklassenverlauf für das Konto 70013}
+    \label{kklverlauf}
   \end{center}
 \end{table}
 \vspace{2mm}
@@ -92,28 +105,121 @@ Vom 15.07.2008 bis 31.07.2008 sind es 16 Tage in Kontenklasse B, vom 01.08.2008 
 
 \begin{equation*}
   Punkte = \left(\frac{16}{30} * 0,75 * 1000,0\right) + \left(\frac{5}{30} * 0,5 * 1000,0\right) = 400,0 + 83,33 = 483,33
-\end{equation*}
+\end{equation*} \\
+
+Des Weiteren soll das Vorgehen bei der Implementierung einer Klasse betrachtet werden, die alle Anforderungen an die Punkteberechnung erfüllt. Zunächst wird hierfür die bestehende Umsetzung betrachtet, Probleme aufgezeigt und danach eine Lösung erarbeitet und umgesetzt.
 
 \newpage
 
-
-
 \section{Analyse der alten Implementierung}
-Redundanz. 
-Keine Tests.
+Bei einer genauen Betrachtung der alten Implementierung fällt auf, dass die Punkteberechnung an jeder notwendigen Stelle separat und teilweise auf unterschiedliche Weise umgesetzt ist. Das führt dazu, dass das Programm fehleranfällig und sehr schwer wartbar ist. Falls ein Fehler gefunden wird, muss dieser an vielen verschiedenen Stellen separat behoben werden. Außerdem gibt es bei einer redundanten Implementierung keine Möglichkeit Modul-Tests einzusetzen, da kein einzelnes zu testendes Modul existiert, sondern viele verschiedene. \\
 
-Dokumentation der redundanten Stellen mit Dateinamen.
-Wurden wirklich alle Stellen gefunden?
+Gerade bei Programmteilen, die essentiell für die Geschäftslogik sind, ist es unabdingbar Modul-Tests für die Verifikation der fachlichen Korrektheit einzusetzen. Diese bieten die Sicherheit, dass zum Beispiel die Ergebnisse einer Berechnung stimmen und können nach jeder Änderung am betreffenden Modul ausgeführt werden. So fallen Unstimmigkeiten dem Programmierer sofort auf und können behoben werden. \\ 
 
-\subsection{Anforderungen}
-Parameter, Rundung
+Die Stellen, an denen eine Nummerierung statt gefunden hat sind in Tabelle \ref{redundant} aufgelistet. Alle Dateinamen sind relativ zum Wurzelordner der Rails-Anwendung. Ein Controller-Test, der die berechneten Werte, die an die Oberfläche übergeben werden, überprüft, existiert bereits in der Datei 
+\newline \verb+spec/controllers/DarlehensverlaufController_spec.rb+.
 
-\subsection{Realisierung}
-Klasse Punkteberechnung.
-Dokumentation und detaillierte Erklärung der Methoden mit Listings. 
-Dokumentation und detaillierte Erklärung der Testfälle.
+\begin{table}
+  \begin{center}
+    \begin{tabular}{|l|r|}
+      \hline
+      \textbf{Dateiname} & \textbf{Zeile}\\
+      \hline
+      controllers/darlehensverlauf\_controller.rb & 80\\
+      \hline
+      controllers/darlehensverlauf\_controller.rb & 99\\
+      \hline
+      controllers/darlehensverlauf\_controller.rb & 137\\
+      \hline
+      controllers/darlehensverlauf\_controller.rb & 167\\
+      \hline
+      controllers/darlehensvertrag\_controller.rb & ab 104\\
+      \hline
+      controllers/webimport\_controller.rb & 264\\
+      \hline
+      spec/controllers/DarlehensverlaufController\_spec.rb & ab 36\\
+      \hline
+    \end{tabular}
+    \caption{Redundante Stellen im Quelltext}
+    \label{redundant}
+  \end{center}
+\end{table}
+\vspace{2mm}
+
+\section{Anforderungen}
+Aus der Analyse der alten Implementierung ergeben sich folgende Anforderungen.
+
+\subsection{Zentrale Punkteberechnung}
+Mit Hilfe der Implementierung einer zentralen Klasse, die alle benötigten Methoden zur Verfügung stellt um die Punkteberechnung durchzuführen, sollen die vielen redundanten Berechnungen durch eine einheitliche ersetzt werden. Dazu ist lediglich eine nach außen sichtbare Funktion von Nöten, die die Berechnung so durchführt, dass sie der vorher beschriebenen Formel entspricht. Der benutzer der Methode soll keine eigenen Datenbankabfragen durchführen müssen. Dazu sind folgende Parameter notwendig:
+
+\begin{itemize}
+  \item Das \emph{Startdatum} für die zu berechnende Zeitspanne
+  \item Das \emph{Enddatum} für die zu berechnende Zeitspanne
+  \item Der \emph{Währungs-Betrag} (Saldo) für die zu berechnende Zeitspanne
+  \item Die \emph{Kontonummer} für das betroffene Konto. Sie wird benötigt, um den Kontenklassenverlauf für die betroffene Zeitspanne aus der Datenbank zu ermitteln
+  \item Ein boolscher Wert, der bestimmt, ob das Ergebnis \emph{gerundet} werden soll, oder nicht. Standardmäßig soll keine Rundung erfolgen
+\end{itemize}
+
+\subsection{Spezifikation der Testfälle}
+Außer der eigentlichen Berechnung soll ein Modul-Test implementiert werden, der die korrekte fachliche Umsetzung der Berechnung sicherstellt. Dabei müssen auch eventuelle Hilfsfunktionen getestet werden. So ergeben sich folgende Testfälle:
+
+\begin{itemize}
+  \item Berechnung der Punkte für einen gegebenen Zeitraum, Währungs-Betrag und Kontonummer
+  \item Berechnung der Punkte für einen gegebenen Zeitraum, Währungs-Betrag und Kontonummer ohne, dass gerundet werden soll
+  \item Ermittlung der im Zeitraum betroffenen Kontenklassen
+  \item Ermittlung der Anzahl von Tagen in einer Kontenklasse
+  \item Berechnung des Faktors für eine Kontenklasse
+  \item Berechnung der Anzahl von Tagen zwischen zwei Daten
+  \item Berechnung der Anzahl von Tagen zwischen zwei Daten in einem Schaltjahr  
+\end{itemize}
+
+\section{Realisierung}
+
+Da nun die Testfälle spezifiziert sind, kann nach dem Test-Driven-Development Model mit der Realisierung des Refactorings begonnen werden. In diesem Abschnitt werden die entstandenen Methoden und dazugehörigen Tests genauer dokumentiert.
+
+\subsection{Die Klasse Punkteberechnung}
+
+Implementiert ist die Klasse Punkteberechnung in der Datei \newline\verb+lib/Punkte/Punkteberechnung.rb+. Die Methoden der Klasse werden im Folgenden erläutert.\\
+
+\begin{lstlisting}[language=Ruby]
+def self.calculate(date_begin, date_end, amount, account_number, round_down = true)
+\end{lstlisting}
+Die zentrale Methode der Punkteberechnung ist \verb+calculate+. Sie bekommt vom Aufrufer die bereits beschriebenen Parameter übergeben und leitet sie an die nächste Methode weiter. Eine Besonderheit ist hierbei \verb+round_down+. Dieser ist standardmäßig auf \verb+true+ gesetzt, was dazu führt, dass der Aufrufer diesen Wert nicht explizit angeben muss. Falls die Rundung nicht erwünscht ist kann hier \verb+false+ übergeben werden. \\
+
+\begin{lstlisting}[language=Ruby]
+def self.calc_score_new(date_begin, date_end, amount, account_number)
+\end{lstlisting}
+Diese Methode berechnet den eigentlichen Punktestand und gibt diesen ungerundet zurück. Dabei werden intern die Methoden \verb+get_affected_account_class_changes+, \verb+get_days_in_account_classes+ und \verb+get_factor_for_account_class+ genutzt, um die für die Berechnung  notwendigen Daten zu ermitteln. Dabei wird über die Map \newline\verb+days_in_account_classes+ iteriert und die jeweils berechneten Punkte summiert. Dies entspricht der Implementierung der vorher beschriebenen Formel zur Punkteberechnung. \\
+
+\begin{lstlisting}[language=Ruby]
+def self.get_factor_for_account_class(account_class) 
+\end{lstlisting}
+... \\
+
+\begin{lstlisting}[language=Ruby]
+def self.get_days_in_account_classes(account_class_changes, date_begin, date_end)
+\end{lstlisting}
+... \\
+
+\begin{lstlisting}[language=Ruby]
+def self.get_affected_account_class_changes(date_begin, date_end, account_number)
+\end{lstlisting}
+... \\
+
+\begin{lstlisting}[language=Ruby]
+def self.count_days_exact(first_time, second_time)
+\end{lstlisting}
+... \\
+
+\subsection{Die Modul-Tests}
+
+Dateiname!
+
+Dokumentation und detaillierte Erklärung der Testfälle. 
 
 \section{Offene Punkte}
-Darlehensvertrag.
+\subsection{Redundante Stellen}
+Problem: Wurden wirklich alle Stellen gefunden?
+\subsection{Darlehensvertrag} Dateiname!
 
 \end{document}
