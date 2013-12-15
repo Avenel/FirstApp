@@ -11,7 +11,7 @@
 \usepackage{listings}
 \usepackage[usenames,dvipsnames]{color}
 \lstloadlanguages{Ruby}
-\lstset{basicstyle=\ttfamily\color{black}, commentstyle = \ttfamily\color{grey}, keywordstyle=\ttfamily\color{Violet}, stringstyle=\color{blue}, breaklines=true}
+\lstset{basicstyle=\ttfamily\color{black}, commentstyle = \ttfamily\color{grey}, keywordstyle=\ttfamily\color{Violet}, stringstyle=\color{blue}, breaklines=true, showstringspaces=false}
 
 \begin{document}
 
@@ -194,28 +194,103 @@ Diese Methode berechnet den eigentlichen Punktestand und gibt diesen ungerundet 
 \begin{lstlisting}[language=Ruby]
 def self.get_factor_for_account_class(account_class) 
 \end{lstlisting}
-... \\
-
-\begin{lstlisting}[language=Ruby]
-def self.get_days_in_account_classes(account_class_changes, date_begin, date_end)
-\end{lstlisting}
-... \\
+Wie schon beschrieben, ist jeder Kontenklasse ein Faktor zugeordnet. Diese Methode bekommt als Parameter ein Objekt vom Typ Kontenklasse (KKL) übergeben, liest dort den Prozentsatz aus und teilt diesen durch 100. So kann der Faktor direkt in der Formel verrechnet werden. \\
 
 \begin{lstlisting}[language=Ruby]
 def self.get_affected_account_class_changes(date_begin, date_end, account_number)
 \end{lstlisting}
-... \\
+Laut den Anforderungen soll es nicht nötig sein, dass der Aufrufer der Punkteberechnung auf die Datenbank zugreift. Diese Aufgabe übernimmt diese Methode. Sie ermittelt alle Kontenklassenwechsel zwischen dem gegebenen Start- und Enddatum und gibt diese zurück. \\
 
 \begin{lstlisting}[language=Ruby]
 def self.count_days_exact(first_time, second_time)
 \end{lstlisting}
-... \\
+Hier werden die Tage gezählt, die zwischen dem gegebenen Startdatum \verb+first_time+ und dem Enddatum \verb+second_time+ liegen. Schaltjahre werden berücksichtigt.\\
+
+\begin{lstlisting}[language=Ruby]
+def self.get_days_in_account_classes(account_class_changes, date_begin, date_end)
+\end{lstlisting}
+Diese Methode ermittelt die Anzahl der Tage, die im gegebenen Zeitraum in einer Kontenklasse verbracht wurden. Als Datenstruktur wurde eine Map (in Ruby als \verb+Hash+ bezeichnet) gewählt. Diese würde für das vorherige Beispiel wie in Tabelle \ref{exkklv} aussehen. \\
+
+\begin{table}
+  \begin{center}
+    \begin{tabular}{|l|r|r|}
+      \hline
+      \textbf{Kontenklasse} & \textbf{Tage}\\
+      \hline
+      B & 16\\
+      \hline
+      C & 5\\
+      \hline
+    \end{tabular}
+    \caption{Kontenklassenverlauf wie ihn die beschriebene Methode liefert}
+    \label{exkklv}
+  \end{center}
+\end{table}
+\vspace{2mm}
 
 \subsection{Die Modul-Tests}
 
-Dateiname!
+Die Testfälle sind alle in der Datei \verb+spec/lib/Punkte/Punkteberechnung_spec.rb+ implementiert und sollen im Folgenden genauer erläutert werden. Da sich die Testfälle für unterschiedliche Parameter wiederholen, soll hier immer nur ein Beispiel pro Testfall, wie in der Spezifikation festgelegt, beschrieben werden. \\
 
-Dokumentation und detaillierte Erklärung der Testfälle. 
+\subsubsection{Testfall 1}
+Berechnung der Punkte für einen gegebenen Zeitraum, Währungs-Betrag und Kontonummer.
+\begin{lstlisting}[language=Ruby]
+it "calculates a score of 483" do
+  date_begin = "2008-07-15".to_time
+  date_end = "2008-08-05".to_time
+  amount = 1000
+  account_number = 70013
+
+  score = Punkteberechnung.calculate(date_begin, date_end, amount, account_number)
+  
+  expect(score).to eq 483
+end
+\end{lstlisting}
+Hier werden zunächst alle notwendigen Parameter vorbereitet. Danach wird die Punkteberechnung aufgerufen und anschließend das tatsächliche Ergebnis mit dem erwarteten Wert verglichen.
+
+\subsubsection{Testfall 2}
+Berechnung der Punkte für einen gegebenen Zeitraum, Währungs-Betrag und Kontonummer ohne, dass gerundet werden soll.
+\begin{lstlisting}[language=Ruby]
+it "works for exact calculation without rounding"
+\end{lstlisting}
+Hierbei wird getestet ob die Berechnung auch funktioniert, wenn nicht gerundet wird. Dabei ist das vorgehen analog zu Testfall 1. Lediglich der Parameter \verb+round_down+ wird auf \verb+false+ gesetzt und das erwartete Ergebnis entspricht einer Fließkommazahl.
+
+\subsubsection{Testfall 3}
+Ermittlung der im Zeitraum betroffenen Kontenklassen.
+\begin{lstlisting}[language=Ruby]
+it "returns B and C as affected account classes"
+\end{lstlisting}
+Dieser Test prüft, ob die korrekten Kontenklassen für einen gegebenen Zeitraum aus der Datenbank ausgelesen werden. Dabei werden die Parameter aus dem Beispiel verwendet. Dann wird die Methode \verb+get_affected_account_class_changes+ aufgerufen. Das Ergebnis muss den Kontenklassen B und C entsprechen, die auch im Beispiel betroffen sind.
+
+\subsubsection{Testfall 4}
+Ermittlung der Anzahl von Tagen in einer Kontenklasse.
+\begin{lstlisting}[language=Ruby]
+it "returns 5 days for class C"
+\end{lstlisting}
+...
+
+\subsubsection{Testfall 5}
+Berechnung des Faktors für eine Kontenklasse.
+\begin{lstlisting}[language=Ruby]
+it "calculates the factor 1.0 for class A"
+\end{lstlisting}
+...
+
+\subsubsection{Testfall 6}
+Berechnung der Anzahl von Tagen zwischen zwei Daten.
+\begin{lstlisting}[language=Ruby]
+it "returns 17 days"
+\end{lstlisting}
+...
+
+\subsubsection{Testfall 7}
+Berechnung der Anzahl von Tagen zwischen zwei Daten in einem Schaltjahr.
+\begin{lstlisting}[language=Ruby]
+it "returns 366 days because 2000 was a leapyear"
+\end{lstlisting}
+...
+
+\newpage
 
 \section{Offene Punkte}
 \subsection{Redundante Stellen}
