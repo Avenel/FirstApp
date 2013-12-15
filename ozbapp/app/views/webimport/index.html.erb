@@ -60,6 +60,46 @@
 	</div>
 <% end %>
 
+<% if !@failed_records.blank? %>
+	<div class="alert alert-error">
+		<button class="close" data-dismiss="alert">&times;</button>
+		<h4>Fehlerhafte Einträge:</h4>
+		<br />
+		<table class="table table-condensed" width="100%">
+			<thead>
+				<tr>
+					<th class="header">Belegdatum</th>
+					<th class="header">Buchungsdatum</th>
+					<th class="header">BBK</th>
+					<th class="header">Bnr.</th>
+					<th class="header">Buchungstext</th>
+					<th class="header">Buchungsbetrag</th>
+					<th class="header">Sollkonto</th>
+					<th class="header">Habenkonto</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @failed_records.each do |record| %>
+		         <tr>
+		           <td class="zentriert"><%= record[0].to_s %></td>
+		           <td class="zentriert"><%= record[1].to_s %></td>
+		           <td class="zentriert"><%= record[2] %></td>
+		           <td class="zentriert"><%= record[3] %></td>
+		           <td class="zentriert"><%= record[4] %></td>
+		           <td class="zentriert"><%= record[5] %></td>
+		           <td class="zentriert"><%= record[6] %></td>
+		           <td class="zentriert"><%= record[7] %></td>
+		         <tr>
+				<% end %>
+			</tbody>
+		</table>
+		<ul>
+			<li>(BBK) Belegbuchungskreis </li>
+			<li>(Bnr.) Belegnummer</li>
+		</ul>
+	</div>
+<% end %>
+
 <div class="alert alert-info">
 	<ol>
 		<li>Wählen Sie zunächst eine CSV-Datei auf Ihrem Computer aus.</li>

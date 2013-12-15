@@ -12,12 +12,12 @@ class WebimportController < ApplicationController
   def initialize
     super
     
-    @error            = ""
-    @notice           = ""
-    @imported_records = 0
-    @deleted_recods   = 0
-    @info             = Array.new
-    @collect_konten   = Array.new
+    @error              = ""
+    @notice             = ""
+    @imported_records   = 0
+    @info               = Array.new
+    @collected_records  = Array.new
+    @failed_records     = Array.new
   end
 
   def index
@@ -48,46 +48,18 @@ class WebimportController < ApplicationController
     begin 
       buchung.save
       @info << buchung
-      @collect_konten << buchung.KtoNr
+      @collected_records << buchung.KtoNr
 
       if count.nil? 
        @imported_records += 1
       end
 
     rescue Exception => e
+      @failed_records << buchung
       @error += "Etwas ist schiefgelaufen.<br /><br />"
       @error += e.message + "<br /><br />"
     end 
   end
-
-  def deleteTransaction(transaction)
-    begin 
-    b = Buchung.find(
-      :all, 
-      :conditions => 
-      { 
-          :BnKreis    => transaction.getRecieptNrRegion, 
-          :BelegNr    => transaction.getRecieptNr, 
-          :Belegdatum => transaction.getRecieptDate, 
-          :KtoNr      => transaction.getDebitorAccount
-      }
-    )
-
-    b[0].destroy
-    @info << b[0]
-    @collect_konten << transaction.getDebitorAccount
-    @deleted_recods += 1
-
-    rescue Exception => e
-      @error += "Etwas ist schiefgelaufen:<br />"
-      if b.size > 0
-        @error += e.message + "<br /><br />"
-      else
-         @error += "Keinen Datensatz gefunden <br /><br />"
-      end
-    end 
-  end
-
 
   def getOriginalAccountNumber(loanNumber)
     return ZeKonto.find(
@@ -100,12 +72,10 @@ class WebimportController < ApplicationController
                       ).first.EEKtoNr
   end
 
-
   def debitTrasnaction(transaction, accountNumber = nil, count = nil)
    
     multipicator = 1.0 
-
-    #if no 
+    #if no accunt number supplyed
     if accountNumber.nil?
       accountNumber = transaction.getDebitorAccount
     end
@@ -133,7 +103,7 @@ class WebimportController < ApplicationController
       :Punkte       => 0
     )
 
-    self.saveTransaction(b, count)   
+    self.saveTransaction(b, count)  
   end
 
   def creaditTransaction(transaction, accountNumber = nil, count = nil)
@@ -142,23 +112,22 @@ class WebimportController < ApplicationController
     if accountNumber.nil?
       accountNumber = transaction.getCreditorAccount
     end
-
     b = Buchung.new(
-      :KtoNr        => accountNumber,
-      :BuchJahr     => transaction.getBookingYear,
-      :BnKreis      => transaction.getRecieptNrRegion,
-      :BelegNr      => transaction.getRecieptNr,
-      :Typ          => transaction.getType,
-      :BuchDatum    => transaction.getTransactionDate,
-      :Belegdatum   => transaction.getRecieptDate,
-      :Buchungstext => transaction.getText,
-      :Sollbetrag   => 0.0,
-      :Habenbetrag  => transaction.getAmount,
-      :SollKtoNr    => transaction.getDebitorAccount,
-      :HabenKtoNr   => transaction.getCreditorAccount,
-      :WSaldoAcc    => 0.0,
-      :PSaldoAcc    => 0,
-      :Punkte       => 0
+    :KtoNr        => accountNumber,
+    :BuchJahr     => transaction.getBookingYear,
+    :BnKreis      => transaction.getRecieptNrRegion,
+    :BelegNr      => transaction.getRecieptNr,
+    :Typ          => transaction.getType,
+    :BuchDatum    => transaction.getTransactionDate,
+    :Belegdatum   => transaction.getRecieptDate,
+    :Buchungstext => transaction.getText,
+    :Sollbetrag   => 0.0,
+    :Habenbetrag  => transaction.getAmount,
+    :SollKtoNr    => transaction.getDebitorAccount,
+    :HabenKtoNr   => transaction.getCreditorAccount,
+    :WSaldoAcc    => 0.0,
+    :PSaldoAcc    => 0,
+    :Punkte       => 0
     )
 
     self.saveTransaction(b, count)   
@@ -198,49 +167,46 @@ class WebimportController < ApplicationController
               
               # => Punkteüberweisung-Buchung
               if transaction.isPonitsTransaction && transaction.getCreditorAccount != 88888 && transaction.getDebitorAccount != 88888
-                #Soll Buchung
-                self.debitTrasnaction(transaction, transaction.getDebitorAccountFromText)
-                  
                 # Haben Buchung
                 self.creaditTransaction(transaction, transaction.getCreditorAccountFromText)
+                #Soll Buchung
+                self.debitTrasnaction(transaction, transaction.getDebitorAccountFromText)
                 next
               end
               
               # Konto-zu-Konto-Buchung
               if transaction.isCurrencyTransaction
                 # Eine Konto-zu-Konto-Buchung.Buchung wird in DB eingetragen.              
-                self.debitTrasnaction(transaction)
                 self.creaditTransaction(transaction, nil, true)
+                self.debitTrasnaction(transaction)
                 next
               end
             # => Gewöhnliche Buchung 
             # => Storno-Buchung
             else
-              if transaction.isStorno
-              # wenn Storno-Buchung lösche die entsprechende Buchung aus DB
-                deleteTransaction(transaction)
-                next
-              end
-
               # Eine gewöhnliche Buchung. Buchung wird in DB eingetragen.
               if transaction.getCreditAccountLenght == 5
                 self.creaditTransaction(transaction)
                 next
-
               elsif transaction.getDebitAccountLenght == 5
                 self.debitTrasnaction(transaction)
                 next
+
+              else
+                @failed_records << r
               end
             end
           end
         end
       end
       
+
+      ## Legacy code ##
       # berechnen der Saldo und Punktesaldo für Konten
-      if ( @collect_konten.size == 0 )
+      if ( @collected_records.size == 0 )
         @error += "Keine der zu importierenden Konten in der Datenbank eingetragen"
       else
-         @collect_konten.uniq.each do |ktoNr|
+         @collected_records.uniq.each do |ktoNr|
           b = Buchung.find(
             :all, 
             :conditions => { :KtoNr => ktoNr }, 
@@ -331,9 +297,6 @@ class WebimportController < ApplicationController
       
       @notice += "<br /><br />" + csv.number_records.to_s + " von " + csv.rows.size.to_s + " Datensätzen eingelesen."
       @notice += "<br />" + @imported_records.to_s + " Datensätze importiert."
-      if @deleted_recods > 0
-        @notice += "<br />" + @deleted_recods.to_s + " Datensätze strorniert."
-      end
     else
       @error = "Bitte geben Sie eine CSV-Datei an."
     end

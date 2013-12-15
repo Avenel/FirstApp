@@ -17,9 +17,8 @@ describe WebimportController do
  	 expect(wc.instance_variable_get(:@notice)).to eq ""
    expect(wc.instance_variable_get(:@error)).to eq ""
    expect(wc.instance_variable_get(:@imported_records)).to eq  0
-   expect(wc.instance_variable_get(:@deleted_recods)).to eq  0
    expect(wc.instance_variable_get(:@info)).to eq Array.new
- 	 expect(wc.instance_variable_get(:@collect_konten)).to eq Array.new
+ 	 expect(wc.instance_variable_get(:@collected_records)).to eq Array.new
   end
 
   it "gets the correct account number based on a given loannumber" do
