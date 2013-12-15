@@ -28,8 +28,7 @@ class SonderberechtigungController < ApplicationController
   
         @OZBPerson = OZBPerson.find(params[:mnr])
         @Person = Person.get(@OZBPerson.Mnr)
-       
-        
+
         
         # Keine Berechtigung dieser Art gefunden
         if    !Sonderberechtigung.find(:first, :conditions => {:Mnr =>params[:mnr], :Berechtigung => params[:berechtigung]}) &&
@@ -37,12 +36,13 @@ class SonderberechtigungController < ApplicationController
               ( !params[:email].blank? || !@Person.EMail.blank? ) then
           @bereitsVorhanden = false
 
+
           # Berechtigung erstellen und validieren
            
           if params[:email].blank? && !@Person.EMail.blank? then
-            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => @Person.EMail, :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
+            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => @Person.EMail, :Berechtigung => params[:berechtigung])
           else
-            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => params[:email], :Berechtigung => params[:berechtigung], :SachPnr => current_user.Mnr)
+            @new_Sonderberechtigung = Sonderberechtigung.new(:Mnr =>params[:mnr], :EMail => params[:email], :Berechtigung => params[:berechtigung])
           end
           
           #Fehler aufgetreten?
@@ -50,7 +50,7 @@ class SonderberechtigungController < ApplicationController
             @errors.push(@new_Sonderberechtigung.errors)
           end
           
-          if params[:berechtigung] = 'IT' then
+          if params[:berechtigung] == 'IT' then
             @alle_Sonderberechtigungen = Sonderberechtigung.find(:all, :conditions => {:Mnr => params[:mnr]})
             
             @alle_Sonderberechtigungen.each do |sb|
@@ -75,7 +75,7 @@ class SonderberechtigungController < ApplicationController
     # Bei Fehlern Daten retten
     rescue
       @Berechtigungen = @@Berechtigungen2.sort
-      @bereitsVorhanden = false ? flash[:error] = "Berechtigung konnte nicht hinzugefügt werden." : flash[:notice] = "Berechtigung bereits vorhanden."
+      @bereitsVorhanden == false ? flash[:error] = "Berechtigung konnte nicht hinzugefügt werden." : flash[:notice] = "Berechtigung bereits vorhanden."
       session[:return_to] = request.referer
       redirect_to session[:return_to]
     end        
@@ -133,6 +133,7 @@ class SonderberechtigungController < ApplicationController
     @nil = nil
     @AktiveOzbPersonen = OZBPerson.find(:all, :conditions => {:Austrittsdatum => @nil})
     @DistinctPersonen ||= Array.new
+    logger.debug @DistinctPersonen.empty?
     @AktiveOzbPersonen.each do |ozbperson|
       @Person = Person.get(ozbperson.Mnr)
       unless @DistinctPersonen.include?(@Person)

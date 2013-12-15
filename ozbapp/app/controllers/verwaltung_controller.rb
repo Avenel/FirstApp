@@ -3,7 +3,7 @@
 class VerwaltungController < ApplicationController
 #  protect_from_forgery
   before_filter :authenticate_user!
-  load_and_authorize_resource :class => false, :only => [:newOZBPerson, :createOZBPerson, :listOZBPersonen, :detailsOZBPerson, :editPersonaldaten, :updatePersonaldaten, :editKontaktdaten, :updateKontaktdaten, :editRolle, :updateRolle, :editBerechtigungen, :createBerechtigung, :deleteBerechtigung]
+  authorize_resource :class => false, :only => [:newOZBPerson, :createOZBPerson, :listOZBPersonen, :detailsOZBPerson, :editPersonaldaten, :updatePersonaldaten, :editKontaktdaten, :updateKontaktdaten, :editRolle, :updateRolle, :editBerechtigungen, :createBerechtigung, :deleteBerechtigung]
 
   # Zugriff der Methoden aus der View. NU
   helper_method :sort_column, :sort_direction, :rollen_bezeichnung
