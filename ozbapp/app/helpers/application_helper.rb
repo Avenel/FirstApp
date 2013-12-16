@@ -6,19 +6,6 @@ module ApplicationHelper
     direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
     link_to title, :sort => column, :direction => direction
   end
-=begin
-  def resource_name
-    :OZBPerson
-  end
-
-  def resource
-    @resource = current_user || OZBPerson.new
-  end
-
-  def devise_mapping
-    @devise_mapping ||= Devise.mappings[:OZBPerson]
-  end
-=end
   
   def devise_error_messages!
     return "" if resource.errors.empty?

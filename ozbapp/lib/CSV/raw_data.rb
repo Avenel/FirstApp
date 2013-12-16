@@ -48,8 +48,6 @@ class RawData
     return @Habenkonto
   end
 
-
-
   def getBookingYear
      return  @Buchungsdatum[0..3].to_i
   end
@@ -92,7 +90,6 @@ class RawData
 
 
 
-
   def isPointsLendTransaction
     return @Habenkonto == 88888 && @Sollkonto != 88888 && @Sollkonto.to_s[0] == "8"
   end  
@@ -107,9 +104,5 @@ class RawData
 
   def isCurrencyTransaction
     return @Habenkonto.to_s[0] != "8" && @Sollkonto.to_s[0] != "8"
-  end
-
-  def isStorno
-    return @Buchungstext.split(" ")[0].split("-")[0].index("<Storno>") != nil
   end
 end

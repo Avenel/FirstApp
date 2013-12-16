@@ -256,28 +256,4 @@ describe RawData do
 			end
 		end
 	end
-
-
-	context "isStorno" do
-		context "is valid" do
-			it "with valid currency transaction Buchungstext" do
-				@rd.Buchungstext = "<Storno>0140-0005 Überweisung abbruch"
-				expect(@rd.isStorno).to eq true
-			end			
-			it "with valid points transaction Buchungstext" do
-				@rd.Sollkonto = 81234
-				@rd.Habenkonto = 84321
-				@rd.Buchungstext = "<Storno>0140-0120 Überweisungs abbruch"
-				expect(@rd.isStorno).to eq true
-			end			
-		end
-
-		context "is invalid" do
-		  it "with no proper storno flag in the Buchungstext" do
-		    expect(@rd.isStorno).to eq false
-		  end
-		end
-	end
-
-
 end 

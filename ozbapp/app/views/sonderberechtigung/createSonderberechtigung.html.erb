@@ -60,11 +60,15 @@
 <script>
 	$(function() {			
 		var names = [	
-			<% @DistinctPersonen.each do |person| %>
-			{
-				value: "<%= person.Pnr.to_s %>",
-				label: "<%= person.Name.to_s + ', ' + person.Vorname.to_s %>"
-			},
+			<% if !@DistinctPersonen.empty? %>
+				<% @DistinctPersonen.each do |person| %>
+				{
+					<% if person != nil %>
+					value: "<%= person.Pnr.to_s %>",
+					label: "<%= person.Name.to_s + ', ' + person.Vorname.to_s %>"
+					<% end %>
+				},
+				<% end %>
 			<% end %>
 		];
 				
