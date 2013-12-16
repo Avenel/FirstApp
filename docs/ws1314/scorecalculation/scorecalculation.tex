@@ -265,32 +265,39 @@ Dieser Test prüft, ob die korrekten Kontenklassen für einen gegebenen Zeitraum
 \subsubsection{Testfall 4}
 Ermittlung der Anzahl von Tagen in einer Kontenklasse.
 \begin{lstlisting}[language=Ruby]
-it "returns 5 days for class C"
+it "returns 5 days for class C" do
+  date_begin = "2008-07-15".to_time
+  date_end = "2008-08-05".to_time
+  account_number = 70013
+  account_classes = Punkteberechnung.get_affected_account_class_changes(date_begin, date_end, account_number)
+  
+  days_in_account_classes = Punkteberechnung.get_days_in_account_classes(account_classes, date_begin, date_end)
+  
+  expect(days_in_account_classes["C"]).to eq 5
+end 
 \end{lstlisting}
-...
+Hier wird sichergestellt, dass die korrekte Anzahl an Tagen in einer Kontenklasse berechnet wird. Dazu werden zunächst Start- und Enddatum sowie die Kontonummer wie im Beispiel vorbereitet. Danach wird die zu testende Methode \newline\verb+get_affected_account_class_changes+ mit den gegebenen Parametern aufgerufen. Das Ergebnis steht nun im Hash am Index C und wird mit dem erwarteten Wert fünf verglichen.
 
 \subsubsection{Testfall 5}
 Berechnung des Faktors für eine Kontenklasse.
 \begin{lstlisting}[language=Ruby]
 it "calculates the factor 1.0 for class A"
 \end{lstlisting}
-...
+Dieser Testfall existiert mehrfach, einmal für jede Kontenklasse. So wird zum einen sichergestellt, dass die korrekten Prozentsätze in der Datenbank abgelegt sind und, dass die Faktoren für die verschiedenen Klassen korrekt berechnet werden. Diese Tests sollten immer erfolgreich ausgeführt werden können, da die Kontenklassen nur über Eingriffe in die Datenbank geändert werden können. Dies darf nicht der Fall sein. 
 
 \subsubsection{Testfall 6}
 Berechnung der Anzahl von Tagen zwischen zwei Daten.
 \begin{lstlisting}[language=Ruby]
 it "returns 17 days"
 \end{lstlisting}
-...
+Die letzten beiden Testfälle überprüfen die korrekte Funktionalität der Zeitberechnung. Sie wird größtenteils vom Framework zur Verfügung gestellt. Jedoch muss abgesichert sein, dass die Zählung wie gewünscht funktioniert.
 
 \subsubsection{Testfall 7}
 Berechnung der Anzahl von Tagen zwischen zwei Daten in einem Schaltjahr.
 \begin{lstlisting}[language=Ruby]
 it "returns 366 days because 2000 was a leapyear"
 \end{lstlisting}
-...
-
-\newpage
+Ein zusätlicher Test berechnet die Länge eines Schaltjahres, um sicher zu gehen, dass auch solche Ausnahmen wie gewünscht funktionieren.
 
 \section{Offene Punkte}
 \subsection{Redundante Stellen}
