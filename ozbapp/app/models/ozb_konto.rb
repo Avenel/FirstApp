@@ -19,7 +19,7 @@ class OzbKonto < ActiveRecord::Base
   # attributes
   attr_accessible :KtoNr, :GueltigVon, :GueltigBis, :Mnr, :KtoEinrDatum, :WaehrungID, :WSaldo, 
                   :PSaldo, :SaldoDatum, :SachPnr, :EeKonto_attributes, 
-                  :ZeKonto_attributes, :kkl_verlauf_attributes
+                  :ZeKonto_attributes, :KklVerlauf_attributes
   
   # column names
   HUMANIZED_ATTRIBUTES = {

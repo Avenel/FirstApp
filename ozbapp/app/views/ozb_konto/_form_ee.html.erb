@@ -10,7 +10,7 @@
 			<hr />
 		</header>
 
-		<%= o.fields_for :ee_konto do |ee| %>
+		<%= o.fields_for :EeKonto do |ee| %>
 			<table class="table-hover" cellpadding="3" cellspacing="">
 				<tr>
 					<th><label>Dispo-Limit*:</label></th>
@@ -48,11 +48,11 @@
 
 				# Falls manuell eine neue Bank eingegeben wurde 
 				if !params[:ozb_konto].nil?
-					blz       = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ]
-					bic       = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BIC]
-					bankname  = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BankName]
-					bankktonr = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:BankKtoNr]
-					iban      = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:IBAN]
+					blz       = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ]
+					bic       = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BIC]
+					bankname  = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BankName]
+					bankktonr = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:BankKtoNr]
+					iban      = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:IBAN]
 				# Bankverbindung und Bank besteht bereits
 				elsif !@bankverbindung.nil? && !@bank.nil?
 					blz       = @bank.BLZ

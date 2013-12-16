@@ -40,16 +40,30 @@ class OzbKontoController < ApplicationController
   end
 
   # done
-  def create
-    @ozb_konto         = OzbKonto.new(params[:ozb_konto])
+  def create    
+    @ozb_konto         = OzbKonto.new
     @ozb_konto.SachPnr = current_user.Mnr
+    @ozb_konto.Mnr    = params[:ozb_konto][:Mnr]
+    @ozb_konto.KtoNr = params[:ozb_konto][:KtoNr]
+    @ozb_konto.KtoEinrDatum = params[:ozb_konto][:KtoEinrDatum]
+    @ozb_konto.KklVerlauf_attributes = params[:ozb_konto][:KklVerlauf_attributes]
+
+    if params[:kontotyp] == "ZE"    
+      @ozb_konto.ZeKonto_attributes = params[:ozb_konto][:ZeKonto_attributes]
+    end
+
+    if params[:kontotyp] == "EE"    
+      @ozb_konto.EeKonto_attributes = params[:ozb_konto][:EeKonto_attributes]
+    end
+    
+    @ozb_konto.Waehrung = Waehrung.find(params[:ozb_konto][:WaehrungID])
 
     @bankverbindung = Bankverbindung.new
     @bank           = Bank.new
     result          = nil
 
     if params[:kontotyp] == "EE"    
-      @ozb_konto.ee_konto.Bankverbindung.SachPnr = current_user.Mnr
+      @ozb_konto.EeKonto.Bankverbindung.SachPnr = current_user.Mnr
 
       if (!(result = Bankverbindung.find(:first, :conditions => { :Pnr => params[:Mnr] }, :order => "GueltigVon DESC")).nil?)
         @bankverbindung = result
@@ -61,11 +75,11 @@ class OzbKontoController < ApplicationController
     end
 
     if params[:kontotyp] == "ZE"    
-      @ozb_konto.ze_konto.SachPnr = current_user.Mnr
+      @ozb_konto.ZeKonto.SachPnr = current_user.Mnr
     end
 
     if params[:kontotyp] == "EE"    
-      @ozb_konto.ee_konto.Bankverbindung.BLZ = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ]
+      @ozb_konto.EeKonto.Bankverbindung.BLZ = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ]
     end
 
     if (@ozb_konto.save)
@@ -90,7 +104,7 @@ class OzbKontoController < ApplicationController
 
     if params[:kontotyp] == "EE"    
       @eekonto = EeKonto.find_by_KtoNr_and_GueltigBis(params[:KtoNr], "9999-12-31 23:59:59")
-      @ozb_konto.ee_konto.Bankverbindung.SachPnr = current_user.Mnr
+      @ozb_konto.EeKonto.Bankverbindung.SachPnr = current_user.Mnr
 
       if (!(result = Bankverbindung.find_by_Pnr_and_ID_and_GueltigBis(params[:Mnr], @eekonto.BankID, "9999-12-31 23:59:59")).nil?)
         @bankverbindung = result
@@ -124,26 +138,26 @@ class OzbKontoController < ApplicationController
         # EE- or ZE-Konto?
         if params[:kontotyp] == "EE"
           # Bank
-          bank = Bank.find_by_BLZ(params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ])
+          bank = Bank.find_by_BLZ(params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ])
           
           if (bank.nil?)
             # New Bank
             bank = Bank.new(
-              :BLZ      => params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ],
-              :BIC      => params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BIC],
-              :BankName => params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BankName]
+              :BLZ      => params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BLZ],
+              :BIC      => params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BIC],
+              :BankName => params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BankName]
             )
           else
             # Edit Bank
-            bank.BIC      = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BIC]
-            bank.BankName = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BankName]
+            bank.BIC      = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BIC]
+            bank.BankName = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:Bank_attributes][:BankName]
           end
           bank.save!
           
           # Bankverbindung NU
           bankverbindung           = @ozb_konto.EeKonto.Bankverbindung
-          bankverbindung.BankKtoNr = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:BankKtoNr]
-          bankverbindung.IBAN      = params[:ozb_konto][:ee_konto_attributes][:Bankverbindung_attributes][:IBAN]
+          bankverbindung.BankKtoNr = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:BankKtoNr]
+          bankverbindung.IBAN      = params[:ozb_konto][:EeKonto_attributes][:Bankverbindung_attributes][:IBAN]
           bankverbindung.BLZ       = bank.BLZ
           bankverbindung.Pnr       = bankverbindung.Pnr
           bankverbindung.SachPnr   = current_user.Mnr 
@@ -151,7 +165,7 @@ class OzbKontoController < ApplicationController
           
           # EE-Konto NU
           ee             = @ozb_konto.EeKonto
-          ee.Kreditlimit = params[:ozb_konto][:ee_konto_attributes][:Kreditlimit]
+          ee.Kreditlimit = params[:ozb_konto][:EeKonto_attributes][:Kreditlimit]
           ee.SachPnr     = current_user.Mnr 
           ee.BankID      = bankverbindung.ID
           # ee.save!

@@ -33,9 +33,17 @@ $(function() {
 			</tr>
 			<tr>
 				<th style="text-align: left"><%= o.label :Waehrung %></th>
-				<td><%= o.text_field :Waehrung, :value => (o.object.Waehrung.empty? ? "STR" : o.object.Waehrung), :class => "span12" %></td>
+				<td><%= o.text_field :WaehrungID, :value => (o.object.Waehrung.nil? ? "STR" : o.object.Waehrung.Code), :class => "span12" %></td>
 			</tr>
 		
+		
+
+<!-- 			<tr>
+				<th style="text-align: left"><%= o.label :Waehrung %></th>
+				<td><%= o.collection_select :Waehrung, Waehrung.all, :Code, :Code, {:prompt => false, :selected => "STR"}, {:class => 'span12'}  %></td>
+			</tr> -->
+
+
 			<!--
 			<tr>
 				<th style="text-align: left"><%= o.label :SaldoDatum %></th>
@@ -43,10 +51,10 @@ $(function() {
 			</tr>
 			-->
 			
-			<%= o.fields_for :kkl_verlauf do |kkl| %>
+			<%= o.fields_for :KklVerlauf do |kkl| %>
 				<tr>
 					<th style="text-align: left"><%= kkl.label :KKL %></th>
-					<td><%= kkl.collection_select(:KKL, Kontenklasse.all, :KKL, :kkl_with_percent, { :selected => (o.object.kkl_verlauf.KKL) ? o.object.kkl_verlauf.KKL : "B" }, { :class => "span12" }) %></td>
+					<td><%= kkl.collection_select(:KKL, Kontenklasse.all, :KKL, :kkl_with_percent, { :selected => (o.object.KklVerlauf.KKL) ? o.object.KklVerlauf.KKL : "B" }, { :class => "span12" }) %></td>
 				</tr>
 				<tr>
 					<th style="text-align: left"><%= kkl.label :KKLAbDatum %></th>
