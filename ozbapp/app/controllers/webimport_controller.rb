@@ -199,9 +199,7 @@ class WebimportController < ApplicationController
           end
         end
       end
-      
 
-      ## Legacy code ##
       # berechnen der Saldo und Punktesaldo für Konten
       if ( @collected_records.size == 0 )
         @error += "Keine der zu importierenden Konten in der Datenbank eingetragen"
@@ -227,7 +225,7 @@ class WebimportController < ApplicationController
               saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
               
               if (second_time != first_time)
-                pkte_acc     = Punkteberechnung.calculate(first_time, second_time, last_saldo_acc, ktoNr)
+                pkte_acc     = Punkteberechnung.calculate(first_time, second_time, saldo_acc, ktoNr)
                 end_pkte_acc = end_pkte_acc + pkte_acc
               end
               
@@ -238,8 +236,9 @@ class WebimportController < ApplicationController
 
               b.each do |bu|
                 bu.WSaldoAcc = saldo_acc
-                bu.PSaldoAcc = pkte_acc
-                bu.Punkte    = end_pkte_acc
+                bu.PSaldoAcc = end_pkte_acc
+                bu.Punkte    = pkte_acc
+
 
                 begin
                    bu.save
@@ -257,6 +256,7 @@ class WebimportController < ApplicationController
             
             if (buchung.Typ == "p")
               end_pkte_acc = end_pkte_acc + buchung.Sollbetrag + buchung.Habenbetrag
+              punkte       = buchung.Sollbetrag + buchung.Habenbetrag
               
               b = Buchung.find(
                 :all, 
@@ -265,8 +265,8 @@ class WebimportController < ApplicationController
 
               b.each do |bu|
                 bu.WSaldoAcc = saldo_acc
-                bu.PSaldoAcc = 0.00
-                bu.Punkte    = end_pkte_acc
+                bu.PSaldoAcc = end_pkte_acc
+                bu.Punkte    = punkte
 
                 begin
                    bu.save

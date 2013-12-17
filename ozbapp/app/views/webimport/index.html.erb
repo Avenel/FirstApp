@@ -73,23 +73,35 @@
 					<th class="header">BBK</th>
 					<th class="header">Bnr.</th>
 					<th class="header">Buchungstext</th>
-					<th class="header">Buchungsbetrag</th>
+					<th class="header">Buchungsbetrag / Kontonummer</th>
 					<th class="header">Sollkonto</th>
 					<th class="header">Habenkonto</th>
 				</tr>
 			</thead>
+
 			<tbody>
 				<% @failed_records.each do |record| %>
-		         <tr>
-		           <td class="zentriert"><%= record[0].to_s %></td>
-		           <td class="zentriert"><%= record[1].to_s %></td>
-		           <td class="zentriert"><%= record[2] %></td>
-		           <td class="zentriert"><%= record[3] %></td>
-		           <td class="zentriert"><%= record[4] %></td>
-		           <td class="zentriert"><%= record[5] %></td>
-		           <td class="zentriert"><%= record[6] %></td>
-		           <td class="zentriert"><%= record[7] %></td>
-		         <tr>
+			         <tr>
+					<% if record.instance_of?(Buchung) %>
+			           <td class="zentriert"><%= record.Belegdatum.to_s %></td>
+			           <td class="zentriert"><%= record.BuchDatum.to_s %></td>
+			           <td class="zentriert"><%= record.BnKreis.to_s %></td>
+			           <td class="zentriert"><%= record.BelegNr.to_s %></td>
+			           <td class=""><%= record.Buchungstext.to_s %></td>
+			           <td class="zentriert"><%= record.KtoNr.to_s %></td>
+			           <td class="zentriert"><%= record.Sollbetrag.to_s %></td>
+			           <td class="zentriert"><%= record.Habenbetrag.to_s %></td>
+					<% else %>
+			           <td class="zentriert"><%= record[0].to_s %></td>
+			           <td class="zentriert"><%= record[1].to_s %></td>
+			           <td class="zentriert"><%= record[2] %></td>
+			           <td class="zentriert"><%= record[3] %></td>
+			           <td class="zentriert"><%= record[4] %></td>
+			           <td class="zentriert"><%= record[5] %></td>
+			           <td class="zentriert"><%= record[6] %></td>
+			           <td class="zentriert"><%= record[7] %></td>
+					<% end %>
+			         <tr>
 				<% end %>
 			</tbody>
 		</table>
