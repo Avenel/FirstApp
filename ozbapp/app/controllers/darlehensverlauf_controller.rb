@@ -65,9 +65,6 @@ class DarlehensverlaufController < ApplicationController
       # Die (Währungs) Buchung vor der ersten Buchung in Buchungen finden
       @vorherigeBuchung = Buchung.where("KtoNr = ? AND Belegdatum < ? AND Typ = 'w'", params[:KtoNr], @vonDatum.to_date).order("Belegdatum DESC, Punkte ASC").limit(1).first
 
-      # Gueltige KKL
-      kkl = getKKL(params[:KtoNr])
-
       # Prüfen ob es sich um ein wiederverwendetes ZE Konto handelt
       wurdeWiederverwendet = checkReuse(params[:KtoNr], @vonDatum.to_date, params[:EEoZEkonto])
 
@@ -76,7 +73,7 @@ class DarlehensverlaufController < ApplicationController
       # => wurde wiederverwendet: Finde Zeitpunkt heraus und berechne ab diesem Zeitpunkt die Punkteanzahl für den Tagessaldo. Dieser hat auch Einfluss auf den ersten weiteren PSaldoAcc
       if !wurdeWiederverwendet then 
         if !@vorherigeBuchung.nil? then
-          # Punkte für den Tagessaldo der ersten Buchung berechnen = ((DiffTage * WSaldoAcc) / 30) * KKL + Punkte vorherigeBuchung
+          
           punkte = Punkteberechnung.calculate(@vorherigeBuchung.Belegdatum.to_time, @vonDatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr])
           @tagessaldoPunkte = punkte + @vorherigeBuchung.PSaldoAcc
         else
@@ -92,7 +89,6 @@ class DarlehensverlaufController < ApplicationController
           buchungen = Buchung.where("ktoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], wurdeWiederverwendetAm.to_date, @vonDatum.to_date).order("Belegdatum DESC, Typ DESC, Punkte DESC")
           
           buchungen.each do |buchung|
-            # TODO: KKL hat sich zwischenzeitlich verändert
             kummuliertePSaldi += buchung.Punkte
           end
         end
@@ -193,33 +189,6 @@ class DarlehensverlaufController < ApplicationController
     new()
   end
   
-
-  # Liefert anhand einer gegebenen Kontonummer die richtige Kontoklasse zurueck.
-  def getKKL(ktoNr)
-    kklVerlauf = KklVerlauf.where("KtoNr = ?", ktoNr).order("KKLAbDatum DESC").limit(1).first
-
-    if kklVerlauf.nil? then 
-      return 0
-    end
-
-    kklVerlaufKlasse = kklVerlauf.KKL
-    case kklVerlaufKlasse
-      when "A"
-        return 1
-      when "B"
-        return 0.75
-      when "C"
-        return 0.50
-      when "D"
-        return 0.25
-      when "E"
-        return 0
-    end
-
-    return 0
-  end
-
-
   # Ein Konto wurde wiederverwendet falls:
   # => es ein ZE Konto ist
   # => es vor dem angegebenen Startzeitpunkt eine Buchung mit Punkte = 0 gegeben hat
