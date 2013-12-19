@@ -23,7 +23,7 @@
 	</li>
 	<% end %>	
 
-	<% if is_allowed(current_user, 1) %>
+	<% if is_allowed(current_user, 7) %>
     <li <% if getCurrentLocation == editRollen_link || getCurrentLocation == createSonderberechtigung_link %>class="active"<%end%>>
     	<%= link_to "Sonderberechtigungen", editRollen_link %>	
     </li>

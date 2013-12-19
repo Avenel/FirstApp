@@ -43,6 +43,10 @@ class Ability
         can [:editBerechtigungen, :createBerechtigung, :deleteBerechtigung], :verwaltung
     end
 
+    if is_allowed(user, 8)
+        can [:index], :webimport
+    end
+
     if is_allowed(user, 3)
         can [:newOZBPerson, :createOZBPerson, :editPersonaldaten, :updatePersonaldaten, :editKontaktdaten, :updateKontaktdaten, :editRolle, :updateRolle], :verwaltung
     end

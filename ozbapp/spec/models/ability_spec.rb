@@ -814,4 +814,54 @@ describe Ability do
     end
   end
 
+  # :webimport
+  describe ":webimport" do
+
+    # :index
+    describe "action :index" do
+
+      it "should show for auth it" do
+        user = FactoryGirl.create(:user_auth_it)
+        expect(user).to be_valid
+        ability = Ability.new(user)
+        expect(ability.can? :index, :webimport).to be_true
+      end
+
+      it "should not show for auth mv" do
+        user = FactoryGirl.create(:user_auth_mv)
+        expect(user).to be_valid
+        ability = Ability.new(user)
+        expect(ability.cannot? :index, :webimport).to be_true
+      end
+
+      it "should show for auth rw" do
+        user = FactoryGirl.create(:user_auth_rw)
+        expect(user).to be_valid
+        ability = Ability.new(user)
+        expect(ability.can? :index, :webimport).to be_true
+      end
+
+      it "should not show for auth ze" do
+        user = FactoryGirl.create(:user_auth_ze)
+        expect(user).to be_valid
+        ability = Ability.new(user)
+        expect(ability.cannot? :index, :webimport).to be_true
+      end
+
+      it "should not show for auth oea" do
+        user = FactoryGirl.create(:user_auth_oea)
+        expect(user).to be_valid
+        ability = Ability.new(user)
+        expect(ability.cannot? :index, :webimport).to be_true
+      end
+
+      it "should not show for no auth " do
+        user = FactoryGirl.create(:user)
+        expect(user).to be_valid
+        ability = Ability.new(user)
+        expect(ability.cannot? :index, :webimport).to be_true
+      end
+    end
+  end
+
 end

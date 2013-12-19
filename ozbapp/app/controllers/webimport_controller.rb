@@ -3,6 +3,7 @@
 class WebimportController < ApplicationController
 
   before_filter :authenticate_user!
+  authorize_resource :class => false, :only => [:index]
 
   require "Punkteberechnung"
   require "CSVImporter"

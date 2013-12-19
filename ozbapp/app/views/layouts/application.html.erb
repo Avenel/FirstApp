@@ -28,16 +28,20 @@
           <li><a href="#">Protokolle</a></li>
           <li><a href="#">o/ZBlick</a></li>
 
-          <% if is_allowed(current_user, 20) %>
+          <% if is_allowed(current_user, 1) %>
             <li <% if getCurrentLocation == "/Verwaltung/Mitglieder" %>class="active"<%end%>><a href="/Verwaltung/Mitglieder">Mitglieder</a></li>
+          <% end %>
+          <% if is_allowed(current_user, 20) || isUserAdmin(current_user) %>
             <li class="dropdown <% if getCurrentLocation.include? "Optionen" %>active<%end%>">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Weiteres <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li <% if getCurrentLocation == "/Verwaltung/Veranstaltungen" %>class="active"<%end%>><a href="/Verwaltung/Veranstaltungen">Veranstaltungen</a>
-                </li>
+                <% if is_allowed(current_user, 20) %>
+                  <li <% if getCurrentLocation == "/Verwaltung/Veranstaltungen" %>class="active"<%end%>><a href="/Verwaltung/Veranstaltungen">Veranstaltungen</a>
+                  </li>
+                <% end %>
                 <% if isUserAdmin(current_user) %>
-                <li <% if getCurrentLocation == "/Verwaltung/WebImport" %>class="active"<%end%>><a href="/Verwaltung/WebImport">WebImport</a></li>
-                <li <% if getCurrentLocation == "/Verwaltung/Darlehensvertrag" %>class="active"<%end%>><a href="/Verwaltung/Darlehensvertrag">Darlehensvertrag</a></li>
+                  <li <% if getCurrentLocation == "/Verwaltung/WebImport" %>class="active"<%end%>><a href="/Verwaltung/WebImport">WebImport</a></li>
+                  <li <% if getCurrentLocation == "/Verwaltung/Darlehensvertrag" %>class="active"<%end%>><a href="/Verwaltung/Darlehensvertrag">Darlehensvertrag</a></li>
                 <%end%>
               </ul>
             </li>

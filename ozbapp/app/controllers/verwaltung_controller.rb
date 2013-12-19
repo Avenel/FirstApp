@@ -38,7 +38,6 @@ class VerwaltungController < ApplicationController
     @new_Fax             = Telefon.new
     @new_Mobil           = Telefon.new
     @new_Adresse         = Adresse.new   
-    @new_Pnr             = Person.last.Pnr + 1
   end
 
   def createOZBPerson
@@ -433,12 +432,19 @@ class VerwaltungController < ApplicationController
 
   def updateKontaktdaten
     @errors = Array.new                                       
+    puts ">>>> DEBUGS Begin Transaction"
     begin    
      #Beginne Transaktion
       ActiveRecord::Base.transaction do   
-        @OZBPerson      = OZBPerson.find(params[:Mnr])
-        @Person         = Person.get(@OZBPerson.Mnr)
-        @Fullname       = @Person.Name + ", " + @Person.Vorname
+        @OZBPerson = OZBPerson.find(current_user.Mnr)
+        @Person    = Person.get(@OZBPerson.Mnr) 
+
+       # Email
+       # OZBPerson soll in zukunft keine email adresse mehr enthalten, da devise es ausgelagert wird -> login table 
+        # @OZBPerson.email   = params[:email]
+        @OZBPerson.SachPnr = current_user.Mnr
+        @Person.EMail      = params[:email]
+        @Person.SachPnr    = current_user.Mnr
 
        # Adresse         
         @Adresse = Adresse.get(@Person.Pnr)
@@ -451,7 +457,7 @@ class VerwaltungController < ApplicationController
           @Adresse.Vermerk = params[:vermerk]
           @Adresse.SachPnr = current_user.Mnr
         else
-          if params[:strasse].length > 0 || params[:hausnr].length > 0 || params[:plz].length > 0 || params[:ort].length > 0 || params[:vermerk] then
+          if params[:strasse].length > 0 || params[:hausnr].length > 0 || params[:plz].length > 0 || params[:ort].length > 0 || params[:vermerk].length then
             # create
             @Adresse = Adresse.new( 
               :Pnr     => @Person.Pnr, 
@@ -472,7 +478,7 @@ class VerwaltungController < ApplicationController
         else   
           @LfdNr = 1
         end
-
+        
         @Telefon = Telefon.find(:all, :conditions => {:Pnr => @Person.Pnr, :TelefonTyp => "tel"})
         if @Telefon[0] != nil && params[:telefon].empty?
             @Telefon[0].destroy
@@ -523,31 +529,38 @@ class VerwaltungController < ApplicationController
             )
         end
         
- 
-       # EMail
-        # @OZBPerson.email = params[:email]
-        @OZBPerson.SachPnr = current_user.Mnr
-        
-       # EMail bei OZBPerson speichern         
+        puts ">>>> DEBUGS save OZBPerson"
+       # Email bei OZBPerson speichern         
         #Fehler aufgetreten?
-        if !@OZBPerson.valid? then
-          @errors.push(@OZBPerson.errors)
-        end    
-        @OZBPerson.save!
-
-         
-       if @Person.EMail != params[:email] then
-        @Person.EMail   = params[:email]
-        @Person.SachPnr = current_user.Mnr
-       # EMail bei Person speichern       
-        #Fehler aufgetreten?
-        if !@Person.valid? then
-          @errors.push(@Person.errors)
+        begin
+          if !@OZBPerson.valid? then
+            @errors.push(@OZBPerson.errors)
+          end    
+          @OZBPerson.save!
+        rescue Exception => e
+          puts ">>>> DEBUG <<<<<<"
+          puts e.message
+          puts e.backtrace.join("\n")
+          @errors.push(e.message)
         end
-        @Person.save!        
-       end
-               
+         
+
+        puts ">>>> DEBUGS save Person"
+        # Email bei Person speichern       
+        #Fehler aufgetreten?
+        begin
+          if !@Person.valid? then
+            @errors.push(@Person.errors)
+          end
+          @Person.save!
+        rescue Exception => e
+          puts ">>>> DEBUG <<<<<<"
+          puts e.message
+          puts e.backtrace.join("\n")
+          @errors.push(e.message)
+        end
         
+        puts ">>>> DEBUGS save Adresse"
        # Adresse speichern
         if @Adresse != nil then
         #if params[:strasse].length > 0 || params[:hausnr].length > 0 || params[:plz].length > 0 || params[:ort].length > 0 then
@@ -556,35 +569,52 @@ class VerwaltungController < ApplicationController
              @errors.push(@Adresse.errors)
           end
           #Datensatz speichern
-          @Adresse.save!
+          begin
+            puts ">>>> DEBUG save! operation <<<<<<"
+            puts @Adresse.inspect
+            @Adresse.save!
+          rescue Exception => e
+            puts ">>>> DEBUG <<<<<<"
+            puts e.message
+            puts e.backtrace.join("\n")
+            @errors.push(e.message)
+          end
+          puts ">>>> DEBUG save! END operation <<<<<<"
         end
 
-          # Telefon, Mobil, Fax speichern
+       # Telefon, Mobil, Fax speichern
+       puts ">>>> DEBUG save Telefon <<<<<<"
         if @Telefon[0] != nil && !params[:telefon].empty? then
-        #if params[:telefon].length > 0 then
-          @Telefon[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?
           if !@Telefon[0].valid? then
+            puts ">>>> DEBUGS error telefon"
             @errors.push(@Telefon[0].errors)
+            puts ">>>> DEBUGS " + @errors.inspect
           end
           #Datensatz speichern
+          puts ">>>> DEBUG save! operation <<<<<<"
           @Telefon[0].save!
         end
 
+        puts ">>>> DEBUG save Mobil <<<<<<"
         if @Mobil[0] != nil && !params[:mobil].empty? then
         #if params[:mobil].length > 0 then
-          @Mobil[0].SachPnr = current_user.Mnr
+          #@Mobil[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?        
           if !@Mobil[0].valid? then
+            puts ">>>> ERROR VAldiation save operation <<<<<<"
+            puts @Mobil[0].errors
             @errors.push(@Mobil[0].errors)
           end
           #Datensatz speichern
+          puts ">>>> DEBUG save operation <<<<<<"
           @Mobil[0].save!
         end
 
+        puts ">>>> DEBUG save Fax <<<<<<"
         if @Fax[0] != nil && !params[:fax].empty? then
         #if params[:fax].length > 0 then          
-          @Fax[0].SachPnr = current_user.Mnr
+          #@Fax[0].SachPnr = current_user.Mnr
           #Fehler aufgetreten?
           if !@Fax[0].valid? then
             @errors.push(@Fax[0].errors)
@@ -595,8 +625,8 @@ class VerwaltungController < ApplicationController
    
        # Weiterleiten
         flash[:notice] = "Kontaktdaten wurden erfolgreich aktuallisiert."
+        redirect_to :action => "editKontaktdaten"      
         # render "editKontaktdaten"
-        redirect_to :action => "editKontaktdaten" 
       end
     # Bei Fehlern Daten reten
     rescue
@@ -732,6 +762,7 @@ class VerwaltungController < ApplicationController
             @Foerdermitglied                = Foerdermitglied.get(@Person.Pnr)
             @Foerdermitglied.Region         = params[:region]
             @Foerdermitglied.Foerderbeitrag = params[:foerderbeitrag]
+            @Foerdermitglied.MJ             = params[:mj]
             @Foerdermitglied.SachPnr        = current_user.Mnr
             #Fehler aufgetreten?
             if !@Foerdermitglied.valid? then
@@ -839,6 +870,7 @@ class VerwaltungController < ApplicationController
                 :Pnr            => @Person.Pnr, 
                 :Region         => params[:region], 
                 :Foerderbeitrag => params[:foerderbeitrag], 
+                :MJ             => params[:mj],
                 :SachPnr        => current_user.Mnr 
             )
             #Fehler aufgetreten?
