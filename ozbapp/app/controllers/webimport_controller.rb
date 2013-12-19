@@ -222,10 +222,11 @@ class WebimportController < ApplicationController
           b.each do |buchung|
             if (buchung.Typ == "w")
               second_time = buchung.Belegdatum
+
               saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
-              
+
               if (second_time != first_time)
-                pkte_acc     = Punkteberechnung.calculate(first_time, second_time, saldo_acc, ktoNr)
+                pkte_acc     = Punkteberechnung.calculate(first_time, second_time, last_saldo_acc, ktoNr)
                 end_pkte_acc = end_pkte_acc + pkte_acc
               end
               
@@ -239,9 +240,8 @@ class WebimportController < ApplicationController
                 bu.PSaldoAcc = end_pkte_acc
                 bu.Punkte    = pkte_acc
 
-
                 begin
-                   bu.save
+                  bu.save
                 rescue Exception => e
                    @error += "Etwas ist schiefgelaufen.<br/><br/>"
                    @error += e.message + "<br /><br />"
@@ -260,7 +260,7 @@ class WebimportController < ApplicationController
               
               b = Buchung.find(
                 :all, 
-                :conditions => ["ktoNr = ? AND belegNr = ? AND belegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
+                :conditions => ["KtoNr = ? AND belegNr = ? AND belegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
               )
 
               b.each do |bu|
@@ -276,11 +276,13 @@ class WebimportController < ApplicationController
                 end
               end
             end
+
             # das End-Saldo ins Konto eintragen
             konto = OzbKonto.find(:all, :conditions => { :KtoNr => ktoNr }).first
             
+
             if (!konto.nil?)
-              konto.WSaldo     = saldo_acc
+              konto.WSaldo     = last_saldo_acc
               konto.PSaldo     = end_pkte_acc
               konto.SaldoDatum = last_saldo_data 
 
@@ -291,6 +293,7 @@ class WebimportController < ApplicationController
                  @error += e.message + "<br /><br />"
               end
             end
+
           end
         end
       end

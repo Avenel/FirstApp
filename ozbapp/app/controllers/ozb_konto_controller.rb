@@ -172,19 +172,19 @@ class OzbKontoController < ApplicationController
         else
           # ZE-Konto NU
           ze            = @ozb_konto.ZeKonto
-          ze.EEKtoNr    = params[:ozb_konto][:ze_konto_attributes][:EEKtoNr]
-          ze.Pgnr       = params[:ozb_konto][:ze_konto_attributes][:Pgnr]
-          ze.ZENr       = params[:ozb_konto][:ze_konto_attributes][:ZENr]
-          # ze.ZEAbDatum  = params[:ozb_konto][:ze_konto_attributes][:ZEAbDatum]
-          # ze.ZEEndDatum = params[:ozb_konto][:ze_konto_attributes][:ZEEndDatum]
-          ze.ZEBetrag   = params[:ozb_konto][:ze_konto_attributes][:ZEBetrag]
-          ze.Laufzeit   = params[:ozb_konto][:ze_konto_attributes][:Laufzeit]
-          ze.ZahlModus  = params[:ozb_konto][:ze_konto_attributes][:ZahlModus]
-          ze.TilgRate   = params[:ozb_konto][:ze_konto_attributes][:TilgRate]
-          ze.NachsparRate = params[:ozb_konto][:ze_konto_attributes][:NachsparRate]
-          ze.KDURate    = params[:ozb_konto][:ze_konto_attributes][:KDURate]
-          ze.RDURate    = params[:ozb_konto][:ze_konto_attributes][:RDURate]
-          ze.ZEStatus   = params[:ozb_konto][:ze_konto_attributes][:ZEStatus]
+          ze.EEKtoNr    = params[:ozb_konto][:ZeKonto_attributes][:EEKtoNr]
+          ze.Pgnr       = params[:ozb_konto][:ZeKonto_attributes][:Pgnr]
+          ze.ZENr       = params[:ozb_konto][:ZeKonto_attributes][:ZENr]
+          # ze.ZEAbDatum  = params[:ozb_konto][:ZeKonto_attributes][:ZEAbDatum]
+          # ze.ZEEndDatum = params[:ozb_konto][:ZeKonto_attributes][:ZEEndDatum]
+          ze.ZEBetrag   = params[:ozb_konto][:ZeKonto_attributes][:ZEBetrag]
+          ze.Laufzeit   = params[:ozb_konto][:ZeKonto_attributes][:Laufzeit]
+          ze.ZahlModus  = params[:ozb_konto][:ZeKonto_attributes][:ZahlModus]
+          ze.TilgRate   = params[:ozb_konto][:ZeKonto_attributes][:TilgRate]
+          ze.NachsparRate = params[:ozb_konto][:ZeKonto_attributes][:NachsparRate]
+          ze.KDURate    = params[:ozb_konto][:ZeKonto_attributes][:KDURate]
+          ze.RDURate    = params[:ozb_konto][:ZeKonto_attributes][:RDURate]
+          ze.ZEStatus   = params[:ozb_konto][:ZeKonto_attributes][:ZEStatus]
           ze.SachPnr    = current_user.Mnr
           
           # ze.save!
@@ -198,11 +198,11 @@ class OzbKontoController < ApplicationController
     
         # KKL-Verlauf
         # This is manually done because there are some problems with multiple primary keys for KKL-Verlauf!
-        if (@ozb_konto.kkl_verlauf.KKL != params[:ozb_konto][:kkl_verlauf_attributes][:KKL])
+        if (@ozb_konto.kkl_verlauf.KKL != params[:ozb_konto][:KklVerlauf_attributes][:KKL])
           kkl = KklVerlauf.new(
             :KtoNr      => @ozb_konto.KtoNr,
-            :KKLAbDatum => params[:ozb_konto][:kkl_verlauf_attributes][:KKLAbDatum],
-            :KKL        => params[:ozb_konto][:kkl_verlauf_attributes][:KKL]
+            :KKLAbDatum => params[:ozb_konto][:KklVerlauf_attributes][:KKLAbDatum],
+            :KKL        => params[:ozb_konto][:KklVerlauf_attributes][:KKL]
           )
           kkl.save! # copy! -> extra save
         end

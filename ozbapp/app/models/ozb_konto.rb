@@ -45,9 +45,9 @@ class OzbKonto < ActiveRecord::Base
   validates :Mnr, :presence => { :format => { :with => /[0-9]+/ }, :message => "Bitte geben Sie eine gültige Mitgliedsnummer an." }  
   validates :KtoEinrDatum, :presence => true
   validates :WaehrungID, :presence => { :format => { :with => /[a-zA-Z]{3}/ }, :message => "Bitte geben Sie eine gültige Währung an." }
-  validates :SachPnr, :format => { :with => /[0-9]+/, :message => "Bitte geben Sie eine gültige Mitgliedsnummer für den Sachbearbeiter an." }  
+  # validates :SachPnr, :format => { :with => /[0-9]+/, :message => "Bitte geben Sie eine gültige Mitgliedsnummer für den Sachbearbeiter an." }  
 
-  validate :ozbperson_exists, :sachPnr_exists
+  validate :ozbperson_exists
 
   def ozbperson_exists
     ozbperson = OZBPerson.where("Mnr = ?", self.Mnr)
@@ -59,15 +59,15 @@ class OzbKonto < ActiveRecord::Base
     return true
   end
 
-  def sachPnr_exists
-    ozbperson = OZBPerson.where("Mnr = ?", self.SachPnr)
-    if ozbperson.empty? then      
-      errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (%(value)) gefunden werden.")
-      errors.add :SachPnr, errorString
-      return false
-    end
-    return true
-  end
+  # def sachPnr_exists
+  #   ozbperson = OZBPerson.where("Mnr = ?", self.SachPnr)
+  #   if ozbperson.empty? then      
+  #     errorString = String.new("Es konnte keinen zugehörigen Sachbearbeiter zu der angegebenen Mnr (%(value)) gefunden werden.")
+  #     errors.add :SachPnr, errorString
+  #     return false
+  #   end
+  #   return true
+  # end
 
   # Associations
   has_many :Buchung, 

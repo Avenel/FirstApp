@@ -80,34 +80,37 @@ class Buchung < ActiveRecord::Base
   #Nicht spezifiziert (außer DB-Einschraenkung)
   validates :Sollbetrag, 
     :presence => {:message => "Bitte geben Sie einen Betrag (Soll) an." }, 
-    :format => { :with => /^[-]?\d{,10}[.]?\d{0,2}$/, 
+    :format => { :with => /^[-]?\d{0,10}[.]?\d{0,2}$/, 
       :message => "Bitte geben Sie einen gültigen Betrag an." }
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
   validates :Habenbetrag, 
     :presence => {:message => "Bitte geben Sie einen Betrag (Haben) an." }, 
-    :format => { :with => /^\d{,10}[.]?\d{0,2}$/, 
+    :format => { :with => /^\d{0,10}[.]?\d{0,2}$/, 
       :message => "Bitte geben Sie einen gültigen Betrag an." }
 
   validates :SollKtoNr, 
     :presence => { :format => { :with => /^[0-9]{5}$/i  },
       :message => "Bitte geben Sie eine Konto-Nr. (Soll) an." }, 
-    :length => { :is => 5, :message => "Die Konto-Nr. (Soll) darf nur 5-stellig sein." }, 
     :numericality => { :only_integer => true, 
       :message => "Die Konto-Nr. (Soll) darf nur Zahlen beinhalten." }
 
   validates :HabenKtoNr, 
     :presence => { :format => { :with => /^[0-9]{5}$/i  },
       :message => "Bitte geben Sie eine Konto-Nr. (Haben) an." }, 
-    :length => { :is => 5, :message => "Die Konto-Nr. (Haben) darf nur 5-stellig sein." }, 
     :numericality => { :only_integer => true, 
       :message => "Die Konto-Nr. (Haben) darf nur Zahlen beinhalten." }
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
   validates :WSaldoAcc, 
-    :presence => {:message => "Bitte geben Sie einen wSaldoAcc an." }, 
-    :format => { :with => /^\d{,10}[.]?\d{0,2}$/, 
-      :message => "Bitte geben Sie einen gültigen wSaldoAcc an." }
+    :presence => {:message => "Bitte geben Sie einen wSaldoAcc an." },
+    :numericality => true
+    # floating point accuracy problems
+    # Rails 1.9 rouds difrently and sometimes genereates a very big integer
+    # http://stackoverflow.com/questions/9642552/bigdecimal-in-1-8-vs-1-9
+    #
+    # :format => { :with => /^[-]?\d{0,10}(\.\d{0,2})?$/, 
+    #   :message => "Bitte geben Sie einen gültigen wSaldoAcc an." }
 
   #Nicht spezifiziert (außer DB-Einschraenkung)
   validates :Punkte, 
