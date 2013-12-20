@@ -237,7 +237,7 @@ class WebimportController < ApplicationController
               )
 
               b.each do |bu|
-                bu.WSaldoAcc = saldo_acc
+                bu.WSaldoAcc = saldo_acc.round(2)
                 bu.PSaldoAcc = end_pkte_acc
                 bu.Punkte    = pkte_acc
 
@@ -265,8 +265,8 @@ class WebimportController < ApplicationController
               )
 
               b.each do |bu|
-                bu.WSaldoAcc = saldo_acc
-                bu.PSaldoAcc = end_pkte_acc
+                bu.WSaldoAcc = saldo_acc.round(2)
+                bu.PSaldoAcc = end_pkte_acc 
                 bu.Punkte    = punkte
 
                 begin
@@ -283,7 +283,7 @@ class WebimportController < ApplicationController
             
 
             if (!konto.nil?)
-              konto.WSaldo     = last_saldo_acc
+              konto.WSaldo     = last_saldo_acc.round(2)
               konto.PSaldo     = end_pkte_acc
               konto.SaldoDatum = last_saldo_data 
 
