@@ -25,8 +25,7 @@ class WebimportController < ApplicationController
     render "index"
   end
 
-  # CSV-File
-  def read_csv_file(uploaded_io)
+  def readCsvFile(uploaded_io)
     csv = CSVImporter.new
     uploaded_disk = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
     
@@ -44,14 +43,13 @@ class WebimportController < ApplicationController
     return csv
   end
 
-
-  def saveTransaction(buchung, count = nil)
+  def saveTransaction(buchung, skipListingAccount = nil)
     begin 
       buchung.save
       @info << buchung
       @collected_records << buchung.KtoNr
 
-      if count.nil? 
+      if skipListingAccount.nil? 
        @imported_records += 1
       end
 
@@ -73,7 +71,7 @@ class WebimportController < ApplicationController
                       ).first.EEKtoNr
   end
 
-  def debitTrasnaction(transaction, accountNumber = nil, count = nil)
+  def debitTrasnaction(transaction, accountNumber = nil, skipListingAccount = nil)
    
     multipicator = 1.0 
     #if no accunt number supplyed
@@ -104,10 +102,10 @@ class WebimportController < ApplicationController
       :Punkte       => 0
     )
 
-    self.saveTransaction(b, count)  
+    self.saveTransaction(b, skipListingAccount)  
   end
 
-  def creaditTransaction(transaction, accountNumber = nil, count = nil)
+  def creaditTransaction(transaction, accountNumber = nil, skipListingAccount = nil)
 
     #if a loan number is supplyed -> get the original account number from the database
     if accountNumber.nil?
@@ -131,15 +129,152 @@ class WebimportController < ApplicationController
     :Punkte       => 0
     )
 
-    self.saveTransaction(b, count)   
+    self.saveTransaction(b, skipListingAccount)   
+  end
+
+  def processTransaction(currentTransaction)
+    if currentTransaction.getCreditAccountLenght == 5 || currentTransaction.getDebitAccountLenght == 5
+      # => Gewöhnliche Buchung 
+      if currentTransaction.getCreditAccountLenght == 5 && currentTransaction.getDebitAccountLenght < 5
+        self.creaditTransaction(currentTransaction)
+        return
+      end
+
+      # => Gewöhnliche Buchung 
+      if currentTransaction.getDebitAccountLenght == 5 && currentTransaction.getCreditAccountLenght < 5
+        self.debitTrasnaction(currentTransaction)
+        return
+      end
+
+      # => Abbuchung-Leihpunkte-Buchung
+      if currentTransaction.isPointsLendTransaction
+        self.debitTrasnaction(currentTransaction, self.getOriginalAccountNumber(currentTransaction.getLoanNumber))
+        return
+      end
+      
+      # => Storno-Abbuchung-Leihpunkte-Buchung
+      if currentTransaction.isPointsLendStornoTransaction
+        self.creaditTransaction(currentTransaction, self.getOriginalAccountNumber(currentTransaction.getLoanNumber))
+        return
+      end
+      
+      # => Punkteüberweisung-Buchung
+      if currentTransaction.isPonitsTransaction && currentTransaction.getCreditorAccount != 88888 && currentTransaction.getDebitorAccount != 88888
+        # Haben Buchung
+        self.creaditTransaction(currentTransaction, currentTransaction.getCreditorAccountFromText)
+        #Soll Buchung
+        self.debitTrasnaction(currentTransaction, currentTransaction.getDebitorAccountFromText)
+        return
+      end
+      
+      # Konto-zu-Konto-Buchung
+      if currentTransaction.isCurrencyTransaction
+        # Eine Konto-zu-Konto-Buchung.Buchung wird in DB eingetragen.              
+        self.creaditTransaction(currentTransaction, nil, true)
+        self.debitTrasnaction(currentTransaction)
+        return
+      end
+    else
+      @failed_records << r
+    end
+  end
+
+  def reorganizeTransactionData
+    @collected_records.uniq.each do |ktoNr|
+      b = Buchung.find(
+        :all, 
+        :conditions => { :KtoNr => ktoNr }, 
+        :order => "Belegdatum ASC, Typ DESC, Habenbetrag DESC, Sollbetrag DESC, PSaldoAcc DESC"
+      )
+
+      saldo_acc      = 0.0 # wSaldoAcc
+      pkte_acc       = 0 # pSaldoAcc
+      first_time     = b.first.Belegdatum
+      last_saldo_acc = 0.0
+      end_pkte_acc   = 0
+      last_saldo_data = nil
+
+      # Berechne Daten für die nächste Buchung
+      b.each do |buchung|
+        if (buchung.Typ == "w")
+          second_time = buchung.Belegdatum
+
+          saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
+
+          if (second_time != first_time)
+            pkte_acc     = Punkteberechnung.calculate(first_time, second_time, last_saldo_acc, ktoNr)
+            end_pkte_acc = end_pkte_acc + pkte_acc
+          end
+          
+          b = Buchung.find(
+            :all, 
+            :conditions => ["KtoNr = ? AND BelegNr = ? AND BelegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
+          )
+
+          b.each do |bu|
+            bu.WSaldoAcc = saldo_acc
+            bu.PSaldoAcc = end_pkte_acc
+            bu.Punkte    = pkte_acc
+
+            begin
+              bu.save
+            rescue Exception => e
+               @error += "Etwas ist schiefgelaufen.<br/><br/>"
+               @error += e.message + "<br /><br />"
+            end
+          end
+
+          first_time      = second_time
+          last_saldo_acc  = saldo_acc
+          pkte_acc        = 0
+          last_saldo_data = buchung.Belegdatum
+        end
+        
+        if (buchung.Typ == "p")
+          end_pkte_acc = end_pkte_acc + buchung.Sollbetrag + buchung.Habenbetrag
+          punkte       = buchung.Sollbetrag + buchung.Habenbetrag
+          
+          b = Buchung.find(
+            :all, 
+            :conditions => ["KtoNr = ? AND belegNr = ? AND belegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
+          )
+
+          b.each do |bu|
+            bu.WSaldoAcc = saldo_acc
+            bu.PSaldoAcc = end_pkte_acc
+            bu.Punkte    = punkte
+
+            begin
+               bu.save
+            rescue Exception => e
+               @error += "Etwas ist schiefgelaufen.<br /><br />"
+               @error += e.message + "<br /><br />"
+            end
+          end
+        end
+
+        # das End-Saldo ins Konto eintragen
+        konto = OzbKonto.find(:all, :conditions => { :KtoNr => ktoNr }).first
+        if (!konto.nil?)
+          konto.WSaldo     = last_saldo_acc
+          konto.PSaldo     = end_pkte_acc
+          konto.SaldoDatum = last_saldo_data 
+
+          begin
+            konto.save
+          rescue Exception => e
+             @error += "Etwas ist schiefgelaufen.<br /><br />"
+             @error += e.message + "<br /><br />"
+          end
+        end
+      end
+    end
   end
 
   def csvimport_buchungen
     if !params[:webimport].nil? && !params[:webimport][:file].nil?
-
       # read the csv file
-      csv = self.read_csv_file(params[:webimport][:file])
-
+      csv = self.readCsvFile(params[:webimport][:file])
       # read satus
       @error    = csv.error
       @notice   = csv.notice
@@ -150,53 +285,8 @@ class WebimportController < ApplicationController
             if r.nil? || r.empty? || r[0].nil?
               next
             end
-            transaction = RawData.new(r)
-
-            if transaction.getCreditAccountLenght == 5 && transaction.getDebitAccountLenght == 5
-
-              # => Abbuchung-Leihpunkte-Buchung
-              if transaction.isPointsLendTransaction
-                self.debitTrasnaction(transaction, self.getOriginalAccountNumber(transaction.getLoanNumber))
-                next
-              end
-              
-              # => Storno-Abbuchung-Leihpunkte-Buchung
-              if transaction.isPointsLendStornoTransaction
-                self.creaditTransaction(transaction, self.getOriginalAccountNumber(transaction.getLoanNumber))
-                next
-              end
-              
-              # => Punkteüberweisung-Buchung
-              if transaction.isPonitsTransaction && transaction.getCreditorAccount != 88888 && transaction.getDebitorAccount != 88888
-                # Haben Buchung
-                self.creaditTransaction(transaction, transaction.getCreditorAccountFromText)
-                #Soll Buchung
-                self.debitTrasnaction(transaction, transaction.getDebitorAccountFromText)
-                next
-              end
-              
-              # Konto-zu-Konto-Buchung
-              if transaction.isCurrencyTransaction
-                # Eine Konto-zu-Konto-Buchung.Buchung wird in DB eingetragen.              
-                self.creaditTransaction(transaction, nil, true)
-                self.debitTrasnaction(transaction)
-                next
-              end
-            # => Gewöhnliche Buchung 
-            # => Storno-Buchung
-            else
-              # Eine gewöhnliche Buchung. Buchung wird in DB eingetragen.
-              if transaction.getCreditAccountLenght == 5
-                self.creaditTransaction(transaction)
-                next
-              elsif transaction.getDebitAccountLenght == 5
-                self.debitTrasnaction(transaction)
-                next
-
-              else
-                @failed_records << r
-              end
-            end
+            currentTransaction = RawData.new(r)
+            self.processTransaction(currentTransaction);
           end
         end
       end
@@ -205,98 +295,7 @@ class WebimportController < ApplicationController
       if ( @collected_records.size == 0 )
         @error += "Keine der zu importierenden Konten in der Datenbank eingetragen"
       else
-         @collected_records.uniq.each do |ktoNr|
-          b = Buchung.find(
-            :all, 
-            :conditions => { :KtoNr => ktoNr }, 
-            :order => "Belegdatum ASC, Typ DESC, Habenbetrag DESC, Sollbetrag DESC, PSaldoAcc DESC"
-          )
-
-          saldo_acc      = 0.0 # wSaldoAcc
-          pkte_acc       = 0 # pSaldoAcc
-          first_time     = b.first.Belegdatum
-          last_saldo_acc = 0.0
-          end_pkte_acc   = 0
-          last_saldo_data = nil
-
-          # Berechne Daten für die nächste Buchung
-          b.each do |buchung|
-            if (buchung.Typ == "w")
-              second_time = buchung.Belegdatum
-
-              saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
-
-              if (second_time != first_time)
-                pkte_acc     = Punkteberechnung.calculate(first_time, second_time, last_saldo_acc, ktoNr)
-                end_pkte_acc = end_pkte_acc + pkte_acc
-              end
-              
-              b = Buchung.find(
-                :all, 
-                :conditions => ["KtoNr = ? AND BelegNr = ? AND BelegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
-              )
-
-              b.each do |bu|
-                bu.WSaldoAcc = saldo_acc.round(2)
-                bu.PSaldoAcc = end_pkte_acc
-                bu.Punkte    = pkte_acc
-
-                begin
-                  bu.save
-                rescue Exception => e
-                   @error += "Etwas ist schiefgelaufen.<br/><br/>"
-                   @error += e.message + "<br /><br />"
-                end
-              end
-
-              first_time      = second_time
-              last_saldo_acc  = saldo_acc
-              pkte_acc        = 0
-              last_saldo_data = buchung.Belegdatum
-            end
-            
-            if (buchung.Typ == "p")
-              end_pkte_acc = end_pkte_acc + buchung.Sollbetrag + buchung.Habenbetrag
-              punkte       = buchung.Sollbetrag + buchung.Habenbetrag
-              
-              b = Buchung.find(
-                :all, 
-                :conditions => ["KtoNr = ? AND belegNr = ? AND belegDatum = ?", buchung.KtoNr, buchung.BelegNr, buchung.Belegdatum]
-              )
-
-              b.each do |bu|
-                bu.WSaldoAcc = saldo_acc.round(2)
-                bu.PSaldoAcc = end_pkte_acc 
-                bu.Punkte    = punkte
-
-                begin
-                   bu.save
-                rescue Exception => e
-                   @error += "Etwas ist schiefgelaufen.<br /><br />"
-                   @error += e.message + "<br /><br />"
-                end
-              end
-            end
-
-            # das End-Saldo ins Konto eintragen
-            konto = OzbKonto.find(:all, :conditions => { :KtoNr => ktoNr }).first
-            
-
-            if (!konto.nil?)
-              konto.WSaldo     = last_saldo_acc.round(2)
-              konto.PSaldo     = end_pkte_acc
-              konto.SaldoDatum = last_saldo_data 
-
-              begin
-                konto.save
-              rescue Exception => e
-                 @error += "Etwas ist schiefgelaufen.<br /><br />"
-                 @error += e.message + "<br /><br />"
-              end
-            end
-
-          end
-        end
+        self.reorganizeTransactionData
       end
       
       @notice += "<br /><br />" + csv.number_records.to_s + " von " + csv.rows.size.to_s + " Datensätzen eingelesen."
@@ -304,7 +303,6 @@ class WebimportController < ApplicationController
     else
       @error = "Bitte geben Sie eine CSV-Datei an."
     end
-
     render "index"
   end
 end
