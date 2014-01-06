@@ -10,6 +10,8 @@
 
 \usepackage{listings}
 \usepackage[usenames,dvipsnames]{color}
+\usepackage{graphicx} 
+
 \lstloadlanguages{Ruby}
 \lstset{basicstyle=\ttfamily\color{black}, commentstyle = \ttfamily\color{grey}, keywordstyle=\ttfamily\color{Violet}, stringstyle=\color{blue}, breaklines=true, showstringspaces=false}
 
@@ -61,7 +63,7 @@ Um in der Web-Anwendung die Punkte korrekt darstellen zu können, bedarf es eine
 Weitere Parameter für die Berechnung ergeben sich aus dem Kontenklassenverlauf eines o/ZB-Mitglieds. Jedes Mitglied befindet sich zu jeder Zeit in einer Kontenklasse, die auch gewechselt werden kann. Der zeitliche Ablauf der Kontenklassenwechsel heisst Kontenklassenverlauf. Jeder Klasse ist ein Faktor zugeordnet. Die Kontenklassen in Tabelle \ref{kkl} existieren zur Zeit dieser Projektarbeit. \\
 
 \subsection{Berechnung der Punkte}
-Die folgende Formel dient zur Berechnung der Punkte. 
+Die folgende Formel dient zur Berechnung der Punkte für einen einzelnen Währungs-Betrag über mehrere Kontenklassen.
 
 \begin{equation*}
   Punkte = \sum_{i=0}^{K} \frac{t_i}{30} * k_i * w
@@ -106,6 +108,30 @@ Vom 15.07.2008 bis 31.07.2008 sind es 16 Tage in Kontenklasse B, vom 01.08.2008 
 \begin{equation*}
   Punkte = \left(\frac{16}{30} * 0,75 * 1000,0\right) + \left(\frac{5}{30} * 0,5 * 1000,0\right) = 400,0 + 83,33 = 483,33
 \end{equation*} \\
+
+Um nun die Punkte für einen Kontoauszug wie in Abbildung \ref{account} berechnen zu können muss eine erweiterte Formel verwendet werden, die die vorher erläuterte verwendet und für verschiedene Zeiträume und Währungs-Beträge aufruft. 
+
+\begin{equation*}
+  PunkteEndsaldo = PunkteAnfangssaldo + \sum_{j=1}^{I} \left(\sum_{i=0}^{K} \frac{t_{ij}}{30} * k_{ij} * w_i\right)
+\end{equation*}
+
+\begin{align*}
+ K &= \text{Anzahl der Kontenklassenwechsel} \\
+ I &= \text{Anzahl der Zeitintervalle} \\
+ j &= \text{Index der momentanen Kontenklasse} \\
+ i &= \text{Index für den momentanen Zeitintervall} \\
+ k_{ij} &= \text{Faktor der momentanen Kontenklasse im aktuellen Zeitintervall} \\
+ t_{ij} &= \text{Anzahl Tage innerhalb der momentanen Kontenklasse im aktuellen Zeitintervall} \\
+ w_i &= \text{Währungs-Betrag im aktuellen Zeitintervall} 
+\end{align*}
+
+Mit der erweiterten Formel kann nun der Tagessaldo in Abbildung \ref{account} berechnet werden. Dazu wird über alle Einträge in der Liste iteriert (äußere Summe in der Formel) und die Punkteberechnung zwischen dem vorherigen Datum und dem aktuellen Datum berechnet. Das Ergebnis wird auf den vorherigen PunkteAnfangssaldo addiert bis alle Buchungen im gegebenen Zeitraum abgearbeitet sind. Der Tagessaldo entspricht dann dem PuntkeEndsaldo aus der erweiterten Formel. \\
+
+\begin{figure} 
+  \includegraphics[width=\textwidth]{account-ano.png}
+  \caption{Beispiel eines Kontoauszugs im Produktivsystem. Die Namen wurden geschwärzt.}
+  \label{account}
+\end{figure}
 
 Des Weiteren soll das Vorgehen bei der Implementierung einer Klasse betrachtet werden, die alle Anforderungen an die Punkteberechnung erfüllt. Zunächst wird hierfür die bestehende Umsetzung betrachtet, Probleme aufgezeigt und danach eine Lösung erarbeitet und umgesetzt.
 
