@@ -34,12 +34,12 @@ class DarlehensverlaufController < ApplicationController
       @bisDatum = Date.current().strftime("%d.%m.%Y")
     
       # Die letzten Buchungen, chronologisch aufsteigend sortiert
-      @Buchungen = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], @vonDatum.to_date, @bisDatum.to_date).order("BelegDatum ASC, Typ ASC, Punkte DESC")
+      @Buchungen = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], @vonDatum.to_date, @bisDatum.to_date).order("Belegdatum ASC, Typ DESC, Habenbetrag DESC, Sollbetrag DESC, PSaldoAcc DESC")
     #wurde der anzeigen button geklickt werden die buchungen in dem angegebenen zeitraum angezeigt
     else
       #prüfung ob ein ein datum in falschem format eingegeben wurde
       if !@vonDatum.to_s.empty? && !@bisDatum.to_s.empty?
-        @Buchungen = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], @vonDatum.to_date, @bisDatum.to_date).order("BelegDatum ASC, Typ ASC, Punkte DESC")
+        @Buchungen = Buchung.where("KtoNr = ? AND Belegdatum >= ? AND Belegdatum <= ?", params[:KtoNr], @vonDatum.to_date, @bisDatum.to_date).order("Belegdatum ASC, Typ DESC, Habenbetrag DESC, Sollbetrag DESC, PSaldoAcc DESC")
       #wurde ein datum in falschem format eingegeben wird eine fehlermeldung ausgegeben
       else
         @errors.push("Geben sie bitte ein valides Datum ein.")
@@ -130,7 +130,7 @@ class DarlehensverlaufController < ApplicationController
       # Die nachfolgend erste Währungsbuchung muss korrigiert werden
       # => Punkte der Buchung -= Punkte im Intervall: Buchung.Belegdatum -  vonDatum
       if !@Buchungen.first.nil? && !@vorherigeBuchung.nil? then
-        @Buchungen.first.Punkte = Punkteberechnung.calculate(@vonDatum.to_time, @vorherigeBuchung.Belegdatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr])
+       @Buchungen.first.Punkte -= Punkteberechnung.calculate(@vorherigeBuchung.Belegdatum.to_time, @vonDatum.to_time, @vorherigeBuchung.WSaldoAcc, params[:KtoNr])
       end
 
       # Tagessaldozeile den Buchungen oben einfügen
