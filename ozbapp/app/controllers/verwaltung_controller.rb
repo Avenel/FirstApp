@@ -436,7 +436,7 @@ class VerwaltungController < ApplicationController
     begin    
      #Beginne Transaktion
       ActiveRecord::Base.transaction do   
-        @OZBPerson = OZBPerson.find(current_user.Mnr)
+        @OZBPerson = OZBPerson.find(params[:Mnr])
         @Person    = Person.get(@OZBPerson.Mnr) 
 
        # Email
