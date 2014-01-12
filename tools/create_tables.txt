@@ -270,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `Buchung` (
   `KtoNr` int(5) unsigned NOT NULL ,
   `BnKreis`  char(2) NOT NULL , 
   `BelegNr` int(6) unsigned NOT NULL ,
-  `Typ`  enum('w', 'p'), -- w = Waehrungsbuchung, p = Punktebuchung
+  `Typ`  enum( 'p', 'w'), -- w = Waehrungsbuchung, p = Punktebuchung
   `Belegdatum` date NOT NULL,
   `BuchDatum` date NOT NULL,
   `Buchungstext` varchar(50) NOT NULL,
