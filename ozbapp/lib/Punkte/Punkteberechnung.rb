@@ -2,6 +2,7 @@ class Punkteberechnung
 
   # Calculates a rounded score per default. If you want to have the exact score set round_down to false.
   def self.calculate(date_begin, date_end, amount, account_number, round_down = true)
+
     exact_score = self.calc_score_new(date_begin, date_end, amount.to_f, account_number)
 
     if(round_down)
@@ -17,10 +18,15 @@ class Punkteberechnung
     days_in_account_classes = get_days_in_account_classes(account_class_changes, date_begin, date_end)
 
     score = 0.0
+    exact_amount = amount.to_f
 
     days_in_account_classes.each_with_index do |(account_class, days), i|
       factor = get_factor_for_account_class(account_class_changes[i].kontenklasse)
-      score += days / 30.0 * amount.to_f * factor
+      
+      if exact_amount < 0.0
+        factor = 1.0
+      end
+      score += days / 30.0 * exact_amount * factor
     end
 
     return score

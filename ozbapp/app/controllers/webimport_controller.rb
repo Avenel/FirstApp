@@ -197,12 +197,12 @@ class WebimportController < ApplicationController
       # Berechne Daten für die nächste Buchung
       b.each do |buchung|
         if (buchung.Typ == "w")
-          second_time = buchung.Belegdatum
+          second_time = buchung.Belegdatum 
 
           saldo_acc   = saldo_acc + buchung.Habenbetrag - buchung.Sollbetrag
 
           if (second_time != first_time)
-            pkte_acc     = Punkteberechnung.calculate(first_time, second_time, last_saldo_acc, ktoNr)
+            pkte_acc     = Punkteberechnung.calculate(first_time.to_time_in_current_zone , second_time.to_time_in_current_zone , last_saldo_acc, ktoNr)
             end_pkte_acc = end_pkte_acc + pkte_acc
           end
           
@@ -227,7 +227,7 @@ class WebimportController < ApplicationController
           first_time      = second_time
           last_saldo_acc  = saldo_acc
           pkte_acc        = 0
-          last_saldo_data = buchung.Belegdatum
+          last_saldo_data = buchung.Belegdatum 
         end
         
         if (buchung.Typ == "p")
@@ -242,7 +242,7 @@ class WebimportController < ApplicationController
           b.each do |bu|
             bu.WSaldoAcc = saldo_acc
             bu.PSaldoAcc = end_pkte_acc
-            bu.Punkte    = punkte
+            bu.Punkte    = 0
 
             begin
                bu.save
