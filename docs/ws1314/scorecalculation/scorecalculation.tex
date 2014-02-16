@@ -112,7 +112,7 @@ Vom 15.07.2008 bis 31.07.2008 sind es 16 Tage in Kontenklasse B, vom 01.08.2008 
 Um nun die Punkte für einen Kontoauszug wie in Abbildung \ref{account} berechnen zu können muss eine erweiterte Formel verwendet werden, die die vorher erläuterte verwendet und für verschiedene Zeiträume und Währungs-Beträge aufruft. 
 
 \begin{equation*}
-  PunkteEndsaldo = PunkteAnfangssaldo + \sum_{j=1}^{I} \left(\sum_{i=0}^{K} \frac{t_{ij}}{30} * k_{ij} * w_i\right)
+  PunkteEndsaldo = PunkteAnfangssaldo + \sum_{i=1}^{I} \sum_{j=0}^{K} \frac{t_{ij}}{30} * k_{ij} * w_i
 \end{equation*}
 
 \begin{align*}
@@ -129,7 +129,7 @@ Mit der erweiterten Formel kann nun der Tagessaldo in Abbildung \ref{account} be
 
 \begin{figure} 
   \includegraphics[width=\textwidth]{account-ano.png}
-  \caption{Beispiel eines Kontoauszugs im Produktivsystem. Die Namen wurden geschwärzt.}
+  \caption{Beispiel eines Kontoauszugs. Die Namen wurden geschwärzt.}
   \label{account}
 \end{figure}
 
@@ -325,12 +325,11 @@ it "returns 366 days because 2000 was a leapyear"
 \end{lstlisting}
 Ein zusätlicher Test berechnet die Länge eines Schaltjahres, um sicher zu gehen, dass auch solche Ausnahmen wie gewünscht funktionieren.
 
-\section{Offene Punkte}
-Einige Punkte bleiben nach dem Abschluss dieser Projektarbeit noch offen. 
+\section{Hinweise}
 
 \subsection{Redundante Stellen}
-Durch die Vielzahl an Stellen im Quelltext, an denen die Punkteberechnung unterschiedlich implementiert wird, ist es nicht sicher entscheidbar, ob wirklich alle Stellen gefunden wurden. 
+Durch die Vielzahl an Stellen im Quelltext, an denen die Punkteberechnung unterschiedlich implementiert wird, ist es nicht sicher entscheidbar, ob wirklich alle Stellen gefunden wurden. Es wird jedoch davon ausgegangen, dass alle redundanten Implementierungen durch die zentrale Klasse ersetzt wurden.
 
 \subsection{Darlehensvertrag} 
-Bisher nicht betrachtet bei der Punkteberechnung wurde das Thema Darlehensvertrag. In der Web-Oberfläche befindet sich unter Weiteres ein Menüpunkt Darlehensvertrag. Ruft man diesen auf, so erscheint die Eingabemaske für eine Mitgliedsnummer. Trägt man dort eine Nummer ein und schickt das Formular ab, wird man zu einem Formular weitergeleitet. Dies ermöglicht die Vorabberechnung eines Darlehensvertrag. Bei der Implementierung dieser Funktion ist für einige Felder ebenfalls eine Punkteberechnung notwendig. Natürlich kann hierbei auf die zentrale Berechnung in der Klasse Punkteberechnung zurückgegriffen werden.
+Bisher nicht betrachtet bei der Punkteberechnung wurde das Thema Darlehensvertrag. Bei der Implementierung dieser Funktion ist für einige Felder ebenfalls eine Punkteberechnung notwendig. Natürlich kann hierbei auf die zentrale Berechnung in der Klasse Punkteberechnung zurückgegriffen werden.
 \end{document}
